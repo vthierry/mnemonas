@@ -65,7 +65,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab46170912853d6abd33a840453ad2bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a fixed common offset for this network.  <a href="#ab46170912853d6abd33a840453ad2bbe">More...</a><br /></td></tr>
 <tr class="separator:ab46170912853d6abd33a840453ad2bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a145c2648672a7181af96343e6173dc04"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoftMaxTransform.html#a145c2648672a7181af96343e6173dc04">setWeight</a> (unsigned int n, unsigned int d, double w)</td></tr>
-<tr class="memdesc:a145c2648672a7181af96343e6173dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_48.png"/> value.  <a href="#a145c2648672a7181af96343e6173dc04">More...</a><br /></td></tr>
+<tr class="memdesc:a145c2648672a7181af96343e6173dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_55.png"/> value.  <a href="#a145c2648672a7181af96343e6173dc04">More...</a><br /></td></tr>
 <tr class="separator:a145c2648672a7181af96343e6173dc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d6d570fcc938782d589e517c97ea867"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoftMaxTransform.html#a3d6d570fcc938782d589e517c97ea867">getKernelDimension</a> (unsigned int n) const</td></tr>
 <tr class="memdesc:a3d6d570fcc938782d589e517c97ea867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the recurrent kernel dimension.  <a href="#a3d6d570fcc938782d589e517c97ea867">More...</a><br /></td></tr>
@@ -88,7 +88,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a056f96a39fd9cce6bc00c5b0c815c48e inherit pub_methods_classKernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total number of weights.  <a href="classKernelTransform.html#a056f96a39fd9cce6bc00c5b0c815c48e">More...</a><br /></td></tr>
 <tr class="separator:a056f96a39fd9cce6bc00c5b0c815c48e inherit pub_methods_classKernelTransform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd412fd6b128add54fc6e45b58bc1a85 inherit pub_methods_classKernelTransform"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelTransform.html#acd412fd6b128add54fc6e45b58bc1a85">getWeight</a> (unsigned int n, unsigned int d) const</td></tr>
-<tr class="memdesc:acd412fd6b128add54fc6e45b58bc1a85 inherit pub_methods_classKernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_48.png"/>.  <a href="classKernelTransform.html#acd412fd6b128add54fc6e45b58bc1a85">More...</a><br /></td></tr>
+<tr class="memdesc:acd412fd6b128add54fc6e45b58bc1a85 inherit pub_methods_classKernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_55.png"/>.  <a href="classKernelTransform.html#acd412fd6b128add54fc6e45b58bc1a85">More...</a><br /></td></tr>
 <tr class="separator:acd412fd6b128add54fc6e45b58bc1a85 inherit pub_methods_classKernelTransform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59c8e71f54587205787bbcd0833118db inherit pub_methods_classKernelTransform"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classKernelTransform.html">KernelTransform</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKernelTransform.html#a59c8e71f54587205787bbcd0833118db">setWeightsRandom</a> (double mean=0.0, double sigma=0.0, bool add=false, <a class="el" href="s__string_8h.html#a342f13820a6f9c4de28e5a0940976db7">String</a> mode=&quot;normal&quot;, int seed=-1)</td></tr>
 <tr class="memdesc:a59c8e71f54587205787bbcd0833118db inherit pub_methods_classKernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets random or constant weights values.  <a href="classKernelTransform.html#a59c8e71f54587205787bbcd0833118db">More...</a><br /></td></tr>
@@ -156,17 +156,17 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines a recurrent network as a non-linear affine combination of input and recurrent values. </p>
 <ul>
-<li>Such recurrent network writes: <center> <img class="formulaInl" alt="$\begin{array}{rcl} x_n(t) &amp;=&amp; x_{n_1}(t) / z(t)\\ z(t) &amp;=&amp; = \sum_n x_{n_1}(t) \\ x_{n_1}(t) &amp;=&amp; exp(x_{n_2}(t)) \\ x_{n_2}(t) &amp;=&amp; \alpha_n + \sum_{n' = 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \\ \end{array}$" src="form_57.png"/></center> <b>Weight organization</b>: <table class="doxtable">
+<li>Such recurrent network writes: <center> <img class="formulaInl" alt="$\begin{array}{rcl} x_n(t) &amp;=&amp; x_{n_1}(t) / z(t)\\ z(t) &amp;=&amp; = \sum_n x_{n_1}(t) \\ x_{n_1}(t) &amp;=&amp; exp(x_{n_2}(t)) \\ x_{n_2}(t) &amp;=&amp; \alpha_n + \sum_{n' = 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \\ \end{array}$" src="form_9.png"/></center> <b>Weight organization</b>: <table class="doxtable">
 <tr>
-<th><img class="formulaInl" alt="$(n,d)$" src="form_11.png"/> </th><th></th><th></th></tr>
+<th><img class="formulaInl" alt="$(n,d)$" src="form_10.png"/> </th><th></th><th></th></tr>
 <tr>
-<td><img class="formulaInl" alt="$(n+2\,N+1,1)$" src="form_58.png"/> </td><td></td><td>Unit offset <img class="formulaInl" alt="$\alpha_n$" src="form_23.png"/> </td></tr>
+<td><img class="formulaInl" alt="$(n+2\,N+1,1)$" src="form_11.png"/> </td><td></td><td>Unit offset <img class="formulaInl" alt="$\alpha_n$" src="form_12.png"/> </td></tr>
 <tr>
-<td><img class="formulaInl" alt="$(n+2\,N+1,1+n')$" src="form_59.png"/> </td><td><img class="formulaInl" alt="$n' \in \{0,N\{$" src="form_15.png"/> </td><td>Recurrent weights <img class="formulaInl" alt="$W_{nn'}$" src="form_16.png"/> </td></tr>
+<td><img class="formulaInl" alt="$(n+2\,N+1,1+n')$" src="form_13.png"/> </td><td><img class="formulaInl" alt="$n' \in \{0,N\{$" src="form_14.png"/> </td><td>Recurrent weights <img class="formulaInl" alt="$W_{nn'}$" src="form_15.png"/> </td></tr>
 <tr>
-<td><img class="formulaInl" alt="$(n+2\,N+1,1+N+m)$" src="form_60.png"/> </td><td><img class="formulaInl" alt="$m \in \{0,M\{$" src="form_18.png"/> </td><td><a class="el" href="classInput.html" title="Defines the input of a calculation network. ">Input</a> weights <img class="formulaInl" alt="$W_{nm}$" src="form_19.png"/> </td></tr>
+<td><img class="formulaInl" alt="$(n+2\,N+1,1+N+m)$" src="form_16.png"/> </td><td><img class="formulaInl" alt="$m \in \{0,M\{$" src="form_17.png"/> </td><td><a class="el" href="classInput.html" title="Defines the input of a calculation network. ">Input</a> weights <img class="formulaInl" alt="$W_{nm}$" src="form_18.png"/> </td></tr>
 </table>
-with <img class="formulaInl" alt="$n_2 = n + 2 \, N + 1$" src="form_61.png"/>. </li>
+with <img class="formulaInl" alt="$n_2 = n + 2 \, N + 1$" src="form_19.png"/>. </li>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="SoftMaxTransform_8hpp_source.html#l00017">17</a> of file <a class="el" href="SoftMaxTransform_8hpp_source.html">SoftMaxTransform.hpp</a>.</p>
@@ -233,7 +233,7 @@ with <img class="formulaInl" alt="$n_2 = n + 2 \, N + 1$" src="form_61.png"/>. <
 <p>Sets a fixed common offset for this network. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>The offset value of all <img class="formulaInl" alt="$\alpha_n$" src="form_23.png"/>, NAN to unconstrain the value. </td></tr>
+    <tr><td class="paramname">value</td><td>The offset value of all <img class="formulaInl" alt="$\alpha_n$" src="form_12.png"/>, NAN to unconstrain the value. </td></tr>
   </table>
   </dd>
 </dl>
@@ -285,7 +285,7 @@ with <img class="formulaInl" alt="$n_2 = n + 2 \, N + 1$" src="form_61.png"/>. <
 </table>
 </div><div class="memdoc">
 
-<p>Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_48.png"/> value. </p>
+<p>Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_55.png"/> value. </p>
 <ul>
 <li>This routine is to be overloaded if the weights are bounded (e.g. if positive). A typical implementation writes, e.g.:<pre>
  bool <a class="el" href="classSoftMaxTransform.html#a145c2648672a7181af96343e6173dc04" title="Sets one weight  value. ">setWeight(unsigned int n, unsigned int d, double w)</a> {
@@ -411,7 +411,7 @@ with <img class="formulaInl" alt="$n_2 = n + 2 \, N + 1$" src="form_61.png"/>. <
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The corresponding kernel value <img class="formulaInl" alt="$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$" src="form_44.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The corresponding kernel value <img class="formulaInl" alt="$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$" src="form_51.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -489,7 +489,7 @@ with <img class="formulaInl" alt="$n_2 = n + 2 \, N + 1$" src="form_61.png"/>. <
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <code>0.0</code> if <img class="formulaInl" alt="$x_n[t]$" src="form_45.png"/> does not depend on <img class="formulaInl" alt="$x_k[s]$" src="form_46.png"/>, else <img class="formulaInl" alt="$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$" src="form_47.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <code>0.0</code> if <img class="formulaInl" alt="$x_n[t]$" src="form_52.png"/> does not depend on <img class="formulaInl" alt="$x_k[s]$" src="form_53.png"/>, else <img class="formulaInl" alt="$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$" src="form_54.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -502,4 +502,4 @@ with <img class="formulaInl" alt="$n_2 = n + 2 \, N + 1$" src="form_61.png"/>. <
 </div>
 </div>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2017-06-05 at 15:42:21) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2017-06-05 at 15:48:38) </tt> </div><hr/>
