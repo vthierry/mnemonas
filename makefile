@@ -76,7 +76,7 @@ api : .build/doc/index.html
 	@echo 'make api .'
 	/bin/rm -rf $(@D) ; mkdir -p $(@D)
 	@echo "<hr/><div align='right'><tt>mnemosyne brainybot (version of `date +%F` at `date +%T`) </tt> </div><hr/>" > .build/doc/footer.html
-	zip -9qr .build/doc/sources.zip makefile tex src
+	$(MAKE) clean ; zip -9qr .build/doc/sources.zip makefile tex src
 	cp main.pdf .build/doc
 	doxygen src/etc/doxygen.cfg
 	cp src/etc/*.png $(@D)
@@ -97,7 +97,7 @@ pdf : main.pdf clean
 	mv tex/main.pdf .
 
 clean :	
-	/bin/rm -f `find . -name '*~'`
+	/bin/rm -f `find . -name '*~' -name '.#*#'`
 	cd tex ; /bin/rm -f *.aux *.toc *.ind *.bbl *.blg *.dvi *.idx *.lof *.log *.ilg *.nav *.spl *.snm *.sol *.out
 	/bin/rm -fr .build/a.out
 
@@ -106,7 +106,7 @@ git : api
 
 GIT_DIR = /home/vthierry/Work/mnemosyne/mnemonas/
 
-pub : # api
+pub : api
 	cd $(GIT_DIR) ; git checkout master ; git pull
 	rsync --archive makefile src tex .build/doc $(GIT_DIR)
 	cd $(GIT_DIR) ;\
