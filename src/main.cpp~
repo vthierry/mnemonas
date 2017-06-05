@@ -21,9 +21,6 @@ void test()
 
 int main(int argc, const char *argv[])
 {
-#ifdef TOTO
-  printf(">>> TOTI\n");
-#endif
   Struct args(argc, argv);
   args.set("test");
   {

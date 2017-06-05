@@ -6,6 +6,6 @@
  *
  * See the documented class <a href="annotated.html"><b>list</b></a> and <a href="hierarchy.html"><b>hierarchy</b></a> to browse the sources.
  *
- * Files are available <a href="./sources.zip"><b>HERE</b></a> as a set of source files with copyleft.
+ * Files are available at <a href="https://github.com/vthierry/mnemonas">https://github.com/vthierry/mnemonas</a> or <a href="./sources.zip"><b>here</b></a> as a set of source files with copyleft.
  *
  */
