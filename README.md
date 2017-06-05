@@ -1,2 +1,3 @@
 # mnemonas
-This is a https://team.inria.fr/mnemosyne research code distribution, coming soon.
+- This is one https://team.inria.fr/mnemosyne research code distribution
+- See https://github.com/vthierry/mnemonas
