@@ -112,10 +112,10 @@ pub : api
 	cd $(GIT_DIR) ;\
 	 (echo "# mnemonas" ;\
 	  echo "- This is one https://team.inria.fr/mnemosyne research code distribution" ;\
-	  echo "- See https://github.com/vthierry/mnemonas") > README.md ;\
+	  echo "- See https://vthierry.github.io/mnemonas") > README.md ;\
 	 echo "<script>location.replace('doc/index.html');</script>" > index.html
 	cd $(GIT_DIR) ; git add --all ; git commit -m '.' -a ; git push
-	cd $(GIT_DIR) ; git checkout gh-pages ; git pull ; git pull origin gh-pages ; git merge master ; git push origin gh-pages:gh-pages ; git checkout master
+	cd $(GIT_DIR) ; git checkout gh-pages ; git pull origin gh-pages ; git merge master -m '.' ; git push origin gh-pages:gh-pages ; git checkout master
 	firefox  https://github.com/vthierry/mnemonas
 
 #
