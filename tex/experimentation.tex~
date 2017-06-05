@@ -4,7 +4,7 @@ In this experimental part we are going to both study the numerical stability and
 
 \subsection*{Software implementation}
 
-In order to provide so called reproducible science \cite{topalidou_long_2015}, the code is implemented as a very simple, highly modular, fully documented, open source, object oriented, easily forkable, self contained, middle-ware, available here: \href{https://vthierry.github.io/mnemonas}{https://vthierry.github.io/mnemonas}. A minimal set of standard mechanisms (random number generation, histogram estimation, linear system resolution, system calls) is used. The main part of the implementation hierarchy is show in Fig.~\ref{class-hierarchy}. 
+In order to provide so called reproducible science \cite{topalidou_long_2015}, the code is implemented as a very simple, highly modular, fully documented, open source, object oriented, easily forkable, self contained, middle-ware, \href{nowhere:not-yet-on-line}{available here}. A minimal set of standard mechanisms (random number generation, histogram estimation, linear system resolution, system calls) is used. The main part of the implementation hierarchy is show in Fig.~\ref{class-hierarchy}. 
 
 \begin{figure}[!ht]
   \includegraphics[width=0.8\textwidth]{img/class-hierarchy}

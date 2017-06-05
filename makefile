@@ -24,7 +24,8 @@ usage :
 	@echo "  make api  	: compiles the user source api documentation"
 	@echo "  make pdf  	: compiles the user tex publication"
 	@echo "  make clean  	: cleans source and latex intermediate files"
-	@echo "  make git  	: pulls, commits and pushes in the git repository"
+	@echo "  make git  	: pulls, commits and pushes in the mnemosyne git repository"
+	@echo "  make pub  	: publish on the public github repository"
 	@echo "  make rrun  	: compile and run the code on the nef cluster"
 	@echo "This makefile uses the following software set :"
 	@echo " - makefile git                            for source file management"
@@ -116,7 +117,6 @@ pub : api
 	 echo "<script>location.replace('doc/index.html');</script>" > index.html
 	cd $(GIT_DIR) ; git add --all ; git commit -m '.' -a ; git push
 	cd $(GIT_DIR) ; git checkout gh-pages ; git pull origin gh-pages ; git merge master -m '.' ; git push origin gh-pages:gh-pages ; git checkout master
-	firefox  https://github.com/vthierry/mnemonas
 
 #
 # Remote execution on nef-*.inria.fr
