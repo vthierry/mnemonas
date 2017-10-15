@@ -1,0 +1,6 @@
+/** Gets the cpu or real time from program start.
+ * @param daytime If true considers day time, if false consider cpu time.
+ * @param relative If true returns the relative time between two calls of now(), else returns the time from program start.
+ * @return The time in seconds with maximal precision of micro-second.
+ */
+double now(bool daytime = false, bool relative = false);

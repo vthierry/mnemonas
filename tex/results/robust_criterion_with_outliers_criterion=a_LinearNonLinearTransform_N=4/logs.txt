@@ -1,0 +1,141 @@
+{
+  'estimator':  {
+   'estimation' : 'noisy-reverse-engineering',
+   'network-type' : 'LinearNonLinearTransform',
+   'network-size' : 4,
+   'sample-length' : 40,
+   'noiseProbability' : 0.1 ,
+   'noiseStandardDeviation' : 1 ,
+   'input' : { 'mean' : 0.155534, 'stdev' : 1.11241, 'min' : -2.77715, 'max' : 2.22264},
+   'output' : { 'mean' : 0.241574, 'stdev' : 0.261191, 'min' : -0.38581, 'max' : 1.24104}
+ },
+  'trace': [
+    {  't':   0, 'order': 0, 'cost':   0.011},
+    {  't':   1, 
+      'errors': { 'mean' : 0.0967302, 'stdev' : 0.373685, 'min' : -1.08257, 'max' : 1.0796}, 
+      'costs': { 'count' : 1, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.0108922 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  3e+01, 'c_grad':   0.03, 'cost':  0.0087, 'dcost':   0.002, 'dw':    0.12, 'da':    0.12, 'min': false}
+        {'2n-order':    1, 'n_grad':  3e+01, 'c_grad':   0.03, 'cost':  0.0085, 'dcost':   0.002, 'dw':    0.12, 'da':    0.12, 'min': true }
+        {'2n-order':    2, 'n_grad':  4e-12, 'c_grad':  2e-05, 'cost':   0.011, 'dcost':   5e-17, 'dw':    0.91, 'da':    0.91, 'min': false}
+      ],
+      'cpu-time' : 0.041212
+    },
+    {  't':   2, 
+      'errors': { 'mean' : 0.0821008, 'stdev' : 1.16568, 'min' : -3.88235, 'max' : 3.79771}, 
+      'costs': { 'count' : 2, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.00853421 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  3e+01, 'c_grad':   0.06, 'cost':  0.0068, 'dcost':   0.002, 'dw':   0.048, 'da':   0.048, 'min': false}
+        {'2n-order':    1, 'n_grad':  3e+01, 'c_grad':   0.06, 'cost':  0.0067, 'dcost':   0.002, 'dw':   0.039, 'da':   0.039, 'min': true }
+        {'2n-order':    2, 'n_grad':  1e-12, 'c_grad': 0.0008, 'cost':  0.0085, 'dcost':       0, 'dw':   0.037, 'da':   0.037, 'min': false}
+      ],
+      'cpu-time' : 0.040198
+    },
+    {  't':   3, 
+      'errors': { 'mean' : 0.0346495, 'stdev' : 0.635422, 'min' : -2.1814, 'max' : 1.97206}, 
+      'costs': { 'count' : 3, 'gamma' : 0.794, 'decay' : 3.6959, 'bias' : 0.000945057, 'minimal-value' : 0.00673516 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  2e+01, 'c_grad':   0.08, 'cost':  0.0066, 'dcost':  0.0002, 'dw':   0.017, 'da':   0.017, 'min': false}
+        {'2n-order':    1, 'n_grad':  2e+01, 'c_grad':   0.07, 'cost':  0.0065, 'dcost':  0.0002, 'dw':   0.016, 'da':   0.016, 'min': true }
+        {'2n-order':    2, 'n_grad':  9e-13, 'c_grad': 0.0009, 'cost':  0.0067, 'dcost':   9e-19, 'dw':   0.015, 'da':   0.015, 'min': false}
+      ],
+      'cpu-time' : 0.04242
+    },
+    {  't':   4, 
+      'errors': { 'mean' : 0.0331633, 'stdev' : 0.612921, 'min' : -1.8531, 'max' : 1.91681}, 
+      'costs': { 'count' : 4, 'gamma' : 0.794, 'decay' : 0.753627, 'bias' : 0.00630123, 'minimal-value' : 0.00654222 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'1st-order':    6, 'n_grad':      2, 'c_grad':    0.9, 'cost':  0.0065, 'dcost':   3e-05, 'dw':   0.008, 'da':   0.008, 'min': true },
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':   1e-05, 'dw':  0.0068, 'da':  0.0068, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':   2e-05, 'dw':  0.0069, 'da':  0.0069, 'min': false}
+        {'2n-order':    2, 'n_grad':  7e-13, 'c_grad': -5e-05, 'cost':  0.0065, 'dcost':   9e-19, 'dw':  0.0054, 'da':  0.0054, 'min': false}
+      ],
+      'cpu-time' : 0.041789
+    },
+    {  't':   5, 
+      'errors': { 'mean' : 0.0316874, 'stdev' : 0.610131, 'min' : -1.8326, 'max' : 1.88359}, 
+      'costs': { 'count' : 5, 'gamma' : 0.794, 'decay' : 0.613172, 'bias' : 0.00644895, 'minimal-value' : 0.0065146 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw':   7e-06, 'da':   7e-06, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw': 6.4e-06, 'da': 6.4e-06, 'min': false}
+        {'2n-order':    2, 'n_grad':  2e-12, 'c_grad': -0.0005, 'cost':  0.0065, 'dcost':   2e-16, 'dw':    0.98, 'da':    0.98, 'min': true }
+      ],
+      'cpu-time' : 0.04763
+    },
+    {  't':   6, 
+      'errors': { 'mean' : 0.0316874, 'stdev' : 0.610131, 'min' : -1.8326, 'max' : 1.88359}, 
+      'costs': { 'count' : 6, 'gamma' : 0.794, 'decay' : 0.129196, 'bias' : 0.00651459, 'minimal-value' : 0.0065146 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw':   7e-06, 'da':   7e-06, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw': 6.4e-06, 'da': 6.4e-06, 'min': false}
+        {'2n-order':    2, 'n_grad':  5e-13, 'c_grad': 0.0006, 'cost':  0.0065, 'dcost':   2e-18, 'dw':    0.13, 'da':    0.13, 'min': true }
+      ],
+      'cpu-time' : 0.048658
+    },
+    {  't':   7, 
+      'errors': { 'mean' : 0.0316874, 'stdev' : 0.610131, 'min' : -1.8326, 'max' : 1.88359}, 
+      'costs': { 'count' : 7, 'gamma' : 0.794, 'decay' : 0.116512, 'bias' : 0.00651459, 'minimal-value' : 0.0065146 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw':   7e-06, 'da':   7e-06, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw': 6.4e-06, 'da': 6.4e-06, 'min': false}
+        {'2n-order':    2, 'n_grad':  6e-13, 'c_grad': -0.0002, 'cost':  0.0065, 'dcost':   8e-17, 'dw':    0.94, 'da':    0.94, 'min': true }
+      ],
+      'cpu-time' : 0.049659
+    },
+    {  't':   8, 
+      'errors': { 'mean' : 0.0316874, 'stdev' : 0.610131, 'min' : -1.8326, 'max' : 1.88359}, 
+      'costs': { 'count' : 8, 'gamma' : 0.794, 'decay' : 0.144681, 'bias' : 0.00651457, 'minimal-value' : 0.0065146 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw':   7e-06, 'da':   7e-06, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw': 6.4e-06, 'da': 6.4e-06, 'min': false}
+        {'2n-order':    2, 'n_grad':  3e-13, 'c_grad': -0.0002, 'cost':  0.0065, 'dcost':   3e-18, 'dw':    0.67, 'da':    0.67, 'min': true }
+      ],
+      'cpu-time' : 0.048898
+    },
+    {  't':   9, 
+      'errors': { 'mean' : 0.0316874, 'stdev' : 0.610131, 'min' : -1.8326, 'max' : 1.88359}, 
+      'costs': { 'count' : 9, 'gamma' : 0.794, 'decay' : 0.171035, 'bias' : 0.00651452, 'minimal-value' : 0.0065146 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw':   7e-06, 'da':   7e-06, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw': 6.4e-06, 'da': 6.4e-06, 'min': false}
+        {'2n-order':    2, 'n_grad':  1e-12, 'c_grad': -9e-05, 'cost':  0.0065, 'dcost':   2e-16, 'dw':    0.99, 'da':    0.99, 'min': true }
+      ],
+      'cpu-time' : 0.048207
+    },
+    {  't':  10, 
+      'errors': { 'mean' : 0.0316874, 'stdev' : 0.610131, 'min' : -1.8326, 'max' : 1.88359}, 
+      'costs': { 'count' : 10, 'gamma' : 0.794, 'decay' : 0.229705, 'bias' : 0.00651451, 'minimal-value' : 0.0065146 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw':   7e-06, 'da':   7e-06, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost':  0.0065, 'dcost':  -5e-08, 'dw': 6.4e-06, 'da': 6.4e-06, 'min': false}
+        {'2n-order':    2, 'n_grad':  5e-13, 'c_grad': -0.0005, 'cost':  0.0065, 'dcost':       0, 'dw':   0.081, 'da':   0.081, 'min': false}
+      ],
+      'cpu-time' : 0.049158
+    },
+    {'done': true}
+  ],
+  'grads': [
+    '1st-order-0': '0.0%',
+    '1st-order-1': '0.0%',
+    '1st-order-2': '0.0%',
+    '1st-order-3': '0.0%',
+    '1st-order-4': '0.0%',
+    '1st-order-5': '0.0%',
+    '1st-order-6': '11.1%',
+    '1st-order-7': '0.0%',
+    '2nd-order-0': '0.0%'
+    '2nd-order-1': '33.3%'
+    '2nd-order-2': '55.6%'
+ ],
+  'costs': { 'count' : 10, 'gamma' : 0.794, 'decay' : 0.229705, 'bias' : 0.00651451, 'minimal-value' : 0.0065146 }
+}

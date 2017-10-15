@@ -1,0 +1,46 @@
+{
+  'estimator':  {
+   'estimation' : 'sequence-reproduction',
+   'network-type' : 'LinearNonLinearTransform',
+   'network-size' : 3,
+   'sample-length' : 3,
+   'output' : { 'mean' : 0.333333, 'stdev' : 0.48795, 'min' : 0, 'max' : 1}
+ },
+  'trace': [
+    {  't':   0, 'order': 0, 'cost':  0.0022},
+    {  't':   1, 
+      'errors': { 'mean' : -0.0261811, 'stdev' : 0.105581, 'min' : -0.342137, 'max' : 0.0369299}, 
+      'costs': { 'count' : 1, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.00216774 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost': 0.00054, 'dcost':   0.002, 'dw':    0.18, 'da':    0.18, 'min': false}
+        {'2n-order':    1, 'n_grad':  1e+01, 'c_grad':    0.1, 'cost': 0.00053, 'dcost':   0.002, 'dw':    0.16, 'da':    0.16, 'min': true }
+      ],
+      'cpu-time' : 0.002188
+    },
+    {  't':   2, 
+      'errors': { 'mean' : -0.0143626, 'stdev' : 0.0772171, 'min' : -0.117471, 'max' : 0.101548}, 
+      'costs': { 'count' : 2, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.000531234 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2n-order':    0, 'n_grad':      8, 'c_grad':    0.3, 'cost':       0, 'dcost':  0.0005, 'dw':       1, 'da':       1, 'min': true }
+        {'2n-order':    1, 'n_grad':      9, 'c_grad':    0.3, 'cost':       0, 'dcost':  0.0005, 'dw':       1, 'da':       1, 'min': false}
+      ],
+      'cpu-time' : 0.001964
+    },
+    {'done': true}
+  ],
+  'grads': [
+    '1st-order-0': '0.0%',
+    '1st-order-1': '0.0%',
+    '1st-order-2': '0.0%',
+    '1st-order-3': '0.0%',
+    '1st-order-4': '0.0%',
+    '1st-order-5': '0.0%',
+    '1st-order-6': '0.0%',
+    '1st-order-7': '0.0%',
+    '2nd-order-0': '50.0%'
+    '2nd-order-1': '50.0%'
+ ],
+  'costs': { 'count' : 3, 'gamma' : 0.794, 'decay' : 0.888798, 'bias' : 0, 'minimal-value' : 0 }
+}

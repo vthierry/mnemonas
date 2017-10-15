@@ -1,0 +1,50 @@
+{
+  'estimator':  {
+   'estimation' : 'sequence-reproduction',
+   'network-type' : 'IntegrateAndFireTransform',
+   'network-size' : 8,
+   'sample-length' : 8,
+   'output' : { 'mean' : 0.125, 'stdev' : 0.353553, 'min' : 0, 'max' : 1}
+ },
+  'trace': [
+    {  't':   0, 'order': 0, 'cost':  0.0018},
+    {  't':   1, 
+      'errors': { 'mean' : -0.00288347, 'stdev' : 0.0610004, 'min' : -0.680045, 'max' : 0.0331111}, 
+      'costs': { 'count' : 1, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.00180649 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'1st-order':    0, 'n_grad':    0.7, 'c_grad':      1, 'cost':  0.0018, 'dcost':   2e-06, 'dw':    0.01, 'da':    0.01, 'min': true },
+        {'2nd-order': true, 'n_grad':  2e+04, 'c_grad':  2e-05, 'cost':  0.0018, 'dcost':  -3e-05, 'dw': 1.2e-05, 'da': 1.2e-05, 'min': false}
+      ]
+    },
+    {  't':   2, 
+      'errors': { 'mean' : -0.00289489, 'stdev' : 0.0609529, 'min' : -0.679607, 'max' : 0.0329638}, 
+      'costs': { 'count' : 2, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.00180416 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2nd-order': true, 'n_grad':  2e+04, 'c_grad':  2e-05, 'cost':  0.0013, 'dcost':  0.0005, 'dw':  0.0046, 'da':  0.0046, 'min': true }
+      ]
+    },
+    {  't':   3, 
+      'errors': { 'mean' : -0.00379827, 'stdev' : 2.35348, 'min' : -6.26753, 'max' : 10.7553}, 
+      'costs': { 'count' : 3, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.00130727 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2nd-order': true, 'n_grad':  8e+03, 'c_grad':  0.002, 'cost': 8.5e-05, 'dcost':   0.001, 'dw': 7.7e-05, 'da': 7.7e-05, 'min': true }
+      ]
+    },
+    {'done': true}
+  ],
+  'grads': [
+    '1st-order-0': '33.3%',
+    '1st-order-1': '0.0%',
+    '1st-order-2': '0.0%',
+    '1st-order-3': '0.0%',
+    '1st-order-4': '0.0%',
+    '1st-order-5': '0.0%',
+    '1st-order-6': '0.0%',
+    '1st-order-7': '0.0%',
+    '2nd-order'  : '66.7%'
+ ],
+  'costs': { 'count' : 4, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 8.52191e-05 }
+}

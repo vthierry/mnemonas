@@ -1,0 +1,107 @@
+\section{Closed forms solution for neural network tasks} \label{closedforms}
+
+Let us illustrate how the type of used units has a strong influence on the difficulty of the task. Here we consider deterministic tasks only. The remark is that tasks considered as quite complex \cite{Hochreiter:1997,Gers:2003,martens_learning_2016} for certain architectures are trivial for others. In particular, the use of AIF neurons simplifies certain problems, e.g. requiring long short-term memory. We illustrate this point here considering deterministic sequence generation and long-term non-linear transform, and provide explicit simple solutions for those problems.
+
+\subsubsection*{Generating long term sequential signals}
+
+The lever is that it is straightforward to generate a delayed step signal (i.e., equal to 0 before $t=\tau$, and 1 after) using AIF units, e.g.:
+\eqline{s_\tau(t) = \frac{1}{2} \, (1 - \Upsilon(s_\tau(t-1))) \, s_\tau(t-1) + h_\tau}\\
+with 
+\eqline{h_\tau \deq \frac{1}{4\, \left(1 - 2^{\frac{1}{2}-\tau}\right)} \in [h_\infty = 1/4, h_1 \simeq 0.85],}\\  
+for which we easily obtain\footnote{{\bf Delayed step signal.} Starting with $s_\tau(0) = 0$ this first order recurrent equation yields: 
+\eqline{s_\tau(t) = 2 \, h \, \left(1 - 2^{-t}\right) \in [0, 2\, h],} 
+which is an bounded increasing negative exponential profile, for which the parameter $h$ has been chosen to maintain $s_\tau(t) < 1/2, t < \tau$, and reach $s_\tau(t) > 1/2$, for $t \geq \tau$.
+\hr} $\Upsilon(s_\tau(t)) = \delta_{t\geq\tau}$. 
+
+The numerical limit of this method is the fact that for huge value of $\tau$ the parameter precision must be of order $O\left(2^{-\tau}\right)$. To avoid this constraint, either an architecture with several units building a delay line, or with a ramp unit and adaptive thresholds (see next section) can be considered.
+
+From this basic element we can generate a delayed clock signal\footnote{{\bf Delayed clock signal.} Modifying the delayed step signal, and adding a memory carousel unit in order to reset the signal after the step and keep it reseted, we obtain: 
+\eqline{\begin{array}{rcl}
+ c_\tau(t) &=& \frac{1}{2} \, (1 - \Upsilon(c_\tau(t-1))) \, c_\tau(t-1) + h_\tau \, (1 - \Upsilon(d_\tau(t-1))) \\
+ d_\tau(t) &=& d_\tau(t-1) + \Upsilon(c_\tau(t-1)), \\
+\end{array}}
+with $\Upsilon(c_\tau(t)) = d_\tau(t) = 0, t < \tau$, until $c_\tau(\tau) > 1/2$, As a consequence $d_\tau(\tau + 1) = 1$, thus $c_\tau(\tau + 1) = 0$, which is a stable fixed point, values remaining constant beyond. Finally we obtain $\Upsilon(c_\tau(t)) = \delta_{t=\tau}$ in this case.
+\hr} or another long-term mechanism, such a as flip-flop\footnote{{\bf Defining a flip-flop latch.} Let us defined a SR-latch (i.e., a flip-flop) with:
+\eqline{\begin{array}{rcl}
+z(t) &=& \Upsilon(z(t-1)) + \Upsilon(i_1(t)) - \Upsilon(i_0(t))\\
+\end{array}}
+yielding the following behavior:
+\\- {\em R-state}: If $i_0(t) < 1/2$ and $i_1(t) < 1/2$ (no-input) and $z(t-1) < 1/2$, then $z(t) = 0 < 1/2$, the reset state is maintained.
+\\- {\em S-state}: If $i_0(t) < 1/2$ and $i_1(t) < 1/2$ (no-input) and $z(t-1) > 1/2$, then $z(t) = 1 > 1/2$, the set state is maintained.
+\\- {\em R-S transition}: If $i_0(t) < 1/2$ and $i_1(t) > 1/2$  and $z(t-1) < 1/2$, then $z(t) = 1 > 1/2$, flipping to a set state; if it was already in the set state, we still have $z(t) = 2 > 1/2$.
+\\- {\em S-R transition}:If $i_0(t) > 1/2$ and $i_1(t) < 1/2$  and $z(t-1) > 1/2$, then $z(t) = 0 < 1/2$, flipping to a reset state; f it was already in a reset state, we still have $z(t) = - 1 < 1/2$.
+\\- {\em no instability}: $i_0(t) > 1/2$ and $i_1(t) > 1/2$ contrary to a standard digital RS-latch we simply have $z(t) = \Upsilon(z(t-1))$ providing it was in set of reset state, without any meta-stability.
+\hr}, which is a fundamental building blocks of any digital transform, in conjunction with logic gates such as a xor gate\footnote{{\bf Defining the xor function.} It is straightforward to notice that: 
+\eqline{\begin{array}{rcl}
+x_\bullet(t) &=& \Upsilon(x_a(t - 1)) + \Upsilon(x_b(t - 1)) + -2 \, \Upsilon(x_o(t)) \\
+x_o(t) &=& \Upsilon(x_a(t - 1)) + \Upsilon(x_b(t - 1)) - 1 \\
+\end{array}}
+verifies 
+\eqline{\begin{array}{rcl}
+\Upsilon(x_o(t))  &=& \Upsilon(x_a(t - 1)) \mbox{ and } \Upsilon(x_b(t - 1)) \\
+\Upsilon(x_\bullet(t))  &=& \Upsilon(x_a(t - 1)) \mbox{ xor } \Upsilon(x_b(t - 1)) \\
+\end{array},}
+while other logic gates are easy to build in a similar manner.\\ A step further the expression 
+\eqline{x_\dagger(t) = 1/2 - 2 \, (\Upsilon(x_a(t - 1)) - 1/2) \, (\Upsilon(x_b(t - 1)) - 1/2)}
+now considering a multiplication unit, directly calculates the xor function, but does no correspond to some AIF unit.
+\hr}. 
+
+If we consider a mollification instead of a step function (i.e., replacing $\Upsilon$ with$\Upsilon_\epsilon$ in the previous equation), we obtain the behavior for sufficiently large slopes. More precisely\footnote{This is obtained, e.g., by the following piece of maple code: {\tt upsilon := (u) -> 1/(1+exp(-4*(u - 1/2)/epsilon)):\\
+c\_n := c -> (1 - upsilon(c)) * c / 2 + h:\\
+bounds := [solve(c\_n(1/2) = 1/2, h), solve(c\_n(0) = 1/2, h)];\\}\hr}, for instance, we numerically observed the same qualitative behavior in the delayed step signal case, with $h \in [h_\infty = 0.376, h_1 = 0.5]$, while $h$ is not given in closed form in this case.
+
+Further on this track, it is clear that we can compile any sequential circuit in such networks, which is far from being new. The add-on here is about that the fact we provide explicit solutions, using AIF neurons, with a lower complexity in terms of network nodes than using LSTM units. Let us see two paradigms where this enlighten the problem complexity.
+
+\subsubsection*{Long term non-linear transform}
+
+In many experiments, a variant of a sequence of the form:
+\\\centerline{\begin{tabular}{lcccccccccccc}
+time :  & 0   & 1   &     &          &     & T\\
+input:  & $a$ & $b$ & $*$ & $\cdots$ & $*$ & $*$\\
+output: & $*$ & $*$ & $*$ & $\cdots$ & $*$ & $a \, b$ \\
+\end{tabular}}\\
+where $a$ and $b$ are variable input, $*$ are random distractors and $a\,b$ the desired delayed output (here a product, but it could be another calculation). Such setup combines several non-trivial aspects, long short term memory, distractor robustness, and operation which may not explicitly hardwired in the network, presently a product. The LSTM approach was shown to be particularly efficient for such computation, because of the notion of ``memory carousel''. In fact, the explicit implementation of such a mechanism on the given example is trivial\footnote{{\bf An example of long term computation.} One solution writes: 
+\eqline{\begin{array}{rcl}
+o_0(t) &=& (1 - \Upsilon(c_T(t)) \, i(t) + (\Upsilon(c_T(t)) - 1) \, x_a(t) \, x_b(t) + \\
+x_a(t) &=& (1 - \Upsilon(c_0(t)) \, x_a(t-1) + (\Upsilon(c_0(t)) - 1) \, i(t) \\
+x_b(t) &=& (1 - \Upsilon(c_1(t)) \, x_b(t-1) + (\Upsilon(c_1(t)) - 1) \, i(t) \\
+\end{array}} 
+while $c_\tau(t) = \delta_{t = \tau}$ are clock signals, as defined previously, and it is easy to verify that $x_a(t)$ ``opens'' the memory at time $t=0$, and stores the previous value otherwise, with a similar behavior for $x_b(t)$, while $o_0(t)$ simply mirror the input until $t=T$, where the expected result is output. Obviously, these are no more AIF units but introduce multiplications between state values}.
+
+What do we learn from this very simple development? While authors have already made explicit the fact that such computations rely on ``gate unit'' and ``memory unit'', it seems that ``delayed unit'' (i.e. learning a time delay) are also basic components. It is also an example of how deterministic computations might become simple, if we introduce a-priory information on the computation, via dedicated units.
+
+\subsubsection*{Deterministic sequence generation}
+
+What is the complexity of the task of generating a deterministic time sequence $\bar{o}_n(t), n \in \{0, N_0\{, t \in \{0, T\{$, with a recurrent network of $N \ge N_0$ units of range $R$? This could be an unpredictable sequence, without any algorithm to generate it, unless copying all sample (i.e., with a maximal Kolmogorov complexity).
+
+On one hand, $O(N_0)$ independent linear recurrent units of range $R=T$, solves the problem of generating an exact sequence of $N_0 \, T$ samples, in closed form\footnote{{\bf Long range sequence generation.} Let us consider units of the form:
+\eqline{x_n(t) = \sum_{d = 1}^{d = T-1} W_{nd} \, x_n(t-d) + W_{n0},}
+thus with $N_0 \, T$ weights. Since $x_n(t) = 0, t < 0$, providing $\bar{o}_n(1) \neq 0$, we immediately obtain $W_{n0} = \bar{o}_n(1)$ and for $d > 0$: 
+\eqline{W_{nk} = (\bar{o}_n(k+1) - W_{n0} - \sum_{d = 1}^{d = k-1} W_{nd} \, \bar{o}_n(t-d)) / \bar{o}_n(1),}
+providing that $\bar{o}_n(1) \neq 0$, thus a closed-form solution. If $\bar{o}_n(1) = 0$ we simply have to generate the sequence, say, $\bar{o}'_n(t) = \bar{o}_n(t) + 1$ and add a second unit of the form $x_n(t) = x'_n(t) - 1$, using now an additional node.
+\hr}. This solution requires a very large recurrent range, and the numerical precision is limited by the fact that errors accumulate along the recurrent calculation.
+
+On the other hand, feed-forward units of range $R=1$ solve explicitly the problem using $T$ clock units and $N_0$ readout units, with $O(N_0\,T)$ weights. This requires no more than $N_0+T$ units considering binary information\footnote{{\bf Long sequence generation with delay lines.} Let us consider $N_0$ readout units and $T$ clock units of the form: 
+\eqline{\begin{array}{rcll}
+x_{n_0}(t) &=& \sum_{n = 0}^{T-1} (\bar{o}_{n_0}(n) - \bar{o}_{n_0}(n+1)) \, \Upsilon(x_{N_0+n}(t)) & 0 \leq n_0 < N_0, \mbox{ writing }  \bar{o}_{n_0}(T) \deq 0\\
+x_{N_0}(t) &=& \frac{1}{2} \, (1 - \Upsilon(x_{N_0}(t-1))) \, x_{N_0}(t-1) + h_1 \\
+x_{N_0+n}(t) &=& x_{N_0+n-1}(t-1) & 0 < n < T \\
+\end{array}}
+thus providing $T$ delayed step signals such that $\Upsilon(x_{N_0+n}(t)) = \delta_{t>n}$, allowing us to generate the desired sequence combining these signals. If we now consider mollification of he threshold function, the previous system of equation is going to generate a temporal partition of unity. Since ${\bf x}_{N_0+n}$ are simple shifts of ${\bf x}_{N_0}$, the clock units obviously span the output signal space and output units can easily linearly adjust there related combination to obtain the desired values.
+\hr}, and no more that $N_0+1$ units if the numerical precision is sufficient and unit threshold adjustable\footnote{{\bf Long sequence generation with a ramp unit.} If we can consider units of the form: 
+\eqline{\begin{array}{rcrl}
+x_{n_0}(t) &=& \sum_{n = 0}^{T-1} (\bar{o}_{n_0}(n) - \bar{o}_{n_0}(n+1)) \, \Upsilon(x_{N_0+n}(t) - \theta_n) \\
+x_{N_0}(t) &=&  x_{N_0}(t-1) + 1\\
+\end{array}}
+with the ramp unit $x_{N_0}(t)$ precision being of order $O(1/T)$, while we now can introduce adaptive thresholds $\theta_n = n$, it is obvious to verify that we solve the problem with two units.
+\hr}.
+A step further, considering less than $N_\bullet \deq \sqrt{N_0\,T/R}$ linear or NLN units of range $R$, we can not generate a solution in the general case\footnote{{\bf Long sequence generation with fully connected network.} Considering the linear network system:
+\eqline{x_n(t) = \sum_{m = 1}^{m  = N} W_{nmr} \sum_{r= 1}^{r=R} \, x_m(t-r) + W_{n0},}
+with $0 \leq n_0 < N_0$ output units and $N_0 \leq n < N$ hidden units, using vectorial notations, with the shift operator ${\cal S}$ defined as ${\cal S} {\bf x}(t-1) = {\bf x}(t)$, we obtain:
+\eqline{{\cal S} \, \begin{array}{r}{}_{N_0\,T}\updownarrow\\ {}_{(N-N_0)\,T}\updownarrow \end{array}
+\left(\begin{array}{c} \bar{\bf o} \\ \bar{\bf x} \end{array}\right) = {\bf W} \, \left(\begin{array}{c} \bar{\bf o} \\ \bar{\bf x} \end{array}\right) + W_{0}}
+where $\bar{\bf o}$ are the desired output. It is a bi-linear system of $N\,T$ equations in $N^2\,R + N$ independent unknowns, i.e., the weights, while the $(N-N_0)\,T$ hidden values are entirely specified as soon as the weights are given. In terms of number of degree of freedom we can not have $N^2\,R + N < N_0 \,T$ for this algebraic system of equation to have a solution in the general case.}.
+
+The generation of periodic signal of period $T$, is a very similar problem, as studied in \cite{rostro-gonzalez-cessac-etal:10}, for $N=N_0$. In a nutshell, we simply must add equations such that ${\bf x}(T) = {\bf x}(0)$ to guaranty the periodicity.
+
+From this discussion, we see that the complexity of signal generation problem highly depends on the kind of ``allowed units'' and reduces to a trivial problem as soon as suitable operation are allowed. Furthermore, there exist a $R=1$ network of at most $N_0 + T$ units that exactly solves the problem, without requiring huge precision, while a linear network, a NLN network or a AIF network can generate such a sequence in the general case, with either a closed form solution, or solving a linear system of equation.
