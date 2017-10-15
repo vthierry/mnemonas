@@ -1,0 +1,41 @@
+{
+  'estimator':  {
+   'estimation' : 'sequence-reproduction',
+   'network-type' : 'IntegrateAndFireTransform',
+   'network-size' : 3,
+   'sample-length' : 6,
+   'output' : { 'mean' : 0.166667, 'stdev' : 0.408248, 'min' : 0, 'max' : 1}
+ },
+  'trace': [
+    {  't':   0, 'order': 0, 'cost':  0.0041},
+    {  't':   1, 
+      'errors': { 'mean' : -0.0333323, 'stdev' : 0.119646, 'min' : -0.541728, 'max' : 0.114845}, 
+      'costs': { 'count' : 1, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.00407597 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2nd-order': true, 'n_grad':  7e+03, 'c_grad': 0.0001, 'cost': 0.00043, 'dcost':   0.004, 'dw': 0.00021, 'da': 0.00021, 'min': true }
+      ]
+    },
+    {  't':   2, 
+      'errors': { 'mean' : -0.000997824, 'stdev' : 0.0336897, 'min' : -0.0538645, 'max' : 0.112008}, 
+      'costs': { 'count' : 2, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.000426481 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2nd-order': true, 'n_grad':  3e+03, 'c_grad':  2e-05, 'cost': 4.8e-05, 'dcost':  0.0004, 'dw':  0.0085, 'da':  0.0085, 'min': true }
+      ]
+    },
+    {'done': true}
+  ],
+  'grads': [
+    '1st-order-0': '0.0%',
+    '1st-order-1': '0.0%',
+    '1st-order-2': '0.0%',
+    '1st-order-3': '0.0%',
+    '1st-order-4': '0.0%',
+    '1st-order-5': '0.0%',
+    '1st-order-6': '0.0%',
+    '1st-order-7': '0.0%',
+    '2nd-order'  : '100.0%'
+ ],
+  'costs': { 'count' : 3, 'gamma' : 0.794, 'decay' : 0.44119, 'bias' : 4.40566e-06, 'minimal-value' : 4.81598e-05 }
+}

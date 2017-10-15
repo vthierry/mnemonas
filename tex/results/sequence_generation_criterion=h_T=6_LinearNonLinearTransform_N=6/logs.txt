@@ -1,0 +1,33 @@
+{
+  'estimator':  {
+   'estimation' : 'sequence-reproduction',
+   'network-type' : 'LinearNonLinearTransform',
+   'network-size' : 6,
+   'sample-length' : 6,
+   'output' : { 'mean' : 0.166667, 'stdev' : 0.408248, 'min' : 0, 'max' : 1}
+ },
+  'trace': [
+    {  't':   0, 'order': 0, 'cost': 0.00056},
+    {  't':   1, 
+      'errors': { 'mean' : -0.00600042, 'stdev' : 0.0549918, 'min' : -0.346462, 'max' : 0.0446876}, 
+      'costs': { 'count' : 1, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0.000555722 },
+      'guard': { 'nu': '0%', 'omega': '0%'},
+      'grads': [
+        {'2nd-order': true, 'n_grad':  9e+03, 'c_grad':  3e-05, 'cost':       0, 'dcost':  0.0006, 'dw':   0.044, 'da':   0.044, 'min': true }
+      ]
+    },
+    {'done': true}
+  ],
+  'grads': [
+    '1st-order-0': '0.0%',
+    '1st-order-1': '0.0%',
+    '1st-order-2': '0.0%',
+    '1st-order-3': '0.0%',
+    '1st-order-4': '0.0%',
+    '1st-order-5': '0.0%',
+    '1st-order-6': '0.0%',
+    '1st-order-7': '0.0%',
+    '2nd-order'  : '100.0%'
+ ],
+  'costs': { 'count' : 2, 'gamma' : 0.794, 'decay' : nan, 'bias' : nan, 'minimal-value' : 0 }
+}

@@ -1,0 +1,154 @@
+\section{Introduction}
+
+Artificial neural networks can be considered as discrete-time
+dynamical systems, performing input-output computation, at the higher
+level of generality \cite{siegelmann_turing_1991}. The computation is
+defined by the adjustment of the network connection weights and
+related parameters\footnote{Other network parameters include the unit
+  leak, intrisic plasticity, parameters of the non-linearity (or
+  activation function). However, in this paper we are going to use a
+  notation allowing us to consider all these parameters as connection
+  weights for an extended set of state variables.} In fact, only specific
+feed-forward or recurrent architectures are considered in practice,
+because of network parameters estimation, as reviewed now.
+
+In the artificial neural network literature, feed-forward networks
+parameter learning is a rather well-solved problem.  For instance, the
+back-propagation algorithms, based on specific architectures of
+multi-layer feed-forward networks, allows one to propose well-defined
+implementation \cite{amit:89}, though it has been shown at the
+theoretical and empirical levels that "shallow" architectures are
+inefficient for representing complex functions \cite{Poggio2017,bengio-lecun:07},
+or at the cost of huge network sizes as in, e.g., extreme learning
+\cite{HUANG2006489}. 
+
+Deep-networks are specific feed-forward architectures
+\cite{bengio-lecun:07} which can have very impressive performances,
+e.g.  \cite{farabet_learning_2013}. The key idea
+\cite{hstad_power_1991} is that, at least for threshold units with
+positive weights, reducing the number of layers induces an exponential
+complexity increase for the same input/output function. On the
+reverse, it is a reasonable assumption, numerically verified, that
+increasing the number of layers yields a input/output function compact
+representation (in the sense of \cite{hstad_power_1991}, i.e., as a
+hierachical composition of local functions). One drawback is related
+to weights supervised learning in deeper layers, since readout layers
+may over-fit the learning set, the remedy being to apply unsupervised
+learning on deeper layers (see \cite{Bengio:2009} for an
+introduction). This problem is highly reduced with specific
+architectures such as CNN \cite{Lecun1998Gradient}.
+
+It also remains restrictive by the fact that the architecture is
+mainly a pipe-line including some parallel tracks or short-cuts, while each layer is
+a feed-forward network (e.g. a convolutional neural layers) or with a
+very specific recurrent connectivity (e.g., restrained Boltzman
+machines).  Starting with LeNet-5 \cite{Lecun1998Gradient}, different
+successful architectures in term of performance have been proposed (e.g.,
+AlexNet\cite{Krizhevsky2012Imagenet}, ZF net
+\cite{Zeiler2014Visualizing}, Overfeat \cite{Sermanet2013Overfeat},
+VGG \cite{Simonyan2015Very}, GoogLeNet \cite{Szegedy2014Going},
+Inspection \cite{Szegedy2016Inception}, residual nets
+\cite{He2016Deep}).
+
+In the brain, more general architectures exist (e.g.  with shortcuts
+between deeper and lower layers, as it happens in the visual system
+regarding the thalamus \cite{citeulike:1590763}) and each layer is a
+more general recurrent network (e.g., with short and long range
+horizontal connections). Breaking this pipe-line architecture may
+overcome the problem of deeper layer weight adjustment, and the need
+of huge architecture in order to obtain high performances. 
+This is the origin of the present work.
+
+Feed-forward networks are obviously far from the computational
+capacity of recurrent networks
+\cite{Goodfellow2016Deep,Schmidhuber:2015,cessac_view_2010}.
+Therefore, specific multi-layer architectures with recurrent links
+within a layer and specific forward/backward connections between
+layers have been proposed instead. The first dynamic neural model, the
+model by Hopfield \cite{hopfield:82}, or its randomized version as a
+Boltzman machine, was very specific. For such specific networks, such
+as bidirectional associative memory
+\cite{Acevedo-Mosqueda:2013:BAM:2431211.2431217}, specific learning
+methods apply. Further solutions include Jordan's network
+\cite{jordan:86}, Elman's Networks \cite{elman:90}, Long short term
+memory (LSTM) by Hochreiter and Schmidhuber
+\cite{hochreiter-schmidhuber:97}. This latter architecture being very
+performant \cite{Schmidhuber:2015}.
+
+Another track is to consider recurrent networks with a ``reservoir''
+of reccurent units but without explicit weight adjustement
+\cite{verstraeten-etal:07}. Units in such architectures are linear or
+sigmoid artificial neurons, including soft-max units, or even spiking
+neurons. Such network architectures, such as Echo State Networks
+\cite{jaeger:03} and Liquid State Machines \cite{maass-etal:02}, are
+called ``reservoir computing'' (see \cite{verstraeten-etal:07} for
+unification of reservoir computing methods at the experimental level),
+while extreme learning is based on a closed idea \cite{HUANG2006489}.
+In such architectures the recurrent weigts of hidden units are not
+explicitly learned, but recurrent weights are either randomly fixed,
+likely using a sparse connectivity, or adjusted using unsupervised
+learning mechanism, without any direct connection with the learning
+samples (though the hidden unit statistics, for instance, is sometimes
+adjusted in relation with the desired output)
+\cite{paugam-moisy-etal:08}. It appears that reservoir
+computing yields good results \cite{verstraeten-etal:07}, but without
+over-passing recent deep-layer architecture performances
+\cite{Deng:2014}.
+
+The general problem of learning recurrent neural networks has also
+been widely addressed as reviewed in \cite{cun_theoretical_1988} for
+90's studies and in \cite{martens_learning_2016} for recent advances,
+and methods exist far beyond basic methods such as back-propagation
+through time, but is still not a well-solved problem.
+
+In the present paper, we revisit the general problem of recurrent
+network weight learning, not as it, but because it is related to
+modern issues related to both artificial networks and brain function
+modeling. Such issues include: Could we adjust the
+recurrent weights in a reservoir computing architecture ?  Is it
+possible to consider deep-learning architecture, with more general
+inter and intra layers connectivity ? Would it be possible to not only
+use some specific recurrent architecture as exemplified here, but to
+learn also the architecture itself (i.e. learn the weight value and
+learn if the connection weight has to be set to zero, cutting the
+connection) ?
+
+We are not going to address more than weight adjustment in this paper,
+and only on small architectures since we precisely target being able
+to solve complex computational tasks with reasonable architectures,
+in order the parameters to be learnable on not so big data
+\cite{Fdrumond2017}. As a consequence, learning issues (e.g., boosting
+\cite{Freund2003Efficient}) are not within the scope of this paper:
+Neither representation learning \cite{Bengio2012Representation}, nor other
+complex issues \cite{Goodfellow2016Deep} are considered, this
+contribution being only an alternate tool for variational weight
+optimization. See \cite{Fdrumond2017} for a recent discussion on 
+such issues.
+
+We are also not going to consider biological plausibility in the sense
+of \cite{Bengio2016Towards}, but will show that the proposed method is
+compliant with several distributed biological constraints or
+computational properties: local weight adjustment, backward error
+propagation, Hebbian like adjustment rules. A more rigorous
+discussion about the link with computational neuroscience aspects is
+however beyond the scope of this work.
+
+In the next section we choose a notation to state the estimation
+problem, and Appendix~\ref{generality} makes explicit how this
+notation applies to most of the usual frameworks, while
+Appendix~\ref{backpropag} compares the method with related recurrent
+weights estimation methods. We then address the estimation problems
+and introduce the proposed modified solution, while
+Appendix~\ref{application} further discuss how it can be used for
+several estimation problems. In the subsequent section the method is
+implemented and numerically evaluated. Finally,
+Appendix~\ref{closedforms} illustrates how certain estimation problem
+reduce to trivial computation problems, given a suitable units and
+architecture, while Appendix~\ref{stochastic} reviews how statistical
+problems can be reduced to an estimation problem compatible with our
+framework.
+
+This is a short paper with a new proposal for weight estimation, but
+in link with quite a lot of other issues in the field. This is the
+reason why the core of the paper is short while several appendices are
+added.
