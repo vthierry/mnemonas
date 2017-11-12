@@ -1,11 +1,12 @@
 #ifndef solver_hpp
 #define solver_hpp
 
+#include "numeric.hpp"
 #include "math.h"
 
 /** This factory encapsulates equation solvers.
  */
-class solver {
+class solver: public numeric {
 public:
   /** Solves a linear system of equations.
    * - It uses a SVD decomposition in order to calculates the pseudo-inverse of the system, i.e.

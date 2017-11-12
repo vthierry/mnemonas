@@ -29,4 +29,6 @@ double now(bool daytime, bool relative)
     return dt;
   }
 }
-static double just_to_init_the_now_variables = now(false) + now(true);
+///@cond INTERNAL
+static double now_static_variables_initialization = now(false) + now(true);
+///@endcond

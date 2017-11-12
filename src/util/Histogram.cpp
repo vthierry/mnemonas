@@ -30,6 +30,7 @@ std::map < std::string, unsigned int > Histogram::names = {
   { "gamma-divergence", 26 },
   { "best-model", 27 },
 };
+/// @cond INTERNAL
 Histogram::Histogram(const Histogram& histogram) : m0(histogram.m0), m1(histogram.m1), m2(histogram.m2), m3(histogram.m3), m4(histogram.m4), min(histogram.min), max(histogram.max), histo(NULL), hsize(histogram.hsize), hmin(histogram.hmin), hmax(histogram.hmax), hscale(histogram.hscale), hcount(histogram.hcount), cdensity(NULL), changed(true), values(new double[names.size()]), model(NULL)
 {
   if(hsize > 0) {
@@ -39,6 +40,7 @@ Histogram::Histogram(const Histogram& histogram) : m0(histogram.m0), m1(histogra
     cdensity = new double[hsize];
   }
 }
+///@endcond
 Histogram::Histogram(unsigned int samples, double hmin_, double hmax_) : histo(NULL), cdensity(NULL), changed(true), values(new double[nnames]), model(NULL)
 {
   m0 = m1 = m2 = m3 = m4 = 0, max = -DBL_MAX, min = -max;
@@ -50,6 +52,7 @@ Histogram::Histogram(unsigned int samples, double hmin_, double hmax_) : histo(N
   }
   clear();
 }
+/// @cond INTERNAL
 Histogram::~Histogram()
 {
   delete[] values;
@@ -57,6 +60,7 @@ Histogram::~Histogram()
   delete[] cdensity;
   delete model;
 }
+///@endcond
 void Histogram::update() const
 {
   if(changed) {

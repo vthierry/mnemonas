@@ -5,10 +5,12 @@
 #include "s_save.h"
 #include "gnuplot.h"
 
+/// @cond INTERNAL
 ExponentialDecayFit::ExponentialDecayFit(const ExponentialDecayFit& fit) : gamma(fit.gamma), n(fit.n), c1(fit.c1), T0(fit.T0), T1(fit.T1), T2(fit.T2), L0(fit.L0), L1(fit.L1), cmin(fit.cmin), bias(fit.bias)
 {
   values = fit.values;
 }
+///@endcond
 ExponentialDecayFit::ExponentialDecayFit(unsigned int window) : gamma(window == 0 ? 1 : pow(0.1, 1.0 / window))
 {
   clear();

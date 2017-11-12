@@ -1,3 +1,5 @@
+///@cond INTERNAL
+
 void solver_test()
 {
   // solver::linsolve
@@ -36,3 +38,4 @@ public:
     assume(fabs(x0 - 3.1416) < 1e-13, "illegal-state", "solver_test/minimize failed 3.1416 != %g\n");
   }
 }
+///@endcond

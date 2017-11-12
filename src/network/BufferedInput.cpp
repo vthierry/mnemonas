@@ -5,12 +5,13 @@
 #include <stdarg.h>
 #include "util/gnuplot.h"
 
-network::BufferedInput::BufferedInput(const BufferedInput& input) : Input(input.getN(), input.getT()), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
+network::BufferedInput::BufferedInput(const BufferedInput& input, unsigned int N0) : Input(N = 0 < N0 ? N0 : input.getN(), input.getT()), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
 {
-  if(buffered) {
-    values = new double[input.getN() * (int) input.getT()];
-    for(unsigned int nt = 0; nt < N * T; nt++)
-      const_cast < double * > (values)[nt] = input.values[nt];
+  if(buffered || (0 < N0)) {
+    values = new double[N * (int) T];
+    for(unsigned int t = 0, nt = 0; t < T; t++)
+      for(unsigned int n = 0; n < N; n++, nt++)
+        const_cast < double * > (values)[nt] = input.get(n, t);
   } else
     values = input.values;
   if(vectored) {}
@@ -32,15 +33,37 @@ network::BufferedInput::BufferedInput(double f(unsigned int n, unsigned int t), 
 network::BufferedInput::BufferedInput(const Input& input, unsigned int N0) : network::BufferedInput::BufferedInput(input, mirror, N0) {}
 network::BufferedInput::BufferedInput(String file, String format) : Input(1, 1), vvalues(NULL), buffered(true), vectored(false)
 {
-  FILE *fp = fopen((file + ".dat").c_str(), "r");
-  assume(fp != NULL, "IO-Exception", "in network::BufferedInput unable to open the file %s.dat", file.c_str());
+  std::string ext = format == "csv" ? ".csv" : ".dat";
+  FILE *fp = fopen((file + ext).c_str(), "r");
+  assume(fp != NULL, "IO-Exception", "in network::BufferedInput unable to open %s%s", file.c_str(), ext.c_str());
   if(format == "binary-unit-time") {
-    fscanf(fp, "%d %lf\n", &N, &T);
+    assume(fscanf(fp, "%d %lf\n", &N, &T) == 2, "IO-Exception", "in network::BufferedInput/binary-unit-time spurious header for file when loading %s.dat", file.c_str());
     values = new double[N * (int) T];
     fread(const_cast < double * > (values), 8, N * (int) T, fp);
+  } else if(format == "csv") {
+    std::vector < double > data;
+    unsigned int n = 0;
+    T = 0, N = 0;
+    for(double v = NAN; fscanf(fp, "%lg", &v) == 1;) {
+      char c = '\n';
+      fscanf(fp, "%c", &c);
+      n++;
+      if(c == '\n') {
+        if(N == 0)
+          N = n;
+        else
+          assume(N == n, "IO-Exception", "in network::BufferedInput/csv n=%d<=N=%d at t=%d incoherent number of sample", n, N, T);
+        n = 0, T++;
+      }
+      data.push_back(v);
+    }
+    assume(n == 0, "IO-Exception", "in network::BufferedInput/csv n=%d<=N=%d at t=%d incoherent number of sample on the last line", n, N, T);
+    assume(N * T == data.size(), "IO-Exception", "in network::BufferedInput/csv n = %d, uncoherent data sizes N=%d x T= %.0f = %.0f != %d", n, N, T, N * T, data.size());
+    values = new double[N * (int) T];
+    std::copy(data.begin(), data.end(), const_cast < double * > (values));
   } else
     assume(false, "illegal-argument", "in network::BufferedInput %s is an unknown file format\n", format.c_str());
-  assume(ferror(fp) == 0, "IO-Exception", "in network::BufferedInput error %s when saving in %s.dat", strerror(ferror(fp)), file.c_str());
+  assume(ferror(fp) == 0, "IO-Exception", "in network::BufferedInput error %s when loading in %s.dat", strerror(ferror(fp)), file.c_str());
   fclose(fp);
 }
 network::BufferedInput::BufferedInput(String name, unsigned int N, unsigned int T, ...) : Input(N, T), values(new double[N * T]), vvalues(NULL), buffered(true), vectored(false)
@@ -70,12 +93,6 @@ network::BufferedInput::BufferedInput(String name, unsigned int N, unsigned int 
           c++;
       }
     }
-
-    /*
-     *  for(unsigned int n = 0; n < N; n++)
-     *  for(unsigned int t = 0; t < T; t++)
-     *  printf("%.0f%s", v[n + t * N], t == T - 1 ? "\n" : "");
-     */
   } else if(name == "sierpinski") {
     va_end(a);
     unsigned int Cnp[T];
@@ -144,6 +161,7 @@ network::BufferedInput::BufferedInput(const Input& input, String name, ...) : In
   } else
     assume(false, "illegal-argument", "in network::BufferedInput %s is an unknown transformation name\n", name.c_str());
 }
+///@cond INTERNAL
 network::BufferedInput::~BufferedInput()
 {
   if(buffered)
@@ -151,6 +169,7 @@ network::BufferedInput::~BufferedInput()
   if(vectored)
     delete[] vvalues;
 }
+///@endcond
 double network::BufferedInput::get(unsigned int n, double t) const
 {
   if(t < 0)
@@ -185,8 +204,9 @@ void network::BufferedInput::save(String file, String format, bool show) const
       printf("-------%c", n < N - 1 ? '-' : '\n');
   } else {
     s_save_mkdir(file);
-    FILE *fp = fopen((file + ".dat").c_str(), "w");
-    assume(fp != NULL, "IO-Exception", "in network::ObservedInput::save unable to open %s.dat", file.c_str());
+    std::string ext = format == "csv" ? ".csv" : ".dat";
+    FILE *fp = fopen((file + ext).c_str(), "w");
+    assume(fp != NULL, "IO-Exception", "in network::ObservedInput::save unable to open %s%s", file.c_str(), ext.c_str());
     if(format == "binary-unit-time") {
       fprintf(fp, "%d %.0f\n", N, T);
       if(vectored) {
@@ -198,10 +218,10 @@ void network::BufferedInput::save(String file, String format, bool show) const
           }
       } else
         fwrite(values, 8, N * T_, fp);
-    } else if(format == "ascii-unit-time")
+    } else if((format == "ascii-unit-time") || (format == "csv"))
       for(unsigned int t = 0; t < T_; t++)
         for(unsigned int n = 0; n < N; n++)
-          fprintf(fp, "%g%c", get(n, t), n < N - 1 ? ' ' : '\n');
+          fprintf(fp, "%g%c", get(n, t), n < N - 1 ? (format == "csv" ? ',' : ' ') : '\n');
     else if((format == "gnuplot") || (format == "gnushow"))
       for(unsigned int t = 0; t < T_; t++)
         for(unsigned int n = 0; n < N; n++)

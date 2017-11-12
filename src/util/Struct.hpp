@@ -24,11 +24,37 @@
  * - When a named parameter is set,
  * the previous scalar value if any is erased, while
  * the previous ordered list of value is now considered as value indexed by number converted as name.
+ *
+ * \nosubgrouping
  */
 class Struct {
-  //
-  // -1- Scalar value implementation
-  //
+  /** @name Scalar value implementation */
+  // @{
+public:
+  ///@cond INTERNAL
+  Struct();
+  ~Struct();
+  ///@endcond
+
+  /** Returns true if this corresponds to a scalar (boolean, numeric, string) value and false otherwise. */
+  bool isAtomic() const
+  {
+    return values.size() == 0;
+  }
+  /** Returns true if this corresponds to an empty scalar value corresponding to the empty string and false otherwise. */
+  bool isEmpty() const
+  {
+    return values.size() == 0 && value == "";
+  }
+  /** A no operation method, just used to avoid compilation warning in empty callbacks. */
+  void nop() const {}
+
+  /** Defines a empty struct, for initialization. */
+  static const Struct EMPTY;
+
+  // @}
+  /** @name Scalar value casting */
+  // @{
 private:
   std::string value;
 public:
@@ -43,8 +69,6 @@ public:
   Struct(char value);
   /** Returns the the 1st string char, as data or '\0' is the string is empty. */
   operator char() const;
-  /** Defines a empty struct, for initialization. */
-  static const Struct EMPTY;
 
   /** Returns true if the value is "true", false otherwise.
    * - A numerical value of 0 stands for false and a non-zero numerical value stands for true.
@@ -55,8 +79,10 @@ public:
   /** Returns the data as a floating point number or NAN if undefined. */
   operator double() const;
   Struct(double value);
+private:
   // Converts a string a number
   static double toDouble(String value);
+public:
   /** Returns the data as an int or 0x10000000 (INT_NAN) if undefined. */
   operator int() const;
   operator unsigned int() const;
@@ -70,20 +96,10 @@ private:
   // Converts an integer to a string
   template < typename T > static std::string toName(const char *format, T value);
   static std::string toName(int index);
-public:
-  /** Returns true if this corresponds to a scalar (boolean, numeric, string) value and false otherwise. */
-  bool isAtomic() const
-  {
-    return values.size() == 0;
-  }
-  /** Returns true if this corresponds to an empty scalar value corresponding to the empty string and false otherwise. */
-  bool isEmpty() const
-  {
-    return values.size() == 0 && value == "";
-  }
-  //
-  // -2- Iterative value implementation
-  //
+
+  // @}
+  /** @name Container value read */
+  // @{
 private:
   // Data internal storage with index comparator
   std::vector < std::string > names;
@@ -103,24 +119,6 @@ private:
   // Cleans empty values, and verifies the structure integrity.
   void clean();
 public:
-  // Constructs an empty data structure.
-  Struct();
-  // Copies a data structure.
-  Struct(const Struct &value);
-  // Deletes a data structure.
-  ~Struct();
-
-  /** Returns true the value is undefined or corresponds to the empty string and false otherwise.
-   * @param name The name or the index of the value.
-   */
-  bool isEmpty(String name) const
-  {
-    return values.count(name) == 0 || const_cast < Struct * > (this)->values[name].isEmpty();
-  }
-  bool isEmpty(int index) const
-  {
-    return isEmpty(toName(index));
-  }
   /** Returns the reference to a named or indexed value.
    * - Also available though the <tt>struct[name]</tt> subscript operator.
    * @param name The name or the index of the value.
@@ -147,6 +145,34 @@ public:
     return get(index);
   }
 
+  /** Returns true the related value is undefined or corresponds to the empty string and false otherwise.
+   * @param name The name or the index of the value.
+   */
+  bool isEmpty(String name) const
+  {
+    return values.count(name) == 0 || const_cast < Struct * > (this)->values[name].isEmpty();
+  }
+  bool isEmpty(int index) const
+  {
+    return isEmpty(toName(index));
+  }
+  /** Returns the maximal indexed value in the structure.
+   * - It is used in a construct of the form:
+   *  <div><tt>for(int i = 0; i < value.getLength(); i++) { Struct &value = value.get(i); ../.. }</tt>.</div>
+   */
+  int getLength() const
+  {
+    return length;
+  }
+  /** Returns the number of named value in the structure. */
+  int getCount() const
+  {
+    return names.size();
+  }
+  // @}
+  /** @name Container value write */
+  // @{
+
   /** Sets a named or indexed value.
    * - Also available though the <tt>struct[name] = value</tt> assignment/subscript operators.
    * @param name The name or the index of the value.
@@ -156,10 +182,6 @@ public:
   Struct& set(int index, const Struct& value)
   {
     return set(toName(index), value);
-  }
-  Struct& operator = (const Struct &value) {
-    copy(*this, value);
-    return *this;
   }
   Struct& set(String name)
   {
@@ -183,19 +205,6 @@ public:
   Struct& del(int index)
   {
     return del(toName(index));
-  }
-  /** Returns the maximal indexed value in the structure.
-   * - It is used in a construct of the form:
-   *  <div><tt>for(int i = 0; i < value.getLength(); i++) { Struct &value = value.get(i); ../.. }</tt>.</div>
-   */
-  int getLength() const
-  {
-    return length;
-  }
-  /** Returns the number of named value in the structure. */
-  int getCount() const
-  {
-    return names.size();
   }
   /** Defines an iterator over the struct named fields.
    * - It is used in a construct of the form:
@@ -225,6 +234,18 @@ public:
     }
   };
 
+  // @}
+  /** @name Copy and equality operator */
+  // @{
+
+  /** Copies a data structure. */
+  Struct(const Struct &value);
+
+  Struct& operator = (const Struct &value) {
+    copy(*this, value);
+    return *this;
+  }
+
   /** Returns true if this structure equals the comparing one.
    * - Also available via the <tt>==</tt> and <tt>!=</tt> operators.
    */
@@ -236,9 +257,9 @@ public:
     return !equals(value);
   }
 
-  //
-  // -3- String input/output interface
-  //
+  // @}
+  /** @name String input/output interface */
+  // @{
 
   /** Saves the data structure as a JSON string, in a file.
    * @param location The file path.
@@ -297,7 +318,7 @@ public:
    * @param location The file path.
    */
   void load(String location);
-  /** A no operation method, just used to avoid compilation warning in empty callbacks. */
-  void nop() const {}
+
+  // @}
 };
 #endif

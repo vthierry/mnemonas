@@ -1,14 +1,15 @@
 #include "main.hpp"
 
-network::RecurrentTransform::RecurrentTransform(const RecurrentTransform& transform) : RecurrentTransform(transform.N, transform.R, transform.input) {}
 network::RecurrentTransform::RecurrentTransform(unsigned int N, unsigned int R, const Input& input) : Transform(N, input), values(NULL), t0(0), no_recursion(true), R(R), L(0)
 {
   reset();
 }
+/// @cond INTERNAL
 network::RecurrentTransform::~RecurrentTransform()
 {
   delete[] values;
 }
+///@endcond
 network::RecurrentTransform& network::RecurrentTransform::reset(bool buffered)
 {
   unsigned int size = buffered ? input.getT() : R + 1;

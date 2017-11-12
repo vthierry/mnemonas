@@ -1,3 +1,4 @@
+namespace network {
 /** Defines a recurrent network as an approximate integrate and fire transform.
  * - Such recurrent network writes:
  * <center>\f$\begin{array}{rcl}
@@ -15,40 +16,41 @@
  * with \f$n_1 = N - n \f$.
  * - In order to guaranty the numerical stability, the sharpness is bounded.
  */
-class IntegrateAndFireTransform: public KernelTransform {
+  class IntegrateAndFireTransform: public KernelTransform {
 private:
-  unsigned int N;
-  double sharpness, leak, offset;
-  double zeta(double u) const;
-  double dzeta(double u) const;
+    unsigned int N;
+    double sharpness, leak, offset;
+    double zeta(double u) const;
+    double dzeta(double u) const;
 public:
-  /** Resets the transform for the given parameters.
-   * @param N The number of input units, defined unit indexes stand in <tt>{0, N{</tt>.
-   *  - The network has <tt>2\,N</tt> nodes.
-   * @param input The transform input.
-   */
-  IntegrateAndFireTransform(unsigned int N, const Input &input);
+    /** Resets the transform for the given parameters.
+     * @param N The number of input units, defined unit indexes stand in <tt>{0, N{</tt>.
+     *  - The network has <tt>2\,N</tt> nodes.
+     * @param input The transform input.
+     */
+    IntegrateAndFireTransform(unsigned int N, const Input &input);
 
-  /** Sets a fixed common sharpness for this network.
-   * @param value The sharpness  value of all \f$\alpha_n\f$, NAN to unconstrain the value, 0 to impose a Heaviside profile.
-   * @return this.
-   */
-  IntegrateAndFireTransform& setSharpness(double value = 1);
+    /** Sets a fixed common sharpness for this network.
+     * @param value The sharpness  value of all \f$\alpha_n\f$, NAN to unconstrain the value, 0 to impose a Heaviside profile.
+     * @return this.
+     */
+    IntegrateAndFireTransform& setSharpness(double value = 1);
 
-  /** Sets a fixed common leak for this network.
-   * @param value The leak value of all \f$\gamma_n\f$, NAN to unconstrain the value.
-   * @return this.
-   */
-  IntegrateAndFireTransform& setLeak(double value = 0);
+    /** Sets a fixed common leak for this network.
+     * @param value The leak value of all \f$\gamma_n\f$, NAN to unconstrain the value.
+     * @return this.
+     */
+    IntegrateAndFireTransform& setLeak(double value = 0);
 
-  /** Sets a fixed common offset for this network.
-   * @param value The offset value of all \f$\alpha_n\f$, NAN to unconstrain the value.
-   * @return this.
-   */
-  IntegrateAndFireTransform& setOffset(double value = 0);
-  bool setWeight(unsigned int n, unsigned int d, double w);
-  KernelTransform& setWeights(KernelTransform& network);
-  unsigned int getKernelDimension(unsigned int n) const;
-  double getKernelValue(unsigned int n, unsigned int d, double t) const;
-  double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const;
-};
+    /** Sets a fixed common offset for this network.
+     * @param value The offset value of all \f$\alpha_n\f$, NAN to unconstrain the value.
+     * @return this.
+     */
+    IntegrateAndFireTransform& setOffset(double value = 0);
+    bool setWeight(unsigned int n, unsigned int d, double w);
+    KernelTransform& setWeights(KernelTransform& network);
+    unsigned int getKernelDimension(unsigned int n) const;
+    double getKernelValue(unsigned int n, unsigned int d, double t) const;
+    double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const;
+  };
+}

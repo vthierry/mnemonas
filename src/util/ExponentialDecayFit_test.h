@@ -1,6 +1,4 @@
-#include "ExponentialDecayFit.hpp"
-
-/** ExponentialDecayFit functional and non regression test. */
+///@cond INTERNAL
 
 void ExponentialDecayFit_test()
 {
@@ -10,3 +8,4 @@ void ExponentialDecayFit_test()
   assume(fabs(fit.getDecay() - 314.16) < 1e-8 && fabs(fit.getBias() - 1.2345) < 1e-10, "illegal-state", "in ExponentialDecayFit_test wrong estimation : %s\n", fit.asString().c_str());
   // - fit.show("/tmp/fit", true);
 }
+///@endcond

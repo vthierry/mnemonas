@@ -3,18 +3,24 @@
 #include <stdarg.h>
 #include <string.h>
 
+#include "s_load.h"
+#include "s_save.h"
+
 /////////////////////////////////////////////
+
+///@cond INTERNAL
 Struct::Struct()
 {
   clear();
 }
-Struct::Struct(const Struct& value)
-{
-  copy(*this, value);
-}
 Struct::~Struct()
 {
   clear();
+}
+///@endcond
+Struct::Struct(const Struct& value)
+{
+  copy(*this, value);
 }
 Struct::operator String() const
 {
@@ -289,6 +295,10 @@ public:
         // Clears and set the value
         value.clear();
         read_value(value);
+        // Appends the trailer if any
+        next_space();
+        if(index < length)
+          value.add(chars + index);
       }
 private:
       // String input buffer, index and length
@@ -459,6 +469,7 @@ Struct::Struct(int argc, const char *argv[])
 }
 std::string Struct::asString(String format) const
 {
+  assume(format == "raw" || format == "plain" || format == "html", "illegal-argument", "in Struct::asString undefined format %s", format.c_str());
   // Implements the string writing of a JSON structure
   class StructWriter {
 public:
@@ -496,13 +507,16 @@ private:
           write_value(string, value.get(i.getName()));
         }
         for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-          if(once)
-            once = false;
-          else
-            string += asNextTag(", ");
-          write_word(string, toName(i), true);
-          string += asMeta(": ", true);
-          write_value(string, value.get(i));
+          Struct value_i = value.get(i);
+          if(!value_i.isEmpty()) {
+            if(once)
+              once = false;
+            else
+              string += asNextTag(", ");
+            write_word(string, toName(i), true);
+            string += asMeta(": ", true);
+            write_value(string, value_i);
+          }
         }
         string += asEndTag("}");
       }
@@ -596,15 +610,7 @@ private:
 }
 void Struct::load(String location)
 {
-  std::string result;
-  {
-    FILE *fp = fopen(location.c_str(), "r");
-    assume(fp != NULL, "IO-exception", "in Struct::load '%s' is not readable", location.c_str());
-    for(char c; (c = (char) fgetc(fp)) != EOF;)
-      result += c;
-    fclose(fp);
-  }
-  reset(result);
+  reset(s_load(location));
 }
 void Struct::save(String location, String format) const
 {
@@ -613,10 +619,6 @@ void Struct::save(String location, String format) const
     printf("%s", string.c_str());
   else if(location == "stderr")
     fprintf(stderr, "%s", string.c_str());
-  else {
-    FILE *fp = fopen(location.c_str(), "w");
-    assume(fp != NULL, "IO-exception", "in Struct::save '%s' not writable", location.c_str());
-    fprintf(fp, "%s\n", string.c_str());
-    fclose(fp);
-  }
+  else
+    s_save(location, string);
 }

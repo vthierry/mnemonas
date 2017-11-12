@@ -1,6 +1,7 @@
 #ifndef EXPONENTIALDECAYFIT_HPP
 #define EXPONENTIALDECAYFIT_HPP
 
+#include "numeric.hpp"
 #include "s_string.h"
 #include <vector>
 
@@ -15,12 +16,14 @@
  *  while to plot the model we also estimate:
  * <center>\f$\min_{\log(a)} \sum_{t=1}^T \, \gamma^{T-t} \, (\log(a) - \hat{l}(t))^2, \;\;\; \hat{l}(t) \stackrel{\rm def}{=} \log(c(t) - b) + \frac{t}{\tau}\f$,</center>
  */
-class ExponentialDecayFit {
+class ExponentialDecayFit: public numeric {
 private:
   mutable double gamma, n, c1, T0, T1, T2, L0, L1, tau, cmin, bias;
   std::vector < double > values;
 public:
+  /// @cond INTERNAL
   ExponentialDecayFit(const ExponentialDecayFit &fit);
+  ///@endcond
 
   /** Constructs an exponential decay interpolator.
    * @param window The sampling window containing 90% of the least-square average.

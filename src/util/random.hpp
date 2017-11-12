@@ -1,20 +1,23 @@
 #ifndef random_hpp
 #define random_hpp
 
+#include "numeric.hpp"
 #include <random>
 
 /** This factory encapsulates random number generators.
  * - All routines depends on setSeed. If setSeed(-1) -> it is a non-reproducible pseudo-random generator,
  * else it generates always the same pseudo-random numbers.
  */
-class random {
+class random: public numeric {
   static std::mt19937_64 generator;
   static std::uniform_real_distribution < double > distribution;
 public:
   /** Defines a 1D real probabilty density. */
-  class Density {
+  class Density: public numeric {
 public:
+    /// @cond INTERNAL
     virtual ~Density() {}
+    ///@endcond
 
     /** Returns the probability for the given value.
      * @param x The input value.
