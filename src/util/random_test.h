@@ -1,3 +1,5 @@
+///@cond INTERNAL
+
 void random_test()
 {
   // Tests the seed reproductibility
@@ -78,3 +80,4 @@ void random_test()
     // - histogram.plot("/tmp/gamma", "automatic", true);
   }
 }
+///@endcond

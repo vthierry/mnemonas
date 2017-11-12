@@ -18,6 +18,7 @@ usage :
 	@echo "  make grun ARGS=$ARGS  	: compiles and run the code, via a debugger (gdb)"
 	@echo "  make vrun ARGS=$ARGS 	: compiles and run the code, via a memory checker (valgrind)"
 	@echo "  make api  		: compiles the source api documentation"
+	@echo "  make show  		: compiles the source api documentation and show it"
 	@echo "  make pdf  		: compiles the main tex publication"
 	@echo "  make clean 	 	: cleans source and latex intermediate files"
 	@echo "  make cleanall 	 	: cleans and delete all generated files"
@@ -69,7 +70,7 @@ pywrap : .build/mnemonas.py .build/mnemonas.so
 #
 
 ifndef ARGS
-ARGS = -test true -experiment '{ what : all }'
+ARGS = -experiment2 -test true # -experiment1 '{ what : all }'
 endif
 
 run : .build/main.exe
@@ -85,6 +86,9 @@ vrun : .build/main.exe
 # Code and latex documentation
 #
 
+show : api 
+	firefox .build/doc/index.html
+
 api : .build/doc/index.html .build/doc.zip
 
 .build/doc/index.html : uncrustify doc/main.pdf clean ./src/index.h $(INC) $(SRC)
@@ -99,7 +103,7 @@ api : .build/doc/index.html .build/doc.zip
 	echo '<script>location.replace("doc/index.html");</script>' > .build/doc.html 
 
 uncrustify : $(INC) $(SRC)
-	for f in $^ ; do mv $$f $$f~ ; uncrustify -q -c src/etc/uncrustify.cfg -f $$f~ -o $$f ; touch $$f -r $$f~ ; done
+	if command uncrustify > /dev/null ; then for f in $^ ; do mv $$f $$f~ ; uncrustify -q -c src/etc/uncrustify.cfg -f $$f~ -o $$f ; touch $$f -r $$f~ ; done ; fi
 
 .build/doc.zip :
 	rm -rf $@ ; cd .build ; zip -9qr doc.zip doc.html doc
@@ -125,7 +129,7 @@ clean :
 	/bin/rm -rf stdout
 
 cleanall : clean
-	/bin/rm -rf .build doc/main.pdf tex/results/*
+	/bin/rm -rf .build doc/main.pdf # tex/results/*
 
 git : api
 	git pull ; git commit -a -m 'from makefile' ; git push
@@ -157,7 +161,7 @@ rrun-cmp : clean
 
 rrun-run : rrun-cmp
 	ssh nef-frontal.inria.fr '/bin/rm -rf $(here)/rrun ; mkdir $(here)/rrun'
-	for task in 0 1 ; do ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe -experiment $$task'" ; done
+	for task in 0 1 ; do ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe -experiment1 $$task'" ; done
 
 rrun-out :
 	ssh nef-frontal.inria.fr "oarstat --format 2 -u `whoami`"
@@ -182,8 +186,8 @@ rrun-out :
 # - Implémenter des \nu automatiques sur les critères robustes
 
 test :
-#	$(MAKE) run 
-	$(MAKE) pdf
+	$(MAKE) run api
+#	$(MAKE) pdf
 #	firefox doc/main.pdf .build/doc/index.html https://vthierry.github.io/mnemonas
 #	cp doc/main.pdf .build/doc.zip ~/Desktop
 

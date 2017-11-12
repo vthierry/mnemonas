@@ -1,9 +1,5 @@
 #include "main.hpp"
 
-network::KernelTransform::KernelTransform(const KernelTransform& transform) : KernelTransform(transform.N, transform.R, transform.input)
-{
-  root = &transform;
-}
 network::KernelTransform::KernelTransform(unsigned int N, unsigned int R, const Input& input) : RecurrentTransform(N, R, input), weights(NULL), offsets(NULL), count(0), root(NULL) {}
 void network::KernelTransform::resetWeights()
 {
@@ -19,11 +15,17 @@ void network::KernelTransform::resetWeights()
   for(unsigned i = 0; i < count; i++)
     weights[i] = root == NULL ? 0 : root->weights[i];
 }
+/// @cond INTERNAL
+network::KernelTransform::KernelTransform(const KernelTransform& transform) : KernelTransform(transform.N, transform.R, transform.input)
+{
+  root = &transform;
+}
 network::KernelTransform::~KernelTransform()
 {
   delete[] weights;
   delete[] offsets;
 }
+///@endcond
 unsigned int network::KernelTransform::getKernelDimension(unsigned int n) const
 {
   assume(false, "illegal-state", "in network::KernelTransform::getKernelDimension, this virtual method must be overridden");

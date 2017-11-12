@@ -4,11 +4,13 @@ network::KernelSupervisedEstimator::KernelSupervisedEstimator(network::KernelTra
 {
   assume(0 <= nu, "illegal-argument", "in network::KernelSupervisedEstimator::KernelSupervisedEstimator the nu=%g must be non-negative criterion %c", nu, criterion);
 }
+/// @cond INTERNAL
 network::KernelSupervisedEstimator::~KernelSupervisedEstimator()
 {
   delete[] estimates;
   delete[] destimates;
 }
+///@endcond
 double network::KernelSupervisedEstimator::rho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);

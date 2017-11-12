@@ -2,7 +2,9 @@
 #include <stdarg.h>
 
 network::KernelObservableEstimator::Observable::Observable(String name) : name(name), value(NAN), input(NULL) {}
+/// @cond INTERNAL
 network::KernelObservableEstimator::Observable::~Observable() {}
+///@endcond
 network::KernelObservableEstimator::Observable& network::KernelObservableEstimator::Observable::reset(const network::Input& input_)
 {
   input = &input_;
@@ -61,12 +63,14 @@ network::KernelObservableEstimator::KernelObservableEstimator(KernelTransform& t
   for(unsigned int k = 0; k < dimension; k++)
     values[k] = observables[k]->reset(input).getValue();
 }
+/// @cond INTERNAL
 network::KernelObservableEstimator::~KernelObservableEstimator()
 {
   delete[] observables;
   delete[] lambdas;
   delete[] values;
 }
+///@endcond
 double network::KernelObservableEstimator::rho() const
 {
   transform.reset(true);

@@ -1,3 +1,5 @@
+///@cond INTERNAL
+
 void network_test()
 {
   // Tests the buffered/observed saved/load mechanism
@@ -16,10 +18,19 @@ void network_test()
       network::BufferedInput load(file);
       for(unsigned int t = 0; t < T; t++)
         for(unsigned int n = 0; n < N; n++)
-          assume(load.get(n, t) == save.get(n, t), "illegal-state", "in network_test/BufferedInput save-load error");
+          assume(load.get(n, t) == save.get(n, t), "illegal-state", "in network_test/BufferedInput binary save-load error");
       system(("/bin/rm -f " + file + ".dat").c_str());
     }
     // - save.save(file, "gnushow");
+    // Tests the csv load/save
+    {
+      std::string values = "1,2,3\n1,4,9\n1,8,27\n1,16,81\n";
+      s_save("/tmp/test-buffered-input.csv", values);
+      network::BufferedInput data("/tmp/test-buffered-input", "csv");
+      data.save("/tmp/test-buffered-output", "csv");
+      std::string result = s_load("/tmp/test-buffered-output.csv");
+      assume(values == result, "illegal-state", "in network_test/BufferedInput csv save-load error");
+    }
   }
   // Tests the recurrent transform mechanism
   {
@@ -200,3 +211,4 @@ public:
     test.testObservablesEstimation();
   }
 }
+///@endcond

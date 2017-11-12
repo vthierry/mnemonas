@@ -1,11 +1,12 @@
 #include <cmath>
 #include <map>
 
+#include "numeric.hpp"
 #include "s_string.h"
 #include "random.hpp"
 
 /** Defines an 1D statistics on a set of scalar values. */
-class Histogram: public random::Density  {
+class Histogram: public random::Density {
   static std::map < std::string, unsigned int > names;
   static const unsigned int nnames = 32;
   double m0, m1, m2, m3, m4, min, max;
@@ -17,7 +18,9 @@ class Histogram: public random::Density  {
   mutable double *values;
   mutable random::Density *model;
 public:
+  /// @cond INTERNAL
   Histogram(const Histogram &histogram);
+  ///@endcond
 
   /** Defines an histogram for a given observation.
    * @param samples The histogram size (if 0 there is no histogram, only momenta calculation).
@@ -25,7 +28,9 @@ public:
    * @param max The maximal expected value.
    */
   Histogram(unsigned int samples = 0, double min = NAN, double max = NAN);
+  /// @cond INTERNAL
   ~Histogram();
+  ///@endcond
   /** Clears all added values. */
   void clear();
   /** Adds a value to the statistics. */

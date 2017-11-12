@@ -4,7 +4,9 @@
 #include <regex>
 #include <map>
 
-static std::map < unsigned int, std::string > s_regex_error_messages = {
+///@cond INTERNAL
+
+static std::map < unsigned int, std::string > s_regex__error_messages = {
   { std::regex_constants::error_collate, "The expression contained an invalid collating element name." },
   { std::regex_constants::error_ctype, "The expression contained an invalid character class name." },
   { std::regex_constants::error_escape, "The expression contained an invalid escaped character, or a trailing escape." },
@@ -20,6 +22,8 @@ static std::map < unsigned int, std::string > s_regex_error_messages = {
   { std::regex_constants::error_stack, "The memory to determine whether the regular expression could match the specified character sequence overflows." }
 };
 
+///@endcond
+
 std::string s_regex_replace(String string, String regex, String output)
 {
 #ifdef ON_NEF
@@ -30,7 +34,7 @@ std::string s_regex_replace(String string, String regex, String output)
     return std::regex_replace(string, e, output);
   }
   catch(std::regex_error & e) {
-    assume(false, "illegal-argument", "in std::regex_error : spurious regex '%s' : %s \n", regex.c_str(), s_regex_error_messages[e.code()].c_str());
+    assume(false, "illegal-argument", "in std::regex_error : spurious regex '%s' : %s \n", regex.c_str(), s_regex__error_messages[e.code()].c_str());
     return string;
   }
 }
@@ -44,7 +48,7 @@ bool s_regex_match(String string, String regex)
     return std::regex_match(string, e);
   }
   catch(std::regex_error & e) {
-    assume(false, "illegal-argument", "in std::regex_error : spurious regex '%s' : %s \n", regex.c_str(), s_regex_error_messages[e.code()].c_str());
+    assume(false, "illegal-argument", "in std::regex_error : spurious regex '%s' : %s \n", regex.c_str(), s_regex__error_messages[e.code()].c_str());
     return false;
   }
 }

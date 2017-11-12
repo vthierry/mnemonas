@@ -44,6 +44,15 @@
  <a href="classrandom.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="random_8hpp_source.html">random.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for random:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classrandom.png" usemap="#random_map" alt=""/>
+  <map id="random_map" name="random_map">
+<area href="classnumeric.html" title="This is the root class of numeric utility classes and factories. " alt="numeric" shape="rect" coords="0,0,57,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -81,7 +90,7 @@ Static Public Member Functions</h2></td></tr>
 <li>All routines depends on setSeed. If setSeed(-1) -&gt; it is a non-reproducible pseudo-random generator, else it generates always the same pseudo-random numbers. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="random_8hpp_source.html#l00010">10</a> of file <a class="el" href="random_8hpp_source.html">random.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8hpp_source.html#l00011">11</a> of file <a class="el" href="random_8hpp_source.html">random.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad27dfe126366144198c0e92c67d2b56a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad27dfe126366144198c0e92c67d2b56a">&#9670;&nbsp;</a></span>setSeed()</h2>
@@ -119,7 +128,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="now_8c_source.html#l00008">now()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="BufferedInput_8cpp_source.html#l00046">BufferedInput::BufferedInput()</a>, <a class="el" href="random__test_8h_source.html#l00001">random_test()</a>, <a class="el" href="SparseNonLinearTransform_8cpp_source.html#l00014">SparseNonLinearTransform::setConnections()</a>, <a class="el" href="KernelTransform_8cpp_source.html#l00059">KernelTransform::setWeightsRandom()</a>, and <a class="el" href="random_8hpp_source.html#l00017">random::Density::~Density()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="BufferedInput_8cpp_source.html#l00069">network::BufferedInput::BufferedInput()</a>, <a class="el" href="SparseNonLinearTransform_8cpp_source.html#l00014">network::SparseNonLinearTransform::setConnections()</a>, and <a class="el" href="KernelTransform_8cpp_source.html#l00061">network::KernelTransform::setWeightsRandom()</a>.</p>
 
 </div>
 </div>
@@ -172,7 +181,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="random_8cpp_source.html#l00029">29</a> of file <a class="el" href="random_8cpp_source.html">random.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="BufferedInput_8cpp_source.html#l00046">BufferedInput::BufferedInput()</a>, <a class="el" href="Histogram_8cpp_source.html#l00256">Histogram::draw()</a>, <a class="el" href="random_8cpp_source.html#l00048">gamma()</a>, <a class="el" href="random_8cpp_source.html#l00034">gaussian()</a>, <a class="el" href="random__test_8h_source.html#l00001">random_test()</a>, <a class="el" href="KernelTransform_8cpp_source.html#l00059">KernelTransform::setWeightsRandom()</a>, <a class="el" href="random_8cpp_source.html#l00023">uniform()</a>, and <a class="el" href="random_8hpp_source.html#l00017">random::Density::~Density()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="BufferedInput_8cpp_source.html#l00069">network::BufferedInput::BufferedInput()</a>, <a class="el" href="Histogram_8cpp_source.html#l00260">Histogram::draw()</a>, <a class="el" href="random_8cpp_source.html#l00048">gamma()</a>, <a class="el" href="random_8cpp_source.html#l00034">gaussian()</a>, <a class="el" href="KernelTransform_8cpp_source.html#l00061">network::KernelTransform::setWeightsRandom()</a>, and <a class="el" href="random_8cpp_source.html#l00023">uniform()</a>.</p>
 
 </div>
 </div>
@@ -274,7 +283,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="random_8cpp_source.html#l00029">uniform()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="BufferedInput_8cpp_source.html#l00046">BufferedInput::BufferedInput()</a>, <a class="el" href="random__test_8h_source.html#l00001">random_test()</a>, <a class="el" href="KernelTransform_8cpp_source.html#l00059">KernelTransform::setWeightsRandom()</a>, and <a class="el" href="random_8hpp_source.html#l00017">random::Density::~Density()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="BufferedInput_8cpp_source.html#l00069">network::BufferedInput::BufferedInput()</a>, and <a class="el" href="KernelTransform_8cpp_source.html#l00061">network::KernelTransform::setWeightsRandom()</a>.</p>
 
 </div>
 </div>
@@ -323,8 +332,6 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The Gaussian mean corresponding to this bias. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="random_8cpp_source.html#l00039">39</a> of file <a class="el" href="random_8cpp_source.html">random.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="random_8hpp_source.html#l00017">random::Density::~Density()</a>.</p>
 
 </div>
 </div>
@@ -376,8 +383,6 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="random_8cpp_source.html#l00009">random::Density::p()</a>, and <a class="el" href="random_8cpp_source.html#l00029">uniform()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="random__test_8h_source.html#l00001">random_test()</a>, and <a class="el" href="random_8hpp_source.html#l00017">random::Density::~Density()</a>.</p>
-
 </div>
 </div>
 <a id="a24f5389d822188f2c9b993538632ed0d"></a>
@@ -428,9 +433,13 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="SparseNonLinearTransform_8cpp_source.html#l00014">SparseNonLinearTransform::setConnections()</a>, and <a class="el" href="random_8hpp_source.html#l00017">random::Density::~Density()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="SparseNonLinearTransform_8cpp_source.html#l00014">network::SparseNonLinearTransform::setConnections()</a>.</p>
 
 </div>
 </div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/util/<a class="el" href="random_8hpp_source.html">random.hpp</a></li>
+<li>src/util/<a class="el" href="random_8cpp_source.html">random.cpp</a></li>
+</ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2017-10-15 at 10:00:56) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2017-11-12 at 17:57:54) </tt> </div><hr/>

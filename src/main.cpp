@@ -1,3 +1,5 @@
+///@cond INTERNAL
+
 #include "main.hpp"
 
 #include "util/s_regex_test.h"
@@ -6,7 +8,8 @@
 #include "util/random_test.h"
 #include "util/ExponentialDecayFit_test.h"
 #include "network/network_test.h"
-#include "../tex/Experimentation.h"
+#include "../tex/Experimentation1.h"
+#include "../tex/Experimentation2.h"
 
 void test()
 {
@@ -22,13 +25,17 @@ void test()
 int main(int argc, const char *argv[])
 {
   Struct args(argc, argv);
-  printf("> Running: %s\n", ((String) args).c_str());
   if(args.get("test"))
     test();
-  if(args.get("experiment")) {
-    Experimentation experimentation;
-    experimentation.run(args.get("experiment"));
+  if(args.get("experiment1")) {
+    Experimentation1 experimentation;
+    experimentation.run(args.get("experiment1"));
+  }
+  if(args.get("experiment2")) {
+    Experimentation2 experimentation;
+    experimentation.run(args.get("experiment2"));
   }
   printf("> ... run done\n");
   return EXIT_SUCCESS;
 }
+///@endcond

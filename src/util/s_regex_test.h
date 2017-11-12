@@ -1,4 +1,4 @@
-#include "util/s_regex.h"
+///@cond INTERNAL
 
 void s_regex_test()
 {
@@ -8,3 +8,4 @@ void s_regex_test()
   assume(s_regex_replace("papy", "([ay])", "u") == "pupu", "illegal-state", "in s_regex_test/s_regex_replace bad substitution");
   assume(s_regex_match("papy", "^(p[ay])+$"), "illegal-state", "in s_regex_test/s_regex_match bad match");
 }
+///@endcond

@@ -18,6 +18,7 @@ network::KernelEstimator::KernelEstimator(KernelTransform& transform) : transfor
   }
   save_previous_estimation();
 }
+/// @cond INTERNAL
 network::KernelEstimator::~KernelEstimator()
 {
   delete[] errors;
@@ -40,6 +41,7 @@ network::KernelEstimator::~KernelEstimator()
   delete[] w0;
   delete[] w1;
 }
+///@endcond
 #define clear_buffer(buffer, size) for(unsigned int ijk = 0; ijk < size; buffer[ijk++] = 0) ;
 #define set_weights(w_nd) \
   for(unsigned int n = 0, nd = 0; n < N; n++) \

@@ -43,11 +43,18 @@
  <a href="classExponentialDecayFit.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for ExponentialDecayFit:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classExponentialDecayFit.png" usemap="#ExponentialDecayFit_map" alt=""/>
+  <map id="ExponentialDecayFit_map" name="ExponentialDecayFit_map">
+<area href="classnumeric.html" title="This is the root class of numeric utility classes and factories. " alt="numeric" shape="rect" coords="0,0,128,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af9a4e977c481210a00081ea1f60e0f7c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExponentialDecayFit.html#af9a4e977c481210a00081ea1f60e0f7c">ExponentialDecayFit</a> (const <a class="el" href="classExponentialDecayFit.html">ExponentialDecayFit</a> &amp;fit)</td></tr>
-<tr class="separator:af9a4e977c481210a00081ea1f60e0f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae98423445f6f6818de36bdb5eaccc694"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExponentialDecayFit.html#ae98423445f6f6818de36bdb5eaccc694">ExponentialDecayFit</a> (unsigned int window=10)</td></tr>
 <tr class="memdesc:ae98423445f6f6818de36bdb5eaccc694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an exponential decay interpolator.  <a href="#ae98423445f6f6818de36bdb5eaccc694">More...</a><br /></td></tr>
 <tr class="separator:ae98423445f6f6818de36bdb5eaccc694"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -93,30 +100,10 @@ Public Member Functions</h2></td></tr>
 <li>The least-square problem for <img class="formulaInl" alt="$\tau$" src="form_9.png"/> writes: <center> <img class="formulaInl" alt="$\min_{1/\tau, k} \sum_{t}^T \gamma^{T-t} \, (k - sg(c(t) - c(t-1)) \, t / \tau - \log(|c(t) - c(t-1)|))^2$" src="form_13.png"/></center> for an exponential window of width <img class="formulaInl" alt="$W=\frac{\log(1 - r)}{\log(\gamma)}$" src="form_14.png"/> where <img class="formulaInl" alt="$r$" src="form_15.png"/> is the fraction of data average within this window (typically 90%) and the bias is estimated as: <center> <img class="formulaInl" alt="$\min_{\beta} \sum_{t=1}^T \, \delta_{0 &lt; \hat{\beta}(t) &lt; \min_t c(t)} \, \gamma^{T-t} \, (\beta - \hat{\beta}(t))^2, \;\;\; \hat{\beta}(t) \stackrel{\rm def}{=} c(t) - \frac{c(t-1) - c(t)}{e^\frac{1}{\tau}-1}$" src="form_16.png"/>,</center> while to plot the model we also estimate: <center> <img class="formulaInl" alt="$\min_{\log(a)} \sum_{t=1}^T \, \gamma^{T-t} \, (\log(a) - \hat{l}(t))^2, \;\;\; \hat{l}(t) \stackrel{\rm def}{=} \log(c(t) - b) + \frac{t}{\tau}$" src="form_17.png"/>,</center> </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00018">18</a> of file <a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00019">19</a> of file <a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af9a4e977c481210a00081ea1f60e0f7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9a4e977c481210a00081ea1f60e0f7c">&#9670;&nbsp;</a></span>ExponentialDecayFit() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ExponentialDecayFit::ExponentialDecayFit </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classExponentialDecayFit.html">ExponentialDecayFit</a> &amp;&#160;</td>
-          <td class="paramname"><em>fit</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00008">8</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
-
-</div>
-</div>
 <a id="ae98423445f6f6818de36bdb5eaccc694"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae98423445f6f6818de36bdb5eaccc694">&#9670;&nbsp;</a></span>ExponentialDecayFit() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae98423445f6f6818de36bdb5eaccc694">&#9670;&nbsp;</a></span>ExponentialDecayFit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,9 +126,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00012">12</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00014">14</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00016">clear()</a>.</p>
+<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00018">clear()</a>.</p>
 
 </div>
 </div>
@@ -163,9 +150,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Clears the estomation. </p>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00016">16</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00018">18</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00012">ExponentialDecayFit()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00238">KernelEstimator::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00014">ExponentialDecayFit()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00240">network::KernelEstimator::run()</a>.</p>
 
 </div>
 </div>
@@ -193,9 +180,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00021">21</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00023">23</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit__test_8h_source.html#l00005">ExponentialDecayFit_test()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00238">KernelEstimator::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="KernelEstimator_8cpp_source.html#l00240">network::KernelEstimator::run()</a>.</p>
 
 </div>
 </div>
@@ -216,11 +203,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Gets the number of samples. </p>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00037">37</a> of file <a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00040">40</a> of file <a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00046">getBias()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00042">getDecay()</a>, and <a class="el" href="classExponentialDecayFit.html#a1f776c9304fc80600feb2d3faae3593f">getDecayStDev()</a>.</p>
+<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00048">getBias()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00044">getDecay()</a>, and <a class="el" href="classExponentialDecayFit.html#a1f776c9304fc80600feb2d3faae3593f">getDecayStDev()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Experimentation_8h_source.html#l00071">Experimentation::ResultTable::add()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00067">asString()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00069">asString()</a>.</p>
 
 </div>
 </div>
@@ -241,9 +228,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Gets the decay <img class="formulaInl" alt="$\tau$" src="form_9.png"/> or NAN if undefined. </p>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00042">42</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00044">44</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Experimentation_8h_source.html#l00071">Experimentation::ResultTable::add()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00067">asString()</a>, <a class="el" href="ExponentialDecayFit__test_8h_source.html#l00005">ExponentialDecayFit_test()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00046">getBias()</a>, <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00037">getCount()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00061">getEstimationTime()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00071">show()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00069">asString()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00048">getBias()</a>, <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00040">getCount()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00063">getEstimationTime()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00073">show()</a>.</p>
 
 </div>
 </div>
@@ -264,7 +251,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Gets the decay standard-deviaton <img class="formulaInl" alt="$\tau$" src="form_9.png"/> or NAN if undefined. </p>
 
-<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00037">getCount()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00040">getCount()</a>.</p>
 
 </div>
 </div>
@@ -285,11 +272,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Gets the bias <img class="formulaInl" alt="$\beta$" src="form_11.png"/> or NAN if undefined. </p>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00046">46</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00048">48</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00042">getDecay()</a>.</p>
+<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00044">getDecay()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Experimentation_8h_source.html#l00071">Experimentation::ResultTable::add()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00067">asString()</a>, <a class="el" href="ExponentialDecayFit__test_8h_source.html#l00005">ExponentialDecayFit_test()</a>, <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00037">getCount()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00061">getEstimationTime()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00071">show()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00069">asString()</a>, <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00040">getCount()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00063">getEstimationTime()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00073">show()</a>.</p>
 
 </div>
 </div>
@@ -310,11 +297,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Gets the minimlal value. </p>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00048">48</a> of file <a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00051">51</a> of file <a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00067">asString()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00061">getEstimationTime()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00071">show()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Experimentation_8h_source.html#l00071">Experimentation::ResultTable::add()</a>.</p>
+<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00069">asString()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00063">getEstimationTime()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00073">show()</a>.</p>
 
 </div>
 </div>
@@ -343,11 +328,11 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The estimation time in number of sample. Returns NAN if below the bias, 0 if already attained. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00061">61</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00063">63</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00046">getBias()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00042">getDecay()</a>.</p>
+<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00048">getBias()</a>, and <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00044">getDecay()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00048">getMinimalValue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00051">getMinimalValue()</a>.</p>
 
 </div>
 </div>
@@ -368,11 +353,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Returns the parameters as a JSON string. </p>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00067">67</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00069">69</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00046">getBias()</a>, <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00037">getCount()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00042">getDecay()</a>, and <a class="el" href="s__printf_8c_source.html#l00007">s_printf()</a>.</p>
+<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00048">getBias()</a>, <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00040">getCount()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00044">getDecay()</a>, and <a class="el" href="s__printf_8c_source.html#l00007">s_printf()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit__test_8h_source.html#l00005">ExponentialDecayFit_test()</a>, <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00048">getMinimalValue()</a>, <a class="el" href="KernelEstimator_8cpp_source.html#l00062">KernelEstimator::rho()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00238">KernelEstimator::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00051">getMinimalValue()</a>, <a class="el" href="KernelEstimator_8cpp_source.html#l00064">network::KernelEstimator::rho()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00240">network::KernelEstimator::run()</a>.</p>
 
 </div>
 </div>
@@ -411,13 +396,17 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00071">71</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00073">73</a> of file <a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00046">getBias()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00042">getDecay()</a>, <a class="el" href="gnuplot_8c_source.html#l00005">gnuplot()</a>, <a class="el" href="s__printf_8c_source.html#l00007">s_printf()</a>, and <a class="el" href="s__save_8c_source.html#l00013">s_save()</a>.</p>
+<p class="reference">References <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00048">getBias()</a>, <a class="el" href="ExponentialDecayFit_8cpp_source.html#l00044">getDecay()</a>, <a class="el" href="gnuplot_8c_source.html#l00005">gnuplot()</a>, <a class="el" href="s__printf_8c_source.html#l00007">s_printf()</a>, and <a class="el" href="s__save_8c_source.html#l00013">s_save()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00048">getMinimalValue()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00238">KernelEstimator::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ExponentialDecayFit_8hpp_source.html#l00051">getMinimalValue()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00240">network::KernelEstimator::run()</a>.</p>
 
 </div>
 </div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/util/<a class="el" href="ExponentialDecayFit_8hpp_source.html">ExponentialDecayFit.hpp</a></li>
+<li>src/util/<a class="el" href="ExponentialDecayFit_8cpp_source.html">ExponentialDecayFit.cpp</a></li>
+</ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2017-10-15 at 10:00:56) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2017-11-12 at 17:57:54) </tt> </div><hr/>
