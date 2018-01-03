@@ -46,16 +46,18 @@ public:
     SparseNonLinearTransform& setConnections(unsigned int D = 0, int seed = -1);
     ~SparseNonLinearTransform();
     KernelTransform& setWeights(const KernelTransform& network);
-    unsigned int getKernelDimension(unsigned int n) const {
+    unsigned int getKernelDimension(unsigned int n) const
+    {
       return n < N ? 0 : D + input.getN();
     }
     double getKernelValue(unsigned int n, unsigned int d, double t) const;
-    double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const{
+    double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const
+    {
       return n < N ? (d == 0 ? (n_ == n && t_ == t - 1 ? leak : (n_ == N + n && t_ == t && get(n_, t) > 0 && get(n_, t) <= SAT ? 1 : 0)) : 0) :
-	(0 < d && d <= D && n_ == indexes[d - 1 + (n - N) * D] && t_ == t - 1 ? 1 : 0);
+             (0 < d && d <= D && n_ == indexes[d - 1 + (n - N) * D] && t_ == t - 1 ? 1 : 0);
     }
-
-    bool isConnected(unsigned int n, unsigned int n_) const {
+    bool isConnected(unsigned int n, unsigned int n_) const
+    {
       return n < N ? n_ == n || n_ == N + n : n_ < N && connected[n_ + (n - N) * N];
     }
   };

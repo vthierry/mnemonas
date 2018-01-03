@@ -123,22 +123,21 @@ api : .build/doc/index.html
 	zip -9qr .build/doc/sources.zip makefile tex src
 	doxygen src/etc/doxygen.cfg
 	cp src/etc/*.png $(@D)
-	echo '<script>location.replace("doc/index.html");</script>' > .build/doc.html 
+	echo '<script>location.replace(".build/doc/index.html");</script>' > index.html 
 
 uncrustify : $(INC) $(SRC)
 	if command uncrustify > /dev/null ; then for f in $^ ; do mv $$f $$f~ ; uncrustify -q -c src/etc/uncrustify.cfg -f $$f~ -o $$f ; touch $$f -r $$f~ ; done ; fi
 
 ifndef MAIN
-MAIN = main1
+MAIN = tex/BackwardTuning/main
 endif
 
-pdf : doc/$(MAIN).pdf clean
+pdf : $(MAIN).pdf clean
 
-doc/$(MAIN).pdf : $(wildcard tex/*.tex) $(wildcard tex/results/*.tex)
+$(MAIN).pdf : $(shell find $(dir $(MAIN)) -name '*.tex')
 	@echo "latex2pdf $(MAIN)"
 	$(MAKE) clean
-	cd tex ; pdflatex $(MAIN) ; bibtex $(MAIN) ; pdflatex $(MAIN) ; pdflatex $(MAIN)
-	mv tex/$(MAIN).pdf doc
+	cd $(dir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; bibtex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN))
 
 %.pdf : %.odp
 	ooimpress --invisible --convert-to pdf $^
@@ -203,7 +202,7 @@ rrun-out :
 ARGS = -experiment2
 
 test :
-	$(MAKE) run
+	$(MAKE) pdf
 #	firefox doc/$(MAIN).pdf .build/doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################

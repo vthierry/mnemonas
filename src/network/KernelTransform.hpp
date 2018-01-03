@@ -83,10 +83,10 @@ public:
      * @param d The recurrent kernel index in <tt>{1, getKernelDimension()}</tt>.
      * @return The weight value.
      */
-    double getWeight(unsigned int n, unsigned int d) const {
+    double getWeight(unsigned int n, unsigned int d) const
+    {
       return n < N && 0 < d && d <= getKernelDimension(n) ? weights[offsets[n] + d] : 0;
     }
-
     /** Sets one weight \f$W_{nd}\f$ value.
      * - This routine is to be overriden if the weights are bounded (e.g. if positive). A typical implementation writes, e.g.:<pre>
      *  bool setWeight(unsigned int n, unsigned int d, double w) {
@@ -124,13 +124,13 @@ public:
      */
     KernelTransform& setWeightsRandom(double mean = 0.0, double sigma = 0.0, bool add = false, String mode = "normal", int seed = -1);
     double getValue(unsigned int n, double t) const;
-    double getValueDerivative(unsigned int n, double t, unsigned int n_, double t_) const {
+    double getValueDerivative(unsigned int n, double t, unsigned int n_, double t_) const
+    {
       double v = getKernelDerivative(n, 0, t, n_, t_);
       for(unsigned int d = 1; d <= getKernelDimension(n); d++)
-	v += getWeight(n, d) * getKernelDerivative(n, d, t, n_, t_);
+        v += getWeight(n, d) * getKernelDerivative(n, d, t, n_, t_);
       return v;
     }
-
     /** Returns the weight values as a JSON string. */
     std::string asString() const;
 

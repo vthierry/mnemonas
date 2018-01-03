@@ -39,7 +39,7 @@ void network::KernelDistributedEstimator::run_once(unsigned int batch_duration, 
     {
       assume(transform.getWeightCount() > 0, "illegal-argument", "in network::KernelDistributedEstimator::run_once : no weight to adjust");
       do
-	n = random::uniform(0, N), D = transform.getKernelDimension(n);
+        n = random::uniform(0, N), D = transform.getKernelDimension(n);
       while(D == 0);
     }
     // Randomly selects an epoch
@@ -59,11 +59,11 @@ void network::KernelDistributedEstimator::run_once(unsigned int batch_duration, 
     double u = solver::minimize(solver_minimize_e_f, -10, 10, 1e-1);
     line_search_values.add(u);
     line_search_counts.add(c_f);
-    printf("run_once { 'n': %d, 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", n, u, c_f, cost, cost < cost0, cost0 - cost, (cost0 - cost) / cost0 );
+    printf("run_once { 'n': %d, 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", n, u, c_f, cost, cost < cost0, cost0 - cost, (cost0 - cost) / cost0);
     // Restore initial weights if no improvement
-    if(cost < cost0) {
+    if(cost < cost0)
       cost0 = cost;
-    } else {
+    else {
       for(unsigned int d = 0; d < D; d++)
         transform.setWeight(n, d + 1, w0[d]);
       cost = cost0;
@@ -75,7 +75,7 @@ double network::KernelDistributedEstimator::solver_minimize_f(double u)
   c_f++;
   for(unsigned int d = 0; d < D_f; d++)
     transform.setWeight(n_f, d + 1, w0[d] + u * (w1[d] - w0[d]));
-  //- printf("\t{ '#': %d, 'u': %6.4f } %s\n", c_f, u, transform.asString().c_str());
+  // - printf("\t{ '#': %d, 'u': %6.4f } %s\n", c_f, u, transform.asString().c_str());
   return cost = criterion.rho();
 }
 double network::KernelDistributedEstimator::solver_minimize_e_f(double u)

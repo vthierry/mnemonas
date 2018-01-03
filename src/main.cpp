@@ -9,8 +9,8 @@
 #include "util/CurveFit_test.h"
 #include "util/ParameterOptimizer_test.h"
 #include "network/network_test.h"
-#include "../tex/Experimentation1.h"
-#include "../tex/Experimentation2.h"
+#include "../tex/BackwardTuning/Experimentation.h"
+#include "../tex/ReservoirAdjustment/Experimentation.h"
 
 void test()
 {
