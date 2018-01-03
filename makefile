@@ -148,8 +148,8 @@ $(MAIN).pdf : $(shell find $(dir $(MAIN)) -name '*.tex')
 
 clean :	
 	/bin/rm -f `find . -name '*~' -o -name '.#*#' -o -name '*.o'`
-	cd tex ; /bin/rm -f *.aux *.toc *.ind *.bbl *.blg *.dvi *.idx *.lof *.log *.ilg *.nav *.spl *.snm *.sol *.out
-	/bin/rm -rf .build stdout doc/$(MAIN).pdf
+	/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
+	/bin/rm -rf .build stdout
 
 git :
 	@echo "git sync"
@@ -202,7 +202,7 @@ rrun-out :
 ARGS = -experiment2
 
 test :
-	$(MAKE) pdf
+	$(MAKE) run
 #	firefox doc/$(MAIN).pdf .build/doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################
