@@ -30,8 +30,8 @@
 #include "network/SoftMaxTransform.hpp"
 
 #include "network/TransformCriterion.hpp"
-#include "network/TransformSupervisedCriterion.hpp"
-#include "network/TransformObservableCriterion.hpp"
+#include "network/SupervisedCriterion.hpp"
+#include "network/ObservableCriterion.hpp"
 #include "network/KernelEstimator.hpp"
 #include "network/KernelExperimentalEstimator.hpp"
 #include "network/KernelDistributedEstimator.hpp"

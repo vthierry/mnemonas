@@ -1,17 +1,17 @@
 #include "main.hpp"
 
-network::TransformSupervisedCriterion::TransformSupervisedCriterion(network::KernelTransform& transform, Input& values, char criterion, double nu, bool reinject) : network::TransformCriterion(transform), values(values), criterion(criterion), nu(nu), reinject(reinject), estimates(NULL), destimates(NULL)
+network::SupervisedCriterion::SupervisedCriterion(network::KernelTransform& transform, Input& values, char criterion, double nu, bool reinject) : network::TransformCriterion(transform), values(values), criterion(criterion), nu(nu), reinject(reinject), estimates(NULL), destimates(NULL)
 {
-  assume(0 <= nu, "illegal-argument", "in network::TransformSupervisedCriterion::TransformSupervisedCriterion the nu=%g must be non-negative criterion %c", nu, criterion);
+  assume(0 <= nu, "illegal-argument", "in network::SupervisedCriterion::SupervisedCriterion the nu=%g must be non-negative criterion %c", nu, criterion);
 }
 /// @cond INTERNAL
-network::TransformSupervisedCriterion::~TransformSupervisedCriterion()
+network::SupervisedCriterion::~SupervisedCriterion()
 {
   delete[] estimates;
   delete[] destimates;
 }
 ///@endcond
-double network::TransformSupervisedCriterion::rho(unsigned int n, double t) const
+double network::SupervisedCriterion::rho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);
   if(n < values.getN())
@@ -57,7 +57,7 @@ double network::TransformSupervisedCriterion::rho(unsigned int n, double t) cons
     }
   return 0;
 }
-double network::TransformSupervisedCriterion::drho(unsigned int n, double t) const
+double network::SupervisedCriterion::drho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);
   if(n < values.getN())
@@ -100,7 +100,7 @@ double network::TransformSupervisedCriterion::drho(unsigned int n, double t) con
     }
   return 0;
 }
-double network::TransformSupervisedCriterion::get(unsigned int n, double t) const
+double network::SupervisedCriterion::get(unsigned int n, double t) const
 {
   if(reinject) {
     if(estimates != NULL)
@@ -110,7 +110,7 @@ double network::TransformSupervisedCriterion::get(unsigned int n, double t) cons
   }
   return NAN;
 }
-void network::TransformSupervisedCriterion::update()
+void network::SupervisedCriterion::update()
 {
   if(reinject) {
     if(estimates == NULL) {
@@ -144,7 +144,7 @@ void network::TransformSupervisedCriterion::update()
       for(unsigned int t = 0; t < T; t++)
         for(unsigned int n = 0; n < N; n++)
           transform.set(n, t, estimates[n + t * N]);
-      // - printf("network::TransformSupervisedCriterion::update() r[%d] = %g\n", k, r); // @todo
+      // - printf("network::SupervisedCriterion::update() r[%d] = %g\n", k, r); // @todo
     }
   }
 }

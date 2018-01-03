@@ -192,7 +192,7 @@ public:
       delete transform;
       transform = transform0;
     }
-    network::TransformSupervisedCriterion scriterion(*transform, *output, criterion, 1e-1, reinject);
+    network::SupervisedCriterion scriterion(*transform, *output, criterion, 1e-1, reinject);
     network::KernelExperimentalEstimator estimator(*transform, scriterion);
     estimator.run(criterion_epsilon, 1e-4, maxIterations, verbose_but_nosave ? "stdout" : filename, header);
     fit = estimator.getFit();
@@ -282,7 +282,7 @@ public:
     // Returns a string view of the transform a posteriori Hamming distance and related binary errors.
     {
       std::string s;
-      network::TransformSupervisedCriterion scriterion(*transform, *output, 'h', 0);
+      network::SupervisedCriterion scriterion(*transform, *output, 'h', 0);
       network::KernelExperimentalEstimator error(*transform, scriterion);
       unsigned int count0 = 0, count1 = 0;
       for(unsigned int t = 0; t < T; t++) {

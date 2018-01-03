@@ -1,6 +1,6 @@
 namespace network {
 /** Defines a discrete-time recurrent input/output kernel transform estimator. */
-  class TransformObservableCriterion: public TransformCriterion {
+  class ObservableCriterion: public TransformCriterion {
 public:
     /** Defines an observable over an input.
      * - By contract:
@@ -63,20 +63,20 @@ public:
     /** Resets the criterion for a given statistics.
      * @param transform The kernel transform to estimate.
      * @param input The input to consider as a reference.
-     * @param observables The observables to take into account. They must be deleted after the TransformObservableCriterion yuse.
+     * @param observables The observables to take into account. They must be deleted after the ObservableCriterion yuse.
      * @param lambdas The observables weighted parameters, if any.
      */
-    TransformObservableCriterion(KernelTransform & transform, const Input &input, std::vector < Observable * > observables, const double *lambdas = NULL);
+    ObservableCriterion(KernelTransform & transform, const Input &input, std::vector < Observable * > observables, const double *lambdas = NULL);
 
     /** Resets the estimator for a given statistics.
      * @param transform The kernel transform to estimate.
-     * @param observables The observables to take into account. They must be deleted after the TransformObservableCriterion use.
+     * @param observables The observables to take into account. They must be deleted after the ObservableCriterion use.
      * @param values The observables values.
      * @param lambdas The observables weighted parameters, if any.
      */
-    TransformObservableCriterion(KernelTransform & transform, std::vector < Observable * > observables, const double *values, const double *lambdas = NULL);
+    ObservableCriterion(KernelTransform & transform, std::vector < Observable * > observables, const double *values, const double *lambdas = NULL);
     /// @cond INTERNAL
-    ~TransformObservableCriterion();
+    ~ObservableCriterion();
     ///@endcond
     double rho() const;
     double drho(unsigned int n, double t) const;

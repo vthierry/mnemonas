@@ -1,6 +1,6 @@
 namespace network {
   /** Defines a discrete-time recurrent input/output suprvised transform criterion. */
-  class TransformSupervisedCriterion: public TransformCriterion {
+  class SupervisedCriterion: public TransformCriterion {
     Input& values;
     int criterion;
     double nu;
@@ -24,9 +24,9 @@ public:
      * @param nu The criterion margin parameter.
      * @param reinject If true, backpropagate desired values in order to match the output values.
      */
-    TransformSupervisedCriterion(KernelTransform & transform, Input & values, char criterion = '2', double nu = 1e-3, bool reinject = true);
+    SupervisedCriterion(KernelTransform & transform, Input & values, char criterion = '2', double nu = 1e-3, bool reinject = true);
     /// @cond INTERNAL
-    virtual ~TransformSupervisedCriterion();
+    virtual ~SupervisedCriterion();
     ///@endcond
     virtual double rho(unsigned int n, double t) const;
     virtual double drho(unsigned int n, double t) const;

@@ -1,41 +1,41 @@
 #include "main.hpp"
 #include <stdarg.h>
 
-network::TransformObservableCriterion::Observable::Observable(String name) : name(name), value(NAN), input(NULL) {}
+network::ObservableCriterion::Observable::Observable(String name) : name(name), value(NAN), input(NULL) {}
 /// @cond INTERNAL
-network::TransformObservableCriterion::Observable::~Observable() {}
+network::ObservableCriterion::Observable::~Observable() {}
 ///@endcond
-network::TransformObservableCriterion::Observable& network::TransformObservableCriterion::Observable::reset(const network::Input& input_)
+network::ObservableCriterion::Observable& network::ObservableCriterion::Observable::reset(const network::Input& input_)
 {
   input = &input_;
   value = doValue();
   return *this;
 }
-std::string network::TransformObservableCriterion::Observable::asString() const
+std::string network::ObservableCriterion::Observable::asString() const
 {
   return s_printf("{ 'name' = '%s', 'value' = '%g' }", name.c_str(), value);
 }
-double network::TransformObservableCriterion::Observable::getValue() const
+double network::ObservableCriterion::Observable::getValue() const
 {
-  assume(input != NULL, "illegal-state", "in network::TransformObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
+  assume(input != NULL, "illegal-state", "in network::ObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
   return value;
 }
-double network::TransformObservableCriterion::Observable::getValueDerivative(unsigned int n, double t) const
+double network::ObservableCriterion::Observable::getValueDerivative(unsigned int n, double t) const
 {
-  assume(input != NULL, "illegal-state", "in network::TransformObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
+  assume(input != NULL, "illegal-state", "in network::ObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
   return const_cast < Observable * > (this)->doValueDerivative(n, t);
 }
-double network::TransformObservableCriterion::Observable::doValue()
+double network::ObservableCriterion::Observable::doValue()
 {
-  assume(false, "illegal-state", "in network::TransformObservableCriterion::Observable::doValue, this virtual method must be overriden");
+  assume(false, "illegal-state", "in network::ObservableCriterion::Observable::doValue, this virtual method must be overriden");
   return NAN;
 }
-double network::TransformObservableCriterion::Observable::doValueDerivative(unsigned int n, double t)
+double network::ObservableCriterion::Observable::doValueDerivative(unsigned int n, double t)
 {
-  assume(false, "illegal-state", "in network::TransformObservableCriterion::Observable::doValueDerivative, this virtual method must be overriden");
+  assume(false, "illegal-state", "in network::ObservableCriterion::Observable::doValueDerivative, this virtual method must be overriden");
   return NAN;
 }
-network::TransformObservableCriterion::TransformObservableCriterion(KernelTransform& transform, std::vector < Observable * > observables_, const double *values_, const double *lambdas_) : network::TransformCriterion(transform)
+network::ObservableCriterion::ObservableCriterion(KernelTransform& transform, std::vector < Observable * > observables_, const double *values_, const double *lambdas_) : network::TransformCriterion(transform)
 {
   // Stores the observables as an array
   {
@@ -58,20 +58,20 @@ network::TransformObservableCriterion::TransformObservableCriterion(KernelTransf
       values[k] = values_ == NULL ? 0 : values_[k];
   }
 }
-network::TransformObservableCriterion::TransformObservableCriterion(KernelTransform& transform, const Input& input, std::vector < Observable * > observables_, const double *lambdas_) : TransformObservableCriterion(transform, observables_, NULL, lambdas_)
+network::ObservableCriterion::ObservableCriterion(KernelTransform& transform, const Input& input, std::vector < Observable * > observables_, const double *lambdas_) : ObservableCriterion(transform, observables_, NULL, lambdas_)
 {
   for(unsigned int k = 0; k < dimension; k++)
     values[k] = observables[k]->reset(input).getValue();
 }
 /// @cond INTERNAL
-network::TransformObservableCriterion::~TransformObservableCriterion()
+network::ObservableCriterion::~ObservableCriterion()
 {
   delete[] observables;
   delete[] lambdas;
   delete[] values;
 }
 ///@endcond
-double network::TransformObservableCriterion::rho() const
+double network::ObservableCriterion::rho() const
 {
   transform.reset(true);
   // -printf("W : %s\n", transform.asString().c_str());
@@ -88,7 +88,7 @@ double network::TransformObservableCriterion::rho() const
   }
   return v;
 }
-double network::TransformObservableCriterion::drho(unsigned int n, double t) const
+double network::ObservableCriterion::drho(unsigned int n, double t) const
 {
   double v = 0;
   for(unsigned int k = 0; k < dimension; k++) {
@@ -97,12 +97,12 @@ double network::TransformObservableCriterion::drho(unsigned int n, double t) con
   }
   return v;
 }
-double network::TransformObservableCriterion::getObservableExpectedValue(unsigned int k) const
+double network::ObservableCriterion::getObservableExpectedValue(unsigned int k) const
 {
-  assume(k < dimension, "illegal-argument", "in network::TransformObservableCriterion::getObservableExpectedValue the index k=%d must be in {0, %d{", k, dimension);
+  assume(k < dimension, "illegal-argument", "in network::ObservableCriterion::getObservableExpectedValue the index k=%d must be in {0, %d{", k, dimension);
   return values[k];
 }
-network::TransformObservableCriterion::Observable *network::TransformObservableCriterion::getObservable(String name, ...)
+network::ObservableCriterion::Observable *network::ObservableCriterion::getObservable(String name, ...)
 {
   va_list a;
   va_start(a, name);
@@ -117,7 +117,7 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::TransformObservableCriterion::MeanObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
+        assume(n0 < input->getN(), "illegal-argument", "network::ObservableCriterion::MeanObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
         count = sum = 0;
         for(unsigned int t = 0; t < input->getT(); t++)
           count++, sum += input->get(n0, t);
@@ -141,8 +141,8 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::TransformObservableCriterion::IcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
-        assume(m0 < input->getN(), "illegal-argument", "network::TransformObservableCriterion::IcorrObservable the unit index m0=%d must be in {0, %d{", m0, input->getN());
+        assume(n0 < input->getN(), "illegal-argument", "network::ObservableCriterion::IcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
+        assume(m0 < input->getN(), "illegal-argument", "network::ObservableCriterion::IcorrObservable the unit index m0=%d must be in {0, %d{", m0, input->getN());
         count = sum = 0;
         for(unsigned int t = 0; t < input->getT(); t++)
           count++, sum += input->get(n0, t) * input->get(m0, t);
@@ -167,9 +167,9 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::TransformObservableCriterion::AcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
-        assume(tau < input->getT(), "illegal-argument", "network::TransformObservableCriterion::AcorrObservable the time shift tau=%d must be in {0, %d{", tau, input->getT());
-        assume(tau <= 16, "illegal-argument", "network::TransformObservableCriterion::AcorrObservable the time shift tau=%d is numerically unrealistic, must be in {0, 16}", tau);
+        assume(n0 < input->getN(), "illegal-argument", "network::ObservableCriterion::AcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
+        assume(tau < input->getT(), "illegal-argument", "network::ObservableCriterion::AcorrObservable the time shift tau=%d must be in {0, %d{", tau, input->getT());
+        assume(tau <= 16, "illegal-argument", "network::ObservableCriterion::AcorrObservable the time shift tau=%d is numerically unrealistic, must be in {0, 16}", tau);
         count = sum = 0;
         for(int t = tau; t < input->getT(); t++)
           count++, sum += input->get(n0, t) * input->get(n0, t - tau);
@@ -183,17 +183,17 @@ protected:
     return new AcorrObservable(n0, tau);
   } else {
     va_end(a);
-    assume(false, "illegal-argument", "in network::TransformObservableCriterion::getObservable undefined predefined observable name '%s", name.c_str());
+    assume(false, "illegal-argument", "in network::ObservableCriterion::getObservable undefined predefined observable name '%s", name.c_str());
     Observable o("none");
     return NULL;
   }
 }
-std::vector < network::TransformObservableCriterion::Observable * > network::TransformObservableCriterion::getObservables(String name, ...) {
+std::vector < network::ObservableCriterion::Observable * > network::ObservableCriterion::getObservables(String name, ...) {
   va_list a;
   va_start(a, name);
   if(name == "mean") {
     unsigned int N = va_arg(a, unsigned int);
-    assume(0 < N && N <= 32, "illegal-argument", "network::TransformObservableCriterion::getObservables the number of unit N=%d is numerically unrealistic, must be in {1, 32}", N);
+    assume(0 < N && N <= 32, "illegal-argument", "network::ObservableCriterion::getObservables the number of unit N=%d is numerically unrealistic, must be in {1, 32}", N);
     va_end(a);
     std::vector < Observable * > observables;
     for(unsigned int n = 0; n < N; n++)
@@ -201,7 +201,7 @@ std::vector < network::TransformObservableCriterion::Observable * > network::Tra
     return observables;
   } else if(name == "icorr") {
     unsigned int N = va_arg(a, unsigned int);
-    assume(0 < N && N <= 8, "illegal-argument", "network::TransformObservableCriterion::getObservables the number of unit N=%d is numerically unrealistic, must be in {1, 8}", N);
+    assume(0 < N && N <= 8, "illegal-argument", "network::ObservableCriterion::getObservables the number of unit N=%d is numerically unrealistic, must be in {1, 8}", N);
     va_end(a);
     std::vector < Observable * > observables;
     for(unsigned int n = 0; n < N; n++)
@@ -213,7 +213,7 @@ std::vector < network::TransformObservableCriterion::Observable * > network::Tra
   } else if(name == "acorr") {
     unsigned int N = va_arg(a, unsigned int);
     unsigned int tau = va_arg(a, unsigned int);
-    assume(0 < N && N * tau <= 32, "illegal-argument", "network::TransformObservableCriterion::getObservables the number of unit N=%d and/or tau=%d is numerically unrealistic, must tau * N = %d be in {0, 32}, while 0 < N", N, tau);
+    assume(0 < N && N * tau <= 32, "illegal-argument", "network::ObservableCriterion::getObservables the number of unit N=%d and/or tau=%d is numerically unrealistic, must tau * N = %d be in {0, 32}, while 0 < N", N, tau);
     va_end(a);
     std::vector < Observable * > observables;
     for(unsigned int n = 0; n < N; n++)
@@ -224,12 +224,12 @@ std::vector < network::TransformObservableCriterion::Observable * > network::Tra
     return observables;
   } else {
     va_end(a);
-    assume(false, "illegal-argument", "in network::TransformObservableCriterion::getObservables undefined predefined observable name '%s", name.c_str());
+    assume(false, "illegal-argument", "in network::ObservableCriterion::getObservables undefined predefined observable name '%s", name.c_str());
     std::vector < Observable * > observables;
     return observables;
   }
 }
-void network::TransformObservableCriterion::deleteObservables(std::vector < network::TransformObservableCriterion::Observable * >& observables)
+void network::ObservableCriterion::deleteObservables(std::vector < network::ObservableCriterion::Observable * >& observables)
 {
   for(std::vector < Observable * > ::const_iterator i = observables.begin(); i != observables.end(); ++i)
     delete *i;
