@@ -1,5 +1,5 @@
 namespace network {
-/** Defines an input/output transform. */
+  /** Defines an input/output transform. */
   class Transform: public Input {
 protected:
     const Input& input;

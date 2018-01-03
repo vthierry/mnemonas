@@ -11,12 +11,14 @@ namespace network {
  * |  \f$(n+N,n_d)\f$  | \f$n_d \in \{0,D\{\f$ | Recurrent weights \f$W_{nn_d}\f$        |
  * |  \f$(n+N,D+m)\f$  | \f$m  \in \{0,M\{\f$  | Input weights \f$W_{nm}\f$              |
  * with \f$n_1 = N - n\f$.
- * - In order to avoid unbounded values, since using a ReLU profile, a saturation at \f$\pm10^{10}\f$ is introduced.
+ * - In order to avoid unbounded values, since using a ReLU profile, a saturation at \f$\pm10^{6}\f$ is introduced.
  */
   class SparseNonLinearTransform: public KernelTransform {
 private:
     unsigned int N, D, *indexes;
+    bool *connected;
     double leak;
+    const double SAT = 10e6;
 public:
     /** Resets the transform for the given parameters.
      * @param N The number of input units, defined unit indexes stand in <tt>{0, N{</tt>.
@@ -24,6 +26,11 @@ public:
      * @param input The transform input.
      */
     SparseNonLinearTransform(unsigned int N, const Input &input);
+
+    /** Resets the transform for the given parameters and connection.
+     * @param transform The root sparse transform.
+     */
+    SparseNonLinearTransform(const SparseNonLinearTransform &transform);
 
     /** Sets a fixed common leak for this network.
      * @param value The leak value \f$\gamma\f$ for all units.
@@ -38,9 +45,18 @@ public:
      */
     SparseNonLinearTransform& setConnections(unsigned int D = 0, int seed = -1);
     ~SparseNonLinearTransform();
-    KernelTransform& setWeights(KernelTransform& network);
-    unsigned int getKernelDimension(unsigned int n) const;
+    KernelTransform& setWeights(const KernelTransform& network);
+    unsigned int getKernelDimension(unsigned int n) const {
+      return n < N ? 0 : D + input.getN();
+    }
     double getKernelValue(unsigned int n, unsigned int d, double t) const;
-    double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const;
+    double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const{
+      return n < N ? (d == 0 ? (n_ == n && t_ == t - 1 ? leak : (n_ == N + n && t_ == t && get(n_, t) > 0 && get(n_, t) <= SAT ? 1 : 0)) : 0) :
+	(0 < d && d <= D && n_ == indexes[d - 1 + (n - N) * D] && t_ == t - 1 ? 1 : 0);
+    }
+
+    bool isConnected(unsigned int n, unsigned int n_) const {
+      return n < N ? n_ == n || n_ == N + n : n_ < N && connected[n_ + (n - N) * N];
+    }
   };
 }

@@ -15,7 +15,8 @@
 #include "util/random.hpp"
 #include "util/solver.hpp"
 #include "util/Histogram.hpp"
-#include "util/ExponentialDecayFit.hpp"
+#include "util/CurveFit.hpp"
+#include "util/ParameterOptimizer.hpp"
 
 #include "network/Input.hpp"
 #include "network/BufferedInput.hpp"
@@ -27,6 +28,10 @@
 #include "network/SparseNonLinearTransform.hpp"
 #include "network/IntegrateAndFireTransform.hpp"
 #include "network/SoftMaxTransform.hpp"
+
+#include "network/TransformCriterion.hpp"
+#include "network/TransformSupervisedCriterion.hpp"
+#include "network/TransformObservableCriterion.hpp"
 #include "network/KernelEstimator.hpp"
-#include "network/KernelSupervisedEstimator.hpp"
-#include "network/KernelObservableEstimator.hpp"
+#include "network/KernelExperimentalEstimator.hpp"
+#include "network/KernelDistributedEstimator.hpp"

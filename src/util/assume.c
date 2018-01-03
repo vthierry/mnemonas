@@ -4,17 +4,19 @@
 #include <stdarg.h>
 #include <signal.h>
 
-void assume(bool condition, String thrown, const char *message, ...)
+void assume(bool condition, String thrown, String message, ...)
 {
-  bool simple_warning = thrown[0] == ' ';
-  static const unsigned int nchars = 10000;
-  static char chars[nchars];
   if(!condition) {
-    va_list a;
-    va_start(a, message);
-    vsnprintf(chars, nchars, message, a);
-    va_end(a);
-    fprintf(stderr, "Runtime %s '%s' : %s\n", simple_warning ? "warning" : "fatal error", thrown.c_str(), chars);
+    const unsigned int chars_buffer_size = 10000;
+    char chars_buffer[chars_buffer_size];
+    {
+      va_list a;
+      va_start(a, message);
+      vsnprintf(chars_buffer, chars_buffer_size, message.c_str(), a);
+      va_end(a);
+    }
+    bool simple_warning = thrown[0] == ' ';
+    fprintf(stderr, "Runtime %s '%s' : %s\n", simple_warning ? "warning" : "fatal error", thrown.c_str(), chars_buffer);
     if(simple_warning)
       return;
 #ifdef WIN32

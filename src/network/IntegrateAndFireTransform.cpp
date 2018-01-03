@@ -57,9 +57,9 @@ bool network::IntegrateAndFireTransform::setWeight(unsigned int n, unsigned int 
   else
     return KernelTransform::setWeight(n, d, w);
 }
-network::KernelTransform& network::IntegrateAndFireTransform::setWeights(network::KernelTransform& network)
+network::KernelTransform& network::IntegrateAndFireTransform::setWeights(const network::KernelTransform& network)
 {
-  assume(dynamic_cast < IntegrateAndFireTransform * > (&network) != NULL, "illegal-argument", "in network::IntegrateAndFireTransform::setWeights wrong network type");
+  assume(dynamic_cast < const IntegrateAndFireTransform * > (&network) != NULL, "illegal-argument", "in network::IntegrateAndFireTransform::setWeights wrong network type");
   unsigned int N0 = getN() < network.getN() ? getN() : network.getN();
   for(unsigned int n = 0; n < N0 / 2; n++)
     for(unsigned int k = 0, k0 = 0, k1 = 0; k < 2; k++, k0 += getN() / 2, k1 += network.getN() / 2)
@@ -98,4 +98,8 @@ double network::IntegrateAndFireTransform::getKernelDerivative(unsigned int n, u
            n_ == n + N && t_ == t ? -0.5 * dzeta(get(n_, t)) * get(n, t - 1) : 0) :
           3 <= d && d < N + 3 && n_ == N + d - 3 && t_ == t ? dzeta(get(n_, t)) : 0) :
          d == 1 && n_ == n - N && t_ == t - 1 ? 1 : 0;
+}
+bool network::IntegrateAndFireTransform::isConnected(unsigned int n, unsigned int n_) const
+{
+  return n < N ? (n_ == n || N <= n_) : n_ == n - N;
 }

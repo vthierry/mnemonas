@@ -55,9 +55,25 @@ void network_test()
     network::BufferedInput output(transform1, N0);
     network::LinearTransform transform2(transform1);
     transform2.setWeightsRandom(0, 0.05 / N, true, "normal", 0);
-    network::KernelSupervisedEstimator estimator(transform2, output);
+    network::TransformSupervisedCriterion criterion(transform2, output);
+    network::KernelExperimentalEstimator estimator(transform2, criterion);
     double err = estimator.run(1e-12, 1e-4, 100, "");
-    assume(err < 1e-12, "illegal-state", "in network_test/KernelSupervisedEstimator over-threshold error = %g\n", err);
+    assume(err < 1e-12, "illegal-state", "in network_test/KernelSupervisedEstimation over-threshold error = %g\n", err);
+  }
+  // Tests the recurrent weight estimation mechanism with distributed estimator
+  {
+    static const unsigned int M = 1, N = 2, N0 = 2, T = 10;
+    network::BufferedInput input("normal", M, T, true);
+    network::LinearTransform transform1(N, input);
+    transform1.setWeight(0, 2, 0.1), transform1.setWeight(0, 3, 0.3), transform1.setWeight(0, 4, 0.0);
+    transform1.setWeight(1, 2, -.2), transform1.setWeight(1, 3, 0.4), transform1.setWeight(1, 4, 0.5);
+    network::BufferedInput output(transform1, N0);
+    network::LinearTransform transform2(transform1);
+    transform2.setWeightsRandom(0, 0.05 / N, true, "normal", 0);
+    network::TransformSupervisedCriterion criterion(transform2, output);
+    network::KernelDistributedEstimator estimator(transform2, criterion);
+    double err = estimator.run();
+    assume(err < 1e-6, "illegal-state", "in network_test/KernelSupervisedEstimation over-threshold error = %g\n", err);
   }
   // Tests the different model basic mechanism
   {
@@ -102,7 +118,8 @@ void network_test()
         network::BufferedInput output(*transform1, N0);
         network::KernelTransform *transform2 = newKernelTransform(type, N, input);
         transform2->setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-        network::KernelSupervisedEstimator estimator(*transform2, output, '2', 1, false);
+        network::TransformSupervisedCriterion criterion(*transform2, output, '2', 1, false);
+        network::KernelExperimentalEstimator estimator(*transform2, criterion);
         double err = estimator.run(1e-3, 1e-4, 100, "");
         assume(err < 1e-3, "illegal-state", "in network_test/testReverseEngineering for the model '%s' over-threshold error = %g\n", type.c_str(), err);
         delete transform1;
@@ -139,7 +156,8 @@ public:
           type == 'b' ? 1 :
           type == 'h' ? 1e-6 :
           0;
-        network::KernelSupervisedEstimator estimator(transform2, output, type, nu);
+        network::TransformSupervisedCriterion criterion(transform2, output, type, nu);
+        network::KernelExperimentalEstimator estimator(transform2, criterion);
         double err0 =
           type == '2' ? 1e-12 :
           type == '1' ? 1e-12 :
@@ -173,11 +191,11 @@ public:
         for(unsigned int n = 0; n < 3; n++) {
           unsigned int N = names[n][0] == 'i' ? 2 : 1;
           network::BufferedInput output(names[n], N, T, 0.12345);
-          std::vector < network::KernelObservableEstimator::Observable * > observables =
-            network::KernelObservableEstimator::getObservables(names[n], N, /* tau = */ 1);
+          std::vector < network::TransformObservableCriterion::Observable * > observables =
+            network::TransformObservableCriterion::getObservables(names[n], N, /* tau = */ 1);
           network::Input input(0, 0);
           network::KernelTransform transform(0, 0, input);
-          network::KernelObservableEstimator estimator(transform, output, observables);
+          network::TransformObservableCriterion criterion(transform, output, observables);
           double values[5], err = 0;
           if(names[n][0] == 'm')
             values[0] = 0.12345;
@@ -186,9 +204,9 @@ public:
           else if(names[n][0] == 'a')
             values[0] = values[3] = 0, values[1] = 1, values[2] = 0.12345;
           for(unsigned int k = 0; k < observables.size(); k++)
-            err += fabs(estimator.getObservableExpectedValue(k) - values[k]);
+            err += fabs(criterion.getObservableExpectedValue(k) - values[k]);
           assume(err < 1e-2, "illegal-state", "in network_test/testObservables for the observables '%s' over-threshold error = %g\n", names[n], err);
-          network::KernelObservableEstimator::deleteObservables(observables);
+          network::TransformObservableCriterion::deleteObservables(observables);
         }
       }
       static void testObservablesEstimation()
@@ -197,13 +215,14 @@ public:
         network::BufferedInput input("normal", 1, T, true);
         network::LinearNonLinearTransform transform(N, input, -2, 2);
         transform.setOffset(NAN).setLeak(NAN).setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-        std::vector < network::KernelObservableEstimator::Observable * > observables =
-          network::KernelObservableEstimator::getObservables("acorr", N0, 1);
+        std::vector < network::TransformObservableCriterion::Observable * > observables =
+          network::TransformObservableCriterion::getObservables("acorr", N0, 1);
         double values[3] = { 0.2345, 0.3456, 0.1234 };
-        network::KernelObservableEstimator estimator(transform, observables, values);
+        network::TransformObservableCriterion criterion(transform, observables, values);
+        network::KernelExperimentalEstimator estimator(transform, criterion);
         double err = estimator.run(1e-3, 1e-4, 1000, "");
         assume(err < 1e-3, "illegal-state", "in network_test/testObservablesEstimation over-threshold error = %g\n", err);
-        network::KernelObservableEstimator::deleteObservables(observables);
+        network::TransformObservableCriterion::deleteObservables(observables);
       }
     }
     test;

@@ -31,6 +31,10 @@ double network::RecurrentTransform::getValueDerivative(unsigned int n, double t,
   assume(false, "illegal-state", "in network::RecurrentTransform::get, this virtual method must be overridden");
   return NAN;
 }
+bool network::RecurrentTransform::isConnected(unsigned int n, unsigned int n_) const
+{
+  return true;
+}
 double network::RecurrentTransform::get(unsigned int n, double t_) const
 {
   assume(n < N, "illegal-argument", "in network::RecurrentTransform::get unit index out of range, we must have n=%d in {0, %d{", n, N);
@@ -80,4 +84,8 @@ double network::RecurrentTransform::getValueDerivativeApproximation(unsigned int
   double v_m = getValue(n, t);
   values[nit] = x_nt_;
   return 0.5 * (v_p - v_m) / epsilon;
+}
+std::string network::RecurrentTransform::asString() const
+{
+  return s_printf("{ 'N' : %d, 'R' : %d, 'L' : %d, 'M' : %d, 'T' : %.0f }", N, R, L, input.getN(), input.getT());
 }

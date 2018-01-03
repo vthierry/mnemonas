@@ -27,7 +27,7 @@ public:
      * @return this.
      */
     RecurrentTransform& reset(bool buffered = false);
-    /** Gets the maximal recuurent range. */
+    /** Gets the maximal recurrent range. */
     unsigned int getR() const
     {
       return R;
@@ -57,7 +57,7 @@ public:
      * @param n The input unit index.
      * @param t The value time.
      * - Recurrent values at time <tt>t', t - R <= t' < t</tt> can be called.
-     * @param n_ The input unit index denominator.
+     * @param n_ The afferent input unit index denominator.
      * @param t_ The value time denominator.
      * @return The input value derivate if defined, 0 in the abscence of dependence, else raises a fatal error.
      * - If the recurrent equation writes
@@ -66,6 +66,14 @@ public:
      * <center>\f$\frac{\partial \Phi_{nt}}{\partial x_{n'}(t')}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)\f$,</center>
      */
     virtual double getValueDerivative(unsigned int n, double t, unsigned int n_, double t_) const;
+
+    /** Checks if two units are connected.
+     * - The method is to be overwritten to implement sparse connected networks.
+     * @param n The efferent input unit index.
+     * @param n_ The afferent input unit index denominator.
+     * @return False if the unit of index <tt>n_</tt> never connects to the unit of index <tt>n</tt>, true if the connection is to be checked via getValueDerivative()
+     */
+    virtual bool isConnected(unsigned int n, unsigned int n_) const;
 
     /** Calculates the numerical approximate value derivative.
      * - This is only used for debugging purpose to check the coherence between getValue() and getValureDerivative().
@@ -78,5 +86,7 @@ public:
      * <center>\f$\frac{\left.getValue(n, t)\right|_{x_{n'}(t') += \epsilon}-\left.getValue(n, t)\right|_{x_{n'}(t') -= \epsilon}}{\epsilon}\f$</center>
      */
     double getValueDerivativeApproximation(unsigned int n, double t, unsigned int n_, double t_, double epsilon = 1e-3) const;
+    /** Returns the transform parameters as a JSON string. */
+    std::string asString() const;
   };
 }

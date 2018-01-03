@@ -5,7 +5,7 @@ class Experimentation1 {
   std::string header;
   network::Input *input, *output;
   network::KernelTransform *transform;
-  ExponentialDecayFit fit;
+  CurveFit fit;
   unsigned int seed;
   bool verbose_but_nosave;
 public:
@@ -70,17 +70,17 @@ public:
      * @param v The variable parameter corresponding value.
      * @param fit The related exponential decy fit.
      */
-    void add(String v, const ExponentialDecayFit& fit)
+    void add(String v, const CurveFit& fit)
     {
       count++;
       l0 += "c";
       l1 += s_printf(" & %s", v.c_str());
       l2 += s_printf(" & %.0f", fit.getCount());
-      l3 += s_printf(" & %.1e", fit.getMinimalValue());
+      l3 += s_printf(" & %.1e", fit.getHistogram().get("min"));
       l4 += s_printf(" & %.0f", fit.getDecay());
       l5 += s_printf(" & %.1e", fit.getBias());
     }
-    void add(double v, const ExponentialDecayFit& fit)
+    void add(double v, const CurveFit& fit)
     {
       add(s_printf("%g", v), fit);
     }
@@ -89,7 +89,7 @@ public:
      * @param v2 The 2nd variable parameter corresponding value.
      * @param fit The related exponential decy fit.
      */
-    void add2(double v1, double v2, const ExponentialDecayFit& fit)
+    void add2(double v1, double v2, const CurveFit& fit)
     {
       add(s_printf("%g", v1), fit);
       l6 += s_printf(" & %g", v2);
@@ -192,7 +192,8 @@ public:
       delete transform;
       transform = transform0;
     }
-    network::KernelSupervisedEstimator estimator(*transform, *output, criterion, 1e-1, reinject);
+    network::TransformSupervisedCriterion scriterion(*transform, *output, criterion, 1e-1, reinject);
+    network::KernelExperimentalEstimator estimator(*transform, scriterion);
     estimator.run(criterion_epsilon, 1e-4, maxIterations, verbose_but_nosave ? "stdout" : filename, header);
     fit = estimator.getFit();
   }
@@ -281,7 +282,8 @@ public:
     // Returns a string view of the transform a posteriori Hamming distance and related binary errors.
     {
       std::string s;
-      network::KernelSupervisedEstimator error(*transform, *output, 'h', 0);
+      network::TransformSupervisedCriterion scriterion(*transform, *output, 'h', 0);
+      network::KernelExperimentalEstimator error(*transform, scriterion);
       unsigned int count0 = 0, count1 = 0;
       for(unsigned int t = 0; t < T; t++) {
         double v = (output->get(0, t) - 0.5) * (transform->get(0, t) - 0.5);
@@ -292,9 +294,8 @@ public:
             count1++;
         }
         s += s_printf("%s%.0f,%.2f#%c%s", t == 0 ? "> |" : "|", output->get(0, t), transform->get(0, t),
-                      v < 0 ? '-' : '+', t < T - 1 ? "" : s_printf("| error = (>0 = %d | <1 = %d)= %d / %d = %.0f%% === %0.f%%\n",
-                                                                   count0, count1, (count0 + count1), T, 100.0 * (count0 + count1) / T,
-                                                                   100 * error.network::KernelEstimator::rho()).c_str());
+                      v < 0 ? '-' : '+', t < T - 1 ? "" : s_printf("| error = (>0 = %d | <1 = %d)= %d / %d = %.0f%%\n",
+                                                                   count0, count1, (count0 + count1), T, 100.0 * (count0 + count1) / T));
       }
       std::string filename = s_printf("tex/results/sequence_generation/sequence_errors_%s_criterion=%c_N=%d_T=%d.txt", type.c_str(), criterion, transform->getN(), T);
       // - printf("> %s\n", s.c_str());
@@ -309,7 +310,7 @@ public:
     if(file_tobedone(filename)) {
       ResultTable result("Number of units", "Sequence length", "Node type", type, false);
       for(unsigned int N = 2; N <= 8; N++) {
-        ExponentialDecayFit fit1;
+        CurveFit fit1;
         unsigned int T = 0, Tmin = N == 2 ? 2 : N / 2, Tmax = 1 + 2 * N * N;
         initReuse();
         for(T = Tmin; T <= Tmax; T++) {
@@ -338,7 +339,7 @@ public:
         for(unsigned int l = 0; l < 1; l++)
           run_sequence_generation(names[n], types[k], criteria[l][0]);
   }
-  /** Runs all experiments. */
+  /** Runs these experiments. */
   void run(Struct what = "{}")
   {
     printf(">  Experiment1(%s) ... \n", ((String) what).c_str());

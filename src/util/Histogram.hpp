@@ -1,3 +1,6 @@
+#ifndef HISTOGRAM_HPP
+#define HISTOGRAM_HPP
+
 #include <cmath>
 #include <map>
 
@@ -107,3 +110,5 @@ public:
    */
   void plot(String file, String model = "", bool show = false);
 };
+
+#endif

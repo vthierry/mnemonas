@@ -26,9 +26,9 @@ bool network::LinearTransform::setWeight(unsigned int n, unsigned int d, double 
   else
     return KernelTransform::setWeight(n, d, w);
 }
-network::KernelTransform& network::LinearTransform::setWeights(network::KernelTransform& network)
+network::KernelTransform& network::LinearTransform::setWeights(const network::KernelTransform& network)
 {
-  assume(dynamic_cast < LinearTransform * > (&network) != NULL, "illegal-argument", "in network::LinearTransform::setWeights wrong network type");
+  assume(dynamic_cast < const LinearTransform * > (&network) != NULL, "illegal-argument", "in network::LinearTransform::setWeights wrong network type");
   unsigned int N0 = getN() < network.getN() ? getN() : network.getN();
   for(unsigned int n = 0; n < N0; n++)
     for(unsigned int d = 1; d < getKernelDimension(n); d++)
@@ -58,4 +58,8 @@ double network::LinearTransform::getKernelDerivative(unsigned int n, unsigned in
 {
   assume(n < N && d <= getKernelDimension(n) && n_ < N, "illegal-argument", "network::LinearTransform::getKernelDerivative(%d, %d, t, %d, t_) out of bounds", n, d, n_);
   return (1 < d && n_ == d - 2 && t_ == t - 1 && d <= getN() + 1) ? 1 : 0;
+}
+bool network::LinearTransform::isConnected(unsigned int n, unsigned int n_) const
+{
+  return true;
 }

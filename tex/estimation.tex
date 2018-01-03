@@ -12,7 +12,7 @@ where $\tilde{x}_n(t)$ is a shortcut for equation~(\ref{eq-recurrent}):
 \tilde{x}_n(t) &\deq& \Phi_{n0t}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right) \\
  &+& \sum_{d = 1}^{D_{n}} W_{nd} \, \Phi_{ndt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)
 \end{array} \right.}
-while $\varepsilon_{nt}$ are Lagrange multipliers, and in most of the case\footnote{More precisely, here, in the deterministic case, a simple additive criterion is used, while this is not the case for statistical criterion, as further discussed in appendix~\ref{application} and~\ref{stochastic}.} we use:
+while $\varepsilon_{nt}$ are Lagrange multipliers, and in most of the cases\footnote{More precisely, here, in the deterministic case, a simple additive criterion is used, while this is not the case for statistical criterion, as further discussed in appendix~\ref{application} and~\ref{stochastic}.} we use:
 \eqline{\rho(\cdots, x_n(t), \cdots) \deq \sum_{nt} \rho_{nt}(x_n(t)).}
 
 Here $\rho()$ is a cost-function (acting both as supervised or unsupervised variational term) and ${\cal R}({\bf W})$ some regularization term, as made explicit in Appendix~\ref{application}. The cost function includes both the term attached to the data, i.e., the fact that output values have a desired values, and regularization. These ingredients can be used to get the approximate desired output, yield sparse estimation, reduce artifact influence, obtain activity orthogonality, etc (see Appendix~\ref{application} for details).
@@ -58,7 +58,7 @@ The forward simulation complexity corresponds to the network simulation and is o
 
 The equation $\partial_{x_{n'}(t')} {\cal L}  = 0$ also provides a closed-form formula to evaluate $\varepsilon_{n't'}$ as a linear function of subsequent values $\varepsilon_{nt}, t > t'$, so that the calculation is to be done from the last time $t = T-1$ backward to the first time $t = 0$:
 \begin{equation} \label{backward-tuning}
-\varepsilon_{n't'} = \rho'_{nt} + \sum_{nt} \beta_{nt}^{n't'} \, \varepsilon_{nt}.
+\varepsilon_{n't'} = \rho'_{n't'} + \sum_{nt} \beta_{nt}^{n't'} \, \varepsilon_{nt}.
 \end{equation}
 
 This is the key feature of such a variational approach, allowing backward tuning, i.e., take into account the fact that adjusting the system parameters for a node $n$ at time $t$ is interdependent with the state of subsequent computations.
@@ -166,7 +166,7 @@ in words find the state values for which the simulation errors yielding the desi
  \Phi_{nt}\left(\cdots, \hat{x}^{k-1}_{n'}(t'), \cdots\right) - \sum_{nt} \beta_{nt}^{n't'} \, (\hat{x}^{k-1}_{n}(t) - \Phi_{nt}\left(\cdots, \hat{x}^{k-1}_{n'}(t'), \cdots\right)) & N_0 \leq n', \end{array}\right.}
 i.e., the simulation value is corrected considering a backward propagation of the simulation error.
 
-In fact, it is to verify that we implicitly solve a system of $N\,T$ equations in $N\,T$ unknowns, the numerical scheme allowing to converge to a solution closed to the simulation values. This has been numerically verified in the experimentation.
+In fact, it is simple to verify that we implicitly solve a system of $N\,T$ equations in $N\,T$ unknowns, the numerical scheme allowing to converge to a solution closed to the simulation values. This has been numerically verified in the experimentation.
 
 It has been implemented as an option in the software in order to help improving the convergence of the recurrent weight adjustment. \hr}.
 
