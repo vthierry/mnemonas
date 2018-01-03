@@ -60,6 +60,10 @@ public:
     {
       return weights0;
     }
+    /** Updates the weights given a readout estimation.
+     * @param values The output values used to adjust the readout
+     */
+    void updateReadOut(Input& values);
     /** Gets some fits of the estimation runs.
      * @param what :
      * - "cost" : returns the cost decay fit.
