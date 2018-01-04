@@ -29,3 +29,7 @@ double network::TransformCriterion::get(unsigned int n, double t) const
 {
   return NAN;
 }
+unsigned int network::TransformCriterion::getN0() const
+{
+  return 0;
+}

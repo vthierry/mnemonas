@@ -1,8 +1,9 @@
 #include "main.hpp"
 
-network::SupervisedCriterion::SupervisedCriterion(network::KernelTransform& transform, Input& values, char criterion, double nu, bool reinject) : network::TransformCriterion(transform), values(values), criterion(criterion), nu(nu), reinject(reinject), estimates(NULL), destimates(NULL)
+network::SupervisedCriterion::SupervisedCriterion(network::KernelTransform& transform, Input& values, char criterion, double nu, char reinject) : network::TransformCriterion(transform), values(values), criterion(criterion), nu(nu), reinject(reinject), estimates(NULL), destimates(NULL)
 {
   assume(0 <= nu, "illegal-argument", "in network::SupervisedCriterion::SupervisedCriterion the nu=%g must be non-negative criterion %c", nu, criterion);
+  assume(reinject == 'n' || reinject == 'o' || reinject == 'b', "illegal-argument", "in network::SupervisedCriterion::SupervisedCriterion the reinject=%c parameter must be in {'t', 'o', 'n'}", reinject);
 }
 /// @cond INTERNAL
 network::SupervisedCriterion::~SupervisedCriterion()
@@ -102,13 +103,17 @@ double network::SupervisedCriterion::drho(unsigned int n, double t) const
 }
 double network::SupervisedCriterion::get(unsigned int n, double t) const
 {
-  if(reinject) {
-    if(estimates != NULL)
+  if(reinject != 'n') {
+    if(reinject == 'b' && estimates != NULL)
       return estimates[n + transform.getN() * (int) t];
     if(n < values.getN())
       return values.get(n, t);
   }
   return NAN;
+}
+unsigned int network::SupervisedCriterion::getN0() const
+{
+  return reinject == 'b' && estimates != NULL ? transform.getN(): reinject == 'o' ? values.getN() : 0;
 }
 void network::SupervisedCriterion::update()
 {

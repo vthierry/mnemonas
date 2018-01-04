@@ -50,10 +50,14 @@ public:
 
     /** Gets the best previous estimated value.
      * - The method is to be overwritten if output values can be provided.
-     * @param n The input unit index.
+     * @param n The input unit index in <tt>{0,getN(){</tt>.
      * @param t The value time.
      * @return The best previous estimated value or NAN if undefined.
      */
     virtual double get(unsigned int n, double t) const;
+    /** Gets the best previous estimated value number of units.
+     * @return The number of units for which a best previous estimated value is defined.
+     */
+    virtual unsigned int getN0() const;
   };
 }

@@ -180,7 +180,7 @@ public:
    * @param maxIterations The maximal number of iteration.
    * @param reinject If true, uses the desired value in the 2nd order criterion estimation.
    */
-  void do_supervised_estimation(String test, String type, char criterion, unsigned int N, String mode = "reproducible", double criterion_epsilon = 1e-6, unsigned int maxIterations = 100, bool reinject = true)
+  void do_supervised_estimation(String test, String type, char criterion, unsigned int N, String mode = "reproducible", double criterion_epsilon = 1e-6, unsigned int maxIterations = 100, char reinject = 'b')
   {
     std::string filename = test == "" ? "" : s_printf("tex/results/" + test + "_" + type + "_N=%d", N);
     printf("> doing %s\n", filename == "" ? "run" : filename.c_str());
@@ -219,7 +219,7 @@ public:
         unsigned int N0 = 16, N2 = 16, N1 = 128;  // @todo
         for(unsigned int N = N0; N <= N1; N *= 2) {
           set_reverse_engineering_inoutput(type, N);
-          do_supervised_estimation("reverse_engineering", type, '2', N, "reproducible", N < N2 ? 1e-6 : 1e-4, 100, true); // @todo
+          do_supervised_estimation("reverse_engineering", type, '2', N, "reproducible", N < N2 ? 1e-6 : 1e-4, 100, 'b'); // @todo
           result.add(N, fit);
           result.save(filename);
         }
@@ -254,7 +254,7 @@ public:
         const double noiseProbability = 1, noiseStandardDeviation = 0.02;
         for(unsigned int l = 0; l < 5; l++) {
           set_noisy_inoutput(N, noiseProbability, noiseStandardDeviation);
-          do_supervised_estimation(s_printf("robust_criterion_with_noise_criterion=%s", criteria[l]), "LinearNonLinearTransform", criteria[l][0], N, "reproducible", 1e-4, 100, false);
+          do_supervised_estimation(s_printf("robust_criterion_with_noise_criterion=%s", criteria[l]), "LinearNonLinearTransform", criteria[l][0], N, "reproducible", 1e-4, 100, 'n');
           result.add(criteria[l], fit);
         }
         result.save(filename);
@@ -267,7 +267,7 @@ public:
         const double noiseProbability = 0.1, noiseStandardDeviation = 1;
         for(unsigned int l = 0; l < 5; l++) {
           set_noisy_inoutput(N, noiseProbability, noiseStandardDeviation);
-          do_supervised_estimation(s_printf("robust_criterion_with_outliers_criterion=%s", criteria[l]), "LinearNonLinearTransform", criteria[l][0], N, "reproducible", 1e-4, 100, false);
+          do_supervised_estimation(s_printf("robust_criterion_with_outliers_criterion=%s", criteria[l]), "LinearNonLinearTransform", criteria[l][0], N, "reproducible", 1e-4, 100, 'n');
           result.add(criteria[l], fit);
         }
         result.save(filename);

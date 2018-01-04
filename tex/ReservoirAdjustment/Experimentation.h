@@ -19,7 +19,7 @@ public:
       network::SparseNonLinearTransform transform2(transform1);
       transform2.setWeights(transform1);
       transform2.setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-      network::SupervisedCriterion criterion(transform2, output, '2', 1, false);
+      network::SupervisedCriterion criterion(transform2, output, '2', 1, 'n');
       network::KernelDistributedEstimator estimator(transform2, criterion);
       estimator.run(1e-6, 100, 0, 10, true);
     }

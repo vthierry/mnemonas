@@ -199,7 +199,7 @@ rrun-out :
 # - Ajouter updateReadout(unsigned int N0) dans KernelEstimation
 
 
-ARGS = -experiment2
+ARGS = -test -experiment2
 
 test :
 	$(MAKE) run

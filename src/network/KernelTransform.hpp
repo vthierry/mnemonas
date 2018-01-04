@@ -85,6 +85,7 @@ public:
      */
     double getWeight(unsigned int n, unsigned int d) const
     {
+      const_cast < KernelTransform * > (this)->initOk();
       return n < N && 0 < d && d <= getKernelDimension(n) ? weights[offsets[n] + d] : 0;
     }
     /** Sets one weight \f$W_{nd}\f$ value.

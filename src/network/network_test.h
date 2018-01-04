@@ -118,7 +118,7 @@ void network_test()
         network::BufferedInput output(*transform1, N0);
         network::KernelTransform *transform2 = newKernelTransform(type, N, input);
         transform2->setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-        network::SupervisedCriterion criterion(*transform2, output, '2', 1, false);
+        network::SupervisedCriterion criterion(*transform2, output, '2', 1, 'n');
         network::KernelExperimentalEstimator estimator(*transform2, criterion);
         double err = estimator.run(1e-3, 1e-4, 100, "");
         assume(err < 1e-3, "illegal-state", "in network_test/testReverseEngineering for the model '%s' over-threshold error = %g\n", type.c_str(), err);
