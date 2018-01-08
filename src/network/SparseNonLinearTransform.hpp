@@ -2,15 +2,15 @@ namespace network {
 /** Defines a recurrent network as a fixed leak sparse rectified linear combination of input and recurrent values.
  * - Such recurrent network writes:
  * <center>\f$\begin{array}{rcl}
- *  x_n(t) &=& \gamma \, x_{n}(t-1) + \zeta_{[0,\infty]}\left(x_{n_1}(t)\right) \\
- *  x_{n_1}(t) &=& \sum_{d = 0}^{D - 1} W_{nn_d} \, x_{n_d}(t-1) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \\
+ *  x_n(t) &=& \gamma \, x_{n}(t-1) + \sum_{d = 0}^{D - 1} W_{nn_d} \, x_{n'_d}(t) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1)
+ *  x_{n'}(t) &=& \zeta_{[0,\infty]}\left(x_{n}(t-1)\right) \\
  *  \end{array}\f$</center>
  * **Weight organization**:
  * |   \f$(n,d)\f$     |                       |                                         |
  * | ----------------- | --------------------- | --------------------------------------- |
  * |  \f$(n+N,n_d)\f$  | \f$n_d \in \{0,D\{\f$ | Recurrent weights \f$W_{nn_d}\f$        |
  * |  \f$(n+N,D+m)\f$  | \f$m  \in \{0,M\{\f$  | Input weights \f$W_{nm}\f$              |
- * with \f$n_1 = N - n\f$.
+ * with \f$n' = N - n\f$.
  * - In order to avoid unbounded values, since using a ReLU profile, a saturation at \f$\pm10^{6}\f$ is introduced.
  */
   class SparseNonLinearTransform: public KernelTransform {

@@ -79,11 +79,65 @@ double network::KernelEstimator::run()
 }
 double network::KernelEstimator::getValue(unsigned int n, double t) const
 {
-  double value = criterion.get(n, t);
-  return isnan(value) ? values0[n + ((int) t) * N] : value;
+  if (n < criterion.getN0()) {
+    double value = criterion.get(n, t);
+    if (!isnan(value))
+      return value;
+  } 
+  return values0[n + ((int) t) * N];
 }
 const CurveFit& network::KernelEstimator::getFit(String what) const
 {
   return what == "output-error" ? output_errors : what == "backward-error" ? backward_errors :
          what == "ratio-negligible" ? ratio_negligible : what == "ratio-saturated" ? ratio_saturated : costs;
 }
+void network::KernelEstimator::updateReadOut(unsigned int N0)
+{
+  if (N0 == 0) N0 = criterion.getN0();
+  cost0 = criterion.rho();
+  // Reinjects the desired values in the last simulated values
+  for(unsigned int t = 0; t < T; t++)
+    for(unsigned int n = 0; n < N0; n++)
+      values0[n + ((int) t) * N] = criterion.get(n, t);
+  // Builds and solves the linear system of equations for each unit
+  w0 = new double[transform.getWeightCount()], w1 = new double[transform.getWeightCount()];
+  for(unsigned int n = 0, nd = 0; n < N0; n++) {
+    unsigned int D = transform.getKernelDimension(n);
+    for(unsigned int d = 0; d < D; d++) 
+      w0[nd + d] = transform.getWeight(n, d);
+    double *b = new double [D], *A = new double [(D * (D + 1))/2];
+    for(unsigned int t = 0; t < T; t++) {
+      double b_nt = getValue(n, t) - transform.getKernelValue(n, 0, t);
+      for(unsigned int d = 0, dd_ = 0; d < D; d++) {
+	double phi_ndt = transform.getKernelValue(n, d + 1, t);
+	for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
+	  A[dd_] += phi_ndt * transform.getKernelValue(n, d_ + 1, t);
+	b[d] += phi_ndt * b_nt;
+      }
+      nd += D;
+    }
+    solver::linsolve(D, D, A, true, b, w1 + nd, w0 + nd);
+    delete[] A;
+    delete[] b;
+  }
+  // Line searchs in the 2nd order estimation
+  solver_minimize_e = this, c_f = 0;
+  double u = solver::minimize(solver_minimize_e_f, -10, 10, 1e-1);
+  printf("run_once { 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", u, c_f, cost1, cost1 < cost0, cost0 - cost, (cost0 - cost1) / cost0);    
+  delete[] w1;
+  delete[] w0;
+}
+double network::KernelEstimator::solver_minimize_f(double u)
+{
+  c_f++;
+  for(unsigned int n = 0, nd = 0; n < N; n++)  
+    for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++)
+      transform.setWeight(n, d + 1, w0[d] + u * (w1[d] - w0[d]));
+  // - printf("\t{ '#': %d, 'u': %6.4f }\n", c_f, u);
+  return cost1 = criterion.rho();
+}
+double network::KernelEstimator::solver_minimize_e_f(double u)
+{
+  return solver_minimize_e->solver_minimize_f(u);
+}
+network::KernelEstimator *network::KernelEstimator::solver_minimize_e = NULL;

@@ -60,10 +60,18 @@ public:
     {
       return weights0;
     }
+  private :
+    unsigned int c_f;
+    double cost0, cost1, *w0, *w1;
+    double solver_minimize_f(double x);
+    static double solver_minimize_e_f(double x);
+    static KernelEstimator *solver_minimize_e;
+  public :
     /** Updates the weights given a readout estimation.
-     * @param values The output values used to adjust the readout
+     * - The readout is adjusted on the N0 desired values defined by the criterion.
+     * @param N0 Defines the number of units to take into account, 0 means using <tt>criterion.getN0()</tt>.
      */
-    void updateReadOut(Input& values);
+    void updateReadOut(unsigned int N0 = 0);
     /** Gets some fits of the estimation runs.
      * @param what :
      * - "cost" : returns the cost decay fit.
