@@ -83,7 +83,25 @@ double network::RecurrentTransform::getValueDerivativeApproximation(unsigned int
   values[nit] = x_nt_ - dx;
   double v_m = getValue(n, t);
   values[nit] = x_nt_;
-  return 0.5 * (v_p - v_m) / epsilon;
+  double d = 0.5 * (v_p - v_m) / epsilon;
+#if 1
+  if ((dynamic_cast < const KernelTransform * > (this) != NULL) && (1e-2 <= fabs(d - getValueDerivative(n, t, n_, t_)))) {
+    KernelTransform& transform = (KernelTransform&) *this;
+    assume(false, " illegal-argument", "in network::RecurrentTransform::getValueDerivativeApproximation numerical error:");
+    for(unsigned int d = 0; d < transform.getKernelDimension(n); d++) {
+      values[nit] = x_nt_ + dx;
+      double v_p = transform.getKernelValue(n, d, t);
+      values[nit] = x_nt_ - dx;
+      double v_m = transform.getKernelValue(n, d, t);
+      values[nit] = x_nt_;
+      double d1 = 0.5 * (v_p - v_m) / epsilon;
+      printf(">\t[d=%d getKernelDerivative=(%8.1g == %8.1g) at get(n,t) = %8.1g get(n_, t_) = %8.1g]\n",
+	     d, transform.getKernelDerivative(n, d, t, n_, t_), d1, 
+	     transform.getValue(n, t), transform.getValue(n_, t_));
+    }
+  }
+#endif
+  return d;
 }
 std::string network::RecurrentTransform::asString() const
 {

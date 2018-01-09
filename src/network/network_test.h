@@ -93,6 +93,9 @@ void network_test()
       {
         unsigned int N = transform.getN(), R = transform.getR(), T = transform.getT();
         transform.reset(true);
+	double *connected = new double[N*N];
+	for(unsigned int nn = 0; nn < N * N; nn++)
+	  connected[nn] = 0;
         for(unsigned int t = 0; t < T; t++)
           for(int n = N - 1; 0 <= n; n--) {
             transform.get(n, t);
@@ -100,12 +103,17 @@ void network_test()
               for(int t_ = t; 0 <= t_ && (int) t <= t_ + (int) R; t_--)
                 for(unsigned int n_ = ((int) t) == t_ ? n + 1 : 0; n_ < N; n_++) {
                   double d0 = transform.getValueDerivative(n, t, n_, t_);
+		  connected[n_ + n * N] += fabs(d0);
                   double d1 = transform.getValueDerivativeApproximation(n, t, n_, t_);
                   assume(fabs(d0 - d1) <= 1e-2 * (1 < fabs(d0) + fabs(d1) ? fabs(d0) + fabs(d1) : 1),
-                         "numerical-error", "in network_test/testDerivatives (%s) transform.getValueDerivative(%d, %d; %d, %d) : (d_analytic = %g) != (d_numeric = %g) N = %d T = %d\n", type.c_str(), n, t, n_, t_, d0, d1, N, T);
+                         "numerical-error", "in network_test/testDerivatives (%s) transform.getValueDerivative(%d, %d; %d, %d) : (d_analytic = %g) != (d_numeric = %g) N = %d T = %d get(n,t) = %g get(n_, t_) = %g\n", type.c_str(), n, t, n_, t_, d0, d1, N, T, transform.getValue(n, t), transform.getValue(n_, t_));
                 }
             }
           }
+	for(unsigned int n = N; n < N; n++)
+	  for(unsigned int n_ = N; n_ < N; n_++)
+	    assume(transform.isConnected(n, n_) ? 0 < connected[n_ + n * N] : 0 == connected[n_ + n * N],  "numerical-error", "in network_test/testDerivatives (%s) transform.isConnected(%d, %d) = #%d but |getValueDerivative| = %g", n, n_, transform.isConnected(n, n_), connected[n_ + n * N]);
+	delete[] connected;
       }
       static void testReverseEngineering(String type, unsigned int N = 2)
       {

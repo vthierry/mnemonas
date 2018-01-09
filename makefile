@@ -203,13 +203,13 @@ rrun-out :
 # - inverser le modèle du sparse non linear model pour readout
 # - appliquer curve fitting à dynamique recurrent pr lyapounov
 # - distributed : avec plus de D et N, des randoms w init nombreux
-# -
+# - ajouter test derivative t connected en cohererende dans network_test
 
 
 ARGS = -test -experiment2
 
 test :
-	$(MAKE) run
+	$(MAKE) vrun
 #	firefox doc/$(MAIN).pdf .build/doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################

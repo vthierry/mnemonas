@@ -1,15 +1,20 @@
 #include "main.hpp"
 
-network::SparseNonLinearTransform::SparseNonLinearTransform(unsigned int N, const Input& input) : KernelTransform(2 * N, 1, input), N(N), indexes(NULL), connected(NULL)
+network::SparseNonLinearTransform::SparseNonLinearTransform(unsigned int N, const Input& input) : KernelTransform(N, 1, input), N(N), D(NULL), DN(0), offsets(NULL), indexes(NULL), connected(NULL)
 {
   setLeak(0);
   setConnections(0);
 }
-network::SparseNonLinearTransform::SparseNonLinearTransform(const SparseNonLinearTransform& transform) : KernelTransform(2 * transform.N, 1, transform.input), N(transform.N), D(transform.D), leak(transform.leak)
+network::SparseNonLinearTransform::SparseNonLinearTransform(const SparseNonLinearTransform& transform) : KernelTransform(transform.N, 1, transform.input), N(transform.N), leak(transform.leak)
 {
-  indexes = new unsigned int[N * D];
-  for(unsigned int nd = 0; nd < N * D; nd++)
-    indexes[nd] = transform.indexes[nd];
+  D = new unsigned int[N];
+  offsets = new unsigned int[N];
+  for(unsigned int n = 0; n < N; n++)
+    D[n] = transform.D[n], offsets[n] = transform.offsets[n];
+  DN = transform.DN;
+  indexes = new unsigned int[DN];
+  for(unsigned int dn = 0; dn < DN; dn++)
+    indexes[dn] = transform.indexes[dn];
   connected = new bool[N * N];
   for(unsigned int nn = 0; nn < N * N; nn++)
     connected[nn] = transform.connected[nn];
@@ -20,41 +25,51 @@ network::SparseNonLinearTransform& network::SparseNonLinearTransform::setLeak(do
   leak = value;
   return *this;
 }
-network::SparseNonLinearTransform& network::SparseNonLinearTransform::setConnections(unsigned int D, int seed)
+network::SparseNonLinearTransform& network::SparseNonLinearTransform::setConnections(unsigned int D_, int seed)
 {
-  this->D = D = D == 0 ? (N <= 3 ? 1 : N <= 4 ? 2 : (int) sqrt(N)) : D;
-  assume(D < N, "illegal-argument", "in network::SparseNonLinearTransform, D must be in }0, %d}", N);
+  D_ = D_ == 0 ? (N <= 3 ? 1 : N <= 4 ? 2 : (int) sqrt(N)) : D_;
+  assume(D_ < N, "illegal-argument", "in network::SparseNonLinearTransform, D=%d must be in }0, %d}", D_, N);
+  // Builds index buffer
+  {
+    delete[] D;
+    D = new unsigned int[N];
+    delete[] offsets;
+    offsets = new unsigned int[N];
+    for(unsigned int n = 0; n < N; n++)
+      D[n] = D_, offsets[n] = n * D_;
+    DN = D_ * N;
+  }
   resetWeights();
   // Draws sparse connection indexes
   {
     delete[] indexes;
-    indexes = new unsigned int[N * D];
+    indexes = new unsigned int[DN];
     delete[] connected;
     connected = new bool[N * N];
     for(unsigned int nn = 0; nn < N * N; nn++)
       connected[nn] = false;
     random::setSeed(seed);
-    unsigned int nd = 0;
     for(unsigned int n = 0; n < N; n++) {
-      bool *c = random::booleans(N - 1, D);
+      bool *c = random::booleans(N - 1, D[n]);
+      unsigned int d_ = 0;
       for(unsigned int m = 0; m < N - 1; m++)
         if(c[m]) {
           unsigned int n_ = m < n ? m : m + 1;
-          indexes[nd++] = n_;
+          indexes[d_++ + offsets[n]] = n_;
           connected[n_ + n * N] = true;
         }
       delete[] c;
       // Checks that the generation is ok
       {
-        for(unsigned int d = 0; d < D; d++)
-          assume(indexes[d + n * D] < N, "illegal-state", "in network::SparseNonLinearTransform, we must have index[n = %d, d = %d] in {0, %d{", n, d, N);
-        assume(nd == (n + 1) * D, "illegal-state", "in network::SparseNonLinearTransform bad nd = %d <> %d", nd, (n + 1) * D);
+        for(unsigned int d = 0; d < D[n]; d++)
+          assume(indexes[d + offsets[n]] < N, "illegal-state", "in network::SparseNonLinearTransform, we must have index[n = %d, d = %d] in {0, %d{", n, d, N);
+	assume(d_ == D[n],  "illegal-state", "in network::SparseNonLinearTransform, we must have D_n = %d == D[n = %d] = %d", d_, n, D[n]);
         {
           unsigned int d = 0;
           for(unsigned int n_ = 0; n_ < N; n_++)
             if(connected[n_ + n * N])
               d++;
-          assume(d == D, " illegal-state", "in network::SparseNonLinearTransform bad number of connections for n = %d, d = %d <> D = %d", n, d, D);
+          assume(d == D[n], " illegal-state", "in network::SparseNonLinearTransform bad number of connections for n = %d, d = %d <> D_n = %d", n, d, D[n]);
         }
       }
     }
@@ -65,7 +80,7 @@ network::SparseNonLinearTransform& network::SparseNonLinearTransform::setConnect
         for(unsigned int d = 0; d < D; d++)
           printf("%s%3d%s",
                  (d == 0 ? (n == 0 ? "{\n  connections : {\n" : "") + s_printf("    '%3d' : [ ", n) : "").c_str(),
-                 indexes[d + n * D],
+                 indexes[d + offsets[n]],
                  (d < D - 1 ? ", " : (" ]" + (std::string) (n < N - 1 ? ",\n" : "\n  }\n}\n"))).c_str());
       for(unsigned int n = 0, nn = 0; n < N; n++)
         for(unsigned int n_ = 0; n_ < N; n_++, nn++)
@@ -80,6 +95,8 @@ network::SparseNonLinearTransform& network::SparseNonLinearTransform::setConnect
 }
 network::SparseNonLinearTransform::~SparseNonLinearTransform()
 {
+  delete[] D;
+  delete[] offsets;
   delete[] indexes;
   delete[] connected;
 }
@@ -87,43 +104,47 @@ network::KernelTransform& network::SparseNonLinearTransform::setWeights(const Ke
 {
   assume(dynamic_cast < const SparseNonLinearTransform * > (&network) != NULL, "illegal-argument", "in network::SparseNonLinearTransform::setWeights wrong network type");
   const SparseNonLinearTransform& transform = (const SparseNonLinearTransform&) network;
-  bool isomorphic = N == transform.N && D == transform.D;
-  for(unsigned int nd = 0; isomorphic && nd < N * D; nd++)
-    isomorphic = indexes[nd] == transform.indexes[nd];
+  bool isomorphic = N == transform.N;
+  for(unsigned int n = 0; isomorphic && n < N; n++)
+    isomorphic = D[n] == transform.D[n];
+  for(unsigned int dn = 0; isomorphic && dn < DN; dn++)
+    isomorphic = indexes[dn] == transform.indexes[dn];
   assume(isomorphic, "illegal-argument", "in network::SparseNonLinearTransform::setWeights cannot be implemented, since connectivity is different");
-  for(unsigned int n = N; n < 2 * N; n++)
+  for(unsigned int n = N; n < N; n++)
     for(unsigned int d = 1; d <= getKernelDimension(n); d++)
       setWeight(n, d, network.getWeight(n, d));
   return *this;
 }
-/*
- *  unsigned int network::SparseNonLinearTransform::getKernelDimension(unsigned int n) const
- *  {
- *  return n < N ? 0 : D + input.getN();
- *  }
- */
+unsigned int network::SparseNonLinearTransform::getKernelDimension(unsigned int n) const
+{
+  return n < N ? D[n] + input.getN() : 0;
+}
 double network::SparseNonLinearTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
-  if(n < N)
-    return d == 0 ? leak *get(n, t - 1) + (get(n + N, t) > 0 ? (get(n + N, t) > SAT ? SAT : get(n + N, t)) : (get(n + N, t) == 0 ? 0.5 : 0)) : 0;
-  else {
-    d -= 1, n -= N;
-    if(d < D)
-      return get(indexes[d + n * D], t - 1);
-    d -= D;
+  if(n < N) {
+    if (d == 0)
+      return leak * get(n, t - 1);
+    d -= 1;
+    if(d < D[n]) {
+      double v = get(indexes[d + offsets[n]], t - 1);
+      return v < 0 ? 0 : v == 0 ? 0.5 : v < SAT ? v : SAT;
+    }
+    d -= D[n];
     if(d < input.getN())
       return input.get(d, t - 1);
-    return 0;
   }
+  return 0;
 }
-/*
- *  double network::SparseNonLinearTransform::getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const
- *  {
- *  return n < N ? (d == 0 ? (n_ == n && t_ == t - 1 ? leak : (n_ == N + n && t_ == t && get(n_, t) > 0 && get(n_, t) <= SAT ? 1 : 0)) : 0) :
- *        (0 < d && d <= D && n_ == indexes[d - 1 + (n - N) * D] && t_ == t - 1 ? 1 : 0);
- *  }
- *  bool network::SparseNonLinearTransform::isConnected(unsigned int n, unsigned int n_) const
- *  {
- *  return n < N ? n_ == n || n_ == N + n : n_ < N && connected[n_ + (n - N) * N];
- *  }
- */
+double network::SparseNonLinearTransform::getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const
+{
+  return 
+    n < N ? (d == 0 ? 
+	     (n_ == n && t_ == t - 1 ? leak : 0) : 
+	     (d <= D[n] && n_ == indexes[d - 1 + offsets[n]] && t_ == t - 1 && 0 < get(n_, t_) && get(n_, t_) < SAT ? 1 : 0)
+	     ) : 0;
+}
+bool network::SparseNonLinearTransform::isConnected(unsigned int n, unsigned int n_) const
+{
+  return n < N && n_ < N && (n_ == n || connected[n_ + n * N]);
+}
+
