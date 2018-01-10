@@ -206,10 +206,10 @@ rrun-out :
 # - ajouter test derivative t connected en cohererende dans network_test
 
 
-ARGS = -test -experiment2
+ARGS = -test # -experiment2
 
 test :
-	$(MAKE) vrun
+	$(MAKE) run
 #	firefox doc/$(MAIN).pdf .build/doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################

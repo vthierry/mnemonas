@@ -2,8 +2,8 @@
 
 network::SparseNonLinearTransform::SparseNonLinearTransform(unsigned int N, const Input& input) : KernelTransform(N, 1, input), N(N), D(NULL), DN(0), offsets(NULL), indexes(NULL), connected(NULL)
 {
-  setLeak(0);
-  setConnections(0);
+  setLeak();
+  setConnections();
 }
 network::SparseNonLinearTransform::SparseNonLinearTransform(const SparseNonLinearTransform& transform) : KernelTransform(transform.N, 1, transform.input), N(transform.N), leak(transform.leak)
 {
