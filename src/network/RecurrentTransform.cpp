@@ -87,8 +87,8 @@ double network::RecurrentTransform::getValueDerivativeApproximation(unsigned int
 #if 1
   if ((dynamic_cast < const KernelTransform * > (this) != NULL) && (1e-2 <= fabs(d - getValueDerivative(n, t, n_, t_)))) {
     KernelTransform& transform = (KernelTransform&) *this;
-    assume(false, " illegal-argument", "in network::RecurrentTransform::getValueDerivativeApproximation numerical error:");
-    for(unsigned int d = 0; d < transform.getKernelDimension(n); d++) {
+    assume(false, " illegal-argument", "in network::RecurrentTransform::getValueDerivativeApproximation(n=%d < N=%d, t=%.0g, n_=%d, t_=%0.g) numerical error:", n, N, t, n_, t_);
+    for(unsigned int d = 0; d <= transform.getKernelDimension(n); d++) {
       values[nit] = x_nt_ + dx;
       double v_p = transform.getKernelValue(n, d, t);
       values[nit] = x_nt_ - dx;

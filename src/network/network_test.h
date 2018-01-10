@@ -110,9 +110,18 @@ void network_test()
                 }
             }
           }
-	for(unsigned int n = N; n < N; n++)
-	  for(unsigned int n_ = N; n_ < N; n_++)
-	    assume(transform.isConnected(n, n_) ? 0 < connected[n_ + n * N] : 0 == connected[n_ + n * N],  "numerical-error", "in network_test/testDerivatives (%s) transform.isConnected(%d, %d) = #%d but |getValueDerivative| = %g", n, n_, transform.isConnected(n, n_), connected[n_ + n * N]);
+	/** Tests the connectivity. */
+	{
+	  unsigned int ok_connected = 0, notok_connected = 0, notok_unconnected = 0;
+	  for(unsigned int n = 0; n < N; n++)
+	    for(unsigned int n_ = 0; n_ < N; n_++) {
+	      ok_connected += transform.isConnected(n, n_) ? 1 : 0;
+	      notok_connected += transform.isConnected(n, n_) && 0 == connected[n_ + n * N];
+	      notok_unconnected += (!transform.isConnected(n, n_)) && 0 < connected[n_ + n * N];
+	    }
+	  assume(notok_unconnected == 0,  "numerical-error", "in network_test/testDerivatives (%s) #%d spurious connection not given by transform.isConnected()", type.c_str(), notok_unconnected);
+	  assume(ok_connected/N <= notok_unconnected,  " numerical-error", "in network_test/testDerivatives (%s) #%d<#%d empty connection while given bytransform.isConnected()", type.c_str(), notok_unconnected, ok_connected);
+	}
 	delete[] connected;
       }
       static void testReverseEngineering(String type, unsigned int N = 2)
