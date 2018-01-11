@@ -8,6 +8,8 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_linalg.h>
+#include "s_string.h"
+#include "s_printf.h"
 
 double solver::linsolve(unsigned int M0, unsigned int N, const double *A, bool symmetric, const double *b, double *x, const double *x0)
 {
@@ -196,4 +198,15 @@ double solver::minimize(double f(double x), double xmin, double xmax, double xep
     }
   }
   return x0;
+}
+std::string solver::asString(const double* A, unsigned int M, unsigned int N, bool symmetric, String format)
+{
+  std::string s;
+  for(unsigned int j = 0; j < M; j++)
+    for(unsigned int i = 0; i < N; i++)
+      s += s_printf("%s"+format+"%s",
+		    i == 0 ? "\t| " : " ",
+		    symmetric ? A[i < j ? i + j * (j + 1) / 2 : j + i * (i + 1) / 2] : A[i + j * N],
+		    i < N - 1 ? "" : " |\n");
+  return s;
 }

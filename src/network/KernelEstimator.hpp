@@ -61,7 +61,7 @@ public:
       return weights0;
     }
   private :
-    unsigned int c_f;
+    unsigned int c_f, c_N0;
     double cost0, cost1, *w0, *w1;
     double solver_minimize_f(double x);
     static double solver_minimize_e_f(double x);

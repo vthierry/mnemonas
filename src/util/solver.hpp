@@ -3,6 +3,7 @@
 
 #include "numeric.hpp"
 #include "math.h"
+#include "s_string.h"
 
 /** This factory encapsulates equation solvers.
  */
@@ -34,6 +35,15 @@ public:
    * @return The best minimal solution.
    */
   static double minimize(double f(double x), double xmin, double xmax, double xeps = NAN, unsigned int imax = 0);
+
+  /** Returns a matrix or vector as a string to dump.
+   * @param A The matrix buffer <tt>double[M * N]</tt> buffer storing <tt>A(i, j) == A[i + j * N]</tt>.
+   * @param M The number of rows.
+   * @param N The number of columns.
+   * @param symmetric If the matrix is symmetric.
+   * @param format The printf format.
+   */
+  static std::string asString(const double* A, unsigned int M, unsigned int N = 1, bool symmetric = false, String format = "%8.1g");
 };
 
 #endif

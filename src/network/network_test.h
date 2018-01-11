@@ -145,15 +145,16 @@ void network_test()
       }
       static void testReadout(unsigned int N = 2)
       {
-        static const unsigned int M = 1, N0 = N;
+       static const unsigned int M = 1, N0 = N;
         unsigned int T = (N * (N + 1)) * 4;
         network::BufferedInput input("normal", M, T, true);
-        network::KernelTransform *transform1 = newKernelTransform("SparseNonLinearTransform", N, input);
+        network::KernelTransform *transform1 = newKernelTransform("LinearTransform", N, input);
         transform1->setWeightsRandom(0, 0.5 / N, false, "normal", 0);
+	printf("weights00 %s\n", transform1->asString().c_str());
         network::BufferedInput output(*transform1, N0);
-        network::KernelTransform *transform2 = newKernelTransform("SparseNonLinearTransform", N, input);
+        network::KernelTransform *transform2 = newKernelTransform("LinearTransform", N, input);
         transform2->setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-        network::SupervisedCriterion criterion(*transform2, output, '2', 1, 'n');
+        network::SupervisedCriterion criterion(*transform2, output, '2', 1, 'b');
         network::KernelEstimator estimator(*transform2, criterion);
         double err = estimator.updateReadout(N0);
 	assume(err < 1e-3, "illegal-state", "in network_test/testReadout for the model over-threshold error = %g\n", err);
