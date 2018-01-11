@@ -70,8 +70,9 @@ public:
     /** Updates the weights given a readout estimation.
      * - The readout is adjusted on the N0 desired values defined by the criterion.
      * @param N0 Defines the number of units to take into account, 0 means using <tt>criterion.getN0()</tt>.
+     * @return The obtained criterion cost.
      */
-    void updateReadOut(unsigned int N0 = 0);
+    double updateReadout(unsigned int N0 = 0);
     /** Gets some fits of the estimation runs.
      * @param what :
      * - "cost" : returns the cost decay fit.

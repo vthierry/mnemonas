@@ -200,10 +200,9 @@ rrun-out :
 # - déplacer update ds transform criterion
 # - creer update observable
 # - maj curve fitting : les w, le t-1 et prédiction error
-# - inverser le modèle du sparse non linear model pour readout
 # - appliquer curve fitting à dynamique recurrent pr lyapounov
 # - distributed : avec plus de D et N, des randoms w init nombreux
-# - ajouter test derivative t connected en cohererende dans network_test
+# - ajouter table d'index pour le bacaward tuning
 
 
 ARGS = -test # -experiment2

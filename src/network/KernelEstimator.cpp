@@ -73,7 +73,7 @@ double network::KernelEstimator::run()
   double NT = N * T;
   ratio_negligible.add(k_negligible / NT);
   ratio_saturated.add(k_saturated / NT);
-  printf(">tuning time = %g\n", now(false, true));
+  //-printf(">tuning time = %g\n", now(false, true));
   tuning_time.add(now(false, true));
   return cost;
 }
@@ -91,7 +91,7 @@ const CurveFit& network::KernelEstimator::getFit(String what) const
   return what == "output-error" ? output_errors : what == "backward-error" ? backward_errors :
          what == "ratio-negligible" ? ratio_negligible : what == "ratio-saturated" ? ratio_saturated : costs;
 }
-void network::KernelEstimator::updateReadOut(unsigned int N0)
+double network::KernelEstimator::updateReadout(unsigned int N0)
 {
   if (N0 == 0) N0 = criterion.getN0();
   cost0 = criterion.rho();
@@ -123,9 +123,10 @@ void network::KernelEstimator::updateReadOut(unsigned int N0)
   // Line searchs in the 2nd order estimation
   solver_minimize_e = this, c_f = 0;
   double u = solver::minimize(solver_minimize_e_f, -10, 10, 1e-1);
-  printf("run_once { 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", u, c_f, cost1, cost1 < cost0, cost0 - cost, (cost0 - cost1) / cost0);    
+  printf("run_readout_estimation_once { 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", u, c_f, cost1, cost1 < cost0, cost0 - cost, (cost0 - cost1) / cost0);    
   delete[] w1;
   delete[] w0;
+  return cost1;
 }
 double network::KernelEstimator::solver_minimize_f(double u)
 {
@@ -133,7 +134,7 @@ double network::KernelEstimator::solver_minimize_f(double u)
   for(unsigned int n = 0, nd = 0; n < N; n++)  
     for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++)
       transform.setWeight(n, d + 1, w0[d] + u * (w1[d] - w0[d]));
-  // - printf("\t{ '#': %d, 'u': %6.4f }\n", c_f, u);
+  printf("\t{ '#': %d, 'u': %6.4f }\n", c_f, u);
   return cost1 = criterion.rho();
 }
 double network::KernelEstimator::solver_minimize_e_f(double u)

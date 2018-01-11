@@ -101,5 +101,5 @@ double network::IntegrateAndFireTransform::getKernelDerivative(unsigned int n, u
 }
 bool network::IntegrateAndFireTransform::isConnected(unsigned int n, unsigned int n_) const
 {
-  return n < N ? (n_ == n || N <= n_) : n_ == n - N;
+  return n < N ? ((n_ == n && leak != 0) || N <= n_) : n_ == n - N;
 }

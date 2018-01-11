@@ -145,6 +145,6 @@ double network::SparseNonLinearTransform::getKernelDerivative(unsigned int n, un
 }
 bool network::SparseNonLinearTransform::isConnected(unsigned int n, unsigned int n_) const
 {
-  return n < N && n_ < N && (n_ == n || connected[n_ + n * N]);
+  return n < N && n_ < N && ((n_ == n && leak != 0) || connected[n_ + n * N]);
 }
 

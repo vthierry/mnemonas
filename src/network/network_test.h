@@ -118,9 +118,10 @@ void network_test()
 	      ok_connected += transform.isConnected(n, n_) ? 1 : 0;
 	      notok_connected += transform.isConnected(n, n_) && 0 == connected[n_ + n * N];
 	      notok_unconnected += (!transform.isConnected(n, n_)) && 0 < connected[n_ + n * N];
+	      //-assume(!(transform.isConnected(n, n_) && 0 == connected[n_ + n * N]), " numerical-error", "in network_test/testDerivatives (%s) transform.isConnected(n=%d, n_=%d) but no derivative", type.c_str(), n, n_);
 	    }
 	  assume(notok_unconnected == 0,  "numerical-error", "in network_test/testDerivatives (%s) #%d spurious connection not given by transform.isConnected()", type.c_str(), notok_unconnected);
-	  assume(ok_connected/N <= notok_unconnected,  " numerical-error", "in network_test/testDerivatives (%s) #%d<#%d empty connection while given bytransform.isConnected()", type.c_str(), notok_unconnected, ok_connected);
+	  assume(notok_connected <= ok_connected / N,  "numerical-error", "in network_test/testDerivatives (%s) #%d<#%d empty connection while given bytransform.isConnected()", type.c_str(), notok_connected, ok_connected);
 	}
 	delete[] connected;
       }
@@ -142,12 +143,31 @@ void network_test()
         delete transform1;
         delete transform2;
       }
+      static void testReadout(unsigned int N = 2)
+      {
+        static const unsigned int M = 1, N0 = N;
+        unsigned int T = (N * (N + 1)) * 4;
+        network::BufferedInput input("normal", M, T, true);
+        network::KernelTransform *transform1 = newKernelTransform("SparseNonLinearTransform", N, input);
+        transform1->setWeightsRandom(0, 0.5 / N, false, "normal", 0);
+        network::BufferedInput output(*transform1, N0);
+        network::KernelTransform *transform2 = newKernelTransform("SparseNonLinearTransform", N, input);
+        transform2->setWeightsRandom(0, 0.5 / N, false, "normal", 1);
+        network::SupervisedCriterion criterion(*transform2, output, '2', 1, 'n');
+        network::KernelEstimator estimator(*transform2, criterion);
+        double err = estimator.updateReadout(N0);
+	assume(err < 1e-3, "illegal-state", "in network_test/testReadout for the model over-threshold error = %g\n", err);
+        delete transform1;
+        delete transform2;
+	exit(0);
+      }
 public:
       static void run()
       {
         std::vector < std::string > types = { "LinearTransform", "LinearNonLinearTransform", "SparseNonLinearTransform", "SoftMaxTransform", "IntegrateAndFireTransform" };
         for(std::vector < std::string > ::const_iterator i = types.begin(); i != types.end(); ++i)
           testReverseEngineering(*i);
+	testReadout();
       }
     }
     test;
