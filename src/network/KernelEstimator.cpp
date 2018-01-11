@@ -101,15 +101,15 @@ double network::KernelEstimator::updateReadout(unsigned int N0)
       double v = criterion.get(n, t);
       assume(!std::isnan(v), "numerical-error", "in network::KernelEstimator::updateReadout(N0 = %d <= N = %d) undefined desired value at (n=%d, t=%d), the criterion must defined such value", N0, N, n, t);
       values0[n + ((int) t) * N] = v;
+      transform.set(n, t, v);
     }
   // Builds and solves the linear system of equations for each unit
   w0 = new double[transform.getWeightCount()], w1 = new double[transform.getWeightCount()];
-  for(unsigned int nd = 0; nd < transform.getWeightCount(); nd++) 
-    w0[nd] = w1[nd] = NAN;
+  //- for(unsigned int nd = 0; nd < transform.getWeightCount(); nd++) w0[nd] = w1[nd] = NAN;
   for(unsigned int n = 0, nd = 0; n < N0; n++) {
     unsigned int D = transform.getKernelDimension(n);
     for(unsigned int d = 0; d < D; d++) 
-      w0[nd + d] = transform.getWeight(n, d);
+      w0[nd + d] = transform.getWeight(n, d + 1);
     double *b = new double [D], *A = new double [(D * (D + 1))/2];
     for(unsigned int d = 0, dd_ = 0; d < D; d++) {
       for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
@@ -126,23 +126,17 @@ double network::KernelEstimator::updateReadout(unsigned int N0)
       }
     }
     solver::linsolve(D, D, A, true, b, w1 + nd, w0 + nd);
-    //- printf("A(%d):\n %s b(%d):\n %s w0(%d):\n %s w1(%d):\n %s", n, solver::asString(A, D, D, true).c_str(), n, solver::asString(b, D).c_str(), n, solver::asString(w0 + nd, D).c_str(), n, solver::asString(w1 + nd, D).c_str());
+    //- printf(" A(%d):\n %s b(%d):\n %s w0(%d):\n %s w1(%d):\n %s", n, solver::asString(A, D, D, true).c_str(), n, solver::asString(b, D).c_str(), n, solver::asString(w0 + nd, D).c_str(), n, solver::asString(w1 + nd, D).c_str());
     delete[] A;
     delete[] b;
     nd += D;
   }
-  { 
-    printf("w0:\n %s w1:\n %s", solver::asString(w0, 1, transform.getWeightCount()).c_str(), solver::asString(w1, 1, transform.getWeightCount()).c_str());
-    printf("weights0 %s\n", transform.asString().c_str());
-    for(unsigned int n = 0, nd = 0; n < N0; n++)  
-      for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++)
-	transform.setWeight(n, d + 1, w1[nd]);
-    printf("weights1 %s\n", transform.asString().c_str());
-  }
+  //-printf("weights0 %s\n", transform.asString().c_str());
+  //- for(unsigned int n = 0, nd = 0; n < N0; n++) for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++) transform.setWeight(n, d + 1, w1[nd]); printf("weights1 %s\n", transform.asString().c_str());
   // Line searchs in the 2nd order estimation
   solver_minimize_e = this, c_f = 0, c_N0 = N0;
-  double u = solver::minimize(solver_minimize_e_f, -10, 10, 1e-1);
-  printf("run_readout_estimation_once { 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", u, c_f, cost1, cost1 < cost0, cost0 - cost, (cost0 - cost1) / cost0);    
+  solver::minimize(solver_minimize_e_f, -10, 10, 1e-1);
+  //- printf("weights11 %s\n", transform.asString().c_str());
   delete[] w1;
   delete[] w0;
   return cost1;
@@ -153,7 +147,7 @@ double network::KernelEstimator::solver_minimize_f(double u)
   for(unsigned int n = 0, nd = 0; n < c_N0; n++)  
     for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++)
       transform.setWeight(n, d + 1, w0[nd] + u * (w1[nd] - w0[nd]));
-  printf("\t{ '#': %d, 'u': %6.4f }\n", c_f, u);
+  //-printf("\t{ '#': %d, 'u': %6.4f }\n", c_f, u);
   return cost1 = criterion.rho();
 }
 double network::KernelEstimator::solver_minimize_e_f(double u)

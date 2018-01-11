@@ -55,7 +55,7 @@ void network_test()
     network::BufferedInput output(transform1, N0);
     network::LinearTransform transform2(transform1);
     transform2.setWeightsRandom(0, 0.05 / N, true, "normal", 0);
-    network::SupervisedCriterion criterion(transform2, output);
+    network::SupervisedCriterion criterion(transform2, output, '2', 1e-3, 'o');
     network::KernelExperimentalEstimator estimator(transform2, criterion);
     double err = estimator.run(1e-12, 1e-4, 100, "");
     assume(err < 1e-12, "illegal-state", "in network_test/KernelSupervisedEstimation over-threshold error = %g\n", err);
@@ -143,16 +143,16 @@ void network_test()
         delete transform1;
         delete transform2;
       }
-      static void testReadout(unsigned int N = 2)
+      static void testReadout(unsigned int N = 4)
       {
        static const unsigned int M = 1, N0 = N;
         unsigned int T = (N * (N + 1)) * 4;
         network::BufferedInput input("normal", M, T, true);
-        network::KernelTransform *transform1 = newKernelTransform("LinearTransform", N, input);
+        network::KernelTransform *transform1 = newKernelTransform("SparseNonLinearTransform", N, input);
         transform1->setWeightsRandom(0, 0.5 / N, false, "normal", 0);
-	printf("weights00 %s\n", transform1->asString().c_str());
+	//- printf("weights00 %s\n", transform1->asString().c_str());
         network::BufferedInput output(*transform1, N0);
-        network::KernelTransform *transform2 = newKernelTransform("LinearTransform", N, input);
+        network::KernelTransform *transform2 = newKernelTransform("SparseNonLinearTransform", N, input);
         transform2->setWeightsRandom(0, 0.5 / N, false, "normal", 1);
         network::SupervisedCriterion criterion(*transform2, output, '2', 1, 'b');
         network::KernelEstimator estimator(*transform2, criterion);
@@ -160,7 +160,6 @@ void network_test()
 	assume(err < 1e-3, "illegal-state", "in network_test/testReadout for the model over-threshold error = %g\n", err);
         delete transform1;
         delete transform2;
-	exit(0);
       }
 public:
       static void run()
@@ -194,7 +193,7 @@ public:
           type == 'b' ? 1 :
           type == 'h' ? 1e-6 :
           0;
-        network::SupervisedCriterion criterion(transform2, output, type, nu);
+        network::SupervisedCriterion criterion(transform2, output, type, nu, 'o');
         network::KernelExperimentalEstimator estimator(transform2, criterion);
         double err0 =
           type == '2' ? 1e-12 :
@@ -256,7 +255,7 @@ public:
         std::vector < network::ObservableCriterion::Observable * > observables =
           network::ObservableCriterion::getObservables("acorr", N0, 1);
         double values[3] = { 0.2345, 0.3456, 0.1234 };
-        network::ObservableCriterion criterion(transform, observables, values);
+        network::ObservableCriterion criterion(transform, observables, values, NULL, false); // @todo
         network::KernelExperimentalEstimator estimator(transform, criterion);
         double err = estimator.run(1e-3, 1e-4, 1000, "");
         assume(err < 1e-3, "illegal-state", "in network_test/testObservablesEstimation over-threshold error = %g\n", err);

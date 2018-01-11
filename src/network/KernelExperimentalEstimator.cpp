@@ -16,7 +16,6 @@ network::KernelExperimentalEstimator::KernelExperimentalEstimator(KernelTransfor
       b[k][n] = new double[D];
     }
   }
-  KernelEstimator::run();
 }
 /// @cond INTERNAL
 network::KernelExperimentalEstimator::~KernelExperimentalEstimator()

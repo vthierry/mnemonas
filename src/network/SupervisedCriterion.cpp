@@ -1,17 +1,10 @@
 #include "main.hpp"
 
-network::SupervisedCriterion::SupervisedCriterion(network::KernelTransform& transform, Input& values, char criterion, double nu, char reinject) : network::TransformCriterion(transform), values(values), criterion(criterion), nu(nu), reinject(reinject), estimates(NULL), destimates(NULL)
+network::SupervisedCriterion::SupervisedCriterion(network::KernelTransform& transform, Input& values, char criterion, double nu, char reinject) : network::TransformCriterion(transform), values(values), criterion(criterion), nu(nu), reinject(reinject)
 {
   assume(0 <= nu, "illegal-argument", "in network::SupervisedCriterion::SupervisedCriterion the nu=%g must be non-negative criterion %c", nu, criterion);
   assume(reinject == 'n' || reinject == 'o' || reinject == 'b', "illegal-argument", "in network::SupervisedCriterion::SupervisedCriterion the reinject=%c parameter must be in {'t', 'o', 'n'}", reinject);
 }
-/// @cond INTERNAL
-network::SupervisedCriterion::~SupervisedCriterion()
-{
-  delete[] estimates;
-  delete[] destimates;
-}
-///@endcond
 double network::SupervisedCriterion::rho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);
@@ -104,52 +97,19 @@ double network::SupervisedCriterion::drho(unsigned int n, double t) const
 double network::SupervisedCriterion::get(unsigned int n, double t) const
 {
   if(reinject != 'n') {
-    if(reinject == 'b' && estimates != NULL)
-      return estimates[n + transform.getN() * (int) t];
     if(n < values.getN())
       return values.get(n, t);
+    if(reinject == 'b')
+      return TransformCriterion::get(n, t);
   }
   return NAN;
 }
 unsigned int network::SupervisedCriterion::getN0() const
 {
-  return reinject == 'b' && estimates != NULL ? transform.getN(): reinject == 'o' ? values.getN() : 0;
+  return reinject == 'b' ? TransformCriterion::getN0(): reinject == 'o' ? values.getN() : 0;
 }
 void network::SupervisedCriterion::update()
 {
-  if(reinject) {
-    if(estimates == NULL) {
-      estimates = new double[transform.getN() * ((int) transform.getT())];
-      destimates = new double[transform.getN() * ((int) transform.getT())];
-    }
-    unsigned int N = transform.getN(), N0 = values.getN(), T = transform.getT(), R = transform.getR();
-    transform.reset(true);
-    double r = 1;
-    static const unsigned int K = 20;
-    for(unsigned int k = 0; k < K && 1e-6 < r; k++) {
-      for(unsigned int t = 0; t < T; t++)
-        for(int n = N - 1; 0 <= n; n--) {
-          double v = transform.get(n, t);
-          estimates[n + t * N] = n < (int) N0 ? values.get(n, t) : v;
-        }
-      if(k > 0)
-        for(int t_ = T - 1; 0 <= t_; t_--)
-          for(unsigned int n_ = 0, nt_ = N * t_; n_ < N; n_++, nt_++)
-            if(N0 <= n_)
-              for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
-                for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
-                  estimates[n_ + t_ * N] += transform.getValueDerivative(n, t, n_, t_) * destimates[n + t * N];
-      r = 0;
-      for(unsigned int t = 0; t < T; t++)
-        for(unsigned int n = 0; n < N; n++) {
-          double e = destimates[n + t * N] = estimates[n + t * N] - transform.get(n, t);
-          r += e * e;
-        }
-      r = sqrt(r / (N * T));
-      for(unsigned int t = 0; t < T; t++)
-        for(unsigned int n = 0; n < N; n++)
-          transform.set(n, t, estimates[n + t * N]);
-      // - printf("network::SupervisedCriterion::update() r[%d] = %g\n", k, r); // @todo
-    }
-  }
+  if(reinject == 'b') 
+    TransformCriterion::update();
 }

@@ -8,7 +8,10 @@ public:
      * @param transform The kernel transform to estimate.
      * - The recurrent transform is fully buffered fo the estimation purpose.
      */
-    TransformCriterion(RecurrentTransform & transform) : transform(transform) {}
+    TransformCriterion(RecurrentTransform & transform);
+    /// @cond INTERNAL
+    virtual ~TransformCriterion();
+    ///@endcond
 
     /** Defines the estimator criterion.
      * - The method is to be overwritten to implement a global estimator.
@@ -43,6 +46,9 @@ public:
      */
     virtual double drho(unsigned int n, double t) const;
 
+  private:
+    double *estimates, *destimates;
+  public:
     /** Updates the best previous estimated value.
      * - This routine is called after backward tuning, and weight adjustment.
      */

@@ -100,7 +100,7 @@ run : .build/main.exe
 
 grun : .build/main.exe
 	@echo 'make grun'
-	(echo "run $(ARGS)" ; echo "backtrace" ; echo "echo\n" ; echo "backtrace full" ; echo "quit") > .build/a.cmd ; gdb -q .build/main.exe -x .build/a.cmd ; ok=1
+	(echo "run $(ARGS)" ; echo "echo --- backtrace ------------------------------------------------------------------------------\n"; echo "backtrace" ; echo "echo --- backtrace full -------------------------------------------------------------------------\n" ; echo "backtrace full" ; echo "echo --------------------------------------------------------------------------------------------\n"; echo "quit 0") > .build/a.cmd ; gdb -q .build/main.exe -x .build/a.cmd ; ok=1
 
 vrun : .build/main.exe
 	@echo 'make vrun'
@@ -196,13 +196,12 @@ rrun-out :
 
 # On going
 #
-# - créer update readout et tester
-# - déplacer update ds transform criterion
-# - creer update observable
-# - maj curve fitting : les w, le t-1 et prédiction error
-# - appliquer curve fitting à dynamique recurrent pr lyapounov
-# - distributed : avec plus de D et N, des randoms w init nombreux
+# - comprendre le problème de normalisation du critere sur les observables : notion d'observable normalisé ou de differences d'observables avec exposants
+# - finaliser update observable
 # - ajouter table d'index pour le bacaward tuning
+# - maj curve fitting : les w, le t-1 et prédiction error
+# - appliquer curve fitting à dynamique recurrent pr lyapounov, voit calcul exposant usuel avant
+# - distributed : avec plus de D et N, des randoms w init nombreux
 
 
 ARGS = -test # -experiment2

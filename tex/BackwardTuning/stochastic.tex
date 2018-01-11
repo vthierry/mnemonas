@@ -103,11 +103,11 @@ so that we expect the numerical condition of the original criterion and the rela
 \subsubsection*{Boostrapping the network estimation}
 
 Given the previous criterion, we consider a network simulation $x_n(t)$, with the goal to modify the related network weights in order the network output observable to be $\frac{1}{T-\tau_k} \sum_t \omega_k(t)$ to be as closed as possible to the desired observable $\bar{\Omega}_k$. To this end, we define desired values $\hat{x}_n(t)$, as follows
-\eqline{\min_{\hat{x}_n(t)} \frac{1}{2} \, \sum_{nt} \|\hat{x}_n(t) - x_n(t)\|^2 + \sum_k \lambda_k \left[\bar{\Omega}_{k} - \frac{1}{T-\tau_k} \sum_t \omega_k(t)\right]}
+\eqline{\min_{\hat{x}_n(t)} \frac{1}{2} \, \sum_{nt} \|\hat{x}_n(t) - x_n(t)\|^2 + \sum_k \lambda_k \left[\bar{\Omega}_{k} - \frac{1}{T-\tau_k} \sum_t \left. \omega_k(t)\right|_{\hat{x}} \right]}
 in words: The desired values are the closest values with respect to the present simulation that match the desired observable, while the normal equations yield the recurrent equation:
 \eqline{\begin{array}{rcl}
-  \hat{x}_n(t) &\leftarrow& x_n(t) + \sum_k \frac{1}{T-\tau_k} \, \lambda_k \, \sum_t \partial_{\bf x} \omega_k(t) \\
-  \lambda_k &\simeq& \left[ \frac{1}{T-\tau_k} \, \sum_t \partial_{\bf x} \omega_{k'}(t) \, \partial_{\bf x} \omega_{k''}(t)^T \right]^{\dagger} \, \left[\bar{\Omega}_{k} - \frac{1}{T-\tau_k} \sum_t \omega_k(t)\right] \\
+  \hat{x}_n(t) &\leftarrow& x_n(t) + \sum_k \frac{1}{T-\tau_k} \, \lambda_k \, \sum_t \partial_{x_n(t)} \omega_k(t) \\
+  \lambda_k &\simeq& \left[ \frac{1}{T-\tau_k} \, \frac{1}{T-\tau_{k'}} \, \sum_{nt} \partial_{x_n(t)} \omega_{k'}(t) \, \partial_{x_n(t)} \omega_{k}(t)^T \right]^{\dagger} \, \left[\bar{\Omega}_{k'} - \frac{1}{T-\tau_k'} \sum_t \omega_{k'}(t)\right] \\
 \end{array}}
 which is a standard non-linear constrained least-square 2nd order recurrent scheme (see e.g., \cite{vieville:inria-00074888}). In other words, we iteratively compute the projection $\hat{x}_n(t)$ of the present simulation $x_n(t)$ onto the manifold defined by $\bar{\Omega}_{k} = \frac{1}{T-\tau_k} \sum_t \omega_k(t)$, i.e., such that the desired values observables equal the desired observable values. Here, $\partial_{\bf x} \omega_{k}(t)$ corresponds to the local norma of the manifold, and since observables are mainly monomials of degree less than $D$, we can write for some $u_{nt} \in \{0, 1\}, d_{nt} \in \{0, D\}$ defining the monomial:
 \eqline{\omega_{k}(t) = \prod_{nt} u_{nt} \, x_{n}(t)^{d_{nt}}, \mbox{ yielding } \partial_{x_{n't'}} \omega_k(t) = d_{n't'} \, \frac{\omega_{k}(t)}{x_{n't'}}}

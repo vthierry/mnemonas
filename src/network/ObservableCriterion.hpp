@@ -30,8 +30,7 @@ public:
        */
       Observable& reset(const Input& input);
 
-      /** Gets the observable value expectation, given the measures.
-       */
+      /** Gets the observable value expectation, given the measures. */
       double getValue() const;
 
       /** Gets the local observable derivative.
@@ -59,27 +58,37 @@ private:
     unsigned int dimension;
     Observable **observables;
     double *lambdas, *values;
+    bool reinject;
+    unsigned int estimate_N0;
+    double *estimates;
 public:
     /** Resets the criterion for a given statistics.
      * @param transform The kernel transform to estimate.
      * @param input The input to consider as a reference.
      * @param observables The observables to take into account. They must be deleted after the ObservableCriterion yuse.
      * @param lambdas The observables weighted parameters, if any.
+     * @param reinject If true defined desired values constrained by the observable.
      */
-    ObservableCriterion(KernelTransform & transform, const Input &input, std::vector < Observable * > observables, const double *lambdas = NULL);
+    ObservableCriterion(KernelTransform & transform, const Input &input, std::vector < Observable * > observables, const double *lambdas = NULL, bool reinject = false);
 
     /** Resets the estimator for a given statistics.
      * @param transform The kernel transform to estimate.
      * @param observables The observables to take into account. They must be deleted after the ObservableCriterion use.
      * @param values The observables values.
      * @param lambdas The observables weighted parameters, if any.
+     * @param reinject If true defined desired values constrained by the observable.
      */
-    ObservableCriterion(KernelTransform & transform, std::vector < Observable * > observables, const double *values, const double *lambdas = NULL);
+    ObservableCriterion(KernelTransform & transform, std::vector < Observable * > observables, const double *values, const double *lambdas = NULL, bool reinject = false);
     /// @cond INTERNAL
     ~ObservableCriterion();
     ///@endcond
     double rho() const;
     double drho(unsigned int n, double t) const;
+
+    virtual void update();
+    virtual double get(unsigned int n, double t) const;
+    virtual unsigned int getN0() const;
+
 
     /** Gets an observable expected value.
      * @param k The observable index.
