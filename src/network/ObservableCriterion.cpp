@@ -15,9 +15,11 @@ std::string network::ObservableCriterion::Observable::asString() const
 {
   return s_printf("{ 'name' = '%s', 'value' = '%g' }", name.c_str(), value);
 }
-double network::ObservableCriterion::Observable::getValue() const
+double network::ObservableCriterion::Observable::getValue(bool recompute) const
 {
   assume(input != NULL, "illegal-state", "in network::ObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
+  if (recompute)
+    const_cast < Observable * > (this)->doValue();
   return value;
 }
 double network::ObservableCriterion::Observable::getValueDerivative(unsigned int n, double t) const
@@ -127,9 +129,11 @@ void network::ObservableCriterion::update()
       {
 	double *b = new double [dimension], *A = new double [(dimension * (dimension + 1))/2];
 	for(unsigned int d = 0, dd_ = 0; d < dimension; d++) {
+	  observables[d]->getValue(true);
 	  for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
 	    A[dd_] = 0;
 	  b[d] = values[d] - observables[d]->getValue();
+	  printf("\tO[%d] = %9.2g %9.2g\n", d, values[d], observables[d]->getValue());
 	  r1 += fabs(b[d]);
 	}
 	for(unsigned int t = 0; t < T; t++) 

@@ -30,8 +30,10 @@ public:
        */
       Observable& reset(const Input& input);
 
-      /** Gets the observable value expectation, given the measures. */
-      double getValue() const;
+      /** Gets the observable value expectation, given the measures.
+       * @param recompute If true recompute the observable before returning the value.
+       */
+      double getValue(bool recompute = false) const;
 
       /** Gets the local observable derivative.
        * @param n The unit index.

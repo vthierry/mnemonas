@@ -246,7 +246,21 @@ public:
           network::ObservableCriterion::deleteObservables(observables);
         }
       }
-      static void testObservablesEstimation()
+      static void testObservableCriterionUpdate()
+      {
+       static const unsigned int T = 500, N0 = 1, N = 1;
+	network::BufferedInput input("normal", 1, T, true);
+        network::LinearNonLinearTransform transform(N, input, -2, 2);
+        transform.setOffset(NAN).setLeak(NAN).setWeightsRandom(0, 0.5 / N, false, "normal", 1);
+	std::vector < network::ObservableCriterion::Observable * > observables =
+          network::ObservableCriterion::getObservables("mean", N0, 1);
+	observables[0]->reset(transform);
+	printf("mean = %g\n", observables[0]->getValue(true));
+  	double values[1] = { 5 };
+        network::ObservableCriterion criterion(transform, observables, values, NULL, true);
+	criterion.update();
+      }
+     static void testObservablesEstimation()
       {
         static const unsigned int T = 500, N0 = 1, N = 1;
         network::BufferedInput input("normal", 1, T, true);
@@ -264,6 +278,7 @@ public:
     }
     test;
     test.testObservables();
+    test.testObservableCriterionUpdate();
     test.testObservablesEstimation();
   }
 }
