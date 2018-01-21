@@ -8,9 +8,9 @@ public:
   /** Runs these experiments. */
   void run(Struct what = "{}")
   {
-    printf(">  Experimenting2(%s) ... \n", ((String) what).c_str());
+    printf(">  Experimenting ReservoirAdjustment (%s) ... \n", ((String) what).c_str());
     // Tests distributed estimation of sparse network
-    if(true) {
+    if(false) {
       static const unsigned int M = 1, N = 16, N0 = 1, T = 1000;
       network::BufferedInput input("normal", M, T, true);
       network::SparseNonLinearTransform transform1(N, input);
@@ -28,7 +28,7 @@ public:
       ParameterOptimizer o("{'mode'  : ['true', 'false'], 'scale' : [0.1, 0.2, 0.5, 1, 2, 5, 10]}");
       printf(">>\n%s\n", o.asString().c_str());
     }
-    network::BufferedInput data("tex/tests/chaotic-sequence-anthony", "csv");
+    network::BufferedInput data("tex/ReservoirAdjustment/data/chaotic-sequence-anthony", "csv");
     printf(">  ... experiment done.\n");
   }
 };

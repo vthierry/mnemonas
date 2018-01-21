@@ -36,7 +36,7 @@ usage :
 #
 
 export SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*.c)
-export INC = $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*.h) $(wildcard tex/*.h)
+export INC = $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*.h) $(wildcard tex/*/*.h)
 
 CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter
 LDFLAGS =  -lgsl -lgslcblas -lm 
@@ -196,14 +196,14 @@ rrun-out :
 
 # On going
 #
-# - ajouter table d'index pour le backward tuning
 # - maj curve fitting : les w, le t-1 et prédiction error
 # - appliquer curve fitting à dynamique recurrent pr lyapounov, voit calcul exposant usuel avant
 # - distributed : avec plus de D et N, des randoms w init nombreux
+#
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 
 
-ARGS = -test # -experiment2
+ARGS = -test # -experiment2 # 
 
 test :
 	$(MAKE) run

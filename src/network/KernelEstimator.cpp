@@ -1,17 +1,18 @@
 #include "main.hpp"
+#include <algorithm>
 
-network::KernelEstimator::KernelEstimator(KernelTransform& transform, TransformCriterion& criterion) : transform(transform), N(transform.getN()), T((int) transform.getT()), R(transform.getR()), criterion(criterion), weights0(new double[transform.getWeightCount()]), values0(new double[N * T]), errors(new double[N * T]), drho_mean(0), k_negligible(0), k_saturated(0)
-{
-  once = true;
-}
+network::KernelEstimator::KernelEstimator(KernelTransform& transform, TransformCriterion& criterion) : transform(transform), N(transform.getN()), T((int) transform.getT()), R(transform.getR()), criterion(criterion), weights0(new double[transform.getWeightCount()]), values0(new double[N * T]), errors(new double[N * T]), drho_mean(0), once(true),  connections(NULL), k_negligible(0), k_saturated(0) {}
 /// @cond INTERNAL
 network::KernelEstimator::~KernelEstimator()
 {
+  delete[] connections;
   delete[] errors;
   delete[] values0;
   delete[] weights0;
 }
 ///@endcond
+network::KernelEstimator::connection::connection(unsigned int n, unsigned int r) : n(n), r(r) {}  
+bool network::KernelEstimator::connection::operator == (const connection &c) const {      return n == c.n && r == c.r; }
 
 double network::KernelEstimator::run()
 {
@@ -33,16 +34,47 @@ double network::KernelEstimator::run()
   // Initializes the backward guard variables
   double m0 = 0, s0 = 0, m1 = 0, s1 = 0;
   k_negligible = k_saturated = 0;
+  // Builds a backward connection table
+#define WITH_CONNECTIONS 1
+#if WITH_CONNECTIONS
+  if (connections == NULL) {
+    connections = new std::vector < connection >[N];
+    for(int t_ = T - 1; 0 <= t_; t_--)
+      for(unsigned int n_ = 0; n_ < N; n_++)
+	for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
+	  for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
+	    if(transform.isConnected(n, t, n_, t_)) {
+	      connection c(n, (unsigned int) (t-t_));
+	      std::vector < connection >& cc = connections[n_];
+	      if(std::find(cc.begin(), cc.end(), c) == cc.end())
+		cc.push_back(c);
+	    }
+  }
+#endif
   // Calculates the backward tuning errors
   for(int t_ = T - 1; 0 <= t_; t_--)
     for(unsigned int n_ = 0, nt_ = N * t_; n_ < N; n_++, nt_++) {
       double e0 = criterion.drho(n_, t_), e1 = 0;
       if(e0 != 0)
         m0 += fabs(e0), s0++;
+#if WITH_CONNECTIONS
+#if 1
+      for(std::vector < connection > ::const_iterator i = connections[n_].begin(); i != connections[n_].end(); i++) {
+	unsigned int n = i->n, t = t_ + i->r;
+	e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
+      }
+#else
+      for(unsigned int k = 0; k < connections[n_].size(); k++) {
+	unsigned int n = connections[n_][k].n, t = t_ + connections[n_][k].r;
+	e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
+      }
+#endif
+#else
       for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
         for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
           if(transform.isConnected(n, t, n_, t_))
             e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
+#endif
       // Implements the backward guard, with nu = 1e-6, omega = 1e6 and a simple saturation.
       {
         if(0 < e1) {
@@ -73,7 +105,7 @@ double network::KernelEstimator::run()
   double NT = N * T;
   ratio_negligible.add(k_negligible / NT);
   ratio_saturated.add(k_saturated / NT);
-  //-printf(">tuning time = %g\n", now(false, true));
+  //- printf(">tuning time = %g\n", now(false, true));
   tuning_time.add(now(false, true));
   return cost;
 }

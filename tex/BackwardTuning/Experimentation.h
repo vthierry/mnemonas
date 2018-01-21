@@ -342,7 +342,7 @@ public:
   /** Runs these experiments. */
   void run(Struct what = "{}")
   {
-    printf(">  Experiment1(%s) ... \n", ((String) what).c_str());
+    printf(">  Experiment BackwardTuning (%s) ... \n", ((String) what).c_str());
     if(what.get("what") == "todo") {
       verbose_but_nosave = true;
       run_sequence_generation("zerone", "LinearNonLinearTransform", 'h', 4, 4);

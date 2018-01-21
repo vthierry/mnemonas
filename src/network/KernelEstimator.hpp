@@ -1,3 +1,5 @@
+#include <vector>
+
 namespace network {
   /** Defines basic mechanisms for kernel weights backward tuning estimation. */
   class KernelEstimator {
@@ -16,6 +18,9 @@ protected:
     double drho_mean;
     // Used to detect the 1st iteration
     bool once;
+    // Connection buffer
+    class connection { public: unsigned int n, r; connection(unsigned int n, unsigned int r); bool operator == (const connection &c) const;};
+    std::vector < connection > *connections;
 protected:
     /** Number of negligible or saturated values during a backward tuning, over the N T values. */
     unsigned int k_negligible, k_saturated;
