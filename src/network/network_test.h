@@ -248,18 +248,22 @@ public:
       }
       static void testObservableCriterionUpdate()
       {
-       static const unsigned int T = 500, N0 = 1, N = 1;
+       static const unsigned int T = 100, N0 = 1, N = 1;
 	network::BufferedInput input("normal", 1, T, true);
         network::LinearNonLinearTransform transform(N, input, -2, 2);
         transform.setOffset(NAN).setLeak(NAN).setWeightsRandom(0, 0.5 / N, false, "normal", 1);
 	std::vector < network::ObservableCriterion::Observable * > observables =
-          network::ObservableCriterion::getObservables("mean", N0, 1);
-	observables[0]->reset(transform);
-	printf("mean = %g\n", observables[0]->getValue(true));
-  	double values[1] = { 5 };
+          network::ObservableCriterion::getObservables("acorr", N0, 1);
+        double values[3] = { 0.2345, 0.3456, 0.1234 };
         network::ObservableCriterion criterion(transform, observables, values, NULL, true);
 	criterion.update();
-      }
+	double err = 0;
+	for(unsigned int d = 0; d < 3; d++) {
+	  observables[d]->reset(transform);
+	  err += fabs(values[d] - observables[d]->getValue());
+	}
+        assume(err < 1e-3, " illegal-state", "in network_test/testObservableCriterionUpdate over-threshold error = %g\n", err);
+       }
      static void testObservablesEstimation()
       {
         static const unsigned int T = 500, N0 = 1, N = 1;

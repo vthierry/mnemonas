@@ -15,11 +15,9 @@ std::string network::ObservableCriterion::Observable::asString() const
 {
   return s_printf("{ 'name' = '%s', 'value' = '%g' }", name.c_str(), value);
 }
-double network::ObservableCriterion::Observable::getValue(bool recompute) const
+double network::ObservableCriterion::Observable::getValue() const
 {
   assume(input != NULL, "illegal-state", "in network::ObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
-  if (recompute)
-    const_cast < Observable * > (this)->doValue();
   return value;
 }
 double network::ObservableCriterion::Observable::getValueDerivative(unsigned int n, double t) const
@@ -116,55 +114,72 @@ unsigned int network::ObservableCriterion::getN0() const
 void network::ObservableCriterion::update() 
 {
   if (reinject) {
-    if(estimates == NULL)
-      estimates = new double[transform.getN() * ((int) transform.getT())];
     unsigned int N = transform.getN(), T = transform.getT();
-    transform.reset(true);
+    if(estimates == NULL)
+      estimates = new double[N * T];
+    double *lambda = new double[dimension], *b = new double [dimension], *A = new double [(dimension * (dimension + 1))/2], *x0 = new double [N * T], *x1 = new double [N * T];
+    // Runs one simulation to buffer the actual values
+    {
+      transform.reset(true);
+      for(unsigned int t = 0; t < T; t++) 
+	for(int n = N - 1; 0 <= n; n--) 
+	  x1[n + t * N] = x0[n + t * N] = transform.get(n, t);
+    }
+    estimate_N0 = 0;
     double r1 = 1e10, r0 = r1 + 1;
     static const unsigned int K = 20; 
-    for(unsigned int k = 0; k < K && r1 + 1e-6 < r0; k++) {
-      double *lambda = new double[dimension];
+    for(unsigned int k = 0; k < K; k++) {
       r0 = r1, r1 = 0;
-      // Solves the lambda linear system
+      // Recomputes the projection error
       {
-	double *b = new double [dimension], *A = new double [(dimension * (dimension + 1))/2];
 	for(unsigned int d = 0, dd_ = 0; d < dimension; d++) {
-	  observables[d]->getValue(true);
+	  observables[d]->reset(transform);
 	  for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
 	    A[dd_] = 0;
 	  b[d] = values[d] - observables[d]->getValue();
-	  printf("\tO[%d] = %9.2g %9.2g\n", d, values[d], observables[d]->getValue());
 	  r1 += fabs(b[d]);
+	  printf("\tO[%d] = %9.2g %9.2g\n", d, values[d], observables[d]->getValue());
 	}
+      }
+      // Updates if improvement
+      {
+	if(r1 >= r0 - 1e-6)
+	  break;
+	for(unsigned int nt = 0; nt < N * T; nt++)
+	  estimates[nt] = x1[nt];
+      }
+      // Solves the lambda linear system
+      {
 	for(unsigned int t = 0; t < T; t++) 
 	  for(int n = N - 1; 0 <= n; n--) {
-	    estimates[n + t * N] = transform.get(n, t);
 	    for(unsigned int d = 0, dd_ = 0; d < dimension; d++)
 	      for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
 		A[dd_] += observables[d]->getValueDerivative(n, t) * observables[d_]->getValueDerivative(n, t);
 	  }
 	solver::linsolve(dimension, dimension, A, true, b, lambda);
 	printf(" A:\n %s b:\n %s lambda:\n %s", solver::asString(A, dimension, dimension, true).c_str(), solver::asString(b, dimension).c_str(), solver::asString(lambda, dimension).c_str());
-	delete[] A;
-	delete[] b;
       }
       // Updates the estimates
       {
 	estimate_N0 = 0;
-	for(unsigned int t = 0; t < T; t++) 
-	  for(unsigned int n = 0; n < N; n++) {
+	for(unsigned int t = 0, nt = 0; t < T; t++) 
+	  for(unsigned int n = 0; n < N; n++, nt++) {
 	    for(unsigned int d = 0; d < dimension; d++) {
 	      double do_nt = observables[d]->getValueDerivative(n, t);
 	      if (do_nt != 0 && estimate_N0 < n) 
-		estimate_N0 = n;
-	      estimates[n + t * N] += do_nt * lambda[d];
+		estimate_N0 = n + 1;
+	      x1[nt] = x0[nt] + do_nt * lambda[d];
+	      transform.set(n, t, x1[nt]);
 	    }
-	    // transform.set(n, t, estimates[n + t * N]);
 	  }
+	printf("network::ObservableCriterion::update() r[%d] = %g N0=%d\n", k, r1, estimate_N0);
       }
-      delete[] lambda;
-      printf("network::ObservableCriterion::update() r[%d] = %g N0=%d\n", k, r1, estimate_N0);
     }
+    delete[] x1;
+    delete[] x0;
+    delete[] A;
+    delete[] b;
+    delete[] lambda;
   }
 }
 network::ObservableCriterion::Observable *network::ObservableCriterion::getObservable(String name, ...)
