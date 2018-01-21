@@ -143,8 +143,8 @@ double network::SparseNonLinearTransform::getKernelDerivative(unsigned int n, un
 	     (d <= D[n] && n_ == indexes[d - 1 + offsets[n]] && t_ == t - 1 && 0 < get(n_, t_) && get(n_, t_) < SAT ? 1 : 0)
 	     ) : 0;
 }
-bool network::SparseNonLinearTransform::isConnected(unsigned int n, unsigned int n_) const
+bool network::SparseNonLinearTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {
-  return n < N && n_ < N && ((n_ == n && leak != 0) || connected[n_ + n * N]);
+  return n < N && n_ < N && t_ == t - 1 && ((n_ == n && leak != 0) || connected[n_ + n * N]);
 }
 

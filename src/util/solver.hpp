@@ -21,8 +21,8 @@ public:
    * @param symmetric Specifies if the previous parameter is symmetric or not.
    * @param b A <tt>double[M]</tt> input buffer.
    * @param x A <tt>double[N]</tt> output buffer.
-   * @param x0 A <tt>double[N]</tt> input buffer. If NULL considers the zero vector.
-   * @return The estimation error | b - A x |
+   * @param x0 A <tt>double[N]</tt> input buffer. If NULL considers the zero vector. We may have x0 == x.
+   * @return The estimation error <tt>| b - A x |</tt>
    */
   static double linsolve(unsigned int M, unsigned int N, const double *A, bool symmetric, const double *b, double *x, const double *x0 = NULL);
 
@@ -35,6 +35,19 @@ public:
    * @return The best minimal solution.
    */
   static double minimize(double f(double x), double xmin, double xmax, double xeps = NAN, unsigned int imax = 0);
+
+  /** Projects a point onto a manifold defined by implicit equation.
+   * @param M The number of equations, the manifold is defined by M equations.
+   * @param N The number of unknows.
+   * @param c The constraint <tt>m</tt>-th equation value, \f$c_m({\bf x})\f$.
+   * @param d The constraint <tt>m</tt>-th equation, <tt>n</tt>-th component derivative value, \f$\partial_{x_n}c_m({\bf x})\f$.
+   * @param x A <tt>double[N]</tt> output buffer.
+   * @param x0 A <tt>double[N]</tt> input buffer. If NULL considers the zero vector. We may have x0 == x.
+   * @param xEpsilon The threshold under which two <tt>x[n]</tt> values are indistinguishable.
+   * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
+   * @return The estimation error <tt>| c(x) |<sup>2</sup></tt>
+   */
+  static double project(unsigned int M, unsigned int N, double c(const double* x, unsigned int m), double d(const double* x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
 
   /** Returns a matrix or vector as a string to dump.
    * @param A The matrix buffer <tt>double[M * N]</tt> buffer storing <tt>A(i, j) == A[i + j * N]</tt>.

@@ -2,7 +2,7 @@ namespace network {
 /** Defines a recurrent network as a fixed leak sparse rectified linear combination of input and recurrent values.
  * - Such recurrent network writes:
  * <center>\f$\begin{array}{rcl}
- *  x_n(t) &=& \gamma \, x_{n}(t-1) + \sum_{d = 0}^{D - 1} W_{nn_d} \, \zeta_{[0,\infty]}\left(x_{n_d}(t)\right) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1)
+ *  x_n(t) &=& \gamma \, x_{n}(t-1) + \sum_{d = 0}^{D - 1} W_{nn_d} \, \zeta_{[0,\infty]}\left(x_{n_d}(t-1)\right) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1)
  *  \end{array}\f$</center>
  * **Weight organization**:
  * |   \f$(n,d)\f$     |                       |                                         |
@@ -47,6 +47,6 @@ public:
     unsigned int getKernelDimension(unsigned int n) const;
     double getKernelValue(unsigned int n, unsigned int d, double t) const;
     double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const;
-    bool isConnected(unsigned int n, unsigned int n_) const;
+    bool isConnected(unsigned int n, double t, unsigned int n_, double t_) const;
   };
 }

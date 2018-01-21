@@ -59,7 +59,7 @@ double network::LinearTransform::getKernelDerivative(unsigned int n, unsigned in
   assume(n < N && d <= getKernelDimension(n) && n_ < N, "illegal-argument", "network::LinearTransform::getKernelDerivative(%d, %d, t, %d, t_) out of bounds", n, d, n_);
   return (1 < d && n_ == d - 2 && t_ == t - 1 && d <= getN() + 1) ? 1 : 0;
 }
-bool network::LinearTransform::isConnected(unsigned int n, unsigned int n_) const
+bool network::LinearTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {
-  return true;
+  return t_ == t - 1;
 }

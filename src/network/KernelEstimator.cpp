@@ -41,7 +41,7 @@ double network::KernelEstimator::run()
         m0 += fabs(e0), s0++;
       for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
         for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
-          if(transform.isConnected(n, n_))
+          if(transform.isConnected(n, t, n_, t_))
             e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
       // Implements the backward guard, with nu = 1e-6, omega = 1e6 and a simple saturation.
       {

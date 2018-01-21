@@ -70,10 +70,12 @@ public:
     /** Checks if two units are connected.
      * - The method is to be overwritten to implement sparse connected networks.
      * @param n The efferent input unit index.
+     * @param t The efferent input unit current time.
      * @param n_ The afferent input unit index denominator.
-     * @return False if the unit of index <tt>n_</tt> never connects to the unit of index <tt>n</tt>, true if the connection is to be checked via getValueDerivative()
+     * @param t_ The afferent input unit current time.
+     * @return False if the unit of index <tt>n_</tt> never connects to the unit of index <tt>n</tt>, for the given times, true if the connection is to be checked via getValueDerivative()
      */
-    virtual bool isConnected(unsigned int n, unsigned int n_) const;
+    virtual bool isConnected(unsigned int n, double t, unsigned int n_, double t_) const;
 
     /** Calculates the numerical approximate value derivative.
      * - This is only used for debugging purpose to check the coherence between getValue() and getValureDerivative().

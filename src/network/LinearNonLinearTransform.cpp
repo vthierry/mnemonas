@@ -94,7 +94,7 @@ double network::LinearNonLinearTransform::getKernelDerivative(unsigned int n, un
          n < N2 ? (d == 1 && n_ == n - N && t_ == t - 1 ? 1 : 0) :
          (1 < d && d <= N + 1 && n_ == d - 2 && t_ == t - 1 ? 1 : 0);
 }
-bool network::LinearNonLinearTransform::isConnected(unsigned int n, unsigned int n_) const
+bool network::LinearNonLinearTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {
-  return n < N ? (n_ == N + n || n_ == n + N2) : n < N2 ? n_ == n - N : n_ < N;
+  return n < N ? (t_ == t && (n_ == N + n || n_ == n + N2)) : n < N2 ? (t_ == t - 1 && n_ == n - N) : (t_ == t - 1 && n_ < N);
 }

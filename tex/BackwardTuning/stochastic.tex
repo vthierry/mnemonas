@@ -1,19 +1,31 @@
 \section{Stochastic adjustment of the network weights}\label{stochastic}
 
-Let us consider the problem of optimizing the probabilistic distribution $\tilde{p}(\tilde{\bf x} = {\bf x})$ of a network output, as a function of the desired distribution $\bar{p}(\bar{\bf o} = {\bf o})$ of a root network. Since we are in a multi-dimensional and dynamic framework, with continuous values, it is  intractable  to consider as it the distribution, but only a parametric model of it, and adjust the parameters of this model. 
+\subsection*{Problem position}
 
-\subsubsection*{An illustrative example}
+Let us consider the problem of optimizing the probabilistic distribution $\tilde{p}(\tilde{\bf x} = {\bf x})$ of a network output, as a function of the desired distribution $\bar{p}(\bar{\bf o} = {\bf o})$ of a root network. Since we are in a multi-dimensional and dynamic framework, with continuous values, it is  intractable to consider as it the distribution, but only a parametric model of it, and adjust the parameters of this model. The key point is that we are going to consider observables of the output, written 
+\eqline{{\Omega}_{k}  \deq {\mathbb E}[\omega_{k}] \simeq \frac{1}{T - \tau_k} \, \sum_{t = 0}^{T - \tau} \omega_{k}(t),}
+for an observable  $\omega_{k}(x_n(t) \cdots x_n(t-\tau_k))$ of a given rank $\tau_k$, using the ergodic assumption to approximate numerically its value.
 
-Let us, for instance, consider that it is important that the network output mean $\tilde{\Omega}_{n,\bullet}$ and auto-correlation in a $\tau = \{0, \Delta\}$ time window $\tilde{\Omega}_{n,\tau}$, correspond to some desired values:
+Let us, for instance, consider that the network output mean $\tilde{\Omega}_{n,\bullet}$ and auto-correlation in a $\tau = \{0, \Delta\}$ time window $\tilde{\Omega}_{n,\tau}$, corresponds to the desired statistical paremeters:
 \eqline{\begin{array}{rclrcl}
-   \bar{\Omega}_{n,\bullet}  &\deq& \frac{1}{T} \, \sum_{t = 0}^{T - 1} \omega_{n,\bullet}(t), & \omega_{n,\bullet}(t) &\deq& \bar{o}_n(t) \\
-   \bar{\Omega}_{n,\tau}  &\deq& \frac{1}{T - \tau} \, \sum_{t = 0}^{T - \tau - 1} \omega_{n,\tau}(t) & \omega_{n,\tau}(t) &\deq& \bar{o}_n(t) \, \bar{o}_n(t - \tau), \\
+   {\Omega}_{n} &=& {\mathbb E}[\omega_{n}(t)], & \omega_{n}(t) &\deq& {o}_n(t) \\
+   {\Omega}_{n,\tau}  &=& {\mathbb E}[\omega_{n,\tau}(t)] & \omega_{n,\tau}(t) &\deq& {o}_n(t) \, {o}_n(t - \tau), \\
 \end{array}}
 the normalized temporal auto-correlation being: 
-\eqline{C_{n,\tau} = (\bar{\Omega}_{n,\tau} - \bar{\Omega}_{n,\bullet}^2) / (\bar{\Omega}_{0,\tau} - \bar{\Omega}_{n,\bullet}^2).}
-We thus do not constraint the output desired values directly but only some momenta expectation.
+\eqline{C_{n,\tau} = ({\Omega}_{n,\tau} - {\Omega}_{n}^2) / ({\Omega}_{n,0} - {\Omega}_{n}^2).}
+We thus do not constraint the output desired values directly but only some momentum expectation.
+We could also have considered higher order momenta, e.g., kewness and kurtosis, or spatial correlations, and so on.
 
-Beyond this example, we thus consider observable $\omega_{k}(x_n(t) \cdots x_n(t-\tau_k))$ of a given rank $\tau_k$ and their expectation on the desired distribution $\Omega_{k}$. We could also have considered higher order momenta, e.g., consider mean, standard-deviation, skewness and kurtosis, or spatial correlations, and so on.
+A step further we must introduce the notion of {\em normalized observable} $\Upsilon_k$, given a desired values $\bar{\Omega}_{k}$, thats maps the observable value ${\Omega}_{k}$ onto a dimension-less normalized monotonic error function. For the mean ${\Omega}_{n}$ we propose
+\eqline{\Upsilon_n = \tanh\left(({\Omega}_{n} - \bar{\Omega}_{n}) \left/ \mathring{\Omega}_{n} \right.\right), 
+  \mathring{\Omega}_{n} = \left\{ \begin{array}{rll} 
+ \bar{\Omega}_{n} & \mbox{if} & |\bar{\Omega}_{n}| > \epsilon \\ 
+ \sqrt{\bar{\Omega}_{n,0}} & \mbox{if} & |\bar{\Omega}_{n}| < \epsilon, \bar{\Omega}_{n,0} > \epsilon^2 \\ 
+  1 & \mbox{otherwise,} \end{array} \right.}
+in words the mean difference is normalized using the expected mean, if not negligible, or the standard deviation if given, though a normalized sigmoid profile. For second order momenta we can consider,.e.g., the normalized correlation, writing:
+\eqline{\Upsilon_{n,\tau} = \tanh\left(({\Omega}_{n,\tau} - \bar{\Omega}_{n,\tau}) \left/ (\bar{\Omega}_{n,0} - \bar{\Omega}_{n}^2) \right.\right),}
+providing the denominator does not vanish, normalizing the estimated observable ${\Omega}_{n,\tau}$ against desired observable values $\bar{\Omega}_k$. Our assumption is that there is always an application dependent pertinent way of defining such a normalization mapping. More generaly we require $\Upsilon_k$ to be a point-wise separating function
+\eqline{\Upsilon_k = \rho_{\bar{\Omega}}\left({\Omega}_{k} - \bar{\Omega}_{k}\right), \mbox{ with } \rho_{\bar{\Omega}}(u) = 0 \Leftrightarrow u = 0 \mbox{ and } \rho_{\bar{\Omega}}(u) \in [-1, 1].}
 
 \subsubsection*{Considering a general model}
 
@@ -25,7 +37,7 @@ where the denominator guaranties $\int_{{\bf x}} p({\bf x}) = 1$ and is called t
 \eqline{\min_{\bf \lambda} 
 \underbrace{\int_{\bf x} p({\bf x}) \log(p({\bf x}))}_{entropy} +
 \underbrace{\lambda_{0} \left(\int_{\bf x} p({\bf x}) -1 \right)}_{normalization} -
-\underbrace{\sum_k \lambda_{k} \left(\int_{\bf x} p({\bf x}) \, \omega_{k} - {\Omega}_{k}\right)}_{observations}}
+\underbrace{\sum_k \lambda_{k} \left(\int_{\bf x} p({\bf x}) \, \omega_{k}({\bf x}) - {\Omega}_{k}\right)}_{observations}}
 and the functional derivative of this criterion yields:
 \eqline{p({\bf x}) = \exp\left(\sum_k \lambda_k \, {\omega}_{k}({\bf x})\right) / Z_p({\bf \lambda}),}
 as easily obtained from the normal equation derivation, see e.g.:
@@ -67,52 +79,24 @@ and it is easy to approximate:
 under the ergodic assumption.
 
 As a consequence, despite the caveat that $Z_q({\bf \lambda})$ calculation is usually not tractable, this allows us to implement some paradigm that tends to minimize the criterion gradient (since at a criterion minimum, the gradient vanishes):
-\eqline{\bar{\lambda} = \mbox{arg min}_\lambda |\Omega_{l}({\bf \lambda}) - \bar{\Omega}_{k} |.}
-One example of algorithm writes:
-\\ \hphantom{2mm} {\em Input} : The desired observable values $\bar{\Omega}_{k}$ and the distribution samples $\bar{\bf o}$.
-\\ \hphantom{2mm} {\em Output} : The estimated $\bar{\lambda}_k$.
-\\ \hphantom{4mm} - Starts with ${\bf \lambda}_0 = 0$ and a regularization parameter $\upsilon = 1$.
-\\ \hphantom{4mm} - At a given iteration $i$
-\\ \hphantom{4mm} -- Computes $\Omega_k({\bf \lambda})$ and $\Omega_{kl}({\bf \lambda})$ for a given value of ${\bf \lambda}$ from a random draw $\pi(t)$.
-\\ \hphantom{4mm} -- In order to obtain ${\bf \lambda}_{i} = d{\bf \lambda} + {\bf \lambda}_{i-1}$ solve the regularized linear problem: 
-\eqline{d{\bf \lambda} = \mbox{arg min}_{d{\bf \lambda}} |d{\bf \lambda}|, \;\;\; \upsilon \, \partial {\cal J} + (1 - \upsilon) \, \partial^2 {\cal J} \, {\bf \lambda}_{i-1} = \partial^2 {\cal J} \, d{\bf \lambda}}
-calculating the SVD of $\partial^2 {\cal J}$ in order to consider its pseudo-inverse.
-\\ \hphantom{4mm} -- If $\|\partial {\cal J}\|$ does not decreases reduce $\upsilon$ and repeat until $\upsilon$ vanishes.
-\hr}). As a consequence, given a desired output $\bar{\bf o}$ and a choice of observable $\omega_k$ we can estimate the maximal entropy parameters $\bar{\bf \lambda}$.
+\eqline{\bar{\lambda} = \mbox{arg min}_\lambda \rho\left(\Omega({\bf \lambda}) - \bar{\Omega}\right),} for some suitable point separating positive function $\rho()$. 
+
+This design choice is valid because the topological pressure is convex with respect to ${\bf \lambda}$, so that the criterion is convex \cite{vasquez:inria-00574954}. As a consequence, the criterion is minimal when the gradient magnitude vanishes, i.e. is minimal too, while the criterion decreases with the gradient magnitude, thanks to being a convex criterion.\hr}). As a consequence, given a desired output $\bar{\bf o}$ and a choice of observable $\omega_k$ we can estimate the maximal entropy parameters $\bar{\bf \lambda}$.
 
 \subsubsection*{Statistical weight adjustment from the parametric model}
 
-Given set of desired observable values $\bar{\Omega}_k$, with the corresponding Gibbs model $\hat{p}(\bar{\bf o})$ parameterized by $\bar{\bf \lambda}$ and adjusted on the reference samples $\bar{\bf o}$, we now can state the problem of adjusting the network weights. We consider the KL-divergence between the observed distribution $\bar{p}(\bar{\bf o})$, approximated by the related Gibbs model, and the network simulation $\tilde{p}_{\bf W}(\tilde{\bf x})$, parameterized by the network weights ${\bf W}$. The network is viewed here as a parametric model of the observed distribution. 
+Given of set of desired observable values $\bar{\Omega}_k$, with the corresponding Gibbs model $\hat{p}(\bar{\bf o})$ parameterized by $\bar{\bf \lambda}$ and adjusted on the reference samples $\bar{\bf o}$, we now can state the problem of adjusting the network weights. We consider the KL-divergence between the observed distribution $\bar{p}(\bar{\bf o})$, approximated by the related Gibbs model, and the network simulation $\tilde{p}_{\bf W}(\tilde{\bf x})$, parameterized by the network weights ${\bf W}$. The network is viewed here as a parametric model of the observed distribution. 
 
-Since the network simulation is brought to the desired reference samples distribution, modeled as a Gibbs distribution, we are going to assume that the network simulation can itself be represented by a Gibbs distribution:
-\eqline{\tilde{p}(\tilde{\bf x}) \simeq \exp\left(\sum_k \tilde{\lambda}_k \, {\omega}_{k}({\bf x})\right) / Z_{\tilde{p}}(\tilde{\bf \lambda}),}
-yielding, using similar algebra as before:
-\eqline{\begin{array}{rcl} d_{KL}(\bar{p}(\bar{\bf o})\|\tilde{p}(\tilde{\bf x})) 
- &=& \int p(\bar{\bf o}) \log\left(\frac{\bar{p}(\bar{\bf o})}{\tilde{p}(\tilde{\bf x})}\right) \\
- &\simeq& \int p(\bar{\bf o}) \log\left(\frac{\hat{p}(\bar{\bf o})}{\tilde{p}(\tilde{\bf x})}\right) \\ &=& \sum_k (\bar{\lambda}_k - \tilde{\lambda}_k) \, \bar{\Omega}_{k}
-          + \log(Z_{\tilde{p}}(\tilde{\bf \lambda})/Z_{\bar{p}}(\bar{\bf \lambda})) \\
-\end{array}}
-with the goal to adjust the weights in order the related $\tilde{\bf \lambda}$ to minimize this divergence. As before, we can replace the KL-divergence minimization by the minimization of the gradient magnitude. This design choice is valid because the topological pressure is convex with respect to ${\bf \lambda}$, so that the criterion is convex \cite{vasquez:inria-00574954}. As a consequence, the criterion is minimal when the gradient magnitude vanishes, i.e. is minimal too, while the criterion decreases with the gradient magnitude, thanks to being a convex criterion.
+Since the network simulation is brought to the desired reference samples distribution, modeled as a Gibbs distribution, we are going to assume that the network simulation can itself be represented by a Gibbs distribution with the goal to adjust the weights in order the related divergence $d_{KL}(\bar{p}(\bar{\bf o})\|\tilde{p}(\tilde{\bf x}))$. As before, we can replace the KL-divergence minimization by the minimization of the gradient, i.e., some point separating positive function of the difference between the measured observable ${\Omega}_{k}$ on the simulation and the desired value $\bar{\Omega}_{k}$.
 
-The gradient writes $\partial_{\tilde{\lambda}_k} d_{KL}(\bar{p}(\bar{\bf o})\|\tilde{p}(\tilde{\bf x})) = \tilde{\Omega}_{k}(\tilde{\bf \lambda}_{\bf W}) - \bar{\Omega}_{k}$, and we propose to consider the following weighted ${\cal L}^1$ norm:
-\begin{equation} \label{kl-criterion} \rho({\bf x}) \deq \sum_k |\bar{\lambda}_k| \, \left|\bar{\Omega}_{k} - \frac{1}{T-\tau_k} \sum_t \omega_k(t)\right|. \end{equation}
-The reason of this second design choice is that it has the same order of magnitude as the $d_{KL}(\bar{p}(\bar{\bf o})\|\tilde{p}(\tilde{\bf x}))$ with respect to the observable, i.e.:
-\eqline{|\partial_{\bar{\Omega}_k} d_{KL}(\bar{p}(\bar{\bf o})\|\tilde{p}(\tilde{\bf x}))| = |\partial_{\bar{\Omega}_k} \rho({\bf x})| = |\bar{\lambda}_k|,}
-so that we expect the numerical condition of the original criterion and the related gradient magnitude to be similar. At the experimental level we have observed that such ${\cal L}^1$ criterion seems more efficient than the corresponding ${\cal L}^2$ criterion.
+This is the point where we use the normalized observable and propose to minimize:
+\begin{equation} \label{kl-criterion} \rho({\bf x}) \deq \sum_k |\Upsilon_k|^d = \sum_k |\rho_k\left(\bar{\Omega}_{k} - {\Omega}_{k}({\bf W})\right)|^d.\end{equation}
+and have numerically experimented that $d=1$ seems more efficient than $d=2$.
 
 \subsubsection*{Boostrapping the network estimation}
 
-Given the previous criterion, we consider a network simulation $x_n(t)$, with the goal to modify the related network weights in order the network output observable to be $\frac{1}{T-\tau_k} \sum_t \omega_k(t)$ to be as closed as possible to the desired observable $\bar{\Omega}_k$. To this end, we define desired values $\hat{x}_n(t)$, as follows
-\eqline{\min_{\hat{x}_n(t)} \frac{1}{2} \, \sum_{nt} (\hat{x}_n(t) - x_n(t))^2 + \sum_k \lambda_k \left[\bar{\Omega}_{k} - \frac{1}{T-\tau_k} \sum_t \left. \omega_k(t)\right|_{\hat{x}} \right]}
-in words: The desired values are the closest values with respect to the present simulation that match the desired observable, while the normal equations yield the recurrent equation:
-\eqline{\begin{array}{rcl}
-  \hat{x}_n(t) &\leftarrow& x_n(t) + \sum_k \frac{1}{T-\tau_k} \, \lambda_k \, \sum_t \partial_{x_n(t)} \omega_k(t) \\
-  \lambda_k &\simeq& \left[ \frac{1}{T-\tau_k} \, \frac{1}{T-\tau_{k'}} \, \sum_{nt} \partial_{x_n(t)} \omega_{k'}(t) \, \partial_{x_n(t)} \omega_{k}(t)^T \right]^{\dagger} \, \left[\bar{\Omega}_{k'} - \frac{1}{T-\tau_k'} \sum_t \omega_{k'}(t)\right] \\
-\end{array}}
-which is a standard non-linear constrained least-square 2nd order recurrent scheme (see e.g., \cite{vieville:inria-00074888}). In other words, we iteratively compute the projection $\hat{x}_n(t)$ of the present simulation $x_n(t)$ onto the manifold defined by $\bar{\Omega}_{k} = \frac{1}{T-\tau_k} \sum_t \omega_k(t)$, i.e., such that the desired values observables equal the desired observable values. Here, $\partial_{\bf x} \omega_{k}(t)$ corresponds to the local normal of the manifold, and since observables are mainly monomials of degree less than $D$, we can write for some $u_{nt} \in \{0, 1\}, d_{nt} \in \{0, D\}$ defining the monomial:
-\eqline{\omega_{k}(t) = \prod_{nt} u_{nt} \, x_{n}(t)^{d_{nt}}, \mbox{ yielding } \partial_{x_{n't'}} \omega_k(t) = d_{n't'} \, \frac{\omega_{k}(t)}{x_{n't'}}}
-which is well-defined, including for $x_{n't'} = 0$.
-
-Such desired values may be used to provide local solutions to the estimation problem.
+Given the previous criterion, we consider a network simulation $x_n(t)$, with the goal to modify the related network weights in order the network output observable ${\Omega}_k$ to be as closed as possible to the desired observable $\bar{\Omega}_k$. To this end, we define desired values $\hat{x}_n(t)$, as follows
+\eqline{\min_{\hat{x}_n(t)} \frac{1}{2} \, \sum_{nt} (\hat{x}_n(t) - x_n(t))^2 + \sum_k \lambda_k \left[\bar{\Omega}_{k} - \Omega_k({\bf x}) \right]}
+in words: The desired values are the closest values with respect to the present simulation that match the desired observable, which is a standard non-linear constrained least-square 2nd order recurrent scheme (see e.g., \cite{vieville:inria-00074888}). Such desired values may be used to provide local solutions to the estimation problem.
 
 

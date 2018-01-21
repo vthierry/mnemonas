@@ -83,7 +83,7 @@ double network::SoftMaxTransform::getKernelDerivative(unsigned int n, unsigned i
   else
     return 1 < d && d <= N + 1 && n_ == d - 2 && t_ == t - 1 ? 1 : 0;
 }
-bool network::SoftMaxTransform::isConnected(unsigned int n, unsigned int n_) const
+bool network::SoftMaxTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {
-  return n < N ? (n_ == N || n_ == n + N1) : n == N ? N < n_ : n <= N2 ? n_ == n + N : n_ < N;
+  return n < N ? (t_ == t && (n_ == N || n_ == n + N1)) : n == N ? (t_ == t && N < n_) : n <= N2 ? (t_ == t && n_ == n + N) : (t_ == t - 1 && n_ < N);
 }

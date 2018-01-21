@@ -40,6 +40,6 @@ public:
     unsigned int getKernelDimension(unsigned int n) const;
     double getKernelValue(unsigned int n, unsigned int d, double t) const;
     double getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const;
-    bool isConnected(unsigned int n, unsigned int n_) const;
+    bool isConnected(unsigned int n, double t, unsigned int n_, double t_) const;
   };
 }

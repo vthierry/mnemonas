@@ -23,16 +23,17 @@ network::RecurrentTransform& network::RecurrentTransform::reset(bool buffered)
 }
 double network::RecurrentTransform::getValue(unsigned int n, double t) const
 {
-  assume(false, "illegal-state", "in network::RecurrentTransform::get, this virtual method must be overridden");
+  assume(false, "illegal-state", "in network::RecurrentTransform::getValue, this virtual method must be overridden");
   return NAN;
 }
 double network::RecurrentTransform::getValueDerivative(unsigned int n, double t, unsigned int n_, double t_) const
 {
-  assume(false, "illegal-state", "in network::RecurrentTransform::get, this virtual method must be overridden");
+  assume(false, "illegal-state", "in network::RecurrentTransform::getValueDerivative, this virtual method must be overridden");
   return NAN;
 }
-bool network::RecurrentTransform::isConnected(unsigned int n, unsigned int n_) const
+bool network::RecurrentTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {
+  assume(false, "illegal-state", "in network::RecurrentTransform::isConnected, this virtual method must be overridden");
   return true;
 }
 double network::RecurrentTransform::get(unsigned int n, double t_) const

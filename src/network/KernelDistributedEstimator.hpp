@@ -12,10 +12,10 @@ private:
     // Algorithmic trace
     CurveFit line_search_values, line_search_counts;
     // Wrapper to the solver::minimize routine
-    double solver_minimize_f(double x);
     unsigned int n_f, D_f, c_f;
-    static double solver_minimize_e_f(double x);
-    static KernelDistributedEstimator *solver_minimize_e;
+    double solver_minimize_f(double x);
+    static double solver_minimize_this_f(double x);
+    static KernelDistributedEstimator *solver_minimize_this;
 public:
     /** Resets the estimator for a given kernel transform.
      * @param transform The kernel transform to estimate.

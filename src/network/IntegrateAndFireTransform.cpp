@@ -99,7 +99,7 @@ double network::IntegrateAndFireTransform::getKernelDerivative(unsigned int n, u
           3 <= d && d < N + 3 && n_ == N + d - 3 && t_ == t ? dzeta(get(n_, t)) : 0) :
          d == 1 && n_ == n - N && t_ == t - 1 ? 1 : 0;
 }
-bool network::IntegrateAndFireTransform::isConnected(unsigned int n, unsigned int n_) const
+bool network::IntegrateAndFireTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {
-  return n < N ? ((n_ == n && leak != 0) || N <= n_) : n_ == n - N;
+  return n < N ? ((leak != 0 && t_ == t - 1 && n_ == n) || (t_ == t && N <= n_)) : (t_ == t - 1 && n_ == n - N);
 }

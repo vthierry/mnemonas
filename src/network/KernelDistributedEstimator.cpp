@@ -55,8 +55,8 @@ void network::KernelDistributedEstimator::run_once(unsigned int batch_duration, 
       w0[d] = transform.getWeight(n, d + 1);
     // Solves the 2nd order system and performs line search around the solution
     solver::linsolve(S, D, A, false, b, w1, w0);
-    solver_minimize_e = this, n_f = n, D_f = D, c_f = 0;
-    double u = solver::minimize(solver_minimize_e_f, -10, 10, 1e-1);
+    solver_minimize_this = this, n_f = n, D_f = D, c_f = 0;
+    double u = solver::minimize(solver_minimize_this_f, -10, 10, 1e-1);
     line_search_values.add(u);
     line_search_counts.add(c_f);
     //-printf("run_distributed_estmation_once { 'n': %d, 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", n, u, c_f, cost, cost < cost0, cost0 - cost, (cost0 - cost) / cost0);
@@ -78,12 +78,12 @@ double network::KernelDistributedEstimator::solver_minimize_f(double u)
   // - printf("\t{ '#': %d, 'u': %6.4f } %s\n", c_f, u, transform.asString().c_str());
   return cost = criterion.rho();
 }
-double network::KernelDistributedEstimator::solver_minimize_e_f(double u)
+double network::KernelDistributedEstimator::solver_minimize_this_f(double u)
 {
-  return solver_minimize_e->solver_minimize_f(u);
+  return solver_minimize_this->solver_minimize_f(u);
 }
 const CurveFit& network::KernelDistributedEstimator::getFit(String what) const
 {
   return what == "line-search-value" ? line_search_values : what == "line-search-count" ? line_search_counts : network::KernelEstimator::getFit(what);
 }
-network::KernelDistributedEstimator *network::KernelDistributedEstimator::solver_minimize_e = NULL;
+network::KernelDistributedEstimator *network::KernelDistributedEstimator::solver_minimize_this = NULL;
