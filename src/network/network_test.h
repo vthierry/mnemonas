@@ -5,7 +5,7 @@ void network_test()
   // Tests the buffered/observed saved/load mechanism
   {
     static const unsigned int N = 2, T = 100;
-    static const String file = "/tmp/test";
+    static const std::string file = "/tmp/test";
     // Generates a data file
     network::BufferedInput save(N);
     for(unsigned int t = 0; t < T; t++) {

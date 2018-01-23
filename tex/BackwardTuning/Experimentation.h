@@ -295,7 +295,7 @@ public:
         }
         s += s_printf("%s%.0f,%.2f#%c%s", t == 0 ? "> |" : "|", output->get(0, t), transform->get(0, t),
                       v < 0 ? '-' : '+', t < T - 1 ? "" : s_printf("| error = (>0 = %d | <1 = %d)= %d / %d = %.0f%%\n",
-                                                                   count0, count1, (count0 + count1), T, 100.0 * (count0 + count1) / T));
+                                                                   count0, count1, (count0 + count1), T, 100.0 * (count0 + count1) / T).c_str());
       }
       std::string filename = s_printf("tex/results/sequence_generation/sequence_errors_%s_criterion=%c_N=%d_T=%d.txt", type.c_str(), criterion, transform->getN(), T);
       // - printf("> %s\n", s.c_str());
