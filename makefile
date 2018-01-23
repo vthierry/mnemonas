@@ -179,7 +179,10 @@ git :
 pub : api
 	@echo 'make pub'
 	git checkout master ; git pull
-	git checkout gh-pages ; git pull origin gh-pages ; git merge master -m '.' ; git push origin gh-pages:gh-pages ; git checkout master
+	git checkout gh-pages ; git pull origin gh-pages ; git merge master -m '.'
+	$(MAKE) api
+	git add .build/doc
+	git push origin gh-pages:gh-pages ; git checkout master
 
 #
 # Remote execution on nef-*.inria.fr
