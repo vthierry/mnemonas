@@ -8,14 +8,15 @@
 # 
 #################################################################################################
 
-default : test # @todo : cancel for normal use
+default : todo # @todo : cancel for normal use
 
 usage :
 	@echo "Usage:"
 	@echo "  make cmp		: compiles the code"
+	@echo "  make test		: performs the functional non-regression tests"
 	@echo "  make pywrap  		: compiles the python wrapper of the code"
-	@echo "  make ccwrap  		: compiles the python C/C++   of the code"
-	@echo "  make run  ARGS=$ARGS	: compiles and run the code, with the given arguments"
+	@echo "  make ccwrap  		: compiles the C/C++  wrapper of the code"
+	@echo "  make run ARGS=$ARGS  	: compiles and run the code for the given arguments"
 	@echo "  make grun ARGS=$ARGS  	: compiles and run the code, via a debugger (gdb)"
 	@echo "  make vrun ARGS=$ARGS 	: compiles and run the code, via a memory checker (valgrind)"
 	@echo "  make api  		: compiles the source api documentation"
@@ -102,7 +103,7 @@ ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas
 .build/inc/mnemonas : $(INC)
 	@echo 'make inc/mnemonas'
 	/bin/rm -rf $@ ; mkdir -p $@
-	cd src ; rsync -r --exclude='index.h' --exclude='etc/' --exclude='*.htt' --exclude='*.c' --exclude='*.cpp' . ../$@
+	cd src ; rsync -r --exclude='index.h' --exclude='etc/' --exclude='*_test.h' --exclude='*.c' --exclude='*.cpp' . ../$@
 
 #
 # Code local execution
@@ -124,6 +125,8 @@ vrun : .build/main.exe
 	@echo 'make vrun'
 	ulimit -s 100000 2>/dev/null ; export GLIBCXX_FORCE_NEW=1; valgrind --max-stackframe=100000000 --leak-check=full --show-reachable=yes --show-leak-kinds=all --track-origins=yes .build/main.exe $(ARGS)
 
+test : .build/main.exe
+	$(MAKE) run ARGS=-test
 #
 # Code and latex documentation
 #
@@ -223,7 +226,7 @@ rrun-out :
 
 ARGS = -test # -experiment2 # 
 
-test :
+todo :
 	$(MAKE) run
 #	firefox doc/$(MAIN).pdf .build/doc/index.html https://vthierry.github.io/mnemonas
 

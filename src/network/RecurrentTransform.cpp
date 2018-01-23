@@ -10,14 +10,19 @@ network::RecurrentTransform::~RecurrentTransform()
   delete[] values;
 }
 ///@endcond
-network::RecurrentTransform& network::RecurrentTransform::reset(bool buffered)
+network::RecurrentTransform& network::RecurrentTransform::reset(bool buffered, double upsilon)
 {
+  assume(upsilon >= 0, "illegal-argument", "in network::RecurrentTransform::reset, we must have upsilon=%g >= 0", upsilon);
   unsigned int size = buffered ? input.getT() : R + 1;
   if(size != L) {
     delete[] values;
     values = new double[N * (L = size)];
   }
   for(unsigned int nr = 0; nr < N * L; values[nr++] = NAN) ;
+  assume(upsilon == 0, "illegal-argument", "in network::RecurrentTransform::reset, upsilon = %g > 0 not yet implemented", upsilon);
+  if (upsilon > 0)
+    for(unsigned int nr = N * (L - R); nr < N * L; nr++)
+      values[nr] = random::gaussian(0, upsilon);
   t0 = 0;
   return *this;
 }
