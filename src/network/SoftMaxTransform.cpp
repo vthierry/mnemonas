@@ -27,9 +27,9 @@ bool network::SoftMaxTransform::setWeight(unsigned int n, unsigned int d, double
   else
     return KernelTransform::setWeight(n, d, w);
 }
-network::KernelTransform& network::SoftMaxTransform::setWeights(KernelTransform& network)
+network::KernelTransform& network::SoftMaxTransform::setWeights(const KernelTransform& network)
 {
-  assume(dynamic_cast < SoftMaxTransform * > (&network) != NULL, "illegal-argument", "in network::SoftMaxTransform::setWeights wrong network type");
+  assume(dynamic_cast < const SoftMaxTransform * > (&network) != NULL, "illegal-argument", "in network::SoftMaxTransform::setWeights wrong network type");
   unsigned int N0 = getN() < network.getN() ? getN() : network.getN();
   for(unsigned int n = 0; n < N0 / 3; n++) {
     unsigned k0 = 1 + 2 * getN() / 3, k1 = 1 + 2 * network.getN() / 3;
@@ -82,4 +82,8 @@ double network::SoftMaxTransform::getKernelDerivative(unsigned int n, unsigned i
     return d == 0 && t_ == t && n_ == n + N ? get(n, t) : 0;
   else
     return 1 < d && d <= N + 1 && n_ == d - 2 && t_ == t - 1 ? 1 : 0;
+}
+bool network::SoftMaxTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
+{
+  return n < N ? (t_ == t && (n_ == N || n_ == n + N1)) : n == N ? (t_ == t && N < n_) : n <= N2 ? (t_ == t && n_ == n + N) : (t_ == t - 1 && n_ < N);
 }

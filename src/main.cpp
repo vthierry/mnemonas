@@ -6,10 +6,11 @@
 #include "util/Struct_test.h"
 #include "util/solver_test.h"
 #include "util/random_test.h"
-#include "util/ExponentialDecayFit_test.h"
+#include "util/CurveFit_test.h"
+#include "util/ParameterOptimizer_test.h"
 #include "network/network_test.h"
-#include "../tex/Experimentation1.h"
-#include "../tex/Experimentation2.h"
+#include "../tex/BackwardTuning/Experimentation.h"
+#include "../tex/ReservoirAdjustment/Experimentation.h"
 
 void test()
 {
@@ -18,7 +19,8 @@ void test()
   Struct_test();
   solver_test();
   random_test();
-  ExponentialDecayFit_test();
+  CurveFit_test();
+  ParameterOptimizer_test();
   network_test();
   printf(">  ... test done.\n");
 }

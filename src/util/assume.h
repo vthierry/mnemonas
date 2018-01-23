@@ -11,4 +11,4 @@
  * @param message The error message, a string format à-la printf with more parameters if used.
  * @throws The exception to be thrown if the assume fails.
  */
-void assume(bool condition, String thrown, const char *message, ...);
+void assume(bool condition, String thrown, String message, ...);

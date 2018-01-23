@@ -1,0 +1,138 @@
+\documentclass[a4,12pt,twoside]{article}
+\newif\ifRR
+\RRfalse % \RRfalse or \RRtrue
+
+\ifRR
+\usepackage[a4paper]{geometry}
+\usepackage{RR}
+\graphicspath{{./rr-sty/}}
+\else
+\usepackage[top=1.5cm,right=4cm,bottom=2cm,left=1.5cm]{geometry}
+\fi
+\usepackage[T1]{fontenc} \usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{graphicx} 
+\usepackage{hyperref}
+\usepackage{amsmath}\usepackage{amsfonts}
+\newcommand{\deq}{\stackrel {\rm def}{=}}
+\newcommand{\eqline}[1]{\\\centerline{$#1$}\\} 
+\newcommand{\hr}{\\---------------------------------------------------}
+\newcommand{\tab}{\\\hspace{5mm}} 
+
+\usepackage{color}
+\definecolor{fred}{RGB}{32,64,128}\newcommand{\fred}[1]{{\color{fred}{{\tt @fred:} #1}}}
+\definecolor{bhargav}{RGB}{51, 153, 255}\newcommand{\bhargav}[1]{{\color{bhargav}{{\tt @bhargav:} #1}}}
+\definecolor{vthierry}{RGB}{80,0,120}\newcommand{\vthierry}[1]{{\color{vthierry}{{\tt @vthierry:} #1}}}
+
+\ifRR
+\RRNo{XXXX}
+\RRdate{December 2017}
+\RRauthor{\thanks[affil]{Mnemosyne team, INRIA Bordeaux}
+Thierry Vi\'eville \thanksref{affil} \and
+Bhargav teja Nallapu \thanksref{affil} \and
+Fr\'ed\'eric Alexandre \thanksref{affil}}
+\authorhead{Nallapu \& Alexandre \& Vi\'eville}
+\RRtitle{../..}
+\RRetitle{Using algorithmic erstaz for brain modeling}
+\titlehead{algorithmic ersatz}
+\RRresume{../..}
+\RRabstract{../..}
+\RRmotcle{../..}
+\RRkeyword{../..}
+\RRprojet{Mnemosyne}
+\RCBordeaux
+\fi
+
+\begin{document}
+\ifRR
+\makeRR 
+\else
+\title{Algorithmic ersatz for brain modeling}
+\author[1]{Fr\'ed\'eric Alexandre}
+\author[1]{Bhargav teja Nallapu}
+\author[1]{Thierry Vi\'eville}
+\affil[1]{Mnemosyne team, INRIA Bordeaux}
+\maketitle
+\begin{abstract}.../...\end{abstract}
+\fi
+
+\section{Introduction}
+
+\paragraph{The brain as interacting memories.}
+
+A systemic description of the brain has been proposed \cite{alexandre:hal-01246653}, as a general framework for integrating specific models in computational neuroscience (e.g., \cite{gershman2010context,koechlin2007information,balleine2006parallel,carrere:hal-01145790}) in order to encounter for global information flows and cognitive functions. The basic modeling assumption is to describe cognition as a dynamical system of memories in interaction, e.g., acting to provide information to others, or controlling the convergence of some common process. Regarding the functional organization of the brain, sensorimotor loops and structures controlling the behavior of the body in the environment are emphasized, including regarding the emergence of motivated behavior \cite{cardinal2002emotion,windridge2017emergent}. In an enactive view, the brain has to elaborate loops with the internal and the external environments and to ensure their stability for the general goal of survival.
+ 
+Considering interacting memories leads to a description of the brain as an architecture of learning systems dedicated to autonomous learning. Within this scope, targeting Pavlovian and instrumental conditioning, it can be useful to revisit classical reinforcement learning \cite{redish2007reconciling}, in link with semantic memory in the posterior cortex, episodic memory in the hippocampus, memory of rules (beyond working memory) in the frontal cortex \cite{domenech2015executive,OReilly2014GoalDrivenCI}.
+
+\paragraph{The data complexity challenge.}
+
+In a nutshell, at the present stage of the state of the art, for both existing models and experimental paradigms (as those quoted previously), all state variables almost always take value in some finite list of items. On one hand this is due to the fact that tractable models of learning, e.g., reinforcement learning \cite{sutton1998reinforcement} consider typically finite Markov decision process, thus only finite enumeration of values. On the other hand, experimental protocols must be well-defined with precise qualitative variables in this context, the data is thus formalized as a enumeration of options. 
+
+There is little chance that such model scales up to realistic situations. The external environment is finite but unbounded, i.e., huge. And it is not a simple item’s heap, but a structured universe. Furthermore this structure, at least partially,  has to be inferred. This argument also concerns continuous representations, when they simply rely on a ``data vector'', without considering less trivial sate space structure.
+
+As far neural coding is concerned, continuous representations are mainly related to sensory input (e.g. analog neurons without spikes in the retina \cite{citeulike:7955297}) or motor output (as being related to interactions with continuous quantities in the external world). Inside the nervous system, a unit (i.e., a small group of neurons, such as a cortical micro-column) encodes for a given quantity, a given quantity being represented by a spatial distributed modal representation, during a temporal window in link with attentional processes, while such coding is sparsed when the neural system is adapted to the stimulus (see, e.g. \cite{citeulike:4194318}). In a nutshell, the information coding is thus sampled.
+
+A step further, the brain is embodied in a body, and this internal system (including the peripheral nervous system) can not reasonably be reduced to a finite enumeration of qualitative states. Moreover, the body is already adapted to the environment, interacting with it, implementing non trivial processes. As a consequence the brain must have a non-trivial representation of the body and its related embodied processes in order to generate pertinent behaviors.
+
+An obvious but useful additional remark is that the brain is not directly interacting with the environment but with the body withing this environment. This means interacting through encoded external and internal (i.e., body) inputs, while providing output decoded before being put in action. 
+
+These are the reasons why we would like to revisit usual brain models in order to discuss how they can scale to more complex data representation.
+
+\paragraph{The algorithmic complexity challenge.}
+
+In deep link with the previous data complexity challenge, is the complexity of the ``learning problem'', from early studies in the field \cite{bush-mosteller:57}, to formalized concepts in the sense of being probably approximately correct \cite{valiant2013probably}, yielding statistical learning \cite{vapnik:98,cucker-smale:01}. As soon as the task is not trivial, exact deterministic learning is in practice intractable, except in some precise cases (e.g., \cite{angluin1983inductive}). This challenge has been replaced by obtaining the desired result with a reasonable probability, given a tractable algorithm. This last notion is often related to polynomial complexity (including randomized polynomial time), but a the concrete level the situation may be more complex (considering algorithm with efficient average complexity even if not strictly polynomial, or avoiding polynomial algorithms with huge calculation time given the data sizes).
+
+ Obviously, depending on the problem decomposition, or on the information coding inference capabilities differ. However, in all cases, one key issue is the no-free-lunch theorem\footnote{The no-free-lunch theorem for machine learning states that if an algorithm performs well on a certain class of problems, then it necessarily pays for that with degraded performance on the set of all remaining problems, up to performing no better than blind search if considering ``all'' possible problems.}, learning being usually defined as a capability to solve a wide class of problems, e.g. considering autonomous behavior. This means that to be efficient we must define autonomous behavior, e.g., survival, not as universal capability, but ``only'' as the capability to survive.
+
+Another key issue is the big data necessity. Efficient supervised learning set counts millions of data. One may consider this order of magnitude compatible with phylogenetic learning, while short-term learning in a real life situation would be more related to few-shot transfer learning \cite{Ruder2017Transfer}. This view is defeated by the fact that complex learning task must be efficient using only a few samples, including ruptures with respect to what has been previously learned. As a consequence, micro-data learning is a real issue \cite{mouret2016micro}, even if theoretically not efficient with respect to general learning criteria of statistical learning.
+
+These are the reasons why we would like to revisit usual brain model algorithms, taking these issues into account.
+
+\paragraph{The notion of survival.}
+
+In fact biological systems often fails, e.g. have limited generalization capability or learning performances, and the utopic vision that they are ``very general autonomous system'' is questionable: They may more ``adapt'' than ''learn'', i.e. change some parameters of some versatile behaviors, instead of ``inventing'' new behaviors.
+
+To make this point precise, one track has been formalized by, e.g., \cite{friston2016active2} (reusing former results in control theory \cite{haddad1981monotone}): Survive means being able to maintain the vital variables present and future values within acceptable bounds, thus to avoid ``surprise'' (in order to guaranty being able to stay in the bounds). This is obtained via some pertinent analysis of the causes of the observed input \cite{schwartenbeck2013exploration}. On the reverse, as soon as the surprise is minimized within the survival domain, it appears that the survival job is done. No more is required to optimize the survival, and the goal directed behavior is entirely specified by this functional objective. The key aspect of this framework is that authors take the epistemological risk to reduce this general principle to a precise formalism, a variational formulation of self-organization in biological systems, which is falsifiable \cite{popper2005logic} by certain aspects, with an effective functional description of the brain processing within this theory.
+
+Here we would like to revisit this notion of survival task considering a different level of data representation. Clearly a distinction has to be made between phylogenetical disruption where a new structure appears or a qualitative change in the system architecture, or its learning strategy occurs with respect to adaptation considering the same hardware but parameter adaptation. Here we only consider this latter issue.
+
+\paragraph{The modeling levels of description.}
+
+Taking the usual Marr and Poggio levels of analysis \cite{marr1976understanding} into account, we are going to reformulate it here as follow, shifting the scope of the higher level and the separating the intermediate level:
+\\ -1- Functional level: What does the system do (e.g.: what problems does it solve or overcome) and similarly, why does it do these things.
+\\ -2a- Representational level: How does the system encode what it knows and it does, specifically, what representations does it use.
+\\ -2b- Algorithmic level : What processes does it employ to build and manipulate these representations.
+\\ -3- Implementation level: how can such representations and algorithms be biologically plausibly implemented.
+
+Ideally the functional level is to be described via ontology, i.e. formal objects with properties and relations between objects. The main challenge is to not only consider ``human words'' (i.e., a phenomenological description) but also a description with some guaranty to be well defined, and that can be formally manipulated. 
+
+At the implementation level we consider as biologically plausible implementation a distributed dynamical system with only local computations and adaptation (i.e., learning) rules, but not necessarily build from ``artificial neurons assemblies''. This key point is going to be discussed in the sequel.
+
+The main evolution here is to consider the data representation level as a major issue. Important enough to be clearly addressed before the algorithmic issue (in the causal sense). As an example, when performing a complex task, one data representation is the specialization of the abstract task (i.e., considering the representation of the task as a trajectory in the state space), as discussed in \cite{gaussier-revel-etal:02} in link with the so called "place cells" of the hippocampus. This design choice explains non trivial biological observations related to complex conditioning acquisition and memory tasks, and yields generic biologically plausible algorithms of motor programs \cite{connolly-grupen:93,connolly-burns:93,vieville:06e}.
+ 
+Furthermore, the central claim of this approach is to propose the algorithmic level of representation to be described by ... algorithms. This includes using imperative paradigms (i.e., usual program descriptions), but also declarative paradigms (e.g., rules or constraints). On side effect is indeed to provide simplified models of brain structures (e.g., the hippocampus as ``declarative memory'') without getting into details of biologically plausible implementation. This is mandatory to model the brain as a whole. However, the main goal is to better specify what ``we are talking about'' and the assumption is that using algorithmic ersatz for brain modeling is an effective and well-defined intermediate surrogate allowing to make a well defined link between the functional and the implementation levels of description. 
+
+\paragraph{Paper description.} In the next data modeling section we are going to set up the data framework at both a the symbolic and numeric level. Then in the data container section we start proposing a specification of what is expected from active memories. This will allow us to further define generic algorithmic functions for these memories. We then will show how this may be used to model in a integrated manner Pavlovian and operant, say pavloperant, behaviors.
+
+\iftrue
+
+\section{Data modeling}
+
+\paragraph{Notations} Data structure is going to described in weak JSON-syntax\footnote{With respect to the strict JSON syntax (see e.g., \href{https://www.w3schools.com/js/js\_json\_intro.asp}{https://www.w3schools.com/js/js\_json\_intro.asp}), the input syntax accepts (i) implicit quote {\tt "} when unnecessary, (ii) flexible use of comma {\tt ,} (iii) string being writable on several lines, (iv) considering {\tt true} as implicit value, (v) appending as a raw string trailer chars if any; one consequence is that there is no ``syntax error'' all strings map on a JSON structure (i.e., the exact or closest correct JSON structure, the implicit metric being defined by the parsing algorithm); on the reverse the output is a human readable indented strict JSON syntax allowing to verify that the input was well-formed.}. 
+
+\section{Data container}
+
+\section{Generic functions}
+
+\section{Application to pavlovian behaviors}
+
+\section{Conclusion}
+
+\fi
+
+{\scriptsize \bibliographystyle{plain} \bibliography{../etc/main,../etc/from-keops,../etc/from-sophia}}
+
+%\tableofcontents
+
+\end{document}
+

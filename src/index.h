@@ -1,12 +1,14 @@
 /*! \mainpage
  *
- * This source bundle provides all files of the <i>Recurrent neural network weight estimation though backward tuning</i> <a href="main.pdf"><b>publication</b></a>.
+ * This source bundle provides all files of the:
+ * - <i>Recurrent neural network weight estimation though backward tuning</i> <a href="https://hal.inria.fr/hal-01610735v1"><b>publication</b></a>.
  *
  * It is a part of the <a href="https://team.inria.fr/mnemosyne">mnemosyne</a> research code.
  *
  * The documentation:
  * - <a href="hierarchy.html"><b>Class hierarchy</b></a>
  * - \subpage util
+ *    - Struct() Implements a generic minimal iterative structure.
  * - <a href="files.html"><b>Files list</b></a> (and <a href="globals.html"><b>members</b></a>)
  *
  * Files are available at <a href="https://github.com/vthierry/mnemonas">https://github.com/vthierry/mnemonas</a> or as a set of <a href="./sources.zip"><b>source files</b></a> unded the open source <a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html">CeCILL-C</a> licence. 

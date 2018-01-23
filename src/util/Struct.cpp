@@ -467,17 +467,17 @@ Struct::Struct(int argc, const char *argv[])
   if(name != NULL)
     set(name, true);
 }
-std::string Struct::asString(String format) const
+std::string Struct::asString(String format, unsigned int depth) const
 {
   assume(format == "raw" || format == "plain" || format == "html", "illegal-argument", "in Struct::asString undefined format %s", format.c_str());
   // Implements the string writing of a JSON structure
   class StructWriter {
 public:
     // Writes a value in a string, in  compact-raw (mode = 0), 2D-plain-text (mode = 1), html-text (mode = 2).
-    void write(std::string& string, const Struct& value, String format = "raw")
+    void write(std::string& string, const Struct& value, String format = "raw", unsigned int depth_ = 0)
     {
       const_cast < Struct & > (value).clean();
-      tab = 0, mode = format == "html" ? 2 : format == "plain" ? 1 : 0;
+      tab = depth = depth_, mode = format == "html" ? 2 : format == "plain" ? 1 : 0;
       string = stringHeader();
       write_value(string, value);
       string += stringTrailer();
@@ -599,13 +599,13 @@ private:
     }
     std::string stringTrailer()
     {
-      return mode == 2 ? "</div>" : mode == 1 ? "\n" : "";
+      return (std::string) (tab == depth && depth > 0 ? "," : "") + (mode == 2 ? "</div>" : mode == 1 ? "\n" : "");
     }
-    int mode, tab;
+    int mode, tab, depth;
   }
   writer;
   std::string string;
-  writer.write(string, *this, format);
+  writer.write(string, *this, format, depth);
   return string;
 }
 void Struct::load(String location)

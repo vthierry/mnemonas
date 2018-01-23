@@ -41,11 +41,13 @@ double network::KernelTransform::getKernelDerivative(unsigned int n, unsigned in
   assume(false, "illegal-state", "in network::KernelTransform::getKernelDerivative, this virtual method must be overridden");
   return NAN;
 }
-double network::KernelTransform::getWeight(unsigned int n, unsigned int d) const
-{
-  const_cast < KernelTransform * > (this)->initOk();
-  return n < N && 0 < d && d <= getKernelDimension(n) ? weights[offsets[n] + d] : 0;
-}
+/*
+ *  double network::KernelTransform::getWeight(unsigned int n, unsigned int d) const
+ *  {
+ *  assume(weights != NULL, "illegal-state", "in network::KernelTransform::getWeights uninitialized weights");
+ *  return n < N && 0 < d && d <= getKernelDimension(n) ? weights[offsets[n] + d] : 0;
+ *  }
+ */
 bool network::KernelTransform::setWeight(unsigned int n, unsigned int d, double w)
 {
   assume(n < N && 0 < d && d <= getKernelDimension(n), "illegal-argument", "in network::KernelTransform::setWeight, index out of range, we must have n=%d in {0, %d{ and d=%d in {1, %d}", n, N, d, getKernelDimension(n));
@@ -53,7 +55,7 @@ bool network::KernelTransform::setWeight(unsigned int n, unsigned int d, double 
   weights[offsets[n] + d] = w;
   return true;
 }
-network::KernelTransform& network::KernelTransform::setWeights(KernelTransform& network)
+network::KernelTransform& network::KernelTransform::setWeights(const KernelTransform& network)
 {
   assume(false, "illegal-state", "in network::KernelTransform:setWeights, this virtual method must be overridden, or it has been called with wrong type");
   return *this;
@@ -73,7 +75,7 @@ network::KernelTransform& network::KernelTransform::setWeightsRandom(double mean
 std::string network::KernelTransform::asString() const
 {
   std::string json;
-  json = s_printf("{\n 'N' : %d,\n 'D' : [", N);
+  json = s_printf("{\n 'sizes' : %s, 'D' : [", RecurrentTransform::asString().c_str());
   for(unsigned int n = 0; n < N; n++)
     json += s_printf("%d%s", getKernelDimension(n), n < N - 1 ? ", " : "],\n 'W' : [\n");
   for(unsigned int n = 0; n < N; n++)
@@ -88,13 +90,15 @@ double network::KernelTransform::getValue(unsigned int n, double t) const
     v += getWeight(n, d) * getKernelValue(n, d, t);
   return v;
 }
-double network::KernelTransform::getValueDerivative(unsigned int n, double t, unsigned int n_, double t_) const
-{
-  double v = getKernelDerivative(n, 0, t, n_, t_);
-  for(unsigned int d = 1; d <= getKernelDimension(n); d++)
-    v += getWeight(n, d) * getKernelDerivative(n, d, t, n_, t_);
-  return v;
-}
+/*
+ *  double network::KernelTransform::getValueDerivative(unsigned int n, double t, unsigned int n_, double t_) const
+ *  {
+ *  double v = getKernelDerivative(n, 0, t, n_, t_);
+ *  for(unsigned int d = 1; d <= getKernelDimension(n); d++)
+ *   v += getWeight(n, d) * getKernelDerivative(n, d, t, n_, t_);
+ *  return v;
+ *  }
+ */
 network::KernelTransform *network::KernelTransform::newKernelTransform(String type, unsigned int N, const network::Input& input)
 {
   network::KernelTransform *network = NULL;

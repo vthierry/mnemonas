@@ -52,9 +52,9 @@ bool network::LinearNonLinearTransform::setWeight(unsigned int n, unsigned int d
   else
     return KernelTransform::setWeight(n, d, w);
 }
-network::KernelTransform& network::LinearNonLinearTransform::setWeights(network::KernelTransform& network)
+network::KernelTransform& network::LinearNonLinearTransform::setWeights(const network::KernelTransform& network)
 {
-  assume(dynamic_cast < LinearNonLinearTransform * > (&network) != NULL, "illegal-argument", "in network::LinearNonLinearTransform::setWeights wrong network type");
+  assume(dynamic_cast < const LinearNonLinearTransform * > (&network) != NULL, "illegal-argument", "in network::LinearNonLinearTransform::setWeights wrong network type");
   unsigned int N0 = getN() < network.getN() ? getN() : network.getN();
   for(unsigned int n = N0; n < N0 / 3; n++)
     for(unsigned int k = 0, k0 = 0, k1 = 0; k < 3; k++, k0 += getN() / 3, k1 += network.getN() / 3)
@@ -93,4 +93,8 @@ double network::LinearNonLinearTransform::getKernelDerivative(unsigned int n, un
                    (n_ == n + N2 ? dzeta(get(n_, t)) : 0)) : 0) :
          n < N2 ? (d == 1 && n_ == n - N && t_ == t - 1 ? 1 : 0) :
          (1 < d && d <= N + 1 && n_ == d - 2 && t_ == t - 1 ? 1 : 0);
+}
+bool network::LinearNonLinearTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
+{
+  return n < N ? (t_ == t && (n_ == N + n || n_ == n + N2)) : n < N2 ? (t_ == t - 1 && n_ == n - N) : (t_ == t - 1 && n_ < N);
 }

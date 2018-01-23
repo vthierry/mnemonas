@@ -79,8 +79,12 @@ public:
   /** Returns the data as a floating point number or NAN if undefined. */
   operator double() const;
   Struct(double value);
-private:
-  // Converts a string a number
+
+  /** Converts a string to a numeric value.
+   * - This also allows to detect via the <tt>std::isnan(Struct::toDouble(value))</tt> constuct if a value is convertible to a numeric value.
+   * @param value The value to convert.
+   * @return The value as a double, or NAN if not parsable.
+   */
   static double toDouble(String value);
 public:
   /** Returns the data as an int or 0x10000000 (INT_NAN) if undefined. */
@@ -275,9 +279,10 @@ public:
    * @param format The output format:
    * - "raw" : 1D raw compact format with minimal space.
    * - "plain" : 2D human editable format with tabulation.
-   * - "html" : HTML human readable format.
+   * - "html" : HTML 2D human readable format.
+   * @param depth If this data structure is a sub-structure, indicates the absolute depth for 2D format.
    */
-  std::string asString(String format = "raw") const;
+  std::string asString(String format = "raw", unsigned int depth = 0) const;
 
   /** Resets the data structure from a JSON weak-syntax string.
    * @param value The value given as a string, using weak <a href="http://json.org/">JSON</a> syntax.
