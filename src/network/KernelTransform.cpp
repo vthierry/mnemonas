@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::KernelTransform::KernelTransform(unsigned int N, unsigned int R, const Input& input) : RecurrentTransform(N, R, input), weights(NULL), offsets(NULL), count(0), root(NULL) {}
 void network::KernelTransform::resetWeights()

@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::TransformCriterion::TransformCriterion(RecurrentTransform& transform) : transform(transform), estimates(NULL), destimates(NULL)
 {}

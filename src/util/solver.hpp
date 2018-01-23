@@ -43,7 +43,7 @@ public:
    * @param d The constraint <tt>m</tt>-th equation, <tt>n</tt>-th component derivative value, \f$\partial_{x_n}c_m({\bf x})\f$.
    * @param x A <tt>double[N]</tt> output buffer.
    * @param x0 A <tt>double[N]</tt> input buffer. If NULL considers the zero vector. We may have x0 == x.
-   * @param xEpsilon The threshold under which two <tt>x[n]</tt> values are indistinguishable.
+   * @param epsilon The threshold under which two <tt>x[n]</tt> values are indistinguishable.
    * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
    * @return The estimation error <tt>| c(x) |<sup>2</sup></tt>
    */

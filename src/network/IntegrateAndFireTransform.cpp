@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 double network::IntegrateAndFireTransform::zeta(double u) const
 {

@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::KernelExperimentalEstimator::KernelExperimentalEstimator(KernelTransform& transform, TransformCriterion& criterion) : KernelEstimator(transform, criterion), upsilon(0), grads(new double *[K_GRADS + K_SYLIN]), k_grads(new double[K_GRADS]), n_grads(new double[K_GRADS + K_SYLIN]), A(new double **[K_SYLIN]), b(new double **[K_SYLIN]), w1(new double[transform.getWeightCount()])
 {

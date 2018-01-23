@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::SparseNonLinearTransform::SparseNonLinearTransform(unsigned int N, const Input& input) : KernelTransform(N, 1, input), N(N), D(NULL), DN(0), offsets(NULL), indexes(NULL), connected(NULL)
 {

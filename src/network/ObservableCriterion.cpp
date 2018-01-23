@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 #include <stdarg.h>
 
 network::ObservableCriterion::Observable::Observable(String name) : name(name), value(NAN), input(NULL) {}

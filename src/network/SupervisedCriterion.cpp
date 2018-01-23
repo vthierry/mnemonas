@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::SupervisedCriterion::SupervisedCriterion(network::KernelTransform& transform, Input& values, char criterion, double nu, char reinject) : network::TransformCriterion(transform), values(values), criterion(criterion), nu(nu), reinject(reinject)
 {
