@@ -131,19 +131,19 @@ test : .build/main.exe
 #
 
 show : api 
-	firefox .build/doc/index.html
+	firefox doc/index.html
 
-api : .build/doc/index.html
+api : doc/index.html
 
-.build/doc/index.html : ./src/index.h $(INC) $(SRC)
+doc/index.html : ./src/index.h $(INC) $(SRC)
 	$(MAKE) uncrustify
 	@echo 'make api .'
 	/bin/rm -rf $(@D) ; mkdir -p $(@D)
-	echo "<hr/><div align='right'><tt>mnemosyne brainybot (version of `date +%F` at `date +%T`) </tt> </div><hr/>" > .build/doc/footer.html
-	zip -9qr .build/doc/sources.zip makefile tex src
+	echo "<hr/><div align='right'><tt>mnemosyne brainybot (version of `date +%F` at `date +%T`) </tt> </div><hr/>" > doc/footer.html
+	zip -9qr doc/sources.zip makefile tex src
 	doxygen src/etc/doxygen.cfg
 	cp src/etc/*.png $(@D)
-	echo '<script>location.replace(".build/doc/index.html");</script>' > index.html 
+	echo '<script>location.replace("doc/index.html");</script>' > index.html 
 
 uncrustify : $(INC) $(SRC)
 	if command uncrustify > /dev/null ; then for f in $^ ; do mv $$f $$f~ ; uncrustify -q -c src/etc/uncrustify.cfg -f $$f~ -o $$f ; touch $$f -r $$f~ ; done ; fi
@@ -169,7 +169,7 @@ $(MAIN).pdf : $(shell find $(dir $(MAIN)) -name '*.tex')
 clean :	
 	/bin/rm -f `find . -name '*~' -o -name '.#*#' -o -name '*.o'`
 	/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
-	/bin/rm -rf .build/{main.exe,inc,lib,obj,python} stdout
+	/bin/rm -rf .build stdout
 
 git :
 	@echo "git sync"
@@ -222,6 +222,6 @@ ARGS = -test # -experiment2 #
 
 todo :
 	$(MAKE) run
-#	firefox doc/$(MAIN).pdf .build/doc/index.html https://vthierry.github.io/mnemonas
+#	firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################
