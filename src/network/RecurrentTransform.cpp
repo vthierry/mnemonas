@@ -1,6 +1,6 @@
 #include "mnemonas.hpp"
 
-network::RecurrentTransform::RecurrentTransform(unsigned int N, unsigned int R, const Input& input) : Transform(N, input), values(NULL), t0(0), no_recursion(true), R(R), L(0)
+network::RecurrentTransform::RecurrentTransform(unsigned int N, unsigned int R, const Input& input) : Transform(N, input), values(NULL), upsilon0(0), t0(0), no_recursion(true), R(R), L(0)
 {
   reset();
 }
@@ -13,16 +13,13 @@ network::RecurrentTransform::~RecurrentTransform()
 network::RecurrentTransform& network::RecurrentTransform::reset(bool buffered, double upsilon)
 {
   assume(upsilon >= 0, "illegal-argument", "in network::RecurrentTransform::reset, we must have upsilon=%g >= 0", upsilon);
+  upsilon0 = upsilon;
   unsigned int size = buffered ? input.getT() : R + 1;
   if(size != L) {
     delete[] values;
     values = new double[N * (L = size)];
   }
   for(unsigned int nr = 0; nr < N * L; values[nr++] = NAN) ;
-  assume(upsilon == 0, "illegal-argument", "in network::RecurrentTransform::reset, upsilon = %g > 0 not yet implemented", upsilon);
-  if (upsilon > 0)
-    for(unsigned int nr = N * (L - R); nr < N * L; nr++)
-      values[nr] = random::gaussian(0, upsilon);
   t0 = 0;
   return *this;
 }
@@ -46,7 +43,7 @@ double network::RecurrentTransform::get(unsigned int n, double t_) const
   assume(n < N, "illegal-argument", "in network::RecurrentTransform::get unit index out of range, we must have n=%d in {0, %d{", n, N);
   assume(no_recursion || t_ < t_current || (t_ == t_current && n_current < (int) n), "illegal-argument", "in network::RecurrentTransform::get non causal get(%d, %0f) while at (%d, %d)", n, t_, n_current, t_current);
   if(t_ < 0)
-    return 0;
+    return 0; // upsilon0 == 0 ? 0 : random::gaussian(0, upsilon0);
   unsigned int t = (unsigned int) t_, it = N * (t % L);
   if((t0 <= t + L) && (t < t0))
     return values[n + it];
@@ -108,6 +105,36 @@ double network::RecurrentTransform::getValueDerivativeApproximation(unsigned int
   }
 #endif
   return d;
+}
+double network::RecurrentTransform::getLyapunovExponent(unsigned int W, unsigned int M, double d0)
+{
+  assume(0 < W && W < T - 1, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have W=%d in }0, T-1= %d{", W, T-1);
+  assume(0 < M, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have M > 0");
+  assume(0 < d0, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have d0 > 0");
+  BufferedInput reference(*this);
+  double m1, m0;
+  for(unsigned int m = 0; m < M; m++) {
+    for(unsigned int t = 0; t < T; t++) {
+      if (t == T - W) {
+	// Adds a random perturbation of magnitude d0
+	double d[N], d2 = 0;
+	for(unsigned int n = 0; n < N; n++)
+	  d[n] = d0 + random::uniform(), d2 += d[n]+d[n];
+	d2 = d0 / sqrt(d2);
+	for(int n = N - 1; 0 <= n; n--)
+	  d[n] /= d2, set(n, t, get(n, t) + d[n]);
+      } else if (t == T -1) {
+	double d2 = 0, e1;
+	for(int n = N - 1; 0 <= n; n--)
+	  e1 = get(n, t) - reference.get(n, t), d2 += e1 * e1;
+	if (d2 > 0)
+	  m1 += log(sqrt(d2)/d0), m0++;
+      } else
+	for(int n = N - 1; 0 <= n; n--) 
+	  get(n, t);
+    }
+  }
+  return m0 > 0 ? m1 / m0 : NAN;
 }
 std::string network::RecurrentTransform::asString() const
 {

@@ -198,12 +198,12 @@ public:
         network::SupervisedCriterion criterion(transform2, output, type, nu, 'o');
         network::KernelExperimentalEstimator estimator(transform2, criterion);
         double err0 =
-          type == '2' ? 1e-12 :
-          type == '1' ? 1e-12 :
+          type == '2' ? 1e-6 :
+          type == '1' ? 1e-6 :
           type == '0' ? 1e-6 :
           type == 'a' ? 1e-2 :
           type == 'b' ? 1e-1 :
-          type == 'h' ? 1e-10 :
+          type == 'h' ? 1e-6 :
           0;
         double err = estimator.run(1e-12, 1e-4, 10000, "");
         assume(err < err0, "illegal-state", "in network_test/testCriteriaReverseEngineering for the criterion '%c' over-threshold error = %g [< %g]\n", type, err, err0);

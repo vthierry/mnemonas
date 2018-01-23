@@ -2,7 +2,7 @@ namespace network {
 /** Defines a discrete-time recurrent input/output transform. */
   class RecurrentTransform: public Transform {
     // Recursion buffer and current time
-    mutable double *values;
+    mutable double *values, upsilon0;
     mutable unsigned int t0;
     // Used to control recursion causality
     mutable int n_current, t_current;
@@ -89,6 +89,15 @@ public:
      * <center>\f$\frac{\left.getValue(n, t)\right|_{x_{n'}(t') += \epsilon}-\left.getValue(n, t)\right|_{x_{n'}(t') -= \epsilon}}{\epsilon}\f$</center>
      */
     double getValueDerivativeApproximation(unsigned int n, double t, unsigned int n_, double t_, double epsilon = 1e-3) const;
+
+    /** Estimates the Lyapunov exponent.
+     * - Performs <tt>M simulations until <tt>t = T - W</tt>, adds a perturation and estimates the trajectory divergence.
+     * @param W The Lyapunov exponent estimation window.
+     * @param M The number of iterations.
+     * @param d0 The perturbation amplitude.
+     */
+    double getLyapunovExponent(unsigned int W = 10, unsigned int M = 10, double d0 = 1e-6);
+
     /** Returns the transform parameters as a JSON string. */
     std::string asString() const;
   };
