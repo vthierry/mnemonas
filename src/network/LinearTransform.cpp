@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::LinearTransform::LinearTransform(unsigned int N, const Input& input) : KernelTransform(N, 1, input)
 {

@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::KernelDistributedEstimator::KernelDistributedEstimator(KernelTransform& transform, TransformCriterion& criterion) : KernelEstimator(transform, criterion)
 {

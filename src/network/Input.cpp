@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 network::Input::Input(unsigned int N, double T) : N(N), T(T) {}
 double network::Input::get(unsigned int n, double t) const

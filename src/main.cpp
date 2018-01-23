@@ -1,14 +1,14 @@
 ///@cond INTERNAL
 
-#include "main.hpp"
+#include "mnemonas.hpp"
 
-#include "util/s_regex_test.h"
-#include "util/Struct_test.h"
-#include "util/solver_test.h"
-#include "util/random_test.h"
-#include "util/CurveFit_test.h"
-#include "util/ParameterOptimizer_test.h"
-#include "network/network_test.h"
+#include "util/s_regex_test.htt"
+#include "util/Struct_test.htt"
+#include "util/solver_test.htt"
+#include "util/random_test.htt"
+#include "util/CurveFit_test.htt"
+#include "util/ParameterOptimizer_test.htt"
+#include "network/network_test.htt"
 #include "../tex/BackwardTuning/Experimentation.h"
 #include "../tex/ReservoirAdjustment/Experimentation.h"
 

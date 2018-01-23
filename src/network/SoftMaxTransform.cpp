@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "mnemonas.hpp"
 
 double network::SoftMaxTransform::zexp(double u) const
 {

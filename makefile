@@ -14,6 +14,7 @@ usage :
 	@echo "Usage:"
 	@echo "  make cmp		: compiles the code"
 	@echo "  make pywrap  		: compiles the python wrapper of the code"
+	@echo "  make ccwrap  		: compiles the python C/C++   of the code"
 	@echo "  make run  ARGS=$ARGS	: compiles and run the code, with the given arguments"
 	@echo "  make grun ARGS=$ARGS  	: compiles and run the code, via a debugger (gdb)"
 	@echo "  make vrun ARGS=$ARGS 	: compiles and run the code, via a memory checker (valgrind)"
@@ -86,12 +87,16 @@ pywrap : .build/mnemonas.py .build/mnemonas.so
 	g++ -shared -o .build/mnemonas.so *.o $(LDFLAGS)
 	/bin/rm -f .build/mnemonas.C *.o
 
-ccwrap : .build/libmnemonas.a .build/libmnemonas.so
+ccwrap : .build/libmnemonas.a .build/libmnemonas.so .build/inc/mnemonas 
 
 .build/libmnemonas.a .build/libmnemonas.so : $(SRC) $(INC)
 	g++ $(CCFLAGS) -fPIC -c $(SRC)	
 	g++ -o .build/libmnemonas.a *.o $(LDFLAGS)
 	g++ -shared -o .build/libmnemonas.so *.o $(LDFLAGS)
+
+.build/inc/mnemonas : $(INC)
+	/bin/rm -rf $@ ; mkdir -p $@
+	cd src ; rsync -r --exclude='index.h' --exclude='etc/' --exclude='*.htt' --exclude='*.c' --exclude='*.cpp' . ../$@
 
 #
 # Code local execution
