@@ -112,7 +112,7 @@ double network::RecurrentTransform::getLyapunovExponent(unsigned int W, unsigned
   assume(0 < M, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have M > 0");
   assume(0 < d0, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have d0 > 0");
   BufferedInput reference(*this);
-  double m1, m0;
+  double m1 = 0, m0 = 0;
   for(unsigned int m = 0; m < M; m++)
     for(unsigned int t = 0; t < T; t++) {
       if(t == T - W) {

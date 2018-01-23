@@ -5,7 +5,7 @@
 #include <stdarg.h>
 #include "util/gnuplot.h"
 
-network::BufferedInput::BufferedInput(const BufferedInput& input, unsigned int N0) : Input(N = 0 < N0 ? N0 : input.getN(), input.getT()), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
+network::BufferedInput::BufferedInput(const BufferedInput& input, unsigned int N0) : Input(0 < N0 ? N0 : input.getN(), input.getT()), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
 {
   if(buffered || (0 < N0)) {
     values = new double[N * (int) T];
