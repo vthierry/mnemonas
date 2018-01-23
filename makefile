@@ -78,23 +78,29 @@ OBJ = $(patsubst src/%.cpp,.build/obj/%.o,$(patsubst src/%.c,.build/obj/%.o, $(S
 # Python and C++ wrapper compilation
 #
 
-pywrap : .build/mnemonas.py .build/mnemonas.so
+pywrap : .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-packages/mnemonas/mnemonas.so
 
-.build/mnemonas.py .build/mnemonas.so : $(SRC) $(INC)
+.build/python/site-packages/mnemonas/mnemonas.py .build/python/site-packages/mnemonas/mnemonas.so : $(SRC) $(INC)
 	@echo 'make mnemonas.py mnemonas.so'
-	swig -module mnemonas -c++ -python -o .build/mnemonas.C src/main.hpp
+	/bin/rm -rf .build/python ; mkdir -p .build/python/site-packages/mnemonas
+	swig -module mnemonas -c++ -python -o .build/mnemonas.C src/mnemonas.hpp
+	mv .build/mnemonas.py .build/python/site-packages/mnemonas
 	g++ $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)	
-	g++ -shared -o .build/mnemonas.so *.o $(LDFLAGS)
+	g++ -shared -o .build/python/site-packages/mnemonas/mnemonas.so *.o $(LDFLAGS)
 	/bin/rm -f .build/mnemonas.C *.o
 
-ccwrap : .build/libmnemonas.a .build/libmnemonas.so .build/inc/mnemonas 
+ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas 
 
-.build/libmnemonas.a .build/libmnemonas.so : $(SRC) $(INC)
+.build/lib/libmnemonas.a .build/lib/libmnemonas.so : $(SRC) $(INC)
+	@echo 'make libmnemonas.so'
+	/bin/rm -rf .build/lib ; mkdir -p .build/lib
 	g++ $(CCFLAGS) -fPIC -c $(SRC)	
-	g++ -o .build/libmnemonas.a *.o $(LDFLAGS)
-	g++ -shared -o .build/libmnemonas.so *.o $(LDFLAGS)
+	g++ -o .build/lib/libmnemonas.a *.o $(LDFLAGS)
+	g++ -shared -o .build/lib/libmnemonas.so *.o $(LDFLAGS)
+	/bin/rm -f *.o
 
 .build/inc/mnemonas : $(INC)
+	@echo 'make inc/mnemonas'
 	/bin/rm -rf $@ ; mkdir -p $@
 	cd src ; rsync -r --exclude='index.h' --exclude='etc/' --exclude='*.htt' --exclude='*.c' --exclude='*.cpp' . ../$@
 
