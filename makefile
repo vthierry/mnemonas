@@ -39,7 +39,7 @@ usage :
 export SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*.c)
 export INC = $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*.h) $(wildcard tex/*/*.h)
 
-CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter
+CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter -std=c++14 
 LDFLAGS =  -lgsl -lgslcblas -lm 
 
 ifeq ($(shell hostname),nef-devel)
