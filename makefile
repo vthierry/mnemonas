@@ -24,7 +24,6 @@ usage :
 	@echo "  make pdf  MAIN=$MAIN	: compiles the main tex publication"
 	@echo "  make clean 	 	: cleans source and latex intermediate files"
 	@echo "  make git  		: pulls, commits and pushes in the mnemosyne git repository"
-	@echo "  make pub  		: publish on the public github website"
 	@echo "  make rrun MAIL=$MAIL	: compile and run the code on the nef cluster, reporting result by mail"
 	@echo "This makefile uses the following software set :"
 	@echo " - g++ gsl gslcblas swig  		for software development"
@@ -170,19 +169,11 @@ $(MAIN).pdf : $(shell find $(dir $(MAIN)) -name '*.tex')
 clean :	
 	/bin/rm -f `find . -name '*~' -o -name '.#*#' -o -name '*.o'`
 	/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
-	/bin/rm -rf .build stdout
+	/bin/rm -rf .build/{main.exe,inc,lib,obj,python} stdout
 
 git :
 	@echo "git sync"
 	git checkout master ; git pull ; git commit -a -m 'from makefile' ; git push
-
-pub : api
-	@echo 'make pub'
-	git checkout master ; git pull
-	git checkout gh-pages ; git pull origin gh-pages ; git merge master -m '.'
-	$(MAKE) api
-	git add .build/doc
-	git push origin gh-pages:gh-pages ; git checkout master
 
 #
 # Remote execution on nef-*.inria.fr
