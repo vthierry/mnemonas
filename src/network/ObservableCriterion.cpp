@@ -104,61 +104,65 @@ double network::ObservableCriterion::getObservableExpectedValue(unsigned int k) 
   return values[k];
 }
 double network::ObservableCriterion::get(unsigned int n, double t) const
-{  
+{
   return estimates == NULL ? NAN : estimates[n + transform.getN() * (int) t];
 }
 unsigned int network::ObservableCriterion::getN0() const
 {
   return estimates == NULL ? 0 : estimate_N0;
 }
-void network::ObservableCriterion::update() 
+void network::ObservableCriterion::update()
 {
-  if (reinject) {
+  if(reinject) {
     unsigned int N = transform.getN(), T = transform.getT();
     if(estimates == NULL)
       estimates = new double[N * T];
     // Runs one simulation to buffer the actual values
     {
       transform.reset(true);
-      for(unsigned int t = 0; t < T; t++) 
-	for(int n = N - 1; 0 <= n; n--) 
-	  estimates[n + t * N] = transform.get(n, t);
+      for(unsigned int t = 0; t < T; t++)
+        for(int n = N - 1; 0 <= n; n--)
+          estimates[n + t * N] = transform.get(n, t);
     }
     // Defines a projector onto the observable values
     {
       solver_project_this = this;
-      solver::project(dimension, N * T, solver_project_this_c, solver_project_this_d, estimates, estimates);
+      solver::projsolve(dimension, N * T, solver_project_this_c, solver_project_this_d, estimates, estimates);
     }
     // Estimates N0
     {
       estimate_N0 = 0;
-      for(unsigned int t = 0; t < T; t++) 
-	for(unsigned int n = 0; n < N; n++)
-	  for(unsigned int d = 0; d < dimension; d++)
-	    if (observables[d]->getValueDerivative(n, t) != 0 && estimate_N0 <= n)
-	      estimate_N0 = n + 1;
+      for(unsigned int t = 0; t < T; t++)
+        for(unsigned int n = 0; n < N; n++)
+          for(unsigned int d = 0; d < dimension; d++)
+            if((observables[d]->getValueDerivative(n, t) != 0) && (estimate_N0 <= n))
+              estimate_N0 = n + 1;
     }
     // Updates hidden values
     TransformCriterion::update();
   }
 }
-double network::ObservableCriterion::solver_project_c(const double* x, unsigned int d) {
+double network::ObservableCriterion::solver_project_c(const double *x, unsigned int d)
+{
   unsigned int N = transform.getN(), T = transform.getT();
-  if (d== 0)
-    for(unsigned int t = 0, nt = 0; t < T; t++) 
-      for(unsigned int n = 0; n < N; n++, nt++) 
-	transform.set(n, t, x[nt]);
+  if(d == 0)
+    for(unsigned int t = 0, nt = 0; t < T; t++)
+      for(unsigned int n = 0; n < N; n++, nt++)
+        transform.set(n, t, x[nt]);
   observables[d]->reset(transform);
   return observables[d]->getValue() - values[d];
 }
-double network::ObservableCriterion::solver_project_d(const double* x, unsigned int d, unsigned int nt) {
+double network::ObservableCriterion::solver_project_d(const double *x, unsigned int d, unsigned int nt)
+{
   unsigned int N = transform.getN();
   return observables[d]->getValueDerivative(nt % N, nt / N);
 }
-double network::ObservableCriterion::solver_project_this_c(const double* x, unsigned int d) {
+double network::ObservableCriterion::solver_project_this_c(const double *x, unsigned int d)
+{
   return solver_project_this->solver_project_c(x, d);
 }
-double network::ObservableCriterion::solver_project_this_d(const double* x, unsigned int d, unsigned int nt) {
+double network::ObservableCriterion::solver_project_this_d(const double *x, unsigned int d, unsigned int nt)
+{
   return solver_project_this->solver_project_d(x, d, nt);
 }
 network::ObservableCriterion *network::ObservableCriterion::solver_project_this = NULL;

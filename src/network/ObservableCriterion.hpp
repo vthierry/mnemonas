@@ -61,10 +61,10 @@ private:
     bool reinject;
     unsigned int estimate_N0;
     double *estimates;
-    double solver_project_c(const double* x, unsigned int m);
-    double solver_project_d(const double* x, unsigned int m, unsigned int n);
-    static double solver_project_this_c(const double* x, unsigned int m);
-    static double solver_project_this_d(const double* x, unsigned int m, unsigned int n);
+    double solver_project_c(const double *x, unsigned int m);
+    double solver_project_d(const double *x, unsigned int m, unsigned int n);
+    static double solver_project_this_c(const double *x, unsigned int m);
+    static double solver_project_this_d(const double *x, unsigned int m, unsigned int n);
     static ObservableCriterion *solver_project_this;
 public:
     /** Resets the criterion for a given statistics.
@@ -93,7 +93,6 @@ public:
     virtual void update();
     virtual double get(unsigned int n, double t) const;
     virtual unsigned int getN0() const;
-
 
     /** Gets an observable expected value.
      * @param k The observable index.

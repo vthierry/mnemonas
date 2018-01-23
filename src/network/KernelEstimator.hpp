@@ -19,7 +19,12 @@ protected:
     // Used to detect the 1st iteration
     bool once;
     // Connection buffer
-    class connection { public: unsigned int n, r; connection(unsigned int n, unsigned int r); bool operator == (const connection &c) const;};
+    class connection {
+public:
+      unsigned int n, r;
+      connection(unsigned int n, unsigned int r);
+      bool operator == (const connection &c) const;
+    };
     std::vector < connection > *connections;
 protected:
     /** Number of negligible or saturated values during a backward tuning, over the N T values. */
@@ -65,19 +70,20 @@ public:
     {
       return weights0;
     }
-  private :
+private:
     unsigned int c_f, c_N0;
     double cost0, cost1, *w0, *w1;
     double solver_minimize_f(double x);
     static double solver_minimize_e_f(double x);
     static KernelEstimator *solver_minimize_e;
-  public :
+public:
     /** Updates the weights given a readout estimation.
      * - The readout is adjusted on the N0 desired values defined by the criterion.
      * @param N0 Defines the number of units to take into account, 0 means using <tt>criterion.getN0()</tt>.
      * @return The obtained criterion cost.
      */
     double updateReadout(unsigned int N0 = 0);
+
     /** Gets some fits of the estimation runs.
      * @param what :
      * - "cost" : returns the cost decay fit.

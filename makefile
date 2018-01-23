@@ -74,7 +74,7 @@ OBJ = $(patsubst src/%.cpp,.build/obj/%.o,$(patsubst src/%.c,.build/obj/%.o, $(S
 	g++ $(CCFLAGS) -o $@ -c src/$*.c
 
 #
-# Python wrapper compilation
+# Python and C++ wrapper compilation
 #
 
 pywrap : .build/mnemonas.py .build/mnemonas.so
@@ -85,6 +85,13 @@ pywrap : .build/mnemonas.py .build/mnemonas.so
 	g++ $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)	
 	g++ -shared -o .build/mnemonas.so *.o $(LDFLAGS)
 	/bin/rm -f .build/mnemonas.C *.o
+
+ccwrap : .build/libmnemonas.a .build/libmnemonas.so
+
+.build/libmnemonas.a .build/libmnemonas.so : $(SRC) $(INC)
+	g++ $(CCFLAGS) -fPIC -c $(SRC)	
+	g++ -o .build/libmnemonas.a *.o $(LDFLAGS)
+	g++ -shared -o .build/libmnemonas.so *.o $(LDFLAGS)
 
 #
 # Code local execution

@@ -47,7 +47,7 @@ public:
    * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
    * @return The estimation error <tt>| c(x) |<sup>2</sup></tt>
    */
-  static double project(unsigned int M, unsigned int N, double c(const double* x, unsigned int m), double d(const double* x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
+  static double projsolve(unsigned int M, unsigned int N, double c(const double *x, unsigned int m), double d(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
 
   /** Returns a matrix or vector as a string to dump.
    * @param A The matrix buffer <tt>double[M * N]</tt> buffer storing <tt>A(i, j) == A[i + j * N]</tt>.
@@ -56,7 +56,7 @@ public:
    * @param symmetric If the matrix is symmetric.
    * @param format The printf format.
    */
-  static std::string asString(const double* A, unsigned int M, unsigned int N = 1, bool symmetric = false, String format = "%8.1g");
+  static std::string asString(const double *A, unsigned int M, unsigned int N = 1, bool symmetric = false, String format = "%8.1g");
 };
 
 #endif

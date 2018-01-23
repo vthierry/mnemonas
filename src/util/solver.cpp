@@ -37,10 +37,10 @@ double solver::linsolve(unsigned int M0, unsigned int N, const double *A, bool s
       // Ax0 = A  x0 - b
       gsl_blas_dgemv(CblasNoTrans, -1.0, gsl_A, &gsl_x0.vector, 1.0, gsl_b);
     }
-    if (x0 == x) {
+    if(x0 == x) {
       gsl_x0 = gsl_vector_calloc(M);
       for(unsigned int i = 0; i < N; i++)
-	gsl_vector_set(gsl_x0, i, x0[i]);
+        gsl_vector_set(gsl_x0, i, x0[i]);
     }
   }
   // Solves the system in the least-square sense
@@ -78,7 +78,7 @@ double solver::linsolve(unsigned int M0, unsigned int N, const double *A, bool s
     gsl_vector_free(gsl_b);
   }
   if(x0 != NULL) {
-    if (gsl_x0 == NULL) {
+    if(gsl_x0 == NULL) {
       gsl_vector_const_view gsl_x0 = gsl_vector_const_view_array(x0, N);
       gsl_vector_add(&gsl_x.vector, &gsl_x0.vector);
     } else {
@@ -212,9 +212,9 @@ double solver::minimize(double f(double x), double xmin, double xmax, double xep
   }
   return x0;
 }
-double solver::project(unsigned int M, unsigned int N, double c(const double* x, unsigned int m), double d(const double* x, unsigned int m, unsigned int n), double *x, const double *x0_, double epsilon, unsigned int maxIterations)
+double solver::projsolve(unsigned int M, unsigned int N, double c(const double *x, unsigned int m), double d(const double *x, unsigned int m, unsigned int n), double *x, const double *x0_, double epsilon, unsigned int maxIterations)
 {
-  double *x0 = new double[N], *x1 = new double[N], *lambda = new double[M], *b = new double [M], *A = new double [(M*(M+1))/2];
+  double *x0 = new double[N], *x1 = new double[N], *lambda = new double[M], *b = new double[M], *A = new double[(M * (M + 1)) / 2];
   // Initial point
   for(unsigned int n = 0; n < N; n++)
     x0[n] = x0_ == NULL ? 0 : x0_[n], x[n] = x0[n];
@@ -226,45 +226,47 @@ double solver::project(unsigned int M, unsigned int N, double c(const double* x,
     // Solves the lambda linear system
     {
       for(unsigned int m = 0; m < M; m++) {
-	b[m] = c(x, m);
-	for(unsigned int n = 0; n < N; n++) 
-	  b[m] -= d(x, m, n) * (x[n] - x0[n]);
+        b[m] = c(x, m);
+        for(unsigned int n = 0; n < N; n++)
+          b[m] -= d(x, m, n) * (x[n] - x0[n]);
       }
-      for(unsigned int mm_ = 0; mm_ < (M*(M+1))/2; mm_++)
-	A[mm_] = 0;
-      for(unsigned int n = 0; n < N; n++) 
-	for(unsigned int m = 0, mm_ = 0; m < M; m++)
-	  for(unsigned int m_ = 0; m_ <= m; m_++, mm_++)
-	    A[mm_] += d(x, m, n) * d(x, m_, n);
+      for(unsigned int mm_ = 0; mm_ < (M * (M + 1)) / 2; mm_++)
+        A[mm_] = 0;
+      for(unsigned int n = 0; n < N; n++)
+        for(unsigned int m = 0, mm_ = 0; m < M; m++)
+          for(unsigned int m_ = 0; m_ <= m; m_++, mm_++)
+            A[mm_] += d(x, m, n) * d(x, m_, n);
       solver::linsolve(M, M, A, true, b, lambda);
       // printf(" A:\n %s b:\n %s lambda:\n %s", solver::asString(A, M, M, true).c_str(), solver::asString(b, M).c_str(), solver::asString(lambda, M).c_str());
     }
     // Line searchs the best projection
     {
       bool failed = true;
-      for(double u_abs = 1; u_abs > epsilon; u_abs *= 0.5) for(int u_sg = -1; u_sg < 2; u_sg+=2) { double u = u_abs * u_sg;
-	// Updates the estimates
-	for(unsigned int n = 0; n < N; n++) 
-	  for(unsigned int m = 0; m < M; m++)
-	    x1[n] = x[n] - u * (x[n] - x0[n] + d(x, m, n) * lambda[m]);
-	// Recomputes the projection error
-	{
-	  double r1 = 0;
-	  for(unsigned int m = 0; m < M; m++)
-	    r1 += fabs(c(x1, m));
-	  // printf("r[k=%d, u = %g] = %g < r0 = %g ok = %g\n", k, u, r1, r0,r0 - r1);
-	  // Updates the estimates
-	  if (r1 < r0) {
-	    r0 = r1;
-	    for(unsigned int n = 0; n < N; n++) 
-	      x[n] = x1[n];
-	    failed = false;
-	    break;
-	  }
-	}
-      }
-      if (failed)
-	break;
+      for(double u_abs = 1; u_abs > epsilon; u_abs *= 0.5)
+        for(int u_sg = -1; u_sg < 2; u_sg += 2) {
+          double u = u_abs * u_sg;
+          // Updates the estimates
+          for(unsigned int n = 0; n < N; n++)
+            for(unsigned int m = 0; m < M; m++)
+              x1[n] = x[n] - u * (x[n] - x0[n] + d(x, m, n) * lambda[m]);
+          // Recomputes the projection error
+          {
+            double r1 = 0;
+            for(unsigned int m = 0; m < M; m++)
+              r1 += fabs(c(x1, m));
+            // printf("r[k=%d, u = %g] = %g < r0 = %g ok = %g\n", k, u, r1, r0,r0 - r1);
+            // Updates the estimates
+            if(r1 < r0) {
+              r0 = r1;
+              for(unsigned int n = 0; n < N; n++)
+                x[n] = x1[n];
+              failed = false;
+              break;
+            }
+          }
+        }
+      if(failed)
+        break;
     }
   }
   delete[] A;
@@ -274,15 +276,14 @@ double solver::project(unsigned int M, unsigned int N, double c(const double* x,
   delete[] x0;
   return r0;
 }
-
-std::string solver::asString(const double* A, unsigned int M, unsigned int N, bool symmetric, String format)
+std::string solver::asString(const double *A, unsigned int M, unsigned int N, bool symmetric, String format)
 {
   std::string s;
   for(unsigned int j = 0; j < M; j++)
     for(unsigned int i = 0; i < N; i++)
-      s += s_printf("%s"+format+"%s",
-		    i == 0 ? "\t| " : " ",
-		    symmetric ? A[i < j ? i + j * (j + 1) / 2 : j + i * (i + 1) / 2] : A[i + j * N],
-		    i < N - 1 ? "" : " |\n");
+      s += s_printf("%s" + format + "%s",
+                    i == 0 ? "\t| " : " ",
+                    symmetric ? A[i < j ? i + j * (j + 1) / 2 : j + i * (i + 1) / 2] : A[i + j * N],
+                    i < N - 1 ? "" : " |\n");
   return s;
 }

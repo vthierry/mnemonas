@@ -59,7 +59,7 @@ void network::KernelDistributedEstimator::run_once(unsigned int batch_duration, 
     double u = solver::minimize(solver_minimize_this_f, -10, 10, 1e-1);
     line_search_values.add(u);
     line_search_counts.add(c_f);
-    //-printf("run_distributed_estmation_once { 'n': %d, 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", n, u, c_f, cost, cost < cost0, cost0 - cost, (cost0 - cost) / cost0);
+    // -printf("run_distributed_estmation_once { 'n': %d, 'u': %6.4f, 'c': %d, 'cost': %6.2g, 'ok': %d, 'd_cost' : %g, 'delta_cost' : %g }\n", n, u, c_f, cost, cost < cost0, cost0 - cost, (cost0 - cost) / cost0);
     // Restore initial weights if no improvement
     if(cost < cost0)
       cost0 = cost;

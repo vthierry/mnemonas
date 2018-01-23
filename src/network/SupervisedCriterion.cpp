@@ -106,10 +106,10 @@ double network::SupervisedCriterion::get(unsigned int n, double t) const
 }
 unsigned int network::SupervisedCriterion::getN0() const
 {
-  return reinject == 'b' ? TransformCriterion::getN0(): reinject == 'o' ? values.getN() : 0;
+  return reinject == 'b' ? TransformCriterion::getN0() : reinject == 'o' ? values.getN() : 0;
 }
 void network::SupervisedCriterion::update()
 {
-  if(reinject == 'b') 
+  if(reinject == 'b')
     TransformCriterion::update();
 }

@@ -27,8 +27,8 @@ public:
      * - 'b' : output values are reinjected and backpropagated on hidden values in order to match the output values.
      */
     SupervisedCriterion(KernelTransform & transform, Input & values, char criterion = '2', double nu = 1e-3, char reinject = 'b');
-   /// @cond INTERNAL
-    virtual ~SupervisedCriterion(){}
+    /// @cond INTERNAL
+    virtual ~SupervisedCriterion() {}
     ///@endcond
     virtual double rho(unsigned int n, double t) const;
     virtual double drho(unsigned int n, double t) const;

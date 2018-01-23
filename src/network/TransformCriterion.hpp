@@ -45,10 +45,9 @@ public:
      * @return The value derivative \f$\frac{\partial \rho}{\partial x_n(t)}({\bf x})\f$.
      */
     virtual double drho(unsigned int n, double t) const;
-
-  private:
+private:
     double *estimates, *destimates;
-  public:
+public:
     /** Updates the best previous estimated value.
      * - This routine is called after backward tuning, and weight adjustment.
      */
@@ -61,6 +60,7 @@ public:
      * @return The best previous estimated value or NAN if undefined.
      */
     virtual double get(unsigned int n, double t) const;
+
     /** Gets the best previous estimated value number of units.
      * @return The number of units for which a best previous estimated value is defined.
      */

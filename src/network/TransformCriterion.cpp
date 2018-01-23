@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-network::TransformCriterion::TransformCriterion(RecurrentTransform & transform) : transform(transform), estimates(NULL), destimates(NULL) 
+network::TransformCriterion::TransformCriterion(RecurrentTransform& transform) : transform(transform), estimates(NULL), destimates(NULL)
 {}
 /// @cond INTERNAL
 network::TransformCriterion::~TransformCriterion()
@@ -53,26 +53,26 @@ void network::TransformCriterion::update()
   for(unsigned int k = 0; k < K && 1e-6 < r; k++) {
     for(unsigned int t = 0; t < T; t++)
       for(int n = N - 1; 0 <= n; n--) {
-	double v = transform.get(n, t);
-	estimates[n + t * N] = n < (int) N0 ? get(n, t) : v;
+        double v = transform.get(n, t);
+        estimates[n + t * N] = n < (int) N0 ? get(n, t) : v;
       }
     if(k > 0)
       for(int t_ = T - 1; 0 <= t_; t_--)
-	for(unsigned int n_ = 0, nt_ = N * t_; n_ < N; n_++, nt_++)
-	  if(N0 <= n_)
-	    for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
-	      for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
-		estimates[n_ + t_ * N] += transform.getValueDerivative(n, t, n_, t_) * destimates[n + t * N];
+        for(unsigned int n_ = 0, nt_ = N * t_; n_ < N; n_++, nt_++)
+          if(N0 <= n_)
+            for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
+              for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
+                estimates[n_ + t_ * N] += transform.getValueDerivative(n, t, n_, t_) * destimates[n + t * N];
     r = 0;
     for(unsigned int t = 0; t < T; t++)
       for(unsigned int n = 0; n < N; n++) {
-	double e = destimates[n + t * N] = estimates[n + t * N] - transform.get(n, t);
-	r += e * e;
+        double e = destimates[n + t * N] = estimates[n + t * N] - transform.get(n, t);
+        r += e * e;
       }
     r = sqrt(r / (N * T));
     for(unsigned int t = 0; t < T; t++)
       for(unsigned int n = 0; n < N; n++)
-	transform.set(n, t, estimates[n + t * N]);
-    //- printf("network::SupervisedCriterion::update() r[%d] = %g\n", k, r);
+        transform.set(n, t, estimates[n + t * N]);
+    // - printf("network::SupervisedCriterion::update() r[%d] = %g\n", k, r);
   }
 }

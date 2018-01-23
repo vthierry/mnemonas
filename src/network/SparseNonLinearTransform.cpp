@@ -63,7 +63,7 @@ network::SparseNonLinearTransform& network::SparseNonLinearTransform::setConnect
       {
         for(unsigned int d = 0; d < D[n]; d++)
           assume(indexes[d + offsets[n]] < N, "illegal-state", "in network::SparseNonLinearTransform, we must have index[n = %d, d = %d] in {0, %d{", n, d, N);
-	assume(d_ == D[n],  "illegal-state", "in network::SparseNonLinearTransform, we must have D_n = %d == D[n = %d] = %d", d_, n, D[n]);
+        assume(d_ == D[n], "illegal-state", "in network::SparseNonLinearTransform, we must have D_n = %d == D[n = %d] = %d", d_, n, D[n]);
         {
           unsigned int d = 0;
           for(unsigned int n_ = 0; n_ < N; n_++)
@@ -122,7 +122,7 @@ unsigned int network::SparseNonLinearTransform::getKernelDimension(unsigned int 
 double network::SparseNonLinearTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
   if(n < N) {
-    if (d == 0)
+    if(d == 0)
       return leak * get(n, t - 1);
     d -= 1;
     if(d < D[n]) {
@@ -137,14 +137,12 @@ double network::SparseNonLinearTransform::getKernelValue(unsigned int n, unsigne
 }
 double network::SparseNonLinearTransform::getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const
 {
-  return 
-    n < N ? (d == 0 ? 
-	     (n_ == n && t_ == t - 1 ? leak : 0) : 
-	     (d <= D[n] && n_ == indexes[d - 1 + offsets[n]] && t_ == t - 1 && 0 < get(n_, t_) && get(n_, t_) < SAT ? 1 : 0)
-	     ) : 0;
+  return n < N ? (d == 0 ?
+                  (n_ == n && t_ == t - 1 ? leak : 0) :
+                  (d <= D[n] && n_ == indexes[d - 1 + offsets[n]] && t_ == t - 1 && 0 < get(n_, t_) && get(n_, t_) < SAT ? 1 : 0)
+                  ) : 0;
 }
 bool network::SparseNonLinearTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {
   return n < N && n_ < N && t_ == t - 1 && ((n_ == n && leak != 0) || connected[n_ + n * N]);
 }
-

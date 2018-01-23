@@ -1,7 +1,7 @@
 #include "main.hpp"
 #include <algorithm>
 
-network::KernelEstimator::KernelEstimator(KernelTransform& transform, TransformCriterion& criterion) : transform(transform), N(transform.getN()), T((int) transform.getT()), R(transform.getR()), criterion(criterion), weights0(new double[transform.getWeightCount()]), values0(new double[N * T]), errors(new double[N * T]), drho_mean(0), once(true),  connections(NULL), k_negligible(0), k_saturated(0) {}
+network::KernelEstimator::KernelEstimator(KernelTransform& transform, TransformCriterion& criterion) : transform(transform), N(transform.getN()), T((int) transform.getT()), R(transform.getR()), criterion(criterion), weights0(new double[transform.getWeightCount()]), values0(new double[N * T]), errors(new double[N * T]), drho_mean(0), once(true), connections(NULL), k_negligible(0), k_saturated(0) {}
 /// @cond INTERNAL
 network::KernelEstimator::~KernelEstimator()
 {
@@ -11,8 +11,9 @@ network::KernelEstimator::~KernelEstimator()
   delete[] weights0;
 }
 ///@endcond
-network::KernelEstimator::connection::connection(unsigned int n, unsigned int r) : n(n), r(r) {}  
-bool network::KernelEstimator::connection::operator == (const connection &c) const {      return n == c.n && r == c.r; }
+network::KernelEstimator::connection::connection(unsigned int n, unsigned int r) : n(n), r(r) {}
+bool network::KernelEstimator::connection::operator == (const connection &c) const { return n == c.n && r == c.r;
+}
 
 double network::KernelEstimator::run()
 {
@@ -37,18 +38,18 @@ double network::KernelEstimator::run()
   // Builds a backward connection table
 #define WITH_CONNECTIONS 1
 #if WITH_CONNECTIONS
-  if (connections == NULL) {
+  if(connections == NULL) {
     connections = new std::vector < connection >[N];
     for(int t_ = T - 1; 0 <= t_; t_--)
       for(unsigned int n_ = 0; n_ < N; n_++)
-	for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
-	  for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
-	    if(transform.isConnected(n, t, n_, t_)) {
-	      connection c(n, (unsigned int) (t-t_));
-	      std::vector < connection >& cc = connections[n_];
-	      if(std::find(cc.begin(), cc.end(), c) == cc.end())
-		cc.push_back(c);
-	    }
+        for(int t = t_; t_ <= t + (int) R && t < (int) T; t++)
+          for(unsigned int n = 0; n < (t == t_ ? n_ : N); n++)
+            if(transform.isConnected(n, t, n_, t_)) {
+              connection c(n, (unsigned int)(t - t_));
+              std::vector < connection >& cc = connections[n_];
+              if(std::find(cc.begin(), cc.end(), c) == cc.end())
+                cc.push_back(c);
+            }
   }
 #endif
   // Calculates the backward tuning errors
@@ -60,13 +61,13 @@ double network::KernelEstimator::run()
 #if WITH_CONNECTIONS
 #if 1
       for(std::vector < connection > ::const_iterator i = connections[n_].begin(); i != connections[n_].end(); i++) {
-	unsigned int n = i->n, t = t_ + i->r;
-	e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
+        unsigned int n = i->n, t = t_ + i->r;
+        e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
       }
 #else
       for(unsigned int k = 0; k < connections[n_].size(); k++) {
-	unsigned int n = connections[n_][k].n, t = t_ + connections[n_][k].r;
-	e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
+        unsigned int n = connections[n_][k].n, t = t_ + connections[n_][k].r;
+        e1 += transform.getValueDerivative(n, t, n_, t_) * errors[n + N * t];
       }
 #endif
 #else
@@ -105,17 +106,17 @@ double network::KernelEstimator::run()
   double NT = N * T;
   ratio_negligible.add(k_negligible / NT);
   ratio_saturated.add(k_saturated / NT);
-  //- printf(">tuning time = %g\n", now(false, true));
+  // - printf(">tuning time = %g\n", now(false, true));
   tuning_time.add(now(false, true));
   return cost;
 }
 double network::KernelEstimator::getValue(unsigned int n, double t) const
 {
-  if (n < criterion.getN0()) {
+  if(n < criterion.getN0()) {
     double value = criterion.get(n, t);
-    if (!isnan(value))
+    if(!isnan(value))
       return value;
-  } 
+  }
   return values0[n + ((int) t) * N];
 }
 const CurveFit& network::KernelEstimator::getFit(String what) const
@@ -125,7 +126,8 @@ const CurveFit& network::KernelEstimator::getFit(String what) const
 }
 double network::KernelEstimator::updateReadout(unsigned int N0)
 {
-  if (N0 == 0) N0 = criterion.getN0();
+  if(N0 == 0)
+    N0 = criterion.getN0();
   cost0 = criterion.rho();
   // Reinjects the desired values in the last simulated values
   for(unsigned int t = 0; t < T; t++)
@@ -137,38 +139,38 @@ double network::KernelEstimator::updateReadout(unsigned int N0)
     }
   // Builds and solves the linear system of equations for each unit
   w0 = new double[transform.getWeightCount()], w1 = new double[transform.getWeightCount()];
-  //- for(unsigned int nd = 0; nd < transform.getWeightCount(); nd++) w0[nd] = w1[nd] = NAN;
+  // - for(unsigned int nd = 0; nd < transform.getWeightCount(); nd++) w0[nd] = w1[nd] = NAN;
   for(unsigned int n = 0, nd = 0; n < N0; n++) {
     unsigned int D = transform.getKernelDimension(n);
-    for(unsigned int d = 0; d < D; d++) 
+    for(unsigned int d = 0; d < D; d++)
       w0[nd + d] = transform.getWeight(n, d + 1);
-    double *b = new double [D], *A = new double [(D * (D + 1))/2];
+    double *b = new double[D], *A = new double[(D * (D + 1)) / 2];
     for(unsigned int d = 0, dd_ = 0; d < D; d++) {
       for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
-	A[dd_] = 0;
+        A[dd_] = 0;
       b[d] = 0;
     }
     for(unsigned int t = 0; t < T; t++) {
       double b_nt = getValue(n, t) - transform.getKernelValue(n, 0, t);
       for(unsigned int d = 0, dd_ = 0; d < D; d++) {
-	double phi_ndt = transform.getKernelValue(n, d + 1, t);
-	for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
-	  A[dd_] += phi_ndt * transform.getKernelValue(n, d_ + 1, t);
-	b[d] += phi_ndt * b_nt;
+        double phi_ndt = transform.getKernelValue(n, d + 1, t);
+        for(unsigned int d_ = 0; d_ <= d; d_++, dd_++)
+          A[dd_] += phi_ndt * transform.getKernelValue(n, d_ + 1, t);
+        b[d] += phi_ndt * b_nt;
       }
     }
     solver::linsolve(D, D, A, true, b, w1 + nd, w0 + nd);
-    //- printf(" A(%d):\n %s b(%d):\n %s w0(%d):\n %s w1(%d):\n %s", n, solver::asString(A, D, D, true).c_str(), n, solver::asString(b, D).c_str(), n, solver::asString(w0 + nd, D).c_str(), n, solver::asString(w1 + nd, D).c_str());
+    // - printf(" A(%d):\n %s b(%d):\n %s w0(%d):\n %s w1(%d):\n %s", n, solver::asString(A, D, D, true).c_str(), n, solver::asString(b, D).c_str(), n, solver::asString(w0 + nd, D).c_str(), n, solver::asString(w1 + nd, D).c_str());
     delete[] A;
     delete[] b;
     nd += D;
   }
-  //-printf("weights0 %s\n", transform.asString().c_str());
-  //- for(unsigned int n = 0, nd = 0; n < N0; n++) for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++) transform.setWeight(n, d + 1, w1[nd]); printf("weights1 %s\n", transform.asString().c_str());
+  // -printf("weights0 %s\n", transform.asString().c_str());
+  // - for(unsigned int n = 0, nd = 0; n < N0; n++) for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++) transform.setWeight(n, d + 1, w1[nd]); printf("weights1 %s\n", transform.asString().c_str());
   // Line searchs in the 2nd order estimation
   solver_minimize_e = this, c_f = 0, c_N0 = N0;
   solver::minimize(solver_minimize_e_f, -10, 10, 1e-1);
-  //- printf("weights11 %s\n", transform.asString().c_str());
+  // - printf("weights11 %s\n", transform.asString().c_str());
   delete[] w1;
   delete[] w0;
   return cost1;
@@ -176,10 +178,10 @@ double network::KernelEstimator::updateReadout(unsigned int N0)
 double network::KernelEstimator::solver_minimize_f(double u)
 {
   c_f++;
-  for(unsigned int n = 0, nd = 0; n < c_N0; n++)  
-    for(unsigned int d = 0; d < transform.getKernelDimension(n); d++ ,nd++)
+  for(unsigned int n = 0, nd = 0; n < c_N0; n++)
+    for(unsigned int d = 0; d < transform.getKernelDimension(n); d++, nd++)
       transform.setWeight(n, d + 1, w0[nd] + u * (w1[nd] - w0[nd]));
-  //-printf("\t{ '#': %d, 'u': %6.4f }\n", c_f, u);
+  // -printf("\t{ '#': %d, 'u': %6.4f }\n", c_f, u);
   return cost1 = criterion.rho();
 }
 double network::KernelEstimator::solver_minimize_e_f(double u)
