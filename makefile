@@ -23,7 +23,7 @@ usage :
 	@echo "  make show  		: compiles the source api documentation and show it"
 	@echo "  make pdf  MAIN=$MAIN	: compiles the main tex publication"
 	@echo "  make clean 	 	: cleans source and latex intermediate files"
-	@echo "  make git  		: pulls, commits and pushes in the mnemosyne git repository"
+	@echo "  make git  		: publishes, i.e., pulls, commits and pushes in the mnemosyne git repository"
 	@echo "  make rrun MAIL=$MAIL	: compile and run the code on the nef cluster, reporting result by mail"
 	@echo "This makefile uses the following software set :"
 	@echo " - g++ gsl gslcblas swig  		for software development"
@@ -174,7 +174,7 @@ clean :
 
 git :
 	@echo "git sync"
-	git checkout master ; git pull ; git commit -a -m 'from makefile' ; git push
+	git checkout master ; git pull ; git add doc/* ; git commit -a -m 'from makefile' ; git push
 
 #
 # Remote execution on nef-*.inria.fr
