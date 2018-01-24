@@ -91,7 +91,7 @@ public:
     double getValueDerivativeApproximation(unsigned int n, double t, unsigned int n_, double t_, double epsilon = 1e-3) const;
 
     /** Estimates the Lyapunov exponent.
-     * - Performs <tt>M simulations until <tt>t = T - W</tt>, adds a perturation and estimates the trajectory divergence.
+     * - Performs <tt>M</tt> simulations until <tt>t = T - W</tt>, adds a perturation and estimates the trajectory divergence.
      * @param W The Lyapunov exponent estimation window.
      * @param M The number of iterations.
      * @param d0 The perturbation amplitude.
