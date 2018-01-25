@@ -39,7 +39,7 @@ usage :
 export SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*.c)
 export INC = $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*.h) $(wildcard tex/*/*.h)
 
-CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter -Wvarargs -std=c++14 
+CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter -Wvarargs
 LDFLAGS =  -lgsl -lgslcblas -lm 
 
 ifeq ($(shell hostname),nef-devel)
@@ -212,8 +212,8 @@ rrun-out :
 
 # On going
 #
+# - calculer lyapounov : mettre histogram et tracer sigma -> lambda + activie (mean + stdev)
 # - maj curve fitting : les w, le t-1 et prédiction error
-# - calculer lyapounov en ajoutant fonction avec reset(initial state random) dans Recurrent 
 # - distributed : avec plus de D et N, des randoms w init nombreux
 #
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
@@ -222,9 +222,7 @@ rrun-out :
 ARGS = -test # -experiment2 # 
 
 todo :
-#	$(MAKE) run
-	/bin/rm -rf doc
-	$(MAKE) api
+	$(MAKE) run
 #	firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################
