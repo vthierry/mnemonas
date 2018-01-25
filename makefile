@@ -2,10 +2,10 @@
 #
 # This is the https://github.com/vthierry/mnemonas middleware makefile
 # - It is shared under an open source CeCILL-C licence: http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html
-# - Runs <tt>make usage</tt> to get all available commands 
+# - Runs <tt>make usage</tt> to get all available commands
 #
 #  Notice: as being a very simple middleware only makefile is used (no need of ./configure mechanism)
-# 
+#
 #################################################################################################
 
 default : todo # @todo : cancel for normal use
@@ -39,8 +39,8 @@ usage :
 export SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*.c)
 export INC = $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*.h) $(wildcard tex/*/*.h)
 
-CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter -Wvarargs
-LDFLAGS =  -lgsl -lgslcblas -lm 
+CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter -Wno-varargs
+LDFLAGS =  -lgsl -lgslcblas -lm
 
 ifeq ($(shell hostname),nef-devel)
 CCFLAGS += -O3 -D ON_NEF
@@ -54,25 +54,25 @@ OBJ = $(patsubst src/%.cpp,.build/obj/%.o,$(patsubst src/%.c,.build/obj/%.o, $(S
 
 .build/main.exe : $(SRC) $(INC)
 	@echo 'make cmp'
-	mkdir -p $(@D)
-	$(MAKE) $(OBJ) 	
-	echo "g++ -o $@ .build/obj/**.o"
-	g++ $(OBJ) -o $@ $(LDFLAGS)
+	@mkdir -p $(@D)
+	@$(MAKE) $(OBJ)
+	@echo "g++ -o $@ .build/obj/**.o"
+	@g++ $(OBJ) -o $@ $(LDFLAGS)
 
 .build/obj/main.o: src/main.cpp $(INC)
-	echo "g++ -c src/main.cpp"
-	mkdir -p $(@D)
-	g++ $(CCFLAGS) -o $@ -c src/main.cpp
+	@echo "g++ -c src/main.cpp"
+	@mkdir -p $(@D)
+	@g++ $(CCFLAGS) -o $@ -c src/main.cpp
 
 .build/obj/%.o : src/%.cpp src/%.hpp
-	echo "g++ -c src/$*.cpp"
-	mkdir -p $(@D)
-	g++ $(CCFLAGS) -o $@ -c src/$*.cpp
+	@echo "g++ -c src/$*.cpp"
+	@mkdir -p $(@D)
+	@g++ $(CCFLAGS) -o $@ -c src/$*.cpp
 
 .build/obj/%.o : src/%.c src/%.h
-	echo "g++ -c src/$*.c"
-	mkdir -p $(@D)
-	g++ $(CCFLAGS) -o $@ -c src/$*.c
+	@echo "g++ -c src/$*.c"
+	@mkdir -p $(@D)
+	@g++ $(CCFLAGS) -o $@ -c src/$*.c
 
 #
 # Python and C++ wrapper compilation
@@ -82,27 +82,27 @@ pywrap : .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-pac
 
 .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-packages/mnemonas/mnemonas.so : $(SRC) $(INC)
 	@echo 'make mnemonas.py mnemonas.so'
-	/bin/rm -rf .build/python ; mkdir -p .build/python/site-packages/mnemonas
-	swig -module mnemonas -c++ -python -o .build/mnemonas.C src/mnemonas.hpp
-	mv .build/mnemonas.py .build/python/site-packages/mnemonas
-	g++ $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)	
-	g++ -shared -o .build/python/site-packages/mnemonas/mnemonas.so *.o $(LDFLAGS)
-	/bin/rm -f .build/mnemonas.C *.o
+	@/bin/rm -rf .build/python ; mkdir -p .build/python/site-packages/mnemonas
+	@swig -module mnemonas -c++ -python -o .build/mnemonas.C src/mnemonas.hpp
+	@mv .build/mnemonas.py .build/python/site-packages/mnemonas
+	@g++ $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)
+	@g++ -shared -o .build/python/site-packages/mnemonas/mnemonas.so *.o $(LDFLAGS)
+	@/bin/rm -f .build/mnemonas.C *.o
 
-ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas 
+ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas
 
 .build/lib/libmnemonas.a .build/lib/libmnemonas.so : $(SRC) $(INC)
 	@echo 'make libmnemonas.so'
-	/bin/rm -rf .build/lib ; mkdir -p .build/lib
-	g++ $(CCFLAGS) -fPIC -c $(SRC)	
-	g++ -o .build/lib/libmnemonas.a *.o $(LDFLAGS)
-	g++ -shared -o .build/lib/libmnemonas.so *.o $(LDFLAGS)
-	/bin/rm -f *.o
+	@/bin/rm -rf .build/lib ; mkdir -p .build/lib
+	@g++ $(CCFLAGS) -fPIC -c $(SRC)
+	@g++ -o .build/lib/libmnemonas.a *.o $(LDFLAGS)
+	@g++ -shared -o .build/lib/libmnemonas.so *.o $(LDFLAGS)
+	@/bin/rm -f *.o
 
 .build/inc/mnemonas : $(INC)
 	@echo 'make inc/mnemonas'
-	/bin/rm -rf $@ ; mkdir -p $@
-	cd src ; rsync -r --exclude='index.h' --exclude='etc/' --exclude='*_test.h' --exclude='*.c' --exclude='*.cpp' . ../$@
+	@/bin/rm -rf $@ ; mkdir -p $@
+	@cd src ; rsync -r --exclude='index.h' --exclude='etc/' --exclude='*_test.h' --exclude='*.c' --exclude='*.cpp' . ../$@
 
 #
 # Code local execution
@@ -114,40 +114,40 @@ endif
 
 run : .build/main.exe
 	@echo 'make run'
-	.build/main.exe $(ARGS)
+	@.build/main.exe $(ARGS)
 
 grun : .build/main.exe
 	@echo 'make grun'
-	(echo "run $(ARGS)" ; echo "echo --- backtrace ------------------------------------------------------------------------------\n"; echo "backtrace" ; echo "echo --- backtrace full -------------------------------------------------------------------------\n" ; echo "backtrace full" ; echo "echo --------------------------------------------------------------------------------------------\n"; echo "quit 0") > .build/a.cmd ; gdb -q .build/main.exe -x .build/a.cmd ; ok=1
+	@(echo "run $(ARGS)" ; echo "echo --- backtrace ------------------------------------------------------------------------------\n"; echo "backtrace" ; echo "echo --- backtrace full -------------------------------------------------------------------------\n" ; echo "backtrace full" ; echo "echo --------------------------------------------------------------------------------------------\n"; echo "quit 0") > .build/a.cmd ; gdb -q .build/main.exe -x .build/a.cmd ; ok=1
 
 vrun : .build/main.exe
 	@echo 'make vrun'
-	ulimit -s 100000 2>/dev/null ; export GLIBCXX_FORCE_NEW=1; valgrind --max-stackframe=100000000 --leak-check=full --show-reachable=yes --show-leak-kinds=all --track-origins=yes .build/main.exe $(ARGS)
+	@ulimit -s 100000 2>/dev/null ; export GLIBCXX_FORCE_NEW=1; valgrind --max-stackframe=100000000 --leak-check=full --show-reachable=yes --show-leak-kinds=all --track-origins=yes .build/main.exe $(ARGS)
 
 test : .build/main.exe
-	$(MAKE) run ARGS=-test
+	@$(MAKE) run ARGS=-test
 #
 # Code and latex documentation
 #
 
-show : api 
-	firefox doc/index.html
+show : api
+	@firefox doc/index.html
 
 api : doc/index.html
 
 doc/index.html : ./src/index.h $(INC) $(SRC)
-	$(MAKE) uncrustify
+	@$(MAKE) uncrustify
 	@echo 'make api .'
-	/bin/rm -rf $(@D) ; mkdir -p $(@D)
-	echo "<hr/><div align='right'><tt>mnemosyne brainybot (version of `date +%F` at `date +%T`) </tt> </div><hr/>" > doc/footer.html
-	zip -9qr doc/sources.zip makefile tex src
-	doxygen src/etc/doxygen.cfg
-	cp src/etc/*.png $(@D)
-	for f in doc/*.html ; do mv $$f $$f~ ; sed 's/\(<td id="projectlogo">\)\(<img alt="Logo" src="logo.png"\/>\)\(<\/td>\)/\1<a href="https:\/\/vthierry.github.io\/mnemonas">\2<\/a>\3/' < $$f~ > $$f ; done
-	echo '<script>location.replace("doc/index.html");</script>' > index.html 
+	@/bin/rm -rf $(@D) ; mkdir -p $(@D)
+	@echo "<hr/><div align='right'><tt>mnemosyne brainybot (version of `date +%F` at `date +%T`) </tt> </div><hr/>" > doc/footer.html
+	@zip -9qr doc/sources.zip makefile tex src
+	@doxygen src/etc/doxygen.cfg
+	@cp src/etc/*.png $(@D)
+	@for f in doc/*.html ; do mv $$f $$f~ ; sed 's/\(<td id="projectlogo">\)\(<img alt="Logo" src="logo.png"\/>\)\(<\/td>\)/\1<a href="https:\/\/vthierry.github.io\/mnemonas">\2<\/a>\3/' < $$f~ > $$f ; done
+	@echo '<script>location.replace("doc/index.html");</script>' > index.html
 
 uncrustify : $(INC) $(SRC)
-	if command uncrustify > /dev/null ; then for f in $^ ; do mv $$f $$f~ ; uncrustify -q -c src/etc/uncrustify.cfg -f $$f~ -o $$f ; touch $$f -r $$f~ ; done ; fi
+	@if command uncrustify > /dev/null ; then for f in $^ ; do mv $$f $$f~ ; uncrustify -q -c src/etc/uncrustify.cfg -f $$f~ -o $$f ; touch $$f -r $$f~ ; done ; fi
 
 ifndef MAIN
 MAIN = tex/BackwardTuning/main
@@ -157,24 +157,24 @@ pdf : $(MAIN).pdf clean
 
 $(MAIN).pdf : $(shell find $(dir $(MAIN)) -name '*.tex')
 	@echo "latex2pdf $(MAIN)"
-	$(MAKE) clean
-	cd $(dir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; bibtex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN))
+	@$(MAKE) clean
+	@cd $(dir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; bibtex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN))
 
 %.pdf : %.odp
-	ooimpress --invisible --convert-to pdf $^
+	@ooimpress --invisible --convert-to pdf $^
 
 #
 # Publication of the package
 #
 
-clean :	
-	/bin/rm -f `find . -name '*~' -o -name '.#*#' -o -name '*.o'`
-	/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
-	/bin/rm -rf .build stdout
+clean :
+	@/bin/rm -f `find . -name '*~' -o -name '.#*#' -o -name '*.o'`
+	@/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
+	@/bin/rm -rf .build stdout
 
 git :
 	@echo "git sync"
-	git checkout master ; git pull ; git add doc/* ; git commit -a -m 'from makefile' ; git push
+	@git checkout master ; git pull ; git add doc/* ; git commit -a -m 'from makefile' ; git push
 
 #
 # Remote execution on nef-*.inria.fr
@@ -187,20 +187,20 @@ endif
 here = $(shell basename `pwd`)
 
 rrun-cmp : clean
-	rsync --rsh='ssh -C' --archive --delete-excluded ../$(here) nef-frontal.inria.fr:
-	ssh nef-frontal.inria.fr '/bin/rm -rf $(here)/.build ; ssh nef-devel.inria.fr make -s -C $(here) cmp'
+	@rsync --rsh='ssh -C' --archive --delete-excluded ../$(here) nef-frontal.inria.fr:
+	@ssh nef-frontal.inria.fr '/bin/rm -rf $(here)/.build ; ssh nef-devel.inria.fr make -s -C $(here) cmp'
 
 rrun-run : rrun-cmp
-	ssh nef-frontal.inria.fr '/bin/rm -rf $(here)/rrun ; mkdir $(here)/rrun'
-	for task in 0 1 ; do ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe -experiment1 $$task'" ; done
+	@ssh nef-frontal.inria.fr '/bin/rm -rf $(here)/rrun ; mkdir $(here)/rrun'
+	@for task in 0 1 ; do ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe -experiment1 $$task'" ; done
 
 rrun-out :
-	ssh nef-frontal.inria.fr "oarstat --format 2 -u `whoami`"
-	rsync --rsh='ssh -C' --archive nef-frontal.inria.fr:$(here)/rrun .
-	for f in `ls ./rrun/OAR.*.stderr` ; do make `echo $$f | sed s'/.stderr/.stdlog/'` ; done
+	@ssh nef-frontal.inria.fr "oarstat --format 2 -u `whoami`"
+	@rsync --rsh='ssh -C' --archive nef-frontal.inria.fr:$(here)/rrun .
+	@for f in `ls ./rrun/OAR.*.stderr` ; do make `echo $$f | sed s'/.stderr/.stdlog/'` ; done
 
 ./rrun/OAR.%.stdlog : ./rrun/OAR.%.stderr
-	(ssh nef-frontal.inria.fr oarstat -f -j $* ; echo "STDOUT:" ; cat ./rrun/OAR.$*.stdout ; echo "STDER:" ; cat ./rrun/OAR.$*.stderr ; echo "-------------------------------------------------") > rrun/OAR.$*.stdlog
+	@(ssh nef-frontal.inria.fr oarstat -f -j $* ; echo "STDOUT:" ; cat ./rrun/OAR.$*.stdout ; echo "STDER:" ; cat ./rrun/OAR.$*.stderr ; echo "-------------------------------------------------") > rrun/OAR.$*.stdlog
 
 # Ref: https://wiki.inria.fr/ClustersSophia/User_Guide_new_config
 
@@ -212,17 +212,18 @@ rrun-out :
 
 # On going
 #
-# - calculer lyapounov : mettre histogram et tracer sigma -> lambda + activie (mean + stdev)
+# - voir comment générer des courbes x0 x1 mean + stdev tranquille
+# - calculer lyapounov ds Experiment2: mettre histogram et tracer sigma -> lambda + activie (mean + stdev), 
 # - maj curve fitting : les w, le t-1 et prédiction error
 # - distributed : avec plus de D et N, des randoms w init nombreux
 #
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
+#
 
-
-ARGS = -test # -experiment2 # 
+ARGS = -test # -experiment2 #
 
 todo :
-	$(MAKE) run
-#	firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
+	@$(MAKE) run
+#	@firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################

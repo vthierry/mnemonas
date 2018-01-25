@@ -1,6 +1,6 @@
 #include "s_string.h"
 
-/** Generates a gnuplot dipslay script.
+/** Generates a gnuplot display script.
  * - Generates a script to display <a href="http://gnuplot.sourceforge.net">gnuplot</a> commands.
  * @param file The related data file name (without extension). By contract,
  *   - the file basename is used as the plot title;
