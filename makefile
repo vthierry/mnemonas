@@ -26,7 +26,7 @@ usage :
 	@echo "  make git  		: publishes, i.e., pulls, commits and pushes in the mnemosyne git repository"
 	@echo "  make rrun MAIL=$MAIL	: compile and run the code on the nef cluster, reporting result by mail"
 	@echo "This makefile uses the following software set :"
-	@echo " - g++ gsl gslcblas swig  		for software development"
+	@echo " - clang++ gsl gslcblas swig  		for software development"
 	@echo " - makefile git doxygen uncrustify	for source file management and documentation"
 	@echo " - pdflatex bibtex 			for publication compilaton"
 	@echo " - gdb valgrind                          for code debugging"
@@ -39,7 +39,7 @@ usage :
 export SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*.c)
 export INC = $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*.h) $(wildcard tex/*/*.h)
 
-CCFLAGS =  -Isrc -std=c++0x -Wall -Wextra -Wno-unused-parameter -Wno-varargs
+CCFLAGS =  -Isrc -std=c++0x -x c++ -Wall -Wextra -Wno-unused-parameter -Wno-varargs
 LDFLAGS =  -lgsl -lgslcblas -lm
 
 ifeq ($(shell hostname),nef-devel)
@@ -52,27 +52,29 @@ cmp : .build/main.exe
 
 OBJ = $(patsubst src/%.cpp,.build/obj/%.o,$(patsubst src/%.c,.build/obj/%.o, $(SRC)))
 
+GPP=clang++
+
 .build/main.exe : $(SRC) $(INC)
 	@echo 'make cmp'
 	@mkdir -p $(@D)
 	@$(MAKE) $(OBJ)
 	@echo "g++ -o $@ .build/obj/**.o"
-	@g++ $(OBJ) -o $@ $(LDFLAGS)
+	@$(GPP) $(OBJ) -o $@ $(LDFLAGS)
 
 .build/obj/main.o: src/main.cpp $(INC)
 	@echo "g++ -c src/main.cpp"
 	@mkdir -p $(@D)
-	@g++ $(CCFLAGS) -o $@ -c src/main.cpp
+	@$(GPP) $(CCFLAGS) -o $@ -c src/main.cpp
 
 .build/obj/%.o : src/%.cpp src/%.hpp
 	@echo "g++ -c src/$*.cpp"
 	@mkdir -p $(@D)
-	@g++ $(CCFLAGS) -o $@ -c src/$*.cpp
+	@$(GPP) $(CCFLAGS) -o $@ -c src/$*.cpp
 
 .build/obj/%.o : src/%.c src/%.h
 	@echo "g++ -c src/$*.c"
 	@mkdir -p $(@D)
-	@g++ $(CCFLAGS) -o $@ -c src/$*.c
+	@$(GPP) $(CCFLAGS) -o $@ -c src/$*.c
 
 #
 # Python and C++ wrapper compilation
@@ -85,8 +87,8 @@ pywrap : .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-pac
 	@/bin/rm -rf .build/python ; mkdir -p .build/python/site-packages/mnemonas
 	@swig -module mnemonas -c++ -python -o .build/mnemonas.C src/mnemonas.hpp
 	@mv .build/mnemonas.py .build/python/site-packages/mnemonas
-	@g++ $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)
-	@g++ -shared -o .build/python/site-packages/mnemonas/mnemonas.so *.o $(LDFLAGS)
+	@$(GPP) $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)
+	@$(GPP) -shared -o .build/python/site-packages/mnemonas/mnemonas.so *.o $(LDFLAGS)
 	@/bin/rm -f .build/mnemonas.C *.o
 
 ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas
@@ -94,9 +96,9 @@ ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas
 .build/lib/libmnemonas.a .build/lib/libmnemonas.so : $(SRC) $(INC)
 	@echo 'make libmnemonas.so'
 	@/bin/rm -rf .build/lib ; mkdir -p .build/lib
-	@g++ $(CCFLAGS) -fPIC -c $(SRC)
-	@g++ -o .build/lib/libmnemonas.a *.o $(LDFLAGS)
-	@g++ -shared -o .build/lib/libmnemonas.so *.o $(LDFLAGS)
+	@$(GPP) $(CCFLAGS) -fPIC -c $(SRC)
+	@$(GPP) -o .build/lib/libmnemonas.a *.o $(LDFLAGS)
+	@$(GPP) -shared -o .build/lib/libmnemonas.so *.o $(LDFLAGS)
 	@/bin/rm -f *.o
 
 .build/inc/mnemonas : $(INC)

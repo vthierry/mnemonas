@@ -121,7 +121,7 @@ private:
   // Dumps the internal storage of the struct
   void dump(String header = "") const;
   // Cleans empty values, and verifies the structure integrity.
-  void clean();
+  void clean(bool recursive = true);
 public:
   /** Returns the reference to a named or indexed value.
    * - Also available though the <tt>struct[name]</tt> subscript operator.

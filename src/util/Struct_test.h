@@ -33,7 +33,7 @@ void Struct_test()
     value.save(file, "plain");
     Struct value2;
     value2.load(file);
-    assume(value == value2, "illegal-state", "in Struct_test 3/4: value != value2 =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), ((String) value2).c_str());
+    assume(value == value2, "illegal-state", "in Struct_test 4/4: value != value2 =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), ((String) value2).c_str());
 #if 0
     system("json-glib-validate /tmp/test.json");
     value.save("/tmp/test.json.html", "html");

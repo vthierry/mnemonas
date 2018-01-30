@@ -193,11 +193,12 @@ void Struct::dump(String header) const
     printf("'%s':«%s»", i->first.c_str(), ((String) i->second).c_str());
   printf("}\n");
 }
-void Struct::clean()
+void Struct::clean(bool recursive)
 {
   // Recursively applies on all values
-  for(std::map < std::string, Struct > ::iterator i = values.begin(); i != values.end(); i++)
-    i->second.clean();
+  if (recursive)
+    for(std::map < std::string, Struct > ::iterator i = values.begin(); i != values.end(); i++)
+      i->second.clean();
   // Cleans indexed values
   assume(values.size() > 0 || length == 0, "illegal-Struct", "Spurious length %d for an empty or atomic value in '%s'", length, value.c_str());
   for(int i = 0; i < length; i++) {
@@ -251,6 +252,7 @@ bool Struct::equals(const Struct& value) const
       return false;
     else {
       // Calculates the union of both names
+      const_cast < Struct & > (*this).clean(false), const_cast < Struct & > (value).clean(false);
       std::set < std::string > names;
       {
         for(std::map < std::string, Struct > ::const_iterator i = values.begin(); i != values.end(); i++)
