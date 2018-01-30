@@ -74,7 +74,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines a meta-parameter optimizer of a given parameter space. </p>
 <h3>Problem position</h3>
-<p>Given the mimization of a criterion <img class="formulaInl" alt="$c({\bf x})$" src="form_10.png"/> by a minimization algorithm with meta-parameters <img class="formulaInl" alt="${\bf p}$" src="form_11.png"/>, this mechanism attemps to observe the minimization process in order to make proposals about the next meta-parameters.</p>
+<p>Given the mimization of a criterion <img class="formulaInl" alt="$c({\bf x})$" src="form_23.png"/> by a minimization algorithm with meta-parameters <img class="formulaInl" alt="${\bf p}$" src="form_24.png"/>, this mechanism attemps to observe the minimization process in order to make proposals about the next meta-parameters.</p>
 <h3>Meta-parameter space specification</h3>
 <p>The meta-parameter space is defined by a multi-dimensional list of sampled values, e.g., if there are one boolean parameter <code>mode</code> and one logarithmic numeric parameter <code>scale</code> we may write:</p><pre>
 {
@@ -94,7 +94,7 @@ do {
   parameter_optimizer.add(obtained_criterion_value());
 } while(no_convergence);</pre><h3>Mechanism implementation</h3>
 <ul>
-<li>The following meta-criterion, for a cost <img class="formulaInl" alt="$c(t)$" src="form_12.png"/> at time <img class="formulaInl" alt="$T(t)$" src="form_13.png"/>, is considered: <center> <img class="formulaInl" alt="$\delta_c(t) = \frac{c(t) - c(t-1)}{c(t-1)} \, \frac{1}{T(t) - T(t-1)}$" src="form_14.png"/></center> thus the relative cost decrease speed, which reduces to relative cost decrease if only the iteration index is taken into account.</li>
+<li>The following meta-criterion, for a cost <img class="formulaInl" alt="$c(t)$" src="form_13.png"/> at time <img class="formulaInl" alt="$T(t)$" src="form_25.png"/>, is considered: <center> <img class="formulaInl" alt="$\delta_c(t) = \frac{c(t) - c(t-1)}{c(t-1)} \, \frac{1}{T(t) - T(t-1)}$" src="form_26.png"/></center> thus the relative cost decrease speed, which reduces to relative cost decrease if only the iteration index is taken into account.</li>
 <li>Marginal Gaussian processes are considered to randomly choose the next parameter. </li>
 </ul>
 
@@ -144,7 +144,7 @@ do {
 
 <p class="definition">Definition at line <a class="el" href="ParameterOptimizer_8cpp_source.html#l00008">8</a> of file <a class="el" href="ParameterOptimizer_8cpp_source.html">ParameterOptimizer.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="ParameterOptimizer_8cpp_source.html#l00040">clear()</a>, <a class="el" href="Struct_8hpp_source.html#l00172">Struct::getCount()</a>, <a class="el" href="Struct_8hpp_source.html#l00167">Struct::getLength()</a>, <a class="el" href="Struct_8hpp_source.html#l00235">Struct::Iterator::next()</a>, <a class="el" href="Struct_8cpp_source.html#l00272">Struct::reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00111">Struct::toDouble()</a>.</p>
+<p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="ParameterOptimizer_8cpp_source.html#l00040">clear()</a>, <a class="el" href="Struct_8hpp_source.html#l00184">Struct::getCount()</a>, <a class="el" href="Struct_8hpp_source.html#l00179">Struct::getLength()</a>, <a class="el" href="Struct_8hpp_source.html#l00249">Struct::Iterator::next()</a>, <a class="el" href="Struct_8cpp_source.html#l00274">Struct::reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00111">Struct::toDouble()</a>.</p>
 
 </div>
 </div>
@@ -208,7 +208,7 @@ do {
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The relative cost decrease <img class="formulaInl" alt="$\delta_c$" src="form_15.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The relative cost decrease <img class="formulaInl" alt="$\delta_c$" src="form_27.png"/>. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="ParameterOptimizer_8cpp_source.html#l00070">70</a> of file <a class="el" href="ParameterOptimizer_8cpp_source.html">ParameterOptimizer.cpp</a>.</p>
 
@@ -256,7 +256,7 @@ do {
 
 <p class="definition">Definition at line <a class="el" href="ParameterOptimizer_8cpp_source.html#l00110">110</a> of file <a class="el" href="ParameterOptimizer_8cpp_source.html">ParameterOptimizer.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00470">Struct::asString()</a>, and <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00472">Struct::asString()</a>, and <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>.</p>
 
 </div>
 </div>
@@ -265,4 +265,4 @@ do {
 <li>src/util/<a class="el" href="ParameterOptimizer_8cpp_source.html">ParameterOptimizer.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-01-24 at 11:20:50) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-01-30 at 20:31:53) </tt> </div><hr/>

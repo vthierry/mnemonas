@@ -196,7 +196,7 @@ void Struct::dump(String header) const
 void Struct::clean(bool recursive)
 {
   // Recursively applies on all values
-  if (recursive)
+  if(recursive)
     for(std::map < std::string, Struct > ::iterator i = values.begin(); i != values.end(); i++)
       i->second.clean();
   // Cleans indexed values

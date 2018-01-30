@@ -223,6 +223,7 @@ public:
     return unset(toName(index));
   }
 #ifndef SWIG
+
   /** Defines an iterator over the struct named fields.
    * - It is used in a construct of the form:
    *  <div><tt>for(Struct::Iterator i(values); i.next();) { String name = i.getName();  ../.. }</tt>.</div>

@@ -4,9 +4,9 @@
 #include "util/numeric.hpp"
 #include <random>
 
-/** Defines a 1D real probabilty density. 
-  - This factory encapsulates random number generators.
-    - All routines depends on setSeed. If setSeed(-1) -> it is a non-reproducible pseudo-random generator, else it generates always the same pseudo-random numbers.
+/** Defines a 1D real probabilty density.
+ *  - This factory encapsulates random number generators.
+ *   - All routines depends on setSeed. If setSeed(-1) -> it is a non-reproducible pseudo-random generator, else it generates always the same pseudo-random numbers.
  */
 class Density: public numeric {
 public:
@@ -19,14 +19,10 @@ public:
    * @return A value in [0,1].
    */
   virtual double p(double x) const;
-
 private:
-  
   static std::mt19937_64 generator;
   static std::uniform_real_distribution < double > distribution;
-
 public:
-
   /** Generates the seed of the pseudo random generator.
    * @param seed If seed == -1 changes randomly the seed, else generates a reproducible pseudo random sequence.
    */

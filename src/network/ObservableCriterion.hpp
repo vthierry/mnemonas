@@ -3,6 +3,7 @@ namespace network {
   class ObservableCriterion: public TransformCriterion {
 public:
 #ifndef SWIG
+
     /** Defines an observable over an input.
      * - By contract:
      *   - Observable must implement an implicit or explicit copy constructor.
@@ -70,6 +71,7 @@ private:
     static ObservableCriterion *solver_project_this;
 public:
 #ifndef SWIG
+
     /** Resets the criterion for a given statistics.
      * @param transform The kernel transform to estimate.
      * @param input The input to consider as a reference.
@@ -104,6 +106,7 @@ public:
     double getObservableExpectedValue(unsigned int k) const;
 
 #ifndef SWIG
+
     /** Gets a predefined observable.
      * @param name : The predefined observable name.
      * - mean : The input mean of a given channel \f$\omega_n(t) = x_n(t)\f$.
