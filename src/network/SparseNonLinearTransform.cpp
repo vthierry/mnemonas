@@ -48,9 +48,9 @@ network::SparseNonLinearTransform& network::SparseNonLinearTransform::setConnect
     connected = new bool[N * N];
     for(unsigned int nn = 0; nn < N * N; nn++)
       connected[nn] = false;
-    random::setSeed(seed);
+    Density::setSeed(seed);
     for(unsigned int n = 0; n < N; n++) {
-      bool *c = random::booleans(N - 1, D[n]);
+      bool *c = Density::booleans(N - 1, D[n]);
       unsigned int d_ = 0;
       for(unsigned int m = 0; m < N - 1; m++)
         if(c[m]) {

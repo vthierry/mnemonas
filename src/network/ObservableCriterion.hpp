@@ -2,6 +2,7 @@ namespace network {
 /** Defines a discrete-time recurrent input/output kernel transform estimator. */
   class ObservableCriterion: public TransformCriterion {
 public:
+#ifndef SWIG
     /** Defines an observable over an input.
      * - By contract:
      *   - Observable must implement an implicit or explicit copy constructor.
@@ -54,6 +55,7 @@ protected:
        */
       virtual double doValueDerivative(unsigned int n, double t);
     };
+#endif
 private:
     unsigned int dimension;
     Observable **observables;
@@ -67,6 +69,7 @@ private:
     static double solver_project_this_d(const double *x, unsigned int m, unsigned int n);
     static ObservableCriterion *solver_project_this;
 public:
+#ifndef SWIG
     /** Resets the criterion for a given statistics.
      * @param transform The kernel transform to estimate.
      * @param input The input to consider as a reference.
@@ -84,6 +87,7 @@ public:
      * @param reinject If true defined desired values constrained by the observable.
      */
     ObservableCriterion(KernelTransform & transform, std::vector < Observable * > observables, const double *values, const double *lambdas = NULL, bool reinject = false);
+#endif
     /// @cond INTERNAL
     ~ObservableCriterion();
     ///@endcond
@@ -99,6 +103,7 @@ public:
      */
     double getObservableExpectedValue(unsigned int k) const;
 
+#ifndef SWIG
     /** Gets a predefined observable.
      * @param name : The predefined observable name.
      * - mean : The input mean of a given channel \f$\omega_n(t) = x_n(t)\f$.
@@ -127,5 +132,6 @@ public:
      * @param observables The observable array to delete.
      */
     static void deleteObservables(std::vector < Observable * >& observables);
+#endif
   };
 }

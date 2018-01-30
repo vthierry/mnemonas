@@ -1,9 +1,9 @@
 #ifndef PARAMETEROPTIMIZER_HPP
 #define PARAMETEROPTIMIZER_HPP
 
-#include "numeric.hpp"
-#include "Struct.hpp"
-#include "s_string.h"
+#include "util/s_string.h"
+#include "util/numeric.hpp"
+#include "util/Struct.hpp"
 
 /** Defines a meta-parameter optimizer of a given parameter space.
  * ### Problem position

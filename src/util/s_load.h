@@ -1,4 +1,4 @@
-#include "s_string.h"
+#include "util/s_string.h"
 
 /** Loads a string from a file.
  * @param file The file name.

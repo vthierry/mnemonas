@@ -39,11 +39,11 @@ void network::KernelDistributedEstimator::run_once(unsigned int batch_duration, 
     {
       assume(transform.getWeightCount() > 0, "illegal-argument", "in network::KernelDistributedEstimator::run_once : no weight to adjust");
       do
-        n = random::uniform(0, N), D = transform.getKernelDimension(n);
+        n = Density::uniform(0, N), D = transform.getKernelDimension(n);
       while(D == 0);
     }
     // Randomly selects an epoch
-    unsigned int S = batch_duration < D ? D : batch_duration, t0 = random::uniform(0, T - S);
+    unsigned int S = batch_duration < D ? D : batch_duration, t0 = Density::uniform(0, T - S);
     if(with_update)
       criterion.update();
     for(unsigned int s = 0, sr = 0; s < S; s++) {

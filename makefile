@@ -80,16 +80,20 @@ GPP=clang++
 # Python and C++ wrapper compilation
 #
 
+PINC=$(shell egrep "(util|network)/" < src/mnemomas.hpp | sed 's/^#include "\([^"]"\)/src\/\1/')
+
+
 pywrap : .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-packages/mnemonas/mnemonas.so
 
 .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-packages/mnemonas/mnemonas.so : $(SRC) $(INC)
 	@echo 'make mnemonas.py mnemonas.so'
 	@/bin/rm -rf .build/python ; mkdir -p .build/python/site-packages/mnemonas
-	@swig -module mnemonas -c++ -python -o .build/mnemonas.C src/mnemonas.hpp
+	@inc=`egrep "(util|network)/" < src/mnemonas.hpp | sed 's/^.include[^"]*"\([^"]*\)".*/src\/\1/'`; (echo "%module mnemonas"; echo "#pragma SWIG nowarn=SWIGWARN_PARSE_NESTED_CLASS" ; echo "%{"; cat $$inc ; echo "%}" ;  cat $$inc) >  .build/mnemonas.i
+	@swig -module mnemonas -c++ -python -o .build/mnemonas.C .build/mnemonas.i
 	@mv .build/mnemonas.py .build/python/site-packages/mnemonas
 	@$(GPP) $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)
 	@$(GPP) -shared -o .build/python/site-packages/mnemonas/mnemonas.so *.o $(LDFLAGS)
-	@/bin/rm -f .build/mnemonas.C *.o
+	@/bin/rm -f .build/mnemonas.i .build/mnemonas.C *.o
 
 ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas
 
@@ -225,7 +229,7 @@ rrun-out :
 ARGS = -test # -experiment2 #
 
 todo :
-	@$(MAKE) run
+	@$(MAKE) test
 #	@firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################

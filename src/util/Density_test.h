@@ -1,15 +1,15 @@
 ///@cond INTERNAL
 
-void random_test()
+void Density_test()
 {
   // Tests the seed reproductibility
   {
     static const unsigned int T = 1000;
     double samples[2][T];
     for(unsigned k = 0; k < 2; k++) {
-      random::setSeed(0);
+      Density::setSeed(0);
       for(unsigned t = 0; t < T; t++)
-        samples[k][t] = random::gaussian();
+        samples[k][t] = Density::gaussian();
     }
     for(unsigned t = 0; t < T; t++)
       assume(samples[0][t] == samples[1][t], "illegal-state", "in random_test seed error");
@@ -20,7 +20,7 @@ void random_test()
     // Uniform distribution in [-1, 1]
     Histogram histogram(l, -1, 1);
     for(unsigned int i = 0; i < L; i++)
-      histogram.add(-1 + 2 * random::uniform());
+      histogram.add(-1 + 2 * Density::uniform());
     assume(fabs(histogram.get("mean")) < 1e-3 &&
            fabs(histogram.get("stdev") - 2 * pow(12, -0.5)) < 1e-3 &&
            fabs(histogram.get("skew")) < 1e-3 &&
@@ -37,7 +37,7 @@ void random_test()
   {
     Histogram histogram(l, -10, 10);
     for(unsigned int i = 0; i < L; i++)
-      histogram.add(random::gaussian());
+      histogram.add(Density::gaussian());
     assume(fabs(histogram.get("mean")) < 2e-3 &&
            fabs(histogram.get("stdev") - 1) < 2e-3 &&
            fabs(histogram.get("skew")) < 3e-3 &&
@@ -69,7 +69,7 @@ void random_test()
   {
     Histogram histogram(l, 0, 10);
     for(unsigned int i = 0; i < L; i++)
-      histogram.add(random::gamma(2));
+      histogram.add(Density::gamma(2));
     assume(fabs(histogram.get("gamma-degree") - 2) < 1e-2 &&
            fabs(histogram.get("gamma-rate") - 1) < 1e-3 &&
            fabs(histogram.get("gamma-divergence")) < 1e-3 &&

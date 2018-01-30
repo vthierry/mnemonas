@@ -7,7 +7,7 @@ void Struct_test()
     Struct value;
     value["u"] = "ok", value["v"] = (String) value["u"] + "ay", value[0] = "a", value[1] = "b";
     Struct tuple;
-    tuple.set("d", "okay").set("b", true).set("a", 1.234).set("b", 666).set("c", false).set("e", true).del("e");
+    tuple.set("d", "okay").set("b", true).set("a", 1.234).set("b", 666).set("c", false).set("e", true).unset("e");
     value.set("w", tuple);
     Struct list;
     list.add("et").add("de").add("un");

@@ -1,9 +1,9 @@
 #ifndef CURVEFIT_HPP
 #define CURVEFIT_HPP
 
-#include "numeric.hpp"
-#include "Histogram.hpp"
-#include "s_string.h"
+#include "util/numeric.hpp"
+#include "util/Histogram.hpp"
+#include "util/s_string.h"
 #include <vector>
 
 /** Fits an on-the-fly model on a time series.

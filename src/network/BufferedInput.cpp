@@ -74,20 +74,20 @@ network::BufferedInput::BufferedInput(String name, unsigned int N, unsigned int 
   if(name == "normal") {
     unsigned int seed = va_arg(a, int);
     va_end(a);
-    random::setSeed(seed);
+    Density::setSeed(seed);
     for(unsigned int nt = 0; nt < N * T; nt++)
-      v[nt] = random::gaussian(0, 1);
+      v[nt] = Density::gaussian(0, 1);
   } else if(name == "zerone") {
     unsigned int p = va_arg(a, int);
     va_end(a);
     for(unsigned int t = 0, s = 0, c = 0, nt = 0; t < T; t++) {
       if(t % p == 0) {
         s = c = 0;
-        random::setSeed(0);
+        Density::setSeed(0);
       }
       for(unsigned int n = 0; n < N; n++, nt++) {
         v[nt] = s == p - 1 && c == 0 ? 1 : s == p - 1 && c == s ? 0 :
-                random::uniform() > 0.5 ? 1 : 0;
+                Density::uniform() > 0.5 ? 1 : 0;
         s++;
         if(v[nt] == 1)
           c++;
@@ -110,17 +110,17 @@ network::BufferedInput::BufferedInput(String name, unsigned int N, unsigned int 
   } else if(name == "mean") {
     double m = va_arg(a, double);
     va_end(a);
-    random::setSeed(0);
+    Density::setSeed(0);
     for(unsigned int nt = 0; nt < N * T; nt++)
-      v[nt] = m + random::gaussian(0, 0.1 * m);
+      v[nt] = m + Density::gaussian(0, 0.1 * m);
   } else if(name == "icorr") {
     double c = va_arg(a, double);
     assume(-1 <= c && c <= 1, "illegal-argument", "in network::BufferInput::BufferInput(\"acorr\",...) we must have acorr=%g in [-1,1]", c);
     assume(1 < N, "illegal-argument", "in network::BufferInput::BufferInput(\"acorr\",...) the number of units N=%d must be at least 2", N);
     va_end(a);
-    random::setSeed(0);
+    Density::setSeed(0);
     for(unsigned int nt = 0; nt < N * T; nt++)
-      v[nt] = random::gaussian(0, 1);
+      v[nt] = Density::gaussian(0, 1);
     double s = sqrt(1 - c * c);
     for(unsigned int t = 0, nt = 0; t < T; t++)
       for(unsigned int n = 0; n < N; n += 2, nt += 2)
@@ -129,9 +129,9 @@ network::BufferedInput::BufferedInput(String name, unsigned int N, unsigned int 
     double cs = 2 * va_arg(a, double);
     assume(-1 <= cs && cs <= 1, "illegal-argument", "in network::BufferInput::BufferInput(\"acorr\",...) we must have acorr=%g in [-1/2,1/2]", cs);
     va_end(a);
-    random::setSeed(0);
+    Density::setSeed(0);
     for(unsigned int nt = 0; nt < N * T; nt++)
-      v[nt] = random::gaussian(0, 1);
+      v[nt] = Density::gaussian(0, 1);
     double c = 0.5 * (sqrt(1 + cs) + sqrt(1 - cs)), s = sqrt(1 - c * c);
     for(unsigned int t = 1, nt = N; t < T; t++)
       for(unsigned int n = 0; n < N; n++, nt++)
@@ -157,7 +157,7 @@ network::BufferedInput::BufferedInput(const Input& input, String name, ...) : In
     va_end(a);
     for(unsigned int t = 0, nt = 0; t < T; t++)
       for(unsigned int n = 0; n < N; n++, nt++)
-        v[nt] = input.get(n, t) + (noiseProbability <= random::uniform(0.0, 1.0) ? 0 : random::gaussian(0, noiseStandardDeviation));
+        v[nt] = input.get(n, t) + (noiseProbability <= Density::uniform(0.0, 1.0) ? 0 : Density::gaussian(0, noiseStandardDeviation));
   } else
     assume(false, "illegal-argument", "in network::BufferedInput %s is an unknown transformation name\n", name.c_str());
 }

@@ -1,9 +1,9 @@
 #ifndef solver_hpp
 #define solver_hpp
 
-#include "numeric.hpp"
+#include "util/s_string.h"
+#include "util/numeric.hpp"
 #include "math.h"
-#include "s_string.h"
 
 /** This factory encapsulates equation solvers.
  */

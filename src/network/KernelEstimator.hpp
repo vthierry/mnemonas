@@ -19,12 +19,14 @@ protected:
     // Used to detect the 1st iteration
     bool once;
     // Connection buffer
+#ifndef SWIG
     class connection {
 public:
       unsigned int n, r;
       connection(unsigned int n, unsigned int r);
       bool operator == (const connection &c) const;
     };
+#endif
     std::vector < connection > *connections;
 protected:
     /** Number of negligible or saturated values during a backward tuning, over the N T values. */

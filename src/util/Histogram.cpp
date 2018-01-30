@@ -242,7 +242,7 @@ double Histogram::get(String value, double v) const
   }
   return values[ivalue] = result;
 }
-double Histogram::getDivergence(const random::Density& density, bool inverse) const
+double Histogram::getDivergence(const Density& density, bool inverse) const
 {
   assume(0 < hsize && 0 < hcount, "numerical-error", "in Histogram::get requires the %s value, but the histogram is %s", 0 == hsize ? "undefined" : "empty");
   double div = 0, s_p = 0, s_q = 0;
@@ -261,12 +261,12 @@ double Histogram::draw() const
 {
   assume(0 < hsize, "numerical-error", "in Histogram::getDivergence requires an histogram to be defined");
   update();
-  return cdensity[random::uniform(1, hsize - 1)];
+  return cdensity[Density::uniform(1, hsize - 1)];
 }
-const random::Density& Histogram::getDensityModel(String model_) const
+const Density& Histogram::getDensityModel(String model_) const
 {
   if(model_ == "gaussian") {
-    class GaussianDensity: public random::Density {
+    class GaussianDensity: public Density {
       double m, s, k;
 public:
       GaussianDensity(double mean, double stdev) : m(mean), s(stdev), k(s * sqrt(2.0 * M_PI)) {}
@@ -282,7 +282,7 @@ public:
     delete model;
     model = new GaussianDensity(get ("mean"), get ("stdev"));
   } else if(model_ == "gamma") {
-    class GammaDensity: public random::Density {
+    class GammaDensity: public Density {
       double d, t, k;
 public:
       GammaDensity(double degree, double rate) : d(degree), t(rate), k(t * tgamma(d)) {}
@@ -295,7 +295,7 @@ public:
     model = new GammaDensity(get ("gamma-degree"), get ("gamma-rate"));
   } else if(model_ == "uniform") {
     double m = get("mean"), s = get("stdev");
-    class UniformDensity: public random::Density {
+    class UniformDensity: public Density {
       double min, max;
 public:
       UniformDensity(double min, double max) : min(min), max(max) {

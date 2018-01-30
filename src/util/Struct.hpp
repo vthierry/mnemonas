@@ -1,7 +1,7 @@
 #ifndef STRUCT_HPP
 #define STRUCT_HPP
 
-#include "assume.h"
+#include "util/assume.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
@@ -63,21 +63,29 @@ public:
    * - The string representation of the value if the data is atomic (i.e. corresponds to a boolean, number, or string), or
    * - The strict <a href="http://json.org/">JSON</a> syntax representation of this data-structure.
    */
+#ifndef SWIG
   operator String() const;
+#endif
   Struct(String value);
   Struct(const char *value);
   Struct(char value);
+#ifndef SWIG
   /** Returns the the 1st string char, as data or '\0' is the string is empty. */
   operator char() const;
+#endif
 
   /** Returns true if the value is "true", false otherwise.
    * - A numerical value of 0 stands for false and a non-zero numerical value stands for true.
    * @return The boolean <tt>true</tt> value if the value is neither empty nor the string "false", "False" or "FALSE".
    */
+#ifndef SWIG
   operator bool() const;
+#endif
   Struct(bool value);
   /** Returns the data as a floating point number or NAN if undefined. */
+#ifndef SWIG
   operator double() const;
+#endif
   Struct(double value);
 
   /** Converts a string to a numeric value.
@@ -88,8 +96,10 @@ public:
   static double toDouble(String value);
 public:
   /** Returns the data as an int or 0x10000000 (INT_NAN) if undefined. */
+#ifndef SWIG
   operator int() const;
   operator unsigned int() const;
+#endif
   Struct(int value);
   Struct(unsigned int value);
   /** The 0x10000000 (INT_MIN) undefined int value. */
@@ -139,6 +149,7 @@ public:
   {
     return get(toName(index), value);
   }
+#ifndef SWIG
   Struct& operator[] (String name) const {
     return get(name);
   }
@@ -148,6 +159,7 @@ public:
   Struct& operator[] (int index) const {
     return get(index);
   }
+#endif
 
   /** Returns true the related value is undefined or corresponds to the empty string and false otherwise.
    * @param name The name or the index of the value.
@@ -201,15 +213,16 @@ public:
     return set(getLength(), value);
   }
   /** Erases a named or indexed value. */
-  Struct& del(String name)
+  Struct& unset(String name)
   {
     erase(name);
     return *this;
   }
-  Struct& del(int index)
+  Struct& unset(int index)
   {
-    return del(toName(index));
+    return unset(toName(index));
   }
+#ifndef SWIG
   /** Defines an iterator over the struct named fields.
    * - It is used in a construct of the form:
    *  <div><tt>for(Struct::Iterator i(values); i.next();) { String name = i.getName();  ../.. }</tt>.</div>
@@ -237,6 +250,7 @@ public:
       return (++index) < names.size();
     }
   };
+#endif
 
   // @}
   /** @name Copy and equality operator */
@@ -245,21 +259,25 @@ public:
   /** Copies a data structure. */
   Struct(const Struct &value);
 
+#ifndef SWIG
   Struct& operator = (const Struct &value) {
     copy(*this, value);
     return *this;
   }
+#endif
 
   /** Returns true if this structure equals the comparing one.
    * - Also available via the <tt>==</tt> and <tt>!=</tt> operators.
    */
   bool equals(const Struct& value) const;
+#ifndef SWIG
   bool operator == (const Struct &value) const {
     return equals(value);
   }
   bool operator != (const Struct &value) const {
     return !equals(value);
   }
+#endif
 
   // @}
   /** @name String input/output interface */
@@ -297,8 +315,8 @@ public:
    *   - set the value 'true' for name without explicit value
    *   - However: '\\uXXXX' unicode string sequences and the '\/' solidus escaped sequence are not managed (i.e., but simply mirrored in the string value)
    */
-  void reset(const char *value = "", ...);
-  void reset(String value)
+  void reset(const char *value, ...);
+  void reset(String value = "")
   {
     reset(value.c_str());
   }

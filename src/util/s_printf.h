@@ -1,4 +1,4 @@
-#include "s_string.h"
+#include "util/s_string.h"
 
 /** Returns a string formated a-la printf.
  * @param header Print header. A string or a "format" a-la printf with the subsequent arguments. Formatted strings have 100K bytes maximal size.

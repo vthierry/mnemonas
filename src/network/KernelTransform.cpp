@@ -62,13 +62,13 @@ network::KernelTransform& network::KernelTransform::setWeights(const KernelTrans
 }
 network::KernelTransform& network::KernelTransform::setWeightsRandom(double mean, double sigma, bool add, String mode, int seed)
 {
-  random::setSeed(seed);
+  Density::setSeed(seed);
   for(unsigned int n = 0; n < N; n++)
     for(unsigned int d = 1; d <= getKernelDimension(n); d++)
       setWeight(n, d,
                 (mode == "normal" ?
-                 random::gaussian(mean, sigma) :
-                 random::uniform(mean - sqrt(3) * sigma, mean + sqrt(3) * sigma)) +
+                 Density::gaussian(mean, sigma) :
+                 Density::uniform(mean - sqrt(3) * sigma, mean + sqrt(3) * sigma)) +
                 (add ? getWeight(n, d) : 0));
   return *this;
 }

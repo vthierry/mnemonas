@@ -1,4 +1,4 @@
-#include "s_string.h"
+#include "util/s_string.h"
 
 /** Checks a condition at run-time and throws a fatal error exception and/or dumps a warning if not verified.
  * @param condition The condition that must be true.

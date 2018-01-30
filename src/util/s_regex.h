@@ -1,4 +1,4 @@
-#include "s_string.h"
+#include "util/s_string.h"
 
 /** Regular expression replace function.
  * @param string The input string.

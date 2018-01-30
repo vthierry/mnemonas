@@ -43,7 +43,7 @@ double network::RecurrentTransform::get(unsigned int n, double t_) const
   assume(n < N, "illegal-argument", "in network::RecurrentTransform::get unit index out of range, we must have n=%d in {0, %d{", n, N);
   assume(no_recursion || t_ < t_current || (t_ == t_current && n_current < (int) n), "illegal-argument", "in network::RecurrentTransform::get non causal get(%d, %0f) while at (%d, %d)", n, t_, n_current, t_current);
   if(t_ < 0)
-    return 0; // upsilon0 == 0 ? 0 : random::gaussian(0, upsilon0);
+    return 0; // upsilon0 == 0 ? 0 : Density::gaussian(0, upsilon0);
   unsigned int t = (unsigned int) t_, it = N * (t % L);
   if((t0 <= t + L) && (t < t0))
     return values[n + it];
@@ -119,7 +119,7 @@ double network::RecurrentTransform::getLyapunovExponent(unsigned int W, unsigned
         // Adds a random perturbation of magnitude d0
         double d[N], d2 = 0;
         for(unsigned int n = 0; n < N; n++)
-          d[n] = d0 + random::uniform(), d2 += d[n] + d[n];
+          d[n] = d0 + Density::uniform(), d2 += d[n] + d[n];
         d2 = d0 / sqrt(d2);
         for(int n = N - 1; 0 <= n; n--)
           d[n] /= d2, set(n, t, get(n, t) + d[n]);

@@ -5,7 +5,7 @@
 #include "util/s_regex_test.h"
 #include "util/Struct_test.h"
 #include "util/solver_test.h"
-#include "util/random_test.h"
+#include "util/Density_test.h"
 #include "util/CurveFit_test.h"
 #include "util/ParameterOptimizer_test.h"
 #include "network/network_test.h"
@@ -18,7 +18,7 @@ void test()
   s_regex_test();
   Struct_test();
   solver_test();
-  random_test();
+  Density_test();
   CurveFit_test();
   ParameterOptimizer_test();
   network_test();

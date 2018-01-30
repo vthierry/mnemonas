@@ -1,30 +1,31 @@
-#ifndef random_hpp
-#define random_hpp
+#ifndef Density_hpp
+#define Density_hpp
 
-#include "numeric.hpp"
+#include "util/numeric.hpp"
 #include <random>
 
-/** This factory encapsulates random number generators.
- * - All routines depends on setSeed. If setSeed(-1) -> it is a non-reproducible pseudo-random generator,
- * else it generates always the same pseudo-random numbers.
+/** Defines a 1D real probabilty density. 
+  - This factory encapsulates random number generators.
+    - All routines depends on setSeed. If setSeed(-1) -> it is a non-reproducible pseudo-random generator, else it generates always the same pseudo-random numbers.
  */
-class random: public numeric {
+class Density: public numeric {
+public:
+  /// @cond INTERNAL
+  virtual ~Density() {}
+  ///@endcond
+
+  /** Returns the probability for the given value.
+   * @param x The input value.
+   * @return A value in [0,1].
+   */
+  virtual double p(double x) const;
+
+private:
+  
   static std::mt19937_64 generator;
   static std::uniform_real_distribution < double > distribution;
-public:
-  /** Defines a 1D real probabilty density. */
-  class Density: public numeric {
-public:
-    /// @cond INTERNAL
-    virtual ~Density() {}
-    ///@endcond
 
-    /** Returns the probability for the given value.
-     * @param x The input value.
-     * @return A value in [0,1].
-     */
-    virtual double p(double x) const;
-  };
+public:
 
   /** Generates the seed of the pseudo random generator.
    * @param seed If seed == -1 changes randomly the seed, else generates a reproducible pseudo random sequence.
@@ -76,9 +77,6 @@ public:
    */
   static bool *booleans(unsigned int size, unsigned int count);
 private:
-  // Prevents contructions of a factory object
-  random() {}
-  random(const random &f) {}
   // Precomputed table of Gaussian bias
   static const double gaussian_bias[];
   // Returns log(uniform()) avoiding -inf values

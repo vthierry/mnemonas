@@ -4,12 +4,12 @@
 #include <cmath>
 #include <map>
 
-#include "numeric.hpp"
-#include "s_string.h"
-#include "random.hpp"
+#include "util/numeric.hpp"
+#include "util/s_string.h"
+#include "util/Density.hpp"
 
 /** Defines an 1D statistics on a set of scalar values. */
-class Histogram: public random::Density {
+class Histogram: public Density {
   static std::map < std::string, unsigned int > names;
   static const unsigned int nnames = 32;
   double m0, m1, m2, m3, m4, min, max;
@@ -19,7 +19,7 @@ class Histogram: public random::Density {
   void update() const;
   mutable bool changed;
   mutable double *values;
-  mutable random::Density *model;
+  mutable Density *model;
 public:
   /// @cond INTERNAL
   Histogram(const Histogram &histogram);
@@ -90,12 +90,12 @@ public:
    *   - If true <tt>q</tt> is this distribution, the model, and <tt>density</tt> is the <tt>p</tt>empirical distribution.
    * @return The Kullback-Leibler divergence in bits.
    */
-  double getDivergence(const random::Density& density, bool inverse = false) const;
+  double getDivergence(const Density& density, bool inverse = false) const;
 
   /** Gets a theoretical density with the same 1st and 2nd order parameters as this one.
    * @param model Either <tt>uniform</tt>, <tt>gaussian</tt>, <tt>gamma</tt> or <tt>automatic</tt> (i.e. automatically choose the best model among the others).
    */
-  const random::Density& getDensityModel(String model = "automatic") const;
+  const Density& getDensityModel(String model = "automatic") const;
 
   /** Returns all statistical values as a JSON string.
    * @param what The list of value to return, by default all values are returned.
