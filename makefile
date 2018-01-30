@@ -149,7 +149,7 @@ doc/index.html : ./src/index.h $(INC) $(SRC)
 	@zip -9qr doc/sources.zip makefile tex src
 	@doxygen src/etc/doxygen.cfg
 	@cp src/etc/*.png $(@D)
-	@for f in doc/*.html ; do mv $$f $$f~ ; sed 's/\(<td id="projectlogo">\)\(<img alt="Logo" src="logo.png"\/>\)\(<\/td>\)/\1<a href="https:\/\/vthierry.github.io\/mnemonas">\2<\/a>\3/' < $$f~ > $$f ; done
+	@for f in doc/*.html ; do mv $$f $$f~ ; sed 's/\(<td id="projectlogo">\)\(<img alt="Logo" src="logo.png"\/>\)\(<\/td>\)/\1<a href="https:\/\/vthierry.github.io\/mnemonas">\2<\/a>\3/' < $$f~ > $$f ; rm $$f~ ; done
 	@echo '<script>location.replace("doc/index.html");</script>' > index.html
 
 uncrustify : $(INC) $(SRC)
