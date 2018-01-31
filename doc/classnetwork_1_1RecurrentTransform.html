@@ -94,9 +94,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aca965fa2811a11719a6642cbf42fd6a1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1RecurrentTransform.html#aca965fa2811a11719a6642cbf42fd6a1">getValueDerivativeApproximation</a> (unsigned int n, double t, unsigned int n_, double t_, double epsilon=1e-3) const</td></tr>
 <tr class="memdesc:aca965fa2811a11719a6642cbf42fd6a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the numerical approximate value derivative.  <a href="#aca965fa2811a11719a6642cbf42fd6a1">More...</a><br /></td></tr>
 <tr class="separator:aca965fa2811a11719a6642cbf42fd6a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0778fa32600736ae4bb5a3e3c5f904a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1RecurrentTransform.html#ac0778fa32600736ae4bb5a3e3c5f904a">getLyapunovExponent</a> (unsigned int W=10, unsigned int M=10, double d0=1e-6)</td></tr>
-<tr class="memdesc:ac0778fa32600736ae4bb5a3e3c5f904a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the Lyapunov exponent.  <a href="#ac0778fa32600736ae4bb5a3e3c5f904a">More...</a><br /></td></tr>
-<tr class="separator:ac0778fa32600736ae4bb5a3e3c5f904a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae98783d4f70a6f0e93f51a70da4d1f2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classHistogram.html">Histogram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1RecurrentTransform.html#ae98783d4f70a6f0e93f51a70da4d1f2c">getLyapunovExponent</a> (unsigned int W=10, unsigned int K=10, double d0=1e-6)</td></tr>
+<tr class="memdesc:ae98783d4f70a6f0e93f51a70da4d1f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the Lyapunov exponent.  <a href="#ae98783d4f70a6f0e93f51a70da4d1f2c">More...</a><br /></td></tr>
+<tr class="separator:ae98783d4f70a6f0e93f51a70da4d1f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a072a765c9202e6de31d97ad572bfc10e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1RecurrentTransform.html#a072a765c9202e6de31d97ad572bfc10e">asString</a> () const</td></tr>
 <tr class="memdesc:a072a765c9202e6de31d97ad572bfc10e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the transform parameters as a JSON string.  <a href="#a072a765c9202e6de31d97ad572bfc10e">More...</a><br /></td></tr>
 <tr class="separator:a072a765c9202e6de31d97ad572bfc10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -253,7 +253,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="RecurrentTransform_8hpp_source.html#l00032">32</a> of file <a class="el" href="RecurrentTransform_8hpp_source.html">RecurrentTransform.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00138">asString()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00109">getLyapunovExponent()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00026">getValue()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00031">getValueDerivative()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00074">getValueDerivativeApproximation()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00036">isConnected()</a>, and <a class="el" href="RecurrentTransform_8hpp_source.html#l00011">R</a>.</p>
+<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00137">asString()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00109">getLyapunovExponent()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00026">getValue()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00031">getValueDerivative()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00074">getValueDerivativeApproximation()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00036">isConnected()</a>, and <a class="el" href="RecurrentTransform_8hpp_source.html#l00011">R</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="TransformCriterion_8cpp_source.html#l00043">network::TransformCriterion::update()</a>.</p>
 
@@ -642,14 +642,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac0778fa32600736ae4bb5a3e3c5f904a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0778fa32600736ae4bb5a3e3c5f904a">&#9670;&nbsp;</a></span>getLyapunovExponent()</h2>
+<a id="ae98783d4f70a6f0e93f51a70da4d1f2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae98783d4f70a6f0e93f51a70da4d1f2c">&#9670;&nbsp;</a></span>getLyapunovExponent()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double network::RecurrentTransform::getLyapunovExponent </td>
+          <td class="memname"><a class="el" href="classHistogram.html">Histogram</a> network::RecurrentTransform::getLyapunovExponent </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>W</em> = <code>10</code>, </td>
@@ -658,7 +658,7 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>M</em> = <code>10</code>, </td>
+          <td class="paramname"><em>K</em> = <code>10</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -679,17 +679,18 @@ Protected Attributes</h2></td></tr>
 <li>Performs <code>M</code> simulations until <code>t = T - W</code>, adds a perturation and estimates the trajectory divergence. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">W</td><td>The Lyapunov exponent estimation window. </td></tr>
-    <tr><td class="paramname">M</td><td>The number of iterations. </td></tr>
+    <tr><td class="paramname">K</td><td>The number of iterations. </td></tr>
     <tr><td class="paramname">d0</td><td>The perturbation amplitude. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The estimated statistic of <img class="formulaInl" alt="$\lambda, \Delta(\|{\bf x}(t)\|) \simeq d_0 \, 2^{\lambda\, t}$" src="form_61.png"/>. </dd></dl>
 </li>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="RecurrentTransform_8cpp_source.html#l00109">109</a> of file <a class="el" href="RecurrentTransform_8cpp_source.html">RecurrentTransform.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="BufferedInput_8cpp_source.html#l00173">network::BufferedInput::get()</a>, <a class="el" href="Input_8hpp_source.html#l00005">network::Input::N</a>, <a class="el" href="Input_8hpp_source.html#l00006">network::Input::T</a>, and <a class="el" href="Density_8cpp_source.html#l00029">Density::uniform()</a>.</p>
+<p class="reference">References <a class="el" href="Histogram_8cpp_source.html#l00087">Histogram::add()</a>, <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="BufferedInput_8cpp_source.html#l00173">network::BufferedInput::get()</a>, <a class="el" href="Input_8hpp_source.html#l00005">network::Input::N</a>, <a class="el" href="Input_8hpp_source.html#l00006">network::Input::T</a>, and <a class="el" href="Density_8cpp_source.html#l00029">Density::uniform()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="RecurrentTransform_8hpp_source.html#l00032">getR()</a>.</p>
 
@@ -712,7 +713,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Returns the transform parameters as a JSON string. </p>
 
-<p class="definition">Definition at line <a class="el" href="RecurrentTransform_8cpp_source.html#l00138">138</a> of file <a class="el" href="RecurrentTransform_8cpp_source.html">RecurrentTransform.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="RecurrentTransform_8cpp_source.html#l00137">137</a> of file <a class="el" href="RecurrentTransform_8cpp_source.html">RecurrentTransform.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>, <a class="el" href="Input_8hpp_source.html#l00022">network::Input::getT()</a>, <a class="el" href="Transform_8hpp_source.html#l00005">network::Transform::input</a>, <a class="el" href="RecurrentTransform_8hpp_source.html#l00011">L</a>, <a class="el" href="Input_8hpp_source.html#l00005">network::Input::N</a>, <a class="el" href="RecurrentTransform_8hpp_source.html#l00011">R</a>, and <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>.</p>
 
@@ -743,7 +744,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="RecurrentTransform_8hpp_source.html#l00011">11</a> of file <a class="el" href="RecurrentTransform_8hpp_source.html">RecurrentTransform.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="RecurrentTransform_8cpp_source.html#l00138">asString()</a>, <a class="el" href="RecurrentTransform_8hpp_source.html#l00032">getR()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00013">reset()</a>, and <a class="el" href="KernelTransform_8cpp_source.html#l00004">network::KernelTransform::resetWeights()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="RecurrentTransform_8cpp_source.html#l00137">asString()</a>, <a class="el" href="RecurrentTransform_8hpp_source.html#l00032">getR()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00013">reset()</a>, and <a class="el" href="KernelTransform_8cpp_source.html#l00004">network::KernelTransform::resetWeights()</a>.</p>
 
 </div>
 </div>
@@ -769,7 +770,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="RecurrentTransform_8hpp_source.html#l00011">11</a> of file <a class="el" href="RecurrentTransform_8hpp_source.html">RecurrentTransform.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="RecurrentTransform_8cpp_source.html#l00138">asString()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00041">get()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00074">getValueDerivativeApproximation()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00013">reset()</a>, and <a class="el" href="RecurrentTransform_8cpp_source.html#l00068">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="RecurrentTransform_8cpp_source.html#l00137">asString()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00041">get()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00074">getValueDerivativeApproximation()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00013">reset()</a>, and <a class="el" href="RecurrentTransform_8cpp_source.html#l00068">set()</a>.</p>
 
 </div>
 </div>
@@ -778,4 +779,4 @@ Protected Attributes</h2></td></tr>
 <li>src/network/<a class="el" href="RecurrentTransform_8cpp_source.html">RecurrentTransform.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-01-30 at 20:31:53) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-01-31 at 15:12:05) </tt> </div><hr/>

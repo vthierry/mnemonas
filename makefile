@@ -178,7 +178,7 @@ clean :
 	@/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
 	@/bin/rm -rf .build stdout
 
-git :
+git : api
 	@echo "git sync"
 	@git checkout master ; git pull ; git add doc/* ; git commit -a -m 'from makefile' ; git push
 
@@ -218,18 +218,17 @@ rrun-out :
 
 # On going
 #
-# - voir comment générer des courbes x0 x1 mean + stdev tranquille
-# - calculer lyapounov ds Experiment2: mettre histogram et tracer sigma -> lambda + activie (mean + stdev), 
 # - maj curve fitting : les w, le t-1 et prédiction error
 # - distributed : avec plus de D et N, des randoms w init nombreux
 #
-# - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
-#
 
-ARGS = -test # -experiment2 #
+# - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
+# - Voir Histogram avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
+
+ARGS = -experiment2
 
 todo :
-	@$(MAKE) test
+	@$(MAKE) run
 #	@firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################

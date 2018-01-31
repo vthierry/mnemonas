@@ -106,34 +106,33 @@ double network::RecurrentTransform::getValueDerivativeApproximation(unsigned int
 #endif
   return d;
 }
-double network::RecurrentTransform::getLyapunovExponent(unsigned int W, unsigned int M, double d0)
+Histogram network::RecurrentTransform::getLyapunovExponent(unsigned int W, unsigned int K, double d0)
 {
   assume(0 < W && W < T - 1, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have W=%d in }0, T-1= %d{", W, T - 1);
-  assume(0 < M, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have M > 0");
+  assume(0 < K, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have K > 0");
   assume(0 < d0, "illegal-argument", "in network::RecurrentTransform::getLyapunovExponent we must have d0 > 0");
   BufferedInput reference(*this);
-  double m1 = 0, m0 = 0;
-  for(unsigned int m = 0; m < M; m++)
+  Histogram values;
+  for(unsigned int k = 0; k < K; k++)
     for(unsigned int t = 0; t < T; t++) {
       if(t == T - W) {
         // Adds a random perturbation of magnitude d0
         double d[N], d2 = 0;
         for(unsigned int n = 0; n < N; n++)
-          d[n] = d0 + Density::uniform(), d2 += d[n] + d[n];
-        d2 = d0 / sqrt(d2);
+          d[n] = Density::uniform(), d2 += d[n] + d[n];
         for(int n = N - 1; 0 <= n; n--)
-          d[n] /= d2, set(n, t, get(n, t) + d[n]);
+          set(n, t, get(n, t) + d0 * d[n] / sqrt(d2));
       } else if(t == T - 1) {
+        // Measures the divergence
         double d2 = 0, e1;
         for(int n = N - 1; 0 <= n; n--)
           e1 = get(n, t) - reference.get(n, t), d2 += e1 * e1;
-        if(d2 > 0)
-          m1 += log(sqrt(d2) / d0), m0++;
+        values.add(d2 > 0 ? log(sqrt(d2) / d0) / log(2) : 0);
       } else
         for(int n = N - 1; 0 <= n; n--)
           get(n, t);
     }
-  return m0 > 0 ? m1 / m0 : NAN;
+  return values;
 }
 std::string network::RecurrentTransform::asString() const
 {

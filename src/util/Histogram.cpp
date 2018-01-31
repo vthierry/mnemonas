@@ -31,7 +31,7 @@ std::map < std::string, unsigned int > Histogram::names = {
   { "best-model", 27 },
 };
 /// @cond INTERNAL
-Histogram::Histogram(const Histogram& histogram) : m0(histogram.m0), m1(histogram.m1), m2(histogram.m2), m3(histogram.m3), m4(histogram.m4), min(histogram.min), max(histogram.max), histo(NULL), hsize(histogram.hsize), hmin(histogram.hmin), hmax(histogram.hmax), hscale(histogram.hscale), hcount(histogram.hcount), cdensity(NULL), changed(true), values(new double[names.size()]), model(NULL)
+Histogram::Histogram(const Histogram& histogram) : m0(histogram.m0), m1(histogram.m1), m2(histogram.m2), m3(histogram.m3), m4(histogram.m4), min(histogram.min), max(histogram.max), histo(NULL), hsize(histogram.hsize), hmin(histogram.hmin), hmax(histogram.hmax), hscale(histogram.hscale), hcount(histogram.hcount), cdensity(NULL), changed(true), values(new double[nnames]), model(NULL)
 {
   if(hsize > 0) {
     histo = new unsigned int[hsize];
@@ -48,7 +48,8 @@ Histogram::Histogram(unsigned int samples, double hmin_, double hmax_) : histo(N
     assume(hmin_ < hmax_, "numerical-error", "in Histogram::reset, incoherent bounds [%g %g]", hmin_, hmax_);
     hmin = hmin_, hmax = hmax_, hscale = hsize / (hmax - hmin);
     histo = new unsigned int[samples];
-    cdensity = new double[samples];
+    for(unsigned int i = 0; i < hsize; histo[i++] = 0)
+      cdensity = new double[samples];
   }
   clear();
 }
@@ -372,4 +373,28 @@ void Histogram::plot(String file, String model_, bool show)
     s_save(file + ".dat", data);
   }
   gnuplot(file, "set yrange [0:*] writeback\nplot \"" + file + ".dat\" using 1:2 with boxes linecolor \"black\" notitle" + (model_ == "" ? "\n" : ", \"" + file + ".dat\" using 1:3 with lines linecolor \"red\" linewidth 2 notitle\n"), show);
+}
+void Histogram::plot(String file, const std::vector < Histogram >& histograms, double x0, double x1, bool show)
+{
+  // Ref : https://www.cs.hmc.edu/~vrable/gnuplot/using-gnuplot.html
+  {
+    std::string data;
+    double x = x0, dx = histograms.size() > 1 ? (x1 - x0) / (histograms.size() - 1) : 0;
+    for(std::vector < Histogram > ::const_iterator it = histograms.begin(); it != histograms.end(); it++, x += dx)
+      data += s_printf("%g %g %g\n", x, it->get("mean"), it->get("stdev"));
+    s_save(file + ".dat", data);
+  }
+  gnuplot(file, "plot \"" + file + ".dat\" using 1:2:3 with line linecolor \"green\" notitle , \"" + file + ".dat\" using 1:2:3 with yerrorbars linecolor \"red\" notitle", show);
+}
+void Histogram::plot(String file, const std::map < std::string, Histogram >& histograms, bool show)
+{
+  // Ref: https://stackoverflow.com/questions/15404628/how-can-i-generate-box-and-whisker-plots-with-variable-box-width-in-gnuplot
+  {
+    std::string data;
+    unsigned int k = 0;
+    for(std::map < std::string, Histogram > ::const_iterator it = histograms.begin(); it != histograms.end(); it++, k++)
+      data += s_printf("%d %g %g %g %g %g %g %s\n", k, it->second.get("min"), it->second.get("quantile", 0.25), it->second.get("quantile", 0.5), it->second.get("quantile", 0.75), it->second.get("max"), 0.5, it->first.c_str());
+    s_save(file + ".dat", data);
+  }
+  gnuplot(file, "set style fill empty\nplot \"" + file + ".dat\" using 1:3:2:6:5:7:xticlabels(8) with candlesticks  whiskerbars linecolor \"red\" lt 3 notitle, '' using 1:4:4:4:4:7 with candlesticks lt -1 notitle", show);
 }

@@ -93,10 +93,11 @@ public:
     /** Estimates the Lyapunov exponent.
      * - Performs <tt>M</tt> simulations until <tt>t = T - W</tt>, adds a perturation and estimates the trajectory divergence.
      * @param W The Lyapunov exponent estimation window.
-     * @param M The number of iterations.
+     * @param K The number of iterations.
      * @param d0 The perturbation amplitude.
+     * @return The estimated statistic of \f$\lambda, \Delta(\|{\bf x}(t)\|) \simeq d_0 \, 2^{\lambda\, t}\f$.
      */
-    double getLyapunovExponent(unsigned int W = 10, unsigned int M = 10, double d0 = 1e-6);
+    Histogram getLyapunovExponent(unsigned int W = 10, unsigned int K = 10, double d0 = 1e-6);
 
     /** Returns the transform parameters as a JSON string. */
     std::string asString() const;

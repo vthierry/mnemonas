@@ -2,6 +2,7 @@
 #define HISTOGRAM_HPP
 
 #include <cmath>
+#include <vector>
 #include <map>
 
 #include "util/numeric.hpp"
@@ -109,6 +110,22 @@ public:
    * @param show If true performs on the fly display.
    */
   void plot(String file, String model = "", bool show = false);
+
+  /** Plots histograms mean and standard deviations as a curve.
+   * @param file The plot file name, a <a href="http://gnuplot.sourceforge.net">gnuplot</a> display data, script and image files are generated, with extensions <tt>.dat</tt>, <tt>.gnuplot.sh</tt> and <tt>.png</tt>.
+   * @param histograms An array of histograms.
+   * @param x0 The abcissa of histograms[0].
+   * @param x1 The abcissa of histograms[histograms.size()-1].
+   * @param show If true performs on the fly display.
+   */
+  static void plot(String file, const std::vector < Histogram >& histograms, double x0 = 0, double x1 = 1, bool show = false);
+
+  /** Plots histograms as statistical boxes.
+   * @param file The plot file name, a <a href="http://gnuplot.sourceforge.net">gnuplot</a> display data, script and image files are generated, with extensions <tt>.dat</tt>, <tt>.gnuplot.sh</tt> and <tt>.png</tt>.
+   * @param histograms An array of histograms.
+   * @param show If true performs on the fly display.
+   */
+  static void plot(String file, const std::map < std::string, Histogram >& histograms, bool show = false);
 };
 
 #endif
