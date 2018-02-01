@@ -9,29 +9,29 @@
 /** Fits an on-the-fly model on a time series.
  *  The present implementation considers a constant, affine or exponential model triplet of the a time series \f$c(t)\f$ writing :
  *  \f$\hat{c}(t) = \left\{ 0 | \nu \, t | \nu \, e^{-t/\tau} \right\} + \beta\f$
- * on a sliding exponential window of width \f$W=\frac{\log(1 - r)}{\log(\gamma)}\f$ where \f$r\f$ is the fraction of data average within this window (typically 90%).
+ * on a sliding exponential window of width \f$W=\frac{\log(1 - r)}{\log(\gamma)}\f$ where \f$r\f$ is the fraction of data average within this window, which is automatically adjusted.
  *
  * Implementation details:
- * - The model is chosen comparing the weighted L1 error \f$\sum_{t}^T \gamma^{T-t} \, |c(t) - \hat{c}(t)| / (W - D)\f$ where \f$D\f$ is the model number of parameters.
+ * - The model is chosen comparing the average prediction error on the last sample, while the estimation is performed on the previous samples.
  * - The time decay \f$\tau\f$ is estimated in the least-square sense on:
- * <center>\f$\min_{1/\tau, k} \sum_{t}^T \gamma^{T-t} \, (k - sg(c(t) - c(t-1)) \, t / \tau - \log(|c(t) - c(t-1)|))^2\f$</center>
+ * <center>\f$\min_{1/\tau, k} \sum_{t}^{T-1} \gamma^{T-t} \, (k - sg(c(t) - c(t-1)) \, t / \tau - \log(|c(t) - c(t-1)|))^2\f$</center>
  * - The bias \f$\beta\f$ and gain are computed using standard least-square criterion (\f$\tau\f$ being given in the exponential case).
  */
 class CurveFit: public numeric {
 private:
+  static const unsigned int G = 13;
+  static constexpr double gammas[G] = {0.10, 0.20, 0.30, 0.40,  0.53,  0.64,  0.73, 0.81,  0.87,  0.92,  0.96,  0.98,  0.99};
+private:
   std::vector < double > values;
-  mutable double gamma, c1, l1, T0, T1, T2, C0, C1, L0, L1, cmin, cmax, bias, gain, decay, error;
+  mutable double c1, l1, T0[G], T1[G], T2[G], C0[G], C1[G], L0[G], L1[G], cmin, cmax, bias, gain, decay, error;
   mutable bool updated;
   void update() const;
 public:
   /// @cond INTERNAL
   CurveFit(const CurveFit &fit);
+  CurveFit();
   ///@endcond
 
-  /** Constructs an exponential decay interpolator.
-   * @param window The sampling window containing 90% of the least-square average.
-   */
-  CurveFit(unsigned int window = 10);
   /** Clears the estimation. */
   void clear();
 

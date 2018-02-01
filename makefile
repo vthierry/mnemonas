@@ -190,6 +190,8 @@ ifndef MAIL
 MAIL = thierry.vieville@inria.fr
 endif
 
+RRUN = -test
+
 here = $(shell basename `pwd`)
 
 rrun-cmp : clean
@@ -198,7 +200,7 @@ rrun-cmp : clean
 
 rrun-run : rrun-cmp
 	@ssh nef-frontal.inria.fr '/bin/rm -rf $(here)/rrun ; mkdir $(here)/rrun'
-	@for task in 0 1 ; do ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe -experiment1 $$task'" ; done
+	@ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe $(RRUN)'" ; done
 
 rrun-out :
 	@ssh nef-frontal.inria.fr "oarstat --format 2 -u `whoami`"
@@ -225,7 +227,7 @@ rrun-out :
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Voir Histogram avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 
-ARGS = -experiment2
+ARGS = -test # -experiment2
 
 todo :
 	@$(MAKE) run
