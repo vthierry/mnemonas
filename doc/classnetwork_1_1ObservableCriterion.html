@@ -273,7 +273,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Defines the estimator criterion. </p>
 <ul>
 <li>The method is to be overwritten to implement a global estimator.</li>
-<li>The default implementation simply returns <img class="formulaInl" alt="$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$" src="form_107.png"/>, running:<pre>
+<li>The default implementation simply returns <img class="formulaInl" alt="$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$" src="form_105.png"/>, running:<pre>
 double r = 0;
 transform.reset(true);
 for(unsigned int t = 0; t &lt; transform.getT(); t++)
@@ -334,7 +334,7 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_108.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_106.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -537,15 +537,15 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>: The predefined observable name.<ul>
-<li>mean : The input mean of a given channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t)$" src="form_96.png"/>.<ul>
+<li>mean : The input mean of a given channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t)$" src="form_94.png"/>.<ul>
 <li>Parameter: The unit index <code>n</code>.</li>
 </ul>
 </li>
-<li>icorr : The input inter-correlation between two channels <img class="formulaInl" alt="$\omega_{n,m}(t) = x_n(t) \, x_m(t)$" src="form_97.png"/>.<ul>
+<li>icorr : The input inter-correlation between two channels <img class="formulaInl" alt="$\omega_{n,m}(t) = x_n(t) \, x_m(t)$" src="form_95.png"/>.<ul>
 <li>Parameters: The unit index <code>n</code> and the unit index <code>m</code>.</li>
 </ul>
 </li>
-<li>acorr : The input auto-correlation of a given channel <img class="formulaInl" alt="$\omega_{n,\tau}(t) = x_n(t) \, x_n(t - \tau)$" src="form_98.png"/>.<ul>
+<li>acorr : The input auto-correlation of a given channel <img class="formulaInl" alt="$\omega_{n,\tau}(t) = x_n(t) \, x_n(t - \tau)$" src="form_96.png"/>.<ul>
 <li>Parameters: The unit index <code>n</code> and the delay <code>tau</code> (as unsigned int), with <code>tau = 0</code>, simply returns the 2nd order momentum, <code>tau</code> values above 16 are numericaly unrealistic. </li>
 </ul>
 </li>
@@ -602,15 +602,15 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>: The predefined observable name.<ul>
-<li>mean : The <img class="formulaInl" alt="$N$" src="form_69.png"/> mean for each channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t), 0 \leq n &lt; N$" src="form_99.png"/>.<ul>
+<li>mean : The <img class="formulaInl" alt="$N$" src="form_67.png"/> mean for each channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t), 0 \leq n &lt; N$" src="form_97.png"/>.<ul>
 <li>Parameter: The number of channels <code>N</code>, values above 32 are numericaly unrealistic.</li>
 </ul>
 </li>
-<li>icorr : The <img class="formulaInl" alt="$N + N \, (N+1) / 2$" src="form_100.png"/> mean and inter-correlation between two channels <img class="formulaInl" alt="$\omega_n(t) = x_n(t), \omega_{N + m + n * (n+1)/2}(t) = x_n(t) \, x_m(t), 0 \leq n &lt; N, n \leq m &lt; N$" src="form_101.png"/>.<ul>
+<li>icorr : The <img class="formulaInl" alt="$N + N \, (N+1) / 2$" src="form_98.png"/> mean and inter-correlation between two channels <img class="formulaInl" alt="$\omega_n(t) = x_n(t), \omega_{N + m + n * (n+1)/2}(t) = x_n(t) \, x_m(t), 0 \leq n &lt; N, n \leq m &lt; N$" src="form_99.png"/>.<ul>
 <li>Parameter: The number of channels <code>N</code>, values above 8 are numericaly unrealistic.</li>
 </ul>
 </li>
-<li>acorr : The <img class="formulaInl" alt="$N + N \, (\tau + 1)$" src="form_102.png"/> mean and auto-correlation for each channel <img class="formulaInl" alt="$omega_n(t) = x_n(t), \omega_{N + n+ \tau \, N}(t) = x_n(t) \, x_n(t - \tau), 0 \leq n &lt; \tau$" src="form_103.png"/>.<ul>
+<li>acorr : The <img class="formulaInl" alt="$N + N \, (\tau + 1)$" src="form_100.png"/> mean and auto-correlation for each channel <img class="formulaInl" alt="$omega_n(t) = x_n(t), \omega_{N + n+ \tau \, N}(t) = x_n(t) \, x_n(t - \tau), 0 \leq n &lt; \tau$" src="form_101.png"/>.<ul>
 <li>Parameter: The number of channels <code>N</code>, and the maximal delay <code>tau</code> (as unsigned int), with <code>tau = 0</code>, simply implements 1st and 2nd order momenta, <code>N * tau</code> values above 32 are numericaly unrealistic.. </li>
 </ul>
 </li>
@@ -668,4 +668,4 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 <li>src/network/<a class="el" href="ObservableCriterion_8cpp_source.html">ObservableCriterion.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-01-31 at 15:12:05) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-02 at 08:26:13) </tt> </div><hr/>

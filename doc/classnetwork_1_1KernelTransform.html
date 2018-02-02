@@ -86,10 +86,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a03aa4a256f781efb64b5937fcdd7d228"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total number of weights.  <a href="#a03aa4a256f781efb64b5937fcdd7d228">More...</a><br /></td></tr>
 <tr class="separator:a03aa4a256f781efb64b5937fcdd7d228"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed8378faaac02ee9707b146a15ce9f4e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1KernelTransform.html#aed8378faaac02ee9707b146a15ce9f4e">getWeight</a> (unsigned int n, unsigned int d) const</td></tr>
-<tr class="memdesc:aed8378faaac02ee9707b146a15ce9f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_95.png"/>.  <a href="#aed8378faaac02ee9707b146a15ce9f4e">More...</a><br /></td></tr>
+<tr class="memdesc:aed8378faaac02ee9707b146a15ce9f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_93.png"/>.  <a href="#aed8378faaac02ee9707b146a15ce9f4e">More...</a><br /></td></tr>
 <tr class="separator:aed8378faaac02ee9707b146a15ce9f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4625a8752d531614e4ea61eecc6a415b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1KernelTransform.html#a4625a8752d531614e4ea61eecc6a415b">setWeight</a> (unsigned int n, unsigned int d, double w)</td></tr>
-<tr class="memdesc:a4625a8752d531614e4ea61eecc6a415b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_95.png"/> value.  <a href="#a4625a8752d531614e4ea61eecc6a415b">More...</a><br /></td></tr>
+<tr class="memdesc:a4625a8752d531614e4ea61eecc6a415b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_93.png"/> value.  <a href="#a4625a8752d531614e4ea61eecc6a415b">More...</a><br /></td></tr>
 <tr class="separator:a4625a8752d531614e4ea61eecc6a415b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c4cd65233c48026dddadad6131f6c46"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classnetwork_1_1KernelTransform.html">KernelTransform</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1KernelTransform.html#a3c4cd65233c48026dddadad6131f6c46">setWeights</a> (const <a class="el" href="classnetwork_1_1KernelTransform.html">KernelTransform</a> &amp;network)</td></tr>
 <tr class="memdesc:a3c4cd65233c48026dddadad6131f6c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets weights from another network of the same type.  <a href="#a3c4cd65233c48026dddadad6131f6c46">More...</a><br /></td></tr>
@@ -177,20 +177,20 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines a discrete-time recurrent input/output kernel transform. </p>
 <ul>
-<li>A recurrent transform of the form for <img class="formulaInl" alt="$n \in \{0, N\{$" src="form_74.png"/> and <img class="formulaInl" alt="$t \in \{0, T\{$" src="form_75.png"/>: <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{n0t}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right) + \sum_{d = 1}^{D_{n}} W_{nd} \, \Phi_{ndt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_76.png"/> </center> with:</li>
-<li><img class="formulaInl" alt="$N$" src="form_69.png"/> nodes of value <img class="formulaInl" alt="$x_{n}(t)$" src="form_77.png"/> indexed by <img class="formulaInl" alt="$n \in \{0, N\{$" src="form_74.png"/>,<ul>
-<li>with a maximal state recurrent range of <img class="formulaInl" alt="$R$" src="form_78.png"/>, <img class="formulaInl" alt="$t - R \leq t' &lt; t$" src="form_79.png"/> (i.e., taking into account recurrent value up to <img class="formulaInl" alt="$R$" src="form_78.png"/> time-steps in the past),</li>
-<li>and initial condition <img class="formulaInl" alt="$x_{n}(t) = 0, t &lt; 0$" src="form_80.png"/>;</li>
-<li><img class="formulaInl" alt="$N_0 \leq N$" src="form_81.png"/> of these nodes are output;</li>
+<li>A recurrent transform of the form for <img class="formulaInl" alt="$n \in \{0, N\{$" src="form_72.png"/> and <img class="formulaInl" alt="$t \in \{0, T\{$" src="form_73.png"/>: <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{n0t}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right) + \sum_{d = 1}^{D_{n}} W_{nd} \, \Phi_{ndt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_74.png"/> </center> with:</li>
+<li><img class="formulaInl" alt="$N$" src="form_67.png"/> nodes of value <img class="formulaInl" alt="$x_{n}(t)$" src="form_75.png"/> indexed by <img class="formulaInl" alt="$n \in \{0, N\{$" src="form_72.png"/>,<ul>
+<li>with a maximal state recurrent range of <img class="formulaInl" alt="$R$" src="form_76.png"/>, <img class="formulaInl" alt="$t - R \leq t' &lt; t$" src="form_77.png"/> (i.e., taking into account recurrent value up to <img class="formulaInl" alt="$R$" src="form_76.png"/> time-steps in the past),</li>
+<li>and initial condition <img class="formulaInl" alt="$x_{n}(t) = 0, t &lt; 0$" src="form_78.png"/>;</li>
+<li><img class="formulaInl" alt="$N_0 \leq N$" src="form_79.png"/> of these nodes are output;</li>
 </ul>
 </li>
-<li><img class="formulaInl" alt="$M$" src="form_82.png"/> input <img class="formulaInl" alt="$i_{m}(s)$" src="form_83.png"/> indexed by <img class="formulaInl" alt="$m \in \{0, M\{$" src="form_84.png"/>,<ul>
-<li>with a maximal input recurrent range of <img class="formulaInl" alt="$S$" src="form_85.png"/>, <img class="formulaInl" alt="$t - S \leq s &lt; t$" src="form_86.png"/>,</li>
-<li>and initial condition <img class="formulaInl" alt="$i_{m}(s) = 0, s &lt; 0$" src="form_87.png"/>;</li>
+<li><img class="formulaInl" alt="$M$" src="form_80.png"/> input <img class="formulaInl" alt="$i_{m}(s)$" src="form_81.png"/> indexed by <img class="formulaInl" alt="$m \in \{0, M\{$" src="form_82.png"/>,<ul>
+<li>with a maximal input recurrent range of <img class="formulaInl" alt="$S$" src="form_83.png"/>, <img class="formulaInl" alt="$t - S \leq s &lt; t$" src="form_84.png"/>,</li>
+<li>and initial condition <img class="formulaInl" alt="$i_{m}(s) = 0, s &lt; 0$" src="form_85.png"/>;</li>
 </ul>
 </li>
-<li>The node structure is defined by <img class="formulaInl" alt="$1 + D_{n}$" src="form_88.png"/> predefined kernels <img class="formulaInl" alt="$\Phi_{ndt}\left(\right)$" src="form_89.png"/> for each node;</li>
-<li>The node parameters are static adjustable weights <img class="formulaInl" alt="$W_{npd}$" src="form_90.png"/>. </li>
+<li>The node structure is defined by <img class="formulaInl" alt="$1 + D_{n}$" src="form_86.png"/> predefined kernels <img class="formulaInl" alt="$\Phi_{ndt}\left(\right)$" src="form_87.png"/> for each node;</li>
+<li>The node parameters are static adjustable weights <img class="formulaInl" alt="$W_{npd}$" src="form_88.png"/>. </li>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="KernelTransform_8hpp_source.html#l00016">16</a> of file <a class="el" href="KernelTransform_8hpp_source.html">KernelTransform.hpp</a>.</p>
@@ -368,7 +368,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The corresponding kernel value <img class="formulaInl" alt="$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$" src="form_91.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The corresponding kernel value <img class="formulaInl" alt="$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$" src="form_89.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -448,7 +448,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <code>0.0</code> if <img class="formulaInl" alt="$x_n[t]$" src="form_92.png"/> does not depend on <img class="formulaInl" alt="$x_k[s]$" src="form_93.png"/>, else <img class="formulaInl" alt="$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$" src="form_94.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <code>0.0</code> if <img class="formulaInl" alt="$x_n[t]$" src="form_90.png"/> does not depend on <img class="formulaInl" alt="$x_k[s]$" src="form_91.png"/>, else <img class="formulaInl" alt="$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$" src="form_92.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -512,7 +512,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_95.png"/>. </p>
+<p>Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_93.png"/>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">n</td><td>The state unit index in <code>{0, N{</code>. </td></tr>
@@ -570,7 +570,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_95.png"/> value. </p>
+<p>Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_93.png"/> value. </p>
 <ul>
 <li>This routine is to be overriden if the weights are bounded (e.g. if positive). A typical implementation writes, e.g.:<pre>
  bool <a class="el" href="classnetwork_1_1KernelTransform.html#a4625a8752d531614e4ea61eecc6a415b" title="Sets one weight  value. ">setWeight(unsigned int n, unsigned int d, double w)</a> {
@@ -766,7 +766,7 @@ Additional Inherited Members</h2></td></tr>
 </li>
 <li>Recurrent values at time <code>t', t - R &lt;= t' &lt; t</code> can be called. <dl class="section return"><dt>Returns</dt><dd>The input value if defined, else raises a fatal error.</dd></dl>
 </li>
-<li>It calculates <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_58.png"/>,</center> </li>
+<li>It calculates <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_56.png"/>,</center> </li>
 </ul>
 
 <p>Reimplemented from <a class="el" href="classnetwork_1_1RecurrentTransform.html#a4c09e978b71a41e6b72f82a968fb8865">network::RecurrentTransform</a>.</p>
@@ -844,7 +844,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The input value derivate if defined, 0 in the abscence of dependence, else raises a fatal error.</dd></dl>
 </li>
-<li>If the recurrent equation writes <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_58.png"/>,</center> this method returns: <center> <img class="formulaInl" alt="$\frac{\partial \Phi_{nt}}{\partial x_{n'}(t')}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_59.png"/>,</center> </li>
+<li>If the recurrent equation writes <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_56.png"/>,</center> this method returns: <center> <img class="formulaInl" alt="$\frac{\partial \Phi_{nt}}{\partial x_{n'}(t')}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_57.png"/>,</center> </li>
 </ul>
 
 <p>Reimplemented from <a class="el" href="classnetwork_1_1RecurrentTransform.html#a87a81e70af692e14ab0c1670b21dc916">network::RecurrentTransform</a>.</p>
@@ -946,4 +946,4 @@ Additional Inherited Members</h2></td></tr>
 <li>src/network/<a class="el" href="KernelTransform_8cpp_source.html">KernelTransform.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-01-31 at 15:12:05) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-02 at 08:26:13) </tt> </div><hr/>

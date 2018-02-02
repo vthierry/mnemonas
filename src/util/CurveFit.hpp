@@ -20,7 +20,7 @@
 class CurveFit: public numeric {
 private:
   static const unsigned int G = 13;
-  static constexpr double gammas[G] = {0.10, 0.20, 0.30, 0.40,  0.53,  0.64,  0.73, 0.81,  0.87,  0.92,  0.96,  0.98,  0.99};
+  static constexpr double gammas[G] = { 0.10, 0.20, 0.30, 0.40, 0.53, 0.64, 0.73, 0.81, 0.87, 0.92, 0.96, 0.98, 0.99 };
 private:
   std::vector < double > values;
   mutable double c1, l1, T0[G], T1[G], T2[G], C0[G], C1[G], L0[G], L1[G], cmin, cmax, bias, gain, decay, error;

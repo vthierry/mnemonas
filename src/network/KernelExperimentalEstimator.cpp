@@ -38,7 +38,9 @@ network::KernelExperimentalEstimator::~KernelExperimentalEstimator()
   delete[] w1;
 }
 ///@endcond
-#define clear_buffer(buffer, size) for(unsigned int ijk = 0; ijk < size; buffer[ijk++] = 0) ;
+#define clear_buffer(buffer, size) \
+  for(unsigned int ijk = 0; ijk < size; ijk++) \
+    buffer[ijk] = 0;
 #define set_weights(w_nd) \
   for(unsigned int n = 0, nd = 0; n < N; n++) \
     for(unsigned int d = 1; d <= transform.getKernelDimension(n); d++, nd++) \

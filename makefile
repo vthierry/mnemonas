@@ -200,7 +200,7 @@ rrun-cmp : clean
 
 rrun-run : rrun-cmp
 	@ssh nef-frontal.inria.fr '/bin/rm -rf $(here)/rrun ; mkdir $(here)/rrun'
-	@ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe $(RRUN)'" ; done
+	@ssh nef-frontal.inria.fr "cd $(here)/rrun ; oarsub  --notify 'mail:$(MAIL)' -l /nodes=1,walltime=100 '../.build/main.exe $(RRUN)'"
 
 rrun-out :
 	@ssh nef-frontal.inria.fr "oarstat --format 2 -u `whoami`"
