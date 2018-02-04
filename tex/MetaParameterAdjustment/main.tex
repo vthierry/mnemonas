@@ -13,6 +13,8 @@
 
 \begin{document}
 
+\iffalse
+
 \title{Adjusting meta-parameter in machine learning}
 \author{@anthony ? @fred ? @thalita ? @xavier ?}
 
@@ -143,6 +145,8 @@ Beyond this proposal is the fact that in terms of interpretability, it is more e
 
 \clearpage \section{Parameter-less exponential decay fit.} \label{about-decay-fit}
 
+\fi
+
 In order to design a parameter-less exponential decay fit, we consider a constant, affine or exponential triplet of models of the a time series $c(t)$ writing :
 \eqline{\hat{c}(t) = \left\{\begin{array}{ll} 
  \beta                      & \mbox{constant,} \\
@@ -196,6 +200,8 @@ At the implementation level, we propose to run in parallel the estimator for the
 
 Finally, the value of $\varepsilon^2$ with respect to $\epsilon^2$ is also a relevant measure of the least-square precision of the model. If $\varepsilon \simeq \epsilon$, it means that the model correctly predicts the data. We are in the situation of comparing two variances, like for a \href{F-test}{https://en.wikipedia.org/wiki/F-test\_of\_equality\_of\_variances} under normal distribution hypothesies. However, such test is sensitive to non-normality an requires the intrduction of yet another meta-parameter, the significance level (or probability to perform a wrong estimation). Here, on the contrary, because of our setup @todo
 
+\iffalse
+
 \clearpage \section{Bounded constrained maximal entropy distribution} \label{bcmed}
 
 We have to consider a probability function for $\delta_c(t)$ on the interval $[0, 1]$ with a known mean $m$, and that maximizes entropy, as studied in \cite{conrad2004probability}. Here we also consider that $p(1) = 0$, because there is no chance to have a perfect solution (i.e. $\delta_c(t)=1$). It writes:
@@ -228,4 +234,7 @@ We thus can represent distributions between ``hot'' uniform distribution between
 \end{figure}
 
 \clearpage{\scriptsize \bibliographystyle{plain} \bibliography{main,../../../share/latex/from-keops,../../../share/latex/from-sophia}}
+
+\fi
+
 \end{document}

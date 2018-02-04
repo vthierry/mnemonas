@@ -23,5 +23,6 @@ void CurveFit_test()
     fit.add(-2 * exp(t / 314.16) + 1.2345);
   assume(fabs(fit.getDecay() + 314.16) < 1e-4 && fabs(fit.getBias() - 1.2345) < 1e-6, "illegal-state", "in CurveFit_test 3.3/3 wrong estimation : %s\n", fit.asString().c_str());
   // -fit.show("/tmp/fit", true);
+  exit(0);
 }
 ///@endcond

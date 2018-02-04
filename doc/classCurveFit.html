@@ -65,13 +65,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0eb993490cc620e617842ee81f33126c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of samples.  <a href="#a0eb993490cc620e617842ee81f33126c">More...</a><br /></td></tr>
 <tr class="separator:a0eb993490cc620e617842ee81f33126c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a530c6e49121cd8e65743efc0433ff37a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCurveFit.html#a530c6e49121cd8e65743efc0433ff37a">getDecay</a> () const</td></tr>
-<tr class="memdesc:a530c6e49121cd8e65743efc0433ff37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the exponential decay <img class="formulaInl" alt="$\tau$" src="form_17.png"/> or NAN if undefined.  <a href="#a530c6e49121cd8e65743efc0433ff37a">More...</a><br /></td></tr>
+<tr class="memdesc:a530c6e49121cd8e65743efc0433ff37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the exponential decay <img class="formulaInl" alt="$\tau$" src="form_18.png"/> or NAN if undefined.  <a href="#a530c6e49121cd8e65743efc0433ff37a">More...</a><br /></td></tr>
 <tr class="separator:a530c6e49121cd8e65743efc0433ff37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa69906733a219d6cc954c96e14296907"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCurveFit.html#aa69906733a219d6cc954c96e14296907">getGain</a> () const</td></tr>
-<tr class="memdesc:aa69906733a219d6cc954c96e14296907"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the best model gain <img class="formulaInl" alt="$\nu$" src="form_20.png"/> or 0 NAN in undefined.  <a href="#aa69906733a219d6cc954c96e14296907">More...</a><br /></td></tr>
+<tr class="memdesc:aa69906733a219d6cc954c96e14296907"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the best model gain <img class="formulaInl" alt="$\nu$" src="form_21.png"/> or 0 NAN in undefined.  <a href="#aa69906733a219d6cc954c96e14296907">More...</a><br /></td></tr>
 <tr class="separator:aa69906733a219d6cc954c96e14296907"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae62b9726522b1d6b37278b23a22e607e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCurveFit.html#ae62b9726522b1d6b37278b23a22e607e">getBias</a> () const</td></tr>
-<tr class="memdesc:ae62b9726522b1d6b37278b23a22e607e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the best model bias <img class="formulaInl" alt="$\beta$" src="form_19.png"/>.  <a href="#ae62b9726522b1d6b37278b23a22e607e">More...</a><br /></td></tr>
+<tr class="memdesc:ae62b9726522b1d6b37278b23a22e607e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the best model bias <img class="formulaInl" alt="$\beta$" src="form_20.png"/>.  <a href="#ae62b9726522b1d6b37278b23a22e607e">More...</a><br /></td></tr>
 <tr class="separator:ae62b9726522b1d6b37278b23a22e607e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30fba93b4dcb5a209be5458a95b5e502"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCurveFit.html#a30fba93b4dcb5a209be5458a95b5e502">getError</a> () const</td></tr>
 <tr class="memdesc:a30fba93b4dcb5a209be5458a95b5e502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the best model average L1 error.  <a href="#a30fba93b4dcb5a209be5458a95b5e502">More...</a><br /></td></tr>
@@ -88,11 +88,11 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Fits an on-the-fly model on a time series. </p>
-<p>The present implementation considers a constant, affine or exponential model triplet of the a time series <img class="formulaInl" alt="$c(t)$" src="form_13.png"/> writing : <img class="formulaInl" alt="$\hat{c}(t) = \left\{ 0 | \nu \, t | \nu \, e^{-t/\tau} \right\} + \beta$" src="form_14.png"/> on a sliding exponential window of width <img class="formulaInl" alt="$W=\frac{\log(1 - r)}{\log(\gamma)}$" src="form_15.png"/> where <img class="formulaInl" alt="$r$" src="form_16.png"/> is the fraction of data average within this window, which is automatically adjusted.</p>
+<p>The present implementation considers a constant, affine or exponential model triplet of the a time series <img class="formulaInl" alt="$c(t)$" src="form_14.png"/> writing : <img class="formulaInl" alt="$\hat{c}(t) = \left\{ 0 | \nu \, t | \nu \, e^{-t/\tau} \right\} + \beta$" src="form_15.png"/> on a sliding exponential window of width <img class="formulaInl" alt="$W=\frac{\log(1 - r)}{\log(\gamma)}$" src="form_16.png"/> where <img class="formulaInl" alt="$r$" src="form_17.png"/> is the fraction of data average within this window, which is automatically adjusted.</p>
 <p>Implementation details:</p><ul>
 <li>The model is chosen comparing the average prediction error on the last sample, while the estimation is performed on the previous samples.</li>
-<li>The time decay <img class="formulaInl" alt="$\tau$" src="form_17.png"/> is estimated in the least-square sense on: <center> <img class="formulaInl" alt="$\min_{1/\tau, k} \sum_{t}^{T-1} \gamma^{T-t} \, (k - sg(c(t) - c(t-1)) \, t / \tau - \log(|c(t) - c(t-1)|))^2$" src="form_18.png"/></center></li>
-<li>The bias <img class="formulaInl" alt="$\beta$" src="form_19.png"/> and gain are computed using standard least-square criterion ( <img class="formulaInl" alt="$\tau$" src="form_17.png"/> being given in the exponential case). </li>
+<li>The time decay <img class="formulaInl" alt="$\tau$" src="form_18.png"/> is estimated in the least-square sense on: <center> <img class="formulaInl" alt="$\min_{1/\tau, k} \sum_{t}^{T-1} \gamma^{T-t} \, (k - sg(c(t) - c(t-1)) \, t / \tau - \log(|c(t) - c(t-1)|))^2$" src="form_19.png"/></center></li>
+<li>The bias <img class="formulaInl" alt="$\beta$" src="form_20.png"/> and gain are computed using standard least-square criterion ( <img class="formulaInl" alt="$\tau$" src="form_18.png"/> being given in the exponential case). </li>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="CurveFit_8hpp_source.html#l00020">20</a> of file <a class="el" href="CurveFit_8hpp_source.html">CurveFit.hpp</a>.</p>
@@ -188,7 +188,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the exponential decay <img class="formulaInl" alt="$\tau$" src="form_17.png"/> or NAN if undefined. </p>
+<p>Gets the exponential decay <img class="formulaInl" alt="$\tau$" src="form_18.png"/> or NAN if undefined. </p>
 
 <p class="definition">Definition at line <a class="el" href="CurveFit_8hpp_source.html#l00048">48</a> of file <a class="el" href="CurveFit_8hpp_source.html">CurveFit.hpp</a>.</p>
 
@@ -211,7 +211,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the best model gain <img class="formulaInl" alt="$\nu$" src="form_20.png"/> or 0 NAN in undefined. </p>
+<p>Gets the best model gain <img class="formulaInl" alt="$\nu$" src="form_21.png"/> or 0 NAN in undefined. </p>
 
 <p class="definition">Definition at line <a class="el" href="CurveFit_8hpp_source.html#l00054">54</a> of file <a class="el" href="CurveFit_8hpp_source.html">CurveFit.hpp</a>.</p>
 
@@ -234,7 +234,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets the best model bias <img class="formulaInl" alt="$\beta$" src="form_19.png"/>. </p>
+<p>Gets the best model bias <img class="formulaInl" alt="$\beta$" src="form_20.png"/>. </p>
 
 <p class="definition">Definition at line <a class="el" href="CurveFit_8hpp_source.html#l00060">60</a> of file <a class="el" href="CurveFit_8hpp_source.html">CurveFit.hpp</a>.</p>
 
@@ -363,4 +363,4 @@ Public Member Functions</h2></td></tr>
 <li>src/util/<a class="el" href="CurveFit_8cpp_source.html">CurveFit.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-02 at 08:26:13) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-02 at 08:42:30) </tt> </div><hr/>

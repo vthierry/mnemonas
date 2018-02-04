@@ -164,7 +164,7 @@ pdf : $(MAIN).pdf clean
 $(MAIN).pdf : $(shell find $(dir $(MAIN)) -name '*.tex')
 	@echo "latex2pdf $(MAIN)"
 	@$(MAKE) clean
-	@cd $(dir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; bibtex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN)) ; pdflatex $(notdir $(MAIN))
+	@cd $(dir $(MAIN)) ; pdflatex --interaction=batchmode $(notdir $(MAIN)) ; bibtex $(notdir $(MAIN)) ; pdflatex --interaction=batchmode $(notdir $(MAIN)) ; pdflatex --interaction=batchmode $(notdir $(MAIN))
 
 %.pdf : %.odp
 	@ooimpress --invisible --convert-to pdf $^
@@ -178,9 +178,9 @@ clean :
 	@/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
 	@/bin/rm -rf .build stdout
 
-git : api
+git : clean api
 	@echo "git sync"
-	@git checkout master ; git pull ; git add doc/* ; git commit -a -m 'from makefile' ; git push
+	@git checkout master ; git pull ; git add doc/* ; git commit -a -q -m 'from makefile' ; git push -q
 
 #
 # Remote execution on nef-*.inria.fr
@@ -220,6 +220,7 @@ rrun-out :
 
 # On going
 #
+# - tbd: c := t-> beta + nu * exp(-t/tau): solve({c(0) = c0,c(-1)= c1,c(-2)=c2},{beta,nu,tau});     
 # - maj curve fitting : les w, le t-1 et prédiction error
 # - distributed : avec plus de D et N, des randoms w init nombreux
 #

@@ -29,3 +29,9 @@
  * - now() Gets the cpu or real time from program start. 
  * - gnuplot() Generates a gnuplot dipslay script.
  */
+
+/** Just a test.
+ * with \f$\latexerrorkk\f$
+ * @param moncul
+ */
+void nothing(int none);
