@@ -26,3 +26,6 @@ solve({c(t) = c1, c(0) = c0, d = 1/tau}, {t, a, d});
 #v := simplify(int((c(t) - m)^2, t = -T .. 0)) assuming T > 0, d :: real:
 #m1 := subs(sq, m);
 #v1 := subs(sq, v);
+
+sl := factor(solve({c(t) = c0,c(t-1)= c1,c(t-2)=c2},{a,b,d}));
+zero := simplify(subs(sl, d - ln(1 - (c0 - 2 * c1 + c2) / (c0 - c1))));
