@@ -10,28 +10,21 @@
  *  The present implementation considers a constant, affine or exponential model triplet of the a time series \f$c(t)\f$ writing :
  *  \f$\hat{c}(t) = \left\{ 0 | \nu \, t | \nu \, e^{-t/\tau} \right\} + \beta\f$
  * on a sliding exponential window of width \f$W=\frac{\log(1 - r)}{\log(\gamma)}\f$ where \f$r\f$ is the fraction of data average within this window, which is automatically adjusted.
- *
- * Implementation details:
- * - The model is chosen comparing the average prediction error on the last sample, while the estimation is performed on the previous samples.
- * - The time decay \f$\tau\f$ is estimated in the least-square sense on:
- * <center>\f$\min_{1/\tau, k} \sum_{t}^{T-1} \gamma^{T-t} \, (k - sg(c(t) - c(t-1)) \, t / \tau - \log(|c(t) - c(t-1)|))^2\f$</center>
- * - The bias \f$\beta\f$ and gain are computed using standard least-square criterion (\f$\tau\f$ being given in the exponential case).
  */
 class CurveFit: public numeric {
 private:
   static const unsigned int G = 13;
-  static constexpr double gammas[G] = { 0.10, 0.20, 0.30, 0.40, 0.53, 0.64, 0.73, 0.81, 0.87, 0.92, 0.96, 0.98, 0.99 };
+  static constexpr double gammas[G] = { 0.10, 0.20, 0.30, 0.40, 0.53, 0.64, 0.73, 0.81, 0.87, 0.92, 0.95, 0.97, 0.98 };
 private:
-  std::vector < double > values;
-  mutable double c1, l1, T0[G], T1[G], T2[G], C0[G], C1[G], L0[G], L1[G], cmin, cmax, bias, gain, decay, error;
-  mutable bool updated;
-  void update() const;
+  double lgammas[G], c0, c1, T0[G], C0[G], CC0[G], D0[G], DC0[G], bias[G][3], gain[G][3], decay[G][3], error[G][3];
+  unsigned int count, igamma, imode;
+  std::vector<double> values;
 public:
   /// @cond INTERNAL
   CurveFit(const CurveFit &fit);
   CurveFit();
   ///@endcond
-
+  
   /** Clears the estimation. */
   void clear();
 
@@ -42,31 +35,39 @@ public:
   /** Gets the number of samples. */
   unsigned int getCount() const
   {
-    return values.size();
+    return count;
   }
   /** Gets the exponential decay \f$\tau\f$ or NAN if undefined. */
   double getDecay() const
   {
-    update();
-    return decay;
+    return decay[igamma][imode];
   }
   /** Gets the best model gain \f$\nu\f$ or 0 NAN in undefined. */
   double getGain() const
   {
-    update();
-    return gain;
+    return gain[igamma][imode];
   }
   /** Gets the best model bias \f$\beta\f$. */
   double getBias() const
   {
-    update();
-    return bias;
+    return bias[igamma][imode];
   }
   /** Gets the best model average L1 error. */
   double getError() const
   {
-    update();
-    return error;
+    return error[igamma][imode];
+  }
+  /** Gets the best model gamma filtering. */
+  double getGamma() const
+  {
+    return gammas[igamma];
+  }
+  /** Gets the best model mode. 
+   * - Returns 'c' for constant model, 'a' for an affine model and 'e' for an exponential model.
+   */
+  char getMode() const
+  {
+    return imode == 2 ? 'e' : imode == 1 ? 'a' : 'c';
   }
   /** Returns the parameters as a JSON string. */
   std::string asString() const;

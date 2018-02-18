@@ -184,11 +184,9 @@ At the numerical level for $\upsilon \in [1/1000, 1/10]$ and $w \in [8, 512]$, w
 thus may consider $\gamma \in [0.4, 0.99] \simeq \{0.40,  0.53,  0.64,  0.73, 0.81,  0.87,  0.92,  0.96,  0.98,  0.99\}$ 
 which appears here as a meta-meta-parameter. Considering only a few enumeration of values seems sufficient, since the influence of such time window is not very sensitive.
 
-The time decay $\tau$ is estimated in the least-square sense on:
-\eqline{\min_{1/\tau, k} \sum_{t}^{T-1} \gamma^{T-t} \, (k - sg(c(t) - c(t-1)) \, t / \tau - \log(|c(t) - c(t-1)|))^2,}
-while the bias $\beta$ and $\nu$ gain are computed using standard similar weighted least-square criterion ($\tau$ being given in the exponential case, by the previous estimation):
-\eqline{\min_{\nu, \beta} \epsilon^2, \;\;\; \epsilon^2 \deq \sum_{t}^{T-1} \gamma^{T-t} \, (c(t) - \hat{c}_{\nu, \beta|\tau}(t))^2}
-for the three models. Here we consider previous values, but not the last one.
+For the exponential model, the time decay $\tau$ and bias $\beta$ are estimated in the least-square sense on:
+\eqline{\min_{a = 1 - e^{\frac{1}{\tau}}, b = a \, \beta} \sum_{t}^{T-1} \gamma^{T-t} \, (c(t) - c(t-1) - a \, c(t) - b)^2,}
+while the gain $\nu$ is computed using standard weighted least-square criterion, and so are gain and bias for the two other models. Here we consider previous values, but not the last one.
 
 The model is chosen comparing the weighted squared-errors $\epsilon^2 / (W - D)$ of the three alternatives, where $D$ is the model number of parameters, thus using a very standard test (see, e.g., \cite{vieville:inria-00000172} for a discussion).
 

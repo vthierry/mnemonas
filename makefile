@@ -220,8 +220,6 @@ rrun-out :
 
 # On going
 #
-# - tbd: c := t-> beta + nu * exp(-t/tau): solve({c(0) = c0,c(-1)= c1,c(-2)=c2},{beta,nu,tau});     
-# - maj curve fitting : les w, le t-1 et prédiction error
 # - distributed : avec plus de D et N, des randoms w init nombreux
 #
 
