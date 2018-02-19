@@ -198,7 +198,7 @@ public:
         network::SupervisedCriterion criterion(transform2, output, type, nu, 'o');
         network::KernelExperimentalEstimator estimator(transform2, criterion);
         double err0 =
-          type == '2' ? 1e-6 :
+          type == '2' ? 1e-5 :
           type == '1' ? 1e-1 :
           type == '0' ? 1e-6 :
           type == 'a' ? 1e-2 :
