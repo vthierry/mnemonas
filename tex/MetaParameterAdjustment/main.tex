@@ -167,8 +167,8 @@ The reason of this design choice is that we may encountered really non-stationna
 \end{figure}
 
 Since the criterion decay is not stationary, we must evaluate the models in a sliding window, which means computing any quantity $\omega$ using mainly the short-term previous values. Considering a 1st order exponential decay filter, we can use as expectation estimator:
-\eqline{\mathbb{E}[\omega]_{t} = \sum_{s=1}^{s=t} (1 - \gamma) \, \gamma^{t-s} \omega_s = \gamma \, \mathbb{E}[\omega]_{t - 1} + (1 - \gamma) \, \omega_{t-1} , \, \gamma = \upsilon^{\frac{1}{w}} \in [0, 1]}
-for some parameter $\gamma$ corresponding to a window size of $w$ steps, containing in proportion $1 - \upsilon$ of the filter coefficients (i.e. $\sum_{s=t-w-1}^{s=t} (1 - \gamma) \, \gamma^{t-s} = 1 - \upsilon$). 
+\eqline{\mathbb{E}[\omega]_{t} = \sum_{s=1}^{s=t} (1 - \gamma) \, \gamma^{t-s} \omega_s = \gamma \, \mathbb{E}[\omega]_{t - 1} + (1 - \gamma) \, \omega_{t-1} , \, \gamma = \upsilon^{\frac{1}{W}} \in [0, 1]}
+for some parameter $\gamma$ corresponding to a window size of $W=\frac{\log(\upsilon)}{\log(\gamma)}$ steps, containing in proportion $1 - \upsilon$ of the filter coefficients (i.e. $\sum_{s=t-w-1}^{s=t} (1 - \gamma) \, \gamma^{t-s} = 1 - \upsilon$). 
 
 At the numerical level for $\upsilon \in [1/1000, 1/10]$ and $w \in [8, 512]$, which seems reasonable concrete values bounds, we obtain:
 \eqline{\small \begin{array}{c|cccccccc} \upsilon & w: &8&16&32&64&128&256&512\\ 
@@ -188,7 +188,7 @@ For the exponential model, the time decay $\tau$ and bias $\beta$ are estimated 
 \eqline{\min_{a = 1 - e^{\frac{1}{\tau}}, b = a \, \beta} \sum_{t}^{T-1} \gamma^{T-t} \, (c(t) - c(t-1) - a \, c(t) - b)^2,}
 while the gain $\nu$ is computed using standard weighted least-square criterion, and so are gain and bias for the two other models. Here we consider previous values, but not the last one.
 
-The model is chosen comparing the weighted squared-errors $\epsilon^2 / (W - D)$ of the three alternatives, where $D$ is the model number of parameters, thus using a very standard test (see, e.g., \cite{vieville:inria-00000172} for a discussion).
+The model is chosen comparing the weighted squared-errors $\epsilon^2 / (W/D)$ of the three alternatives, where $D$ is the model number of parameters, thus using a very standard test (see, e.g., \cite{vieville:inria-00000172} for a discussion).
 
 Then, the best model prediction is tested on the last value $c(T)$, since this sample has not been taken into account for the estimation of the parameters and mode. We thus compute the following expectation, at time $T_0$:
 \eqline{\varepsilon^2 = \sum_{T=0}^{T=T_0} \gamma^{T_0-T} \,  (c(T) - \hat{c}_{|\nu,\beta,\tau}(T))^2.}

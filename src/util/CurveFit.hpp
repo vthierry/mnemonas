@@ -16,7 +16,7 @@ private:
   static const unsigned int G = 13;
   static constexpr double gammas[G] = { 0.10, 0.20, 0.30, 0.40, 0.53, 0.64, 0.73, 0.81, 0.87, 0.92, 0.95, 0.97, 0.98 };
 private:
-  double lgammas[G], c0, c1, T0[G], C0[G], CC0[G], D0[G], DC0[G], bias[G][3], gain[G][3], decay[G][3], error[G][3];
+  double lgammas[G], c0, c1, T0[G], T1[G], T2[G], C0[G], CC0[G], D0[G], DC0[G], L0[G], L1[G], bias[G][3], gain[G][3], decay[G][3], error[G][3];
   unsigned int count, igamma, imode;
   std::vector<double> values;
 public:

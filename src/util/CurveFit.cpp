@@ -10,7 +10,7 @@ CurveFit::CurveFit(const CurveFit& fit)
 {
   c0 = fit.c0, c1 = fit.c1;
   for(unsigned int g = 0; g < G; g++) {
-    T0[g] = fit.T0[g], C0[g] = fit.C0[g], CC0[g] = fit.CC0[g], D0[g] = fit.D0[g], DC0[g] = fit.DC0[g];
+    T0[g] = fit.T0[g], T1[g] = fit.T1[g], T2[g] = fit.T2[g], C0[g] = fit.C0[g], CC0[g] = fit.CC0[g], D0[g] = fit.D0[g], DC0[g] = fit.DC0[g], L0[g] = fit.L0[g], L1[g] = fit.L1[g];
     for(unsigned int m = 0; m < 3; m++)
       bias[g][m] = fit.bias[g][m], gain[g][m] = fit.gain[g][m], decay[g][m] = fit.decay[g][m], error[g][m] = fit.error[g][m];
   }
@@ -28,7 +28,7 @@ void CurveFit::clear()
   c0 = c1 = NAN;
   for(unsigned int g = 0; g < G; g++) {
     lgammas[g] = -log(gammas[g]) * (1 - gammas[g]);
-    T0[g] = C0[g] = CC0[g] = D0[g] = DC0[g] = 0;
+    T0[g] = T1[g] = T2[g] = C0[g] = CC0[g] = D0[g] = DC0[g] = L0[g] = L1[g] = 0;
     for(unsigned int m = 0; m < 3; m++) {
       bias[g][m] = gain[g][m] = decay[g][m] = error[g][m] = 0;
     }
@@ -41,6 +41,8 @@ void CurveFit::add(double c)
 #define sqr(x) ((x)*(x))
   for(unsigned int g = 0; g < G; g++) {
     // Calculates the estimation momenta
+    T2[g] = gammas[g] * (T0[g] + 2 * T1[g] + T2[g]);
+    T1[g] = gammas[g] * (T0[g] + T1[g]);
     T0[g] = 1 + gammas[g] * T0[g];
     if (count > 0) {
       C0[g] = c0 + gammas[g] * C0[g];
@@ -49,6 +51,11 @@ void CurveFit::add(double c)
 	double d0 = c0 - c1;
 	D0[g] = d0 + gammas[g] * D0[g];
 	DC0[g] = d0 * c0 + gammas[g] * DC0[g];
+	if (d0 != 0) {
+	  double l0 = log(fabs(d0));
+	  L1[g] = gammas[g] * (L0[g] + L1[g]);
+	  L0[g] = l0 + gammas[g] * L0[g];
+	}
       }
     }
     // Estimates the constant value model parameters
@@ -58,20 +65,18 @@ void CurveFit::add(double c)
     if (count > 1) {
       gain[g][1] = (1 - gammas[g]) * D0[g] / T0[g] + gammas[g] * gain[g][1];
       bias[g][1] = (1 - gammas[g]) * c0 + gammas[g] * bias[g][1] + gain[g][1];
-      error[g][1] = lgammas[g] * 2 * sqr(c - bias[g][1]) + gammas[g] * error[g][1];
+      error[g][1] = lgammas[g] * sqr(c - bias[g][1]) + gammas[g] * error[g][1];
     }
     // Estimates the exponential value model parameters
     if (count > 1) {
+      double tau_n = T0[g] * T2[g] - T1[g] * T1[g], tau_d = T0[g] * L1[g] - T1[g] * L0[g];
       double C02 = C0[g] * C0[g] - CC0[g] * T0[g], D0C0 = D0[g] * C0[g] - DC0[g] * T0[g], CCD0 = CC0[g] * D0[g] - C0[g] * DC0[g];
-      if (C02 != 0 && D0C0 != 0) {
-	double exp_tau_1 = 1 - D0C0 / C02;
-	if (exp_tau_1 > 0) {
-	  decay[g][2] = (1 - gammas[g]) * 1.0 / log(exp_tau_1) + gammas[g] * decay[g][2];;
-	  bias[g][2] = (1 - gammas[g]) * CCD0 / D0C0 + gammas[g] * bias[g][2];
-	  gain[g][2] = ((1 - gammas[g]) * (c0 - bias[g][2]) + gammas[g] * gain[g][2]) * exp(-1/decay[g][2]);
-	  error[g][2] = lgammas[g] * 3 * sqr(c - (bias[g][2] + gain[g][2])) + gammas[g] * error[g][2];
-	}
-      }
+      if (tau_d != 0)
+	decay[g][2] = (1 - gammas[g]) * tau_n / tau_d + gammas[g] * decay[g][2];
+      if (D0C0 != 0) 
+	bias[g][2] = (1 - gammas[g]) * CCD0 / D0C0 + gammas[g] * bias[g][2];
+      gain[g][2] = ((1 - gammas[g]) * (c0 - bias[g][2]) + gammas[g] * gain[g][2]) * exp(-1/decay[g][2]);
+      error[g][2] = lgammas[g] * sqr(c - (bias[g][2] + gain[g][2])) + gammas[g] * error[g][2];
     }
     // Estimates the best model
     double emin = 1e100;
@@ -111,7 +116,7 @@ void CurveFit::show(String file, bool show) const
       imode == 2 ? s_printf("c(x) = %g * exp(-(x - %d) / %g) + %g", getGain(), count, getDecay(), getBias()) :
       imode == 1 ? s_printf("c(x) = %g * (x - %d) + %g", getGain(), count, getBias()) :
       s_printf("c(x) = %g", getBias());
-    gnuplot(file, (std::string) (0 < cmin ? "set logscale y" : "") + "\nset format y '%.1e'\n" + model + "\nplot \"" + file + ".dat\" using 1:2 with lines linecolor \"black\" notitle, c(x) with lines linecolor \"red\" notitle", show);
+    gnuplot(file, (std::string) (0 < cmin && imode == 2 ? "set logscale y" : "") + "\nset format y '%.1e'\n" + model + "\nplot \"" + file + ".dat\" using 1:2 with lines linecolor \"black\" notitle, c(x) with lines linecolor \"red\" notitle", show);
   }
 }
 const Histogram CurveFit::getHistogram() const
