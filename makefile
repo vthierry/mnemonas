@@ -226,7 +226,7 @@ rrun-out :
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Voir Histogram avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 
-ARGS = -test # -experiment2
+ARGS = -experiment2
 
 todo :
 	@$(MAKE) run
