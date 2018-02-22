@@ -12,22 +12,27 @@ public:
   void run(Struct what = "{}")
   {
     printf(">  Experimenting ReservoirAdjustment (%s) ... \n", ((String) what).c_str());
-    // Tests distributed estimation of sparse network
-    if(false) {
-      static const unsigned int M = 1, N = 16, N0 = 1, T = 1000;
-      network::BufferedInput input("normal", M, T, true);
-      network::SparseNonLinearTransform transform1(N, input);
-      transform1.setWeightsRandom(0, 0.5 / N, false, "normal", 0);
-      network::BufferedInput output(transform1, N0);
-      network::SparseNonLinearTransform transform2(transform1);
-      transform2.setWeights(transform1);
-      transform2.setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-      network::SupervisedCriterion criterion(transform2, output, '2', 1, 'n');
-      network::KernelDistributedEstimator estimator(transform2, criterion);
-      estimator.run(1e-6, 100, 0, 10, true);
-    }
-    network::BufferedInput data("tex/ReservoirAdjustment/data/chaotic-sequence-anthony", "csv");
+    run_once(false);
+    run_once(true);
     printf(">  ... experiment done.\n");
+  }
+  void run_once(bool with = true)
+  {
+    network::BufferedInput data("tex/ReservoirAdjustment/data/chaotic-sequence-anthony", "csv");
+    network::BufferedInput input1(data, 1, data.getT()/2), output1(data, 1, data.getT()/2);
+    static const unsigned int N = 16;
+    network::SparseNonLinearTransform transform1(N, input1);
+    transform1.setWeightsRandom(0, 0.5 / N, false, "normal", 0);
+    network::SupervisedCriterion criterion1(transform1, output1, '2', 1, 'n');
+    network::KernelDistributedEstimator estimator(transform1, criterion1);
+    estimator.updateReadout(1);
+    if (with)
+      estimator.run(1e-6, 100, 0, 10, true);
+    network::BufferedInput input2(data, 1, data.getT()/2, data.getT()/2), output2(data, 1, data.getT()/2, data.getT()/2);
+    network::SparseNonLinearTransform transform2(N, input2);
+    transform2.setWeights(transform1);
+    network::SupervisedCriterion criterion2(transform2, output2, '2', 1, 'n');
+    printf("err with %d>%g\n", with, criterion2.TransformCriterion::rho());
   }
 };
 

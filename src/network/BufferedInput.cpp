@@ -5,32 +5,31 @@
 #include <stdarg.h>
 #include "util/gnuplot.h"
 
-network::BufferedInput::BufferedInput(const BufferedInput& input, unsigned int N0) : Input(0 < N0 ? N0 : input.getN(), input.getT()), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
+///@cond INTERNAL
+network::BufferedInput::BufferedInput(const BufferedInput& input) : Input(input.getN(), input.getT()), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
 {
-  if(buffered || (0 < N0)) {
+  if(buffered) {
     values = new double[N * (int) T];
     for(unsigned int t = 0, nt = 0; t < T; t++)
       for(unsigned int n = 0; n < N; n++, nt++)
         const_cast < double * > (values)[nt] = input.get(n, t);
   } else
     values = input.values;
-  if(vectored) {}
+  if(vectored) {
+    vvalues = input.vvalues;
+  }
 }
+///@endcond
+network::BufferedInput::BufferedInput(const Input& input, unsigned int N0, unsigned int n0, unsigned int T0, unsigned int t0) : Input(0 < N0 ? N0 - n0 : input.getN(), 0 < T0 ? T0 - t0 : input.getT()), vvalues(NULL), buffered(true), vectored(false)
+{
+  values = new double[N * (int) T];
+  for(unsigned int t = 0, nt = 0; t < T; t++)
+    for(unsigned int n = 0; n < N; n++, nt++)
+      const_cast < double * > (values)[nt] = input.get(n + n0, t + t0);
+}
+
 network::BufferedInput::BufferedInput(const double *values, unsigned int N, unsigned int T) : Input(N, T), values(values), vvalues(NULL), buffered(false), vectored(false) {}
 network::BufferedInput::BufferedInput(unsigned int N) : Input(N, 0), values(NULL), vvalues(new std::vector < double >[N]), buffered(false), vectored(true) {}
-network::BufferedInput::BufferedInput(const Input& input, double f(const Input &input, unsigned int n, unsigned int t), unsigned int N0) : Input(0 < N0 ? N0 : input.getN(), input.getT()), values(new double[(0 < N0 ? N0 : input.getN()) * (int) input.getT()]), vvalues(NULL), buffered(true), vectored(false)
-{
-  for(unsigned int t = 0, nt = 0; t < T; t++)
-    for(unsigned int n = 0; n < N; n++, nt++)
-      const_cast < double * > (values)[nt] = f(input, n, t);
-}
-network::BufferedInput::BufferedInput(double f(unsigned int n, unsigned int t), unsigned int N, unsigned int T) : Input(N, T), values(new double[N * T]), vvalues(NULL), buffered(true), vectored(false)
-{
-  for(unsigned int t = 0, nt = 0; t < T; t++)
-    for(unsigned int n = 0; n < N; n++, nt++)
-      const_cast < double * > (values)[nt] = f(n, t);
-}
-network::BufferedInput::BufferedInput(const Input& input, unsigned int N0) : network::BufferedInput::BufferedInput(input, mirror, N0) {}
 network::BufferedInput::BufferedInput(String file, String format) : Input(1, 1), vvalues(NULL), buffered(true), vectored(false)
 {
   std::string ext = format == "csv" ? ".csv" : ".dat";

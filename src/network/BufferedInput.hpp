@@ -18,10 +18,15 @@ public:
     /** Resets the input from another input with a predefined function.
      * - All input values are called once in sequence during object construction.
      * @param input The input to buffer.
-     * @param N0 If <tt>0 < N0</tt> considers only the 1st N0 units.
+     * @param N0 If <tt>0 < N0</tt> considers only N0 units.
+     * @param n0 If <tt>0 < n0</tt> considers only units starting at the n0 index.
+     * @param T0 If <tt>0 < T0</tt> considers only T0 time-steps.
+     * @param t0 If <tt>0 < t0</tt> considers only time-steps starting at the t0 index.
      */
-    BufferedInput(const Input &input, unsigned int N0 = 0);
-    BufferedInput(const BufferedInput &input, unsigned int N0 = 0);
+    BufferedInput(const Input &input, unsigned int N0 = 0, unsigned int n0 = 0, unsigned int T0 = 0, unsigned int t0 = 0);
+    ///@cond INTERNAL
+    BufferedInput(const BufferedInput &input);
+    ///@endcond
 
     /** Resets the input with static values.
      * @param values A <tt>double[T][N]</tt> buffer with the input values, stored a T sequences of N values.
@@ -77,22 +82,6 @@ public:
      *   - Parameters: The probability to add noise to a given value <tt>noiseProbability::double</tt> and the standard deviation of the normal added noise <tt>noiseStandardDeviation::double</tt>
      */
     BufferedInput(const Input &input, String name, ...);
-
-    /** Resets the input from a predefined function.
-     * - All input values are called once in sequence during object construction.
-     * @param f A function applied on the each value, <tt>this.get(n, t) = f(input, n, t)</tt>, default simply uses <tt>input.get(n, t)</tt>.
-     * @param N The number of input units.
-     * @param T The maximal input time.
-     */
-    BufferedInput(double f(unsigned int n, unsigned int t), unsigned int N, unsigned int T);
-
-    /** Resets the input from another input with a predefined function.
-     * - All input values are called once in sequence during object construction.
-     * @param input The input to buffer.
-     * @param N0 If <tt>0 < N0</tt> considers only the 1st N0 units.
-     * @param f A function applied on the each value, <tt>this.get(n, t) = f(input, n, t)</tt>, default simply uses <tt>input.get(n, t)</tt>.
-     */
-    BufferedInput(const Input &input, double f(const Input &input, unsigned int n, unsigned int t), unsigned int N0 = 0);
 
     ///@cond INTERNAL
     virtual ~BufferedInput();
