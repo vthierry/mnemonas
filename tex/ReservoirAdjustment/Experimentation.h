@@ -19,7 +19,7 @@ public:
   void run_once(bool with = true)
   {
     network::BufferedInput data("tex/ReservoirAdjustment/data/chaotic-sequence-anthony", "csv");
-    network::BufferedInput input1(data, 1, 0, data.T/2), output1(data, 1, 1, data.T/2);
+    network::BufferedInput input1(data, 1, 0, data.T / 2), output1(data, 1, 1, data.T / 2);
     static const unsigned int N = 16;
     network::SparseNonLinearTransform transform(N, input1);
     transform.setWeightsRandom(0, 0.5 / N, false, "normal", 0);
@@ -27,10 +27,10 @@ public:
     network::KernelDistributedEstimator estimator(transform, criterion1);
     printf("> N0 = %d\n", criterion1.getN0());
     estimator.updateReadout(1);
-    if (with)
+    if(with)
       estimator.run(1e-6, 100, 0, 10, true);
-    network::BufferedInput input2(data, 1, 0, data.T/2, data.T/2), output2(data, 1, 1, data.T/2, data.T/2);
-    //@todo ransform.setInput(input2);
+    network::BufferedInput input2(data, 1, 0, data.T / 2, data.T / 2), output2(data, 1, 1, data.T / 2, data.T / 2);
+    transform.setInput(input2);
     network::SupervisedCriterion criterion2(transform, output2, '2', 1, 'n');
     printf("err with %d>%g\n", with, criterion2.TransformCriterion::rho());
   }

@@ -145,23 +145,23 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">transform</td><td>The transform to estimate. </td></tr>
     <tr><td class="paramname">values</td><td>The output desired values.<ul>
-<li>By contract output units correspond to the values.getN() lower indexed units and hidden units to the remainder indexes. </li>
+<li>By contract output units correspond to the values.N lower indexed units and hidden units to the remainder indexes. </li>
 </ul>
 </td></tr>
     <tr><td class="paramname">criterion</td><td>The criterion index:<ul>
-<li><code>2</code> The L2 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/2$" src="form_77.png"/>.</li>
-<li><code>1</code> The reweighted L1 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + |\hat{x}_n(t)-\bar{o}_n(t)|))$" src="form_78.png"/>.</li>
-<li><code>0</code> The reweighted L0 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + (\hat{x}_n(t)-\bar{o}_n(t))^2))$" src="form_79.png"/>.</li>
-<li><code>a</code> A L1 related unbounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \nu \, \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} \frac{x^2}{2} \, H(1 - |x|) + \left(|x| - \frac{1}{2}\right) \, H(|x| - 1)$" src="form_80.png"/>.<ul>
-<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_81.png"/> simply considers the absolute value of the error.</li>
+<li><code>2</code> The L2 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/2$" src="form_75.png"/>.</li>
+<li><code>1</code> The reweighted L1 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + |\hat{x}_n(t)-\bar{o}_n(t)|))$" src="form_76.png"/>.</li>
+<li><code>0</code> The reweighted L0 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + (\hat{x}_n(t)-\bar{o}_n(t))^2))$" src="form_77.png"/>.</li>
+<li><code>a</code> A L1 related unbounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \nu \, \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} \frac{x^2}{2} \, H(1 - |x|) + \left(|x| - \frac{1}{2}\right) \, H(|x| - 1)$" src="form_78.png"/>.<ul>
+<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_79.png"/> simply considers the absolute value of the error.</li>
 </ul>
 </li>
-<li><code>b</code> A L0 related biweight bounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} (x^6 - 3 \, x^4 + 3 \, x^2) \, H(1 - |x|) + H(|x| - 1)$" src="form_82.png"/>.<ul>
-<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_81.png"/> simply counts the number of non-zero values.</li>
+<li><code>b</code> A L0 related biweight bounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} (x^6 - 3 \, x^4 + 3 \, x^2) \, H(1 - |x|) + H(|x| - 1)$" src="form_80.png"/>.<ul>
+<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_79.png"/> simply counts the number of non-zero values.</li>
 </ul>
 </li>
-<li><code>h</code> The L2 boolean criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho(\nu - sg(\bar{o}_n(t) - 1/2) \, (x_n(t) - 1/2)), \;\;\; \rho(x) \stackrel{\rm def}{=} H(x) \, x^2/2$" src="form_83.png"/>.<ul>
-<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_81.png"/> simply counts the number of wrong boolean values (not used as criterion but a posteriori precision). </li>
+<li><code>h</code> The L2 boolean criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho(\nu - sg(\bar{o}_n(t) - 1/2) \, (x_n(t) - 1/2)), \;\;\; \rho(x) \stackrel{\rm def}{=} H(x) \, x^2/2$" src="form_81.png"/>.<ul>
+<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_79.png"/> simply counts the number of wrong boolean values (not used as criterion but a posteriori precision). </li>
 </ul>
 </li>
 </ul>
@@ -239,7 +239,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 
 <p class="definition">Definition at line <a class="el" href="SupervisedCriterion_8cpp_source.html#l00008">8</a> of file <a class="el" href="SupervisedCriterion_8cpp_source.html">SupervisedCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Input_8cpp_source.html#l00004">network::Input::get()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00041">network::RecurrentTransform::get()</a>, <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
+<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00046">network::RecurrentTransform::get()</a>, <a class="el" href="Input_8cpp_source.html#l00014">network::Input::get()</a>, <a class="el" href="Input_8hpp_source.html#l00007">network::Input::N</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
 
 </div>
 </div>
@@ -286,7 +286,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_85.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_83.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -294,7 +294,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 
 <p class="definition">Definition at line <a class="el" href="SupervisedCriterion_8cpp_source.html#l00054">54</a> of file <a class="el" href="SupervisedCriterion_8cpp_source.html">SupervisedCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Input_8cpp_source.html#l00004">network::Input::get()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00041">network::RecurrentTransform::get()</a>, <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
+<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00046">network::RecurrentTransform::get()</a>, <a class="el" href="Input_8cpp_source.html#l00014">network::Input::get()</a>, <a class="el" href="Input_8hpp_source.html#l00007">network::Input::N</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
 
 </div>
 </div>
@@ -336,7 +336,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 <ul>
 <li>The method is to be overwritten if output values can be provided. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>The input unit index in <code>{0,getN(){</code>. </td></tr>
+    <tr><td class="paramname">n</td><td>The input unit index in <code>{0,N{</code>. </td></tr>
     <tr><td class="paramname">t</td><td>The value time. </td></tr>
   </table>
   </dd>
@@ -349,7 +349,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 
 <p class="definition">Definition at line <a class="el" href="SupervisedCriterion_8cpp_source.html#l00097">97</a> of file <a class="el" href="SupervisedCriterion_8cpp_source.html">SupervisedCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Input_8cpp_source.html#l00004">network::Input::get()</a>, <a class="el" href="TransformCriterion_8cpp_source.html#l00035">network::TransformCriterion::get()</a>, and <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>.</p>
+<p class="reference">References <a class="el" href="Input_8cpp_source.html#l00014">network::Input::get()</a>, <a class="el" href="TransformCriterion_8cpp_source.html#l00035">network::TransformCriterion::get()</a>, and <a class="el" href="Input_8hpp_source.html#l00007">network::Input::N</a>.</p>
 
 </div>
 </div>
@@ -383,7 +383,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 
 <p class="definition">Definition at line <a class="el" href="SupervisedCriterion_8cpp_source.html#l00107">107</a> of file <a class="el" href="SupervisedCriterion_8cpp_source.html">SupervisedCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>, and <a class="el" href="TransformCriterion_8cpp_source.html#l00039">network::TransformCriterion::getN0()</a>.</p>
+<p class="reference">References <a class="el" href="TransformCriterion_8cpp_source.html#l00039">network::TransformCriterion::getN0()</a>, and <a class="el" href="Input_8hpp_source.html#l00007">network::Input::N</a>.</p>
 
 </div>
 </div>
@@ -428,4 +428,4 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 <li>src/network/<a class="el" href="SupervisedCriterion_8cpp_source.html">SupervisedCriterion.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-02 at 08:42:30) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-23 at 15:42:54) </tt> </div><hr/>

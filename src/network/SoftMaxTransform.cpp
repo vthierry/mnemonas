@@ -40,7 +40,7 @@ network::KernelTransform& network::SoftMaxTransform::setWeights(const KernelTran
 }
 unsigned int network::SoftMaxTransform::getKernelDimension(unsigned int n) const
 {
-  return n <= N2 ? 0 : N1 + input.N;
+  return n <= N2 ? 0 : N1 + input->N;
 }
 double network::SoftMaxTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
@@ -65,8 +65,8 @@ double network::SoftMaxTransform::getKernelValue(unsigned int n, unsigned int d,
     if(d < N)
       return get(d, t - 1);
     d -= N;
-    if(d < input.N)
-      return input.get(d, t - 1);
+    if(d < input->N)
+      return input->get(d, t - 1);
     return 0;
   }
 }

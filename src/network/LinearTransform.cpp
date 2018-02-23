@@ -37,7 +37,7 @@ network::KernelTransform& network::LinearTransform::setWeights(const network::Ke
 }
 unsigned int network::LinearTransform::getKernelDimension(unsigned int n) const
 {
-  return 1 + N + input.N;
+  return 1 + N + input->N;
 }
 double network::LinearTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
@@ -49,8 +49,8 @@ double network::LinearTransform::getKernelValue(unsigned int n, unsigned int d, 
     if(d < N)
       return sat(get(d, t - 1));
     d -= N;
-    if(d < input.N)
-      return input.get(d, t - 1);
+    if(d < input->N)
+      return input->get(d, t - 1);
   }
   return 0;
 }

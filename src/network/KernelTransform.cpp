@@ -16,7 +16,7 @@ void network::KernelTransform::resetWeights()
     weights[i] = root == NULL ? 0 : root->weights[i];
 }
 /// @cond INTERNAL
-network::KernelTransform::KernelTransform(const KernelTransform& transform) : KernelTransform(transform.N, transform.R, transform.input)
+network::KernelTransform::KernelTransform(const KernelTransform& transform) : KernelTransform(transform.N, transform.R, *transform.input)
 {
   root = &transform;
 }

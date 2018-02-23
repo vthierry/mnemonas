@@ -18,6 +18,7 @@ public:
     RecurrentTransform(unsigned int N, unsigned int R, const Input &input);
 
     /// @cond INTERNAL
+    virtual void setInput(const Input& input);
     virtual ~RecurrentTransform();
     ///@endcond
 

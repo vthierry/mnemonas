@@ -242,7 +242,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ObservableCriterion_8cpp_source.html#l00038">38</a> of file <a class="el" href="ObservableCriterion_8cpp_source.html">ObservableCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Input_8hpp_source.html#l00022">network::Input::getT()</a>.</p>
+<p class="reference">References <a class="el" href="Input_8hpp_source.html#l00009">network::Input::T</a>.</p>
 
 </div>
 </div>
@@ -273,13 +273,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Defines the estimator criterion. </p>
 <ul>
 <li>The method is to be overwritten to implement a global estimator.</li>
-<li>The default implementation simply returns <img class="formulaInl" alt="$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$" src="form_84.png"/>, running:<pre>
+<li>The default implementation simply returns <img class="formulaInl" alt="$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$" src="form_82.png"/>, running:<pre>
 double r = 0;
 transform.reset(true);
-for(unsigned int t = 0; t &lt; transform.getT(); t++)
-  for(int n =  transform.getN() - 1; 0 &lt;= n; n--)
+for(unsigned int t = 0; t &lt; transform.T; t++)
+  for(int n =  transform.N - 1; 0 &lt;= n; n--)
      r += rho(n, t, transform.get(n, t));
-return r / (transform.getN() *  transform.getT());</pre> <dl class="section return"><dt>Returns</dt><dd>The criterion value to mnimize. </dd></dl>
+return r / (transform.N *  transform.T);</pre> <dl class="section return"><dt>Returns</dt><dd>The criterion value to mnimize. </dd></dl>
 </li>
 </ul>
 
@@ -287,7 +287,7 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 
 <p class="definition">Definition at line <a class="el" href="ObservableCriterion_8cpp_source.html#l00075">75</a> of file <a class="el" href="ObservableCriterion_8cpp_source.html">ObservableCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00041">network::RecurrentTransform::get()</a>, <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>, <a class="el" href="Input_8hpp_source.html#l00022">network::Input::getT()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00018">network::ObservableCriterion::Observable::getValue()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00013">network::RecurrentTransform::reset()</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
+<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00046">network::RecurrentTransform::get()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00018">network::ObservableCriterion::Observable::getValue()</a>, <a class="el" href="Input_8hpp_source.html#l00007">network::Input::N</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00018">network::RecurrentTransform::reset()</a>, <a class="el" href="Input_8hpp_source.html#l00009">network::Input::T</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
 
 </div>
 </div>
@@ -334,7 +334,7 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_85.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_83.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -378,7 +378,7 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 
 <p class="definition">Definition at line <a class="el" href="ObservableCriterion_8cpp_source.html#l00114">114</a> of file <a class="el" href="ObservableCriterion_8cpp_source.html">ObservableCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00041">network::RecurrentTransform::get()</a>, <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>, <a class="el" href="Input_8hpp_source.html#l00022">network::Input::getT()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00018">network::ObservableCriterion::Observable::getValue()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00023">network::ObservableCriterion::Observable::getValueDerivative()</a>, <a class="el" href="solver_8cpp_source.html#l00215">solver::projsolve()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00013">network::RecurrentTransform::reset()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00008">network::ObservableCriterion::Observable::reset()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00068">network::RecurrentTransform::set()</a>, <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>, and <a class="el" href="TransformCriterion_8cpp_source.html#l00043">network::TransformCriterion::update()</a>.</p>
+<p class="reference">References <a class="el" href="RecurrentTransform_8cpp_source.html#l00046">network::RecurrentTransform::get()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00018">network::ObservableCriterion::Observable::getValue()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00023">network::ObservableCriterion::Observable::getValueDerivative()</a>, <a class="el" href="Input_8hpp_source.html#l00007">network::Input::N</a>, <a class="el" href="solver_8cpp_source.html#l00215">solver::projsolve()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00018">network::RecurrentTransform::reset()</a>, <a class="el" href="ObservableCriterion_8cpp_source.html#l00008">network::ObservableCriterion::Observable::reset()</a>, <a class="el" href="RecurrentTransform_8cpp_source.html#l00073">network::RecurrentTransform::set()</a>, <a class="el" href="Input_8hpp_source.html#l00009">network::Input::T</a>, <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>, and <a class="el" href="TransformCriterion_8cpp_source.html#l00043">network::TransformCriterion::update()</a>.</p>
 
 </div>
 </div>
@@ -420,7 +420,7 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 <ul>
 <li>The method is to be overwritten if output values can be provided. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>The input unit index in <code>{0,getN(){</code>. </td></tr>
+    <tr><td class="paramname">n</td><td>The input unit index in <code>{0,N{</code>. </td></tr>
     <tr><td class="paramname">t</td><td>The value time. </td></tr>
   </table>
   </dd>
@@ -433,7 +433,7 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 
 <p class="definition">Definition at line <a class="el" href="ObservableCriterion_8cpp_source.html#l00106">106</a> of file <a class="el" href="ObservableCriterion_8cpp_source.html">ObservableCriterion.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Input_8hpp_source.html#l00017">network::Input::getN()</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
+<p class="reference">References <a class="el" href="Input_8hpp_source.html#l00007">network::Input::N</a>, and <a class="el" href="TransformCriterion_8hpp_source.html#l00005">network::TransformCriterion::transform</a>.</p>
 
 </div>
 </div>
@@ -537,15 +537,15 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>: The predefined observable name.<ul>
-<li>mean : The input mean of a given channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t)$" src="form_60.png"/>.<ul>
+<li>mean : The input mean of a given channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t)$" src="form_58.png"/>.<ul>
 <li>Parameter: The unit index <code>n</code>.</li>
 </ul>
 </li>
-<li>icorr : The input inter-correlation between two channels <img class="formulaInl" alt="$\omega_{n,m}(t) = x_n(t) \, x_m(t)$" src="form_61.png"/>.<ul>
+<li>icorr : The input inter-correlation between two channels <img class="formulaInl" alt="$\omega_{n,m}(t) = x_n(t) \, x_m(t)$" src="form_59.png"/>.<ul>
 <li>Parameters: The unit index <code>n</code> and the unit index <code>m</code>.</li>
 </ul>
 </li>
-<li>acorr : The input auto-correlation of a given channel <img class="formulaInl" alt="$\omega_{n,\tau}(t) = x_n(t) \, x_n(t - \tau)$" src="form_62.png"/>.<ul>
+<li>acorr : The input auto-correlation of a given channel <img class="formulaInl" alt="$\omega_{n,\tau}(t) = x_n(t) \, x_n(t - \tau)$" src="form_60.png"/>.<ul>
 <li>Parameters: The unit index <code>n</code> and the delay <code>tau</code> (as unsigned int), with <code>tau = 0</code>, simply returns the 2nd order momentum, <code>tau</code> values above 16 are numericaly unrealistic. </li>
 </ul>
 </li>
@@ -602,15 +602,15 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>: The predefined observable name.<ul>
-<li>mean : The <img class="formulaInl" alt="$N$" src="form_55.png"/> mean for each channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t), 0 \leq n &lt; N$" src="form_63.png"/>.<ul>
+<li>mean : The <img class="formulaInl" alt="$N$" src="form_53.png"/> mean for each channel <img class="formulaInl" alt="$\omega_n(t) = x_n(t), 0 \leq n &lt; N$" src="form_61.png"/>.<ul>
 <li>Parameter: The number of channels <code>N</code>, values above 32 are numericaly unrealistic.</li>
 </ul>
 </li>
-<li>icorr : The <img class="formulaInl" alt="$N + N \, (N+1) / 2$" src="form_64.png"/> mean and inter-correlation between two channels <img class="formulaInl" alt="$\omega_n(t) = x_n(t), \omega_{N + m + n * (n+1)/2}(t) = x_n(t) \, x_m(t), 0 \leq n &lt; N, n \leq m &lt; N$" src="form_65.png"/>.<ul>
+<li>icorr : The <img class="formulaInl" alt="$N + N \, (N+1) / 2$" src="form_62.png"/> mean and inter-correlation between two channels <img class="formulaInl" alt="$\omega_n(t) = x_n(t), \omega_{N + m + n * (n+1)/2}(t) = x_n(t) \, x_m(t), 0 \leq n &lt; N, n \leq m &lt; N$" src="form_63.png"/>.<ul>
 <li>Parameter: The number of channels <code>N</code>, values above 8 are numericaly unrealistic.</li>
 </ul>
 </li>
-<li>acorr : The <img class="formulaInl" alt="$N + N \, (\tau + 1)$" src="form_66.png"/> mean and auto-correlation for each channel <img class="formulaInl" alt="$omega_n(t) = x_n(t), \omega_{N + n+ \tau \, N}(t) = x_n(t) \, x_n(t - \tau), 0 \leq n &lt; \tau$" src="form_67.png"/>.<ul>
+<li>acorr : The <img class="formulaInl" alt="$N + N \, (\tau + 1)$" src="form_64.png"/> mean and auto-correlation for each channel <img class="formulaInl" alt="$omega_n(t) = x_n(t), \omega_{N + n+ \tau \, N}(t) = x_n(t) \, x_n(t - \tau), 0 \leq n &lt; \tau$" src="form_65.png"/>.<ul>
 <li>Parameter: The number of channels <code>N</code>, and the maximal delay <code>tau</code> (as unsigned int), with <code>tau = 0</code>, simply implements 1st and 2nd order momenta, <code>N * tau</code> values above 32 are numericaly unrealistic.. </li>
 </ul>
 </li>
@@ -668,4 +668,4 @@ return r / (transform.getN() *  transform.getT());</pre> <dl class="section retu
 <li>src/network/<a class="el" href="ObservableCriterion_8cpp_source.html">ObservableCriterion.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-02 at 08:42:30) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-23 at 15:42:54) </tt> </div><hr/>

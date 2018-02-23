@@ -18,13 +18,13 @@ private:
 private:
   double lgammas[G], c0, c1, T0[G], T1[G], T2[G], C0[G], C1[G], D0[G], CD0[G], DD0[G], bias[G][3], gain[G][3], decay[G][3], error[G][3];
   unsigned int count, igamma, imode;
-  std::vector<double> values;
+  std::vector < double > values;
 public:
   /// @cond INTERNAL
   CurveFit(const CurveFit &fit);
   CurveFit();
   ///@endcond
-  
+
   /** Clears the estimation. */
   void clear();
 
@@ -62,7 +62,7 @@ public:
   {
     return gammas[igamma];
   }
-  /** Gets the best model mode. 
+  /** Gets the best model mode.
    * - Returns 'c' for constant model, 'a' for an affine model and 'e' for an exponential model.
    */
   char getMode() const

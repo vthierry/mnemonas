@@ -69,7 +69,7 @@ network::KernelTransform& network::IntegrateAndFireTransform::setWeights(const n
 }
 unsigned int network::IntegrateAndFireTransform::getKernelDimension(unsigned int n) const
 {
-  return n < N ? 2 + N + input.N : 1;
+  return n < N ? 2 + N + input->N : 1;
 }
 double network::IntegrateAndFireTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
@@ -84,8 +84,8 @@ double network::IntegrateAndFireTransform::getKernelValue(unsigned int n, unsign
     if(d < N)
       return zeta(get(d + N, t));
     d -= N;
-    if(d < input.N)
-      return input.get(d, t - 1);
+    if(d < input->N)
+      return input->get(d, t - 1);
     return 0;
   } else
     return d == 1 ? (get(n - N, t - 1) - 0.5) : 0;

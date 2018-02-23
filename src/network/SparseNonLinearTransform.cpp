@@ -5,7 +5,7 @@ network::SparseNonLinearTransform::SparseNonLinearTransform(unsigned int N, cons
   setLeak();
   setConnections();
 }
-network::SparseNonLinearTransform::SparseNonLinearTransform(const SparseNonLinearTransform& transform) : KernelTransform(transform.N, 1, transform.input), N(transform.N), leak(transform.leak)
+network::SparseNonLinearTransform::SparseNonLinearTransform(const SparseNonLinearTransform& transform) : KernelTransform(transform.N, 1, *transform.input), N(transform.N), leak(transform.leak)
 {
   D = new unsigned int[N];
   offsets = new unsigned int[N];
@@ -117,7 +117,7 @@ network::KernelTransform& network::SparseNonLinearTransform::setWeights(const Ke
 }
 unsigned int network::SparseNonLinearTransform::getKernelDimension(unsigned int n) const
 {
-  return n < N ? D[n] + input.N : 0;
+  return n < N ? D[n] + input->N : 0;
 }
 double network::SparseNonLinearTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
@@ -130,8 +130,8 @@ double network::SparseNonLinearTransform::getKernelValue(unsigned int n, unsigne
       return v < 0 ? 0 : v == 0 ? 0.5 : v < SAT ? v : SAT;
     }
     d -= D[n];
-    if(d < input.N)
-      return input.get(d, t - 1);
+    if(d < input->N)
+      return input->get(d, t - 1);
   }
   return 0;
 }

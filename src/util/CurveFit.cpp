@@ -27,30 +27,29 @@ void CurveFit::clear()
 {
   c0 = c1 = NAN;
   for(unsigned int g = 0; g < G; g++) {
-    lgammas[g] = log(gammas[g])/log(gammas[G-1]) * (1 - gammas[g]);
+    lgammas[g] = log(gammas[g]) / log(gammas[G - 1]) * (1 - gammas[g]);
     T0[g] = T1[g] = T2[g] = C0[g] = C1[g] = D0[g] = CD0[g] = DD0[g] = 0;
-    for(unsigned int m = 0; m < 3; m++) {
+    for(unsigned int m = 0; m < 3; m++)
       bias[g][m] = gain[g][m] = decay[g][m] = error[g][m] = 0;
-    }
   }
   count = 0, igamma = 0, imode = 0;
   values.clear();
 }
 void CurveFit::add(double c)
 {
-#define sqr(x) ((x)*(x))
+#define sqr(x) ((x) * (x))
   for(unsigned int g = 0; g < G; g++) {
     // Calculates the estimation momenta
     T2[g] = gammas[g] * (T0[g] + 2 * T1[g] + T2[g]);
     T1[g] = gammas[g] * (T0[g] + T1[g]);
     T0[g] = 1 + gammas[g] * T0[g];
-    if (count > 0) {    
+    if(count > 0) {
       C1[g] = gammas[g] * (C0[g] + C1[g]);
       C0[g] = c0 + gammas[g] * C0[g];
-      if (count > 1) {
-	D0[g] = c1 + gammas[g] * D0[g];
-	CD0[g] = c0 * c1 + gammas[g] * CD0[g];
-	DD0[g] = c1 * c1 + gammas[g] * DD0[g];
+      if(count > 1) {
+        D0[g] = c1 + gammas[g] * D0[g];
+        CD0[g] = c0 * c1 + gammas[g] * CD0[g];
+        DD0[g] = c1 * c1 + gammas[g] * DD0[g];
       }
     }
     // Estimates the constant value model parameters
@@ -58,23 +57,23 @@ void CurveFit::add(double c)
     error[g][0] = lgammas[g] * sqr(c - bias[g][0]) + gammas[g] * error[g][0];
     // Estimates the linear value model parameters
     double DT = T1[g] * T1[g] - T0[g] * T2[g];
-    if (DT != 0) {
+    if(DT != 0) {
       gain[g][1] = (C1[g] * T0[g] - C0[g] * T1[g]) / DT;
       bias[g][1] = (T1[g] * C1[g] - T2[g] * C0[g]) / DT + gain[g][1];
       error[g][1] = lgammas[g] * sqr(c - bias[g][1]) + gammas[g] * error[g][1];
     }
     // Estimates the exponential value model parameters
-    if (count > 1) {
+    if(count > 1) {
       double DD = D0[g] * D0[g] - DD0[g] * T0[g];
-      if (DD != 0) {
-	double a = (C0[g] * D0[g] - CD0[g] * T0[g]) / DD;
-	double b = (D0[g] * CD0[g] - DD0[g] * C0[g]) / DD;
-	if (a != 1)
-	  bias[g][2] = b / (1 - a);
-	if (a > 0)
-	  decay[g][2] = -1.0 / log(a);
-	gain[g][2] = (c0 - bias[g][2])  * a;
-	error[g][2] = lgammas[g] * sqr(c - (bias[g][2] + gain[g][2])) + gammas[g] * error[g][2];
+      if(DD != 0) {
+        double a = (C0[g] * D0[g] - CD0[g] * T0[g]) / DD;
+        double b = (D0[g] * CD0[g] - DD0[g] * C0[g]) / DD;
+        if(a != 1)
+          bias[g][2] = b / (1 - a);
+        if(a > 0)
+          decay[g][2] = -1.0 / log(a);
+        gain[g][2] = (c0 - bias[g][2]) * a;
+        error[g][2] = lgammas[g] * sqr(c - (bias[g][2] + gain[g][2])) + gammas[g] * error[g][2];
       }
     }
     // Estimates the best model
@@ -82,8 +81,8 @@ void CurveFit::add(double c)
     igamma = 0, imode = 0;
     for(int g = G - 1; 0 <= g; g--)
       for(unsigned int m = 0; m < 3; m++)
-	if (!std::isnan(error[g][m]) && 0 < error[g][m] && error[g][m] < emin)
-	  emin = error[igamma = g][imode = m];
+        if(!std::isnan(error[g][m]) && (0 < error[g][m]) && (error[g][m] < emin))
+          emin = error[igamma = g][imode = m];
   }
   count++, c1 = c0, c0 = c;
   values.push_back(c);
@@ -93,9 +92,9 @@ std::string CurveFit::asString() const
 #if 1
   std::string s;
   for(unsigned int g = 0; g < G; g++)
-    for(unsigned int m = 0; m < 3; m++) 
-      s += s_printf("g = %4.2g m = %d, bias = %g, gain = %g, decay = %g, error = %.2g\n", 
-		    gammas[g], m, bias[g][m], gain[g][m], decay[g][m], error[g][m]);
+    for(unsigned int m = 0; m < 3; m++)
+      s += s_printf("g = %4.2g m = %d, bias = %g, gain = %g, decay = %g, error = %.2g\n",
+                    gammas[g], m, bias[g][m], gain[g][m], decay[g][m], error[g][m]);
 #endif
   return s_printf("{ 'count' : %d, 'decay' : %g, 'gain' : %g, 'bias' : %g, 'error' : %g, 'gamma' : '%g', 'mode' : '%c'}\n%s", getCount(), getDecay(), getGain(), getBias(), getError(), getGamma(), getMode(), s.c_str());
 }

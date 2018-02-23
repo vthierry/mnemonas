@@ -139,8 +139,8 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Solves a linear system of equations. </p>
 <ul>
-<li>It uses a SVD decomposition in order to calculates the pseudo-inverse of the system, i.e. <center> <img class="formulaInl" alt="$\min_{\bf x} |{\bf x} - {\bf x}_0| + \lambda \, ({\bf b} - {\bf A} \, {\bf x}) $" src="form_10.png"/></center></li>
-<li>The computational cost is <img class="formulaInl" alt="$O(\max(M,N)\,N^2)$" src="form_11.png"/>. <dl class="params"><dt>Parameters</dt><dd>
+<li>It uses a SVD decomposition in order to calculates the pseudo-inverse of the system, i.e. <center> <img class="formulaInl" alt="$\min_{\bf x} |{\bf x} - {\bf x}_0| + \lambda \, ({\bf b} - {\bf A} \, {\bf x}) $" src="form_9.png"/></center></li>
+<li>The computational cost is <img class="formulaInl" alt="$O(\max(M,N)\,N^2)$" src="form_10.png"/>. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">M</td><td>The number of equations. </td></tr>
     <tr><td class="paramname">N</td><td>The number of unknows. </td></tr>
@@ -317,8 +317,8 @@ Static Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">M</td><td>The number of equations, the manifold is defined by M equations. </td></tr>
     <tr><td class="paramname">N</td><td>The number of unknows. </td></tr>
-    <tr><td class="paramname">c</td><td>The constraint <code>m</code>-th equation value, <img class="formulaInl" alt="$c_m({\bf x})$" src="form_12.png"/>. </td></tr>
-    <tr><td class="paramname">d</td><td>The constraint <code>m</code>-th equation, <code>n</code>-th component derivative value, <img class="formulaInl" alt="$\partial_{x_n}c_m({\bf x})$" src="form_13.png"/>. </td></tr>
+    <tr><td class="paramname">c</td><td>The constraint <code>m</code>-th equation value, <img class="formulaInl" alt="$c_m({\bf x})$" src="form_11.png"/>. </td></tr>
+    <tr><td class="paramname">d</td><td>The constraint <code>m</code>-th equation, <code>n</code>-th component derivative value, <img class="formulaInl" alt="$\partial_{x_n}c_m({\bf x})$" src="form_12.png"/>. </td></tr>
     <tr><td class="paramname">x</td><td>A <code>double[N]</code> output buffer. </td></tr>
     <tr><td class="paramname">x0</td><td>A <code>double[N]</code> input buffer. If NULL considers the zero vector. We may have x0 == x. </td></tr>
     <tr><td class="paramname">epsilon</td><td>The threshold under which two <code>x[n]</code> values are indistinguishable. </td></tr>
@@ -411,4 +411,4 @@ Static Public Member Functions</h2></td></tr>
 <li>src/util/<a class="el" href="solver_8cpp_source.html">solver.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-02 at 08:42:30) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-23 at 15:42:54) </tt> </div><hr/>

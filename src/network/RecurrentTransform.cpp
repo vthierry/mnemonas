@@ -5,6 +5,11 @@ network::RecurrentTransform::RecurrentTransform(unsigned int N, unsigned int R, 
   reset();
 }
 /// @cond INTERNAL
+void network::RecurrentTransform::setInput(const Input& input)
+{
+  Transform::setInput(input);
+  reset(L != R + 1, upsilon0);
+}
 network::RecurrentTransform::~RecurrentTransform()
 {
   delete[] values;
@@ -14,7 +19,7 @@ network::RecurrentTransform& network::RecurrentTransform::reset(bool buffered, d
 {
   assume(upsilon >= 0, "illegal-argument", "in network::RecurrentTransform::reset, we must have upsilon=%g >= 0", upsilon);
   upsilon0 = upsilon;
-  unsigned int size = buffered ? input.T : R + 1;
+  unsigned int size = buffered ? input->T : R + 1;
   if(size != L) {
     delete[] values;
     values = new double[N * (L = size)];
@@ -136,5 +141,5 @@ Histogram network::RecurrentTransform::getLyapunovExponent(unsigned int W, unsig
 }
 std::string network::RecurrentTransform::asString() const
 {
-  return s_printf("{ 'N' : %d, 'R' : %d, 'L' : %d, 'M' : %d, 'T' : %.0f }", N, R, L, input.N, input.T);
+  return s_printf("{ 'N' : %d, 'R' : %d, 'L' : %d, 'M' : %d, 'T' : %.0f }", N, R, L, input->N, input->T);
 }

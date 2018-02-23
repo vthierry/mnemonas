@@ -15,9 +15,8 @@ network::BufferedInput::BufferedInput(const BufferedInput& input) : Input(input.
         const_cast < double * > (values)[nt] = input.get(n, t);
   } else
     values = input.values;
-  if(vectored) {
+  if(vectored)
     vvalues = input.vvalues;
-  }
 }
 ///@endcond
 network::BufferedInput::BufferedInput(const Input& input, unsigned int N0, unsigned int n0, unsigned int T0, unsigned int t0) : Input(0 < N0 ? N0 - n0 : input.N, 0 < T0 ? T0 - t0 : input.T), vvalues(NULL), buffered(true), vectored(false)
@@ -27,12 +26,12 @@ network::BufferedInput::BufferedInput(const Input& input, unsigned int N0, unsig
     for(unsigned int n = 0; n < N; n++, nt++)
       const_cast < double * > (values)[nt] = input.get(n + n0, t + t0);
 }
-
 network::BufferedInput::BufferedInput(const double *values, unsigned int N, unsigned int T) : Input(N, T), values(values), vvalues(NULL), buffered(false), vectored(false) {}
 network::BufferedInput::BufferedInput(unsigned int N) : Input(N, 0), values(NULL), vvalues(new std::vector < double >[N]), buffered(false), vectored(true) {}
 network::BufferedInput::BufferedInput(String file, String format) : Input(1, 1), vvalues(NULL), buffered(true), vectored(false)
 {
-  unsigned int N = 0; double T = 0;
+  unsigned int N = 0;
+  double T = 0;
   std::string ext = format == "csv" ? ".csv" : ".dat";
   FILE *fp = fopen((file + ext).c_str(), "r");
   assume(fp != NULL, "IO-Exception", "in network::BufferedInput unable to open %s%s", file.c_str(), ext.c_str());
@@ -188,7 +187,7 @@ void network::BufferedInput::add(const double *value)
   assume(vectored, "illegal-argument", "in network::BufferedInput::add, attempt to add a value on a fixed length buffer");
   for(unsigned int n = 0; n < N; n++)
     vvalues[n].push_back(value[n]);
-  setT(T+1);
+  setT(T + 1);
 }
 void network::BufferedInput::save(String file, String format, bool show) const
 {
