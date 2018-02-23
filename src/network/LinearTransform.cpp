@@ -29,7 +29,7 @@ bool network::LinearTransform::setWeight(unsigned int n, unsigned int d, double 
 network::KernelTransform& network::LinearTransform::setWeights(const network::KernelTransform& network)
 {
   assume(dynamic_cast < const LinearTransform * > (&network) != NULL, "illegal-argument", "in network::LinearTransform::setWeights wrong network type");
-  unsigned int N0 = getN() < network.getN() ? getN() : network.getN();
+  unsigned int N0 = N < network.N ? N : network.N;
   for(unsigned int n = 0; n < N0; n++)
     for(unsigned int d = 1; d < getKernelDimension(n); d++)
       setWeight(n, d, network.getWeight(n, d));
@@ -37,7 +37,7 @@ network::KernelTransform& network::LinearTransform::setWeights(const network::Ke
 }
 unsigned int network::LinearTransform::getKernelDimension(unsigned int n) const
 {
-  return 1 + getN() + input.getN();
+  return 1 + N + input.N;
 }
 double network::LinearTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
@@ -46,10 +46,10 @@ double network::LinearTransform::getKernelValue(unsigned int n, unsigned int d, 
     if(d == 1)
       return 1;
     d -= 2;
-    if(d < getN())
+    if(d < N)
       return sat(get(d, t - 1));
-    d -= getN();
-    if(d < input.getN())
+    d -= N;
+    if(d < input.N)
       return input.get(d, t - 1);
   }
   return 0;
@@ -57,7 +57,7 @@ double network::LinearTransform::getKernelValue(unsigned int n, unsigned int d, 
 double network::LinearTransform::getKernelDerivative(unsigned int n, unsigned int d, double t, unsigned int n_, double t_) const
 {
   assume(n < N && d <= getKernelDimension(n) && n_ < N, "illegal-argument", "network::LinearTransform::getKernelDerivative(%d, %d, t, %d, t_) out of bounds", n, d, n_);
-  return (1 < d && n_ == d - 2 && t_ == t - 1 && d <= getN() + 1) ? 1 : 0;
+  return (1 < d && n_ == d - 2 && t_ == t - 1 && d <= N + 1) ? 1 : 0;
 }
 bool network::LinearTransform::isConnected(unsigned int n, double t, unsigned int n_, double t_) const
 {

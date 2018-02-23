@@ -8,7 +8,7 @@ network::SupervisedCriterion::SupervisedCriterion(network::KernelTransform& tran
 double network::SupervisedCriterion::rho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);
-  if(n < values.getN())
+  if(n < values.N)
     switch(criterion) {
     case '2':
     {
@@ -54,7 +54,7 @@ double network::SupervisedCriterion::rho(unsigned int n, double t) const
 double network::SupervisedCriterion::drho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);
-  if(n < values.getN())
+  if(n < values.N)
     switch(criterion) {
     case '2':
       return value - values.get(n, t);
@@ -97,7 +97,7 @@ double network::SupervisedCriterion::drho(unsigned int n, double t) const
 double network::SupervisedCriterion::get(unsigned int n, double t) const
 {
   if(reinject != 'n') {
-    if(n < values.getN())
+    if(n < values.N)
       return values.get(n, t);
     if(reinject == 'b')
       return TransformCriterion::get(n, t);
@@ -106,7 +106,7 @@ double network::SupervisedCriterion::get(unsigned int n, double t) const
 }
 unsigned int network::SupervisedCriterion::getN0() const
 {
-  return reinject == 'b' ? TransformCriterion::getN0() : reinject == 'o' ? values.getN() : 0;
+  return reinject == 'b' ? TransformCriterion::getN0() : reinject == 'o' ? values.N : 0;
 }
 void network::SupervisedCriterion::update()
 {

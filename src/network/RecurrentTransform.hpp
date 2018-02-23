@@ -23,7 +23,7 @@ public:
 
     /** Resets the transform buffering.
      * - The current time is reset to 0.
-     * @param buffered If true all <tt>input.getT()</tt> are buffered, else only <tt>R+1</tt> are buffered.
+     * @param buffered If true all <tt>input.T</tt> are buffered, else only <tt>R+1</tt> are buffered.
      * @param upsilon Standard-deviation of the initial conditions normal random values.
      * @return this.
      */

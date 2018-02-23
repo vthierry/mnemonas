@@ -9,7 +9,7 @@ public:
     /** Resets the criterion for a given transform.
      * @param transform The transform to estimate.
      * @param values The output desired values.
-     * - By contract output units correspond to the values.getN() lower indexed units and hidden units to the remainder indexes.
+     * - By contract output units correspond to the values.N lower indexed units and hidden units to the remainder indexes.
      * @param criterion The criterion index:
      * - <tt>2</tt> The L2 criterion \f$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/2\f$.
      * - <tt>1</tt> The reweighted L1 criterion \f$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + |\hat{x}_n(t)-\bar{o}_n(t)|))\f$.

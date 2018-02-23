@@ -14,7 +14,7 @@ network::KernelSupervisedEstimator::~KernelSupervisedEstimator()
 double network::KernelSupervisedEstimator::rho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);
-  if(n < values.getN())
+  if(n < values.N)
     switch(criterion) {
     case '2':
     {
@@ -60,7 +60,7 @@ double network::KernelSupervisedEstimator::rho(unsigned int n, double t) const
 double network::KernelSupervisedEstimator::drho(unsigned int n, double t) const
 {
   double value = transform.get(n, t);
-  if(n < values.getN())
+  if(n < values.N)
     switch(criterion) {
     case '2':
       return value - values.get(n, t);
@@ -104,8 +104,8 @@ double network::KernelSupervisedEstimator::get(unsigned int n, double t) const
 {
   if(reinject) {
     if(estimates != NULL)
-      return estimates[n + transform.getN() * (int) t];
-    if(n < values.getN())
+      return estimates[n + transform.N * (int) t];
+    if(n < values.N)
       return values.get(n, t);
   }
   return network::KernelEstimator::get(n, t);
@@ -114,10 +114,10 @@ void network::KernelSupervisedEstimator::update()
 {
   if(reinject) {
     if(estimates == NULL) {
-      estimates = new double[transform.getN() * ((int) transform.getT())];
-      destimates = new double[transform.getN() * ((int) transform.getT())];
+      estimates = new double[transform.N * ((int) transform.T)];
+      destimates = new double[transform.N * ((int) transform.T)];
     }
-    unsigned int N = transform.getN(), N0 = values.getN(), T = transform.getT(), R = transform.getR();
+    unsigned int N = transform.N, N0 = values.N, T = transform.T, R = transform.getR();
     transform.reset(true);
     double r = 1;
     static const unsigned int K = 20;

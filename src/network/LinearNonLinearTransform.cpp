@@ -55,16 +55,16 @@ bool network::LinearNonLinearTransform::setWeight(unsigned int n, unsigned int d
 network::KernelTransform& network::LinearNonLinearTransform::setWeights(const network::KernelTransform& network)
 {
   assume(dynamic_cast < const LinearNonLinearTransform * > (&network) != NULL, "illegal-argument", "in network::LinearNonLinearTransform::setWeights wrong network type");
-  unsigned int N0 = getN() < network.getN() ? getN() : network.getN();
+  unsigned int N0 = N < network.N ? N : network.N;
   for(unsigned int n = N0; n < N0 / 3; n++)
-    for(unsigned int k = 0, k0 = 0, k1 = 0; k < 3; k++, k0 += getN() / 3, k1 += network.getN() / 3)
+    for(unsigned int k = 0, k0 = 0, k1 = 0; k < 3; k++, k0 += N / 3, k1 += network.N / 3)
       for(unsigned int d = 1; d < getKernelDimension(n + k0); d++)
         setWeight(n + k0, d, network.getWeight(n + k1, d));
   return *this;
 }
 unsigned int network::LinearNonLinearTransform::getKernelDimension(unsigned int n) const
 {
-  return n < N ? 0 : n < N2 ? 1 : 1 + N + input.getN();
+  return n < N ? 0 : n < N2 ? 1 : 1 + N + input.N;
 }
 double network::LinearNonLinearTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
@@ -81,7 +81,7 @@ double network::LinearNonLinearTransform::getKernelValue(unsigned int n, unsigne
     if(d < N)
       return get(d, t - 1);
     d -= N;
-    if(d < input.getN())
+    if(d < input.N)
       return input.get(d, t - 1);
     return 0;
   }

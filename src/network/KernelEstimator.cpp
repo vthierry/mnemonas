@@ -1,7 +1,7 @@
 #include "mnemonas.hpp"
 #include <algorithm>
 
-network::KernelEstimator::KernelEstimator(KernelTransform& transform, TransformCriterion& criterion) : transform(transform), N(transform.getN()), T((int) transform.getT()), R(transform.getR()), criterion(criterion), weights0(new double[transform.getWeightCount()]), values0(new double[N * T]), errors(new double[N * T]), drho_mean(0), once(true), connections(NULL), k_negligible(0), k_saturated(0) {}
+network::KernelEstimator::KernelEstimator(KernelTransform& transform, TransformCriterion& criterion) : transform(transform), N(transform.N), T((int) transform.T), R(transform.getR()), criterion(criterion), weights0(new double[transform.getWeightCount()]), values0(new double[N * T]), errors(new double[N * T]), drho_mean(0), once(true), connections(NULL), k_negligible(0), k_saturated(0) {}
 /// @cond INTERNAL
 network::KernelEstimator::~KernelEstimator()
 {

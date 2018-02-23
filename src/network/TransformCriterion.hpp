@@ -18,10 +18,10 @@ public:
      * - The default implementation simply returns \f$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}\f$, running:<pre>
      * double r = 0;
      * transform.reset(true);
-     * for(unsigned int t = 0; t < transform.getT(); t++)
-     *   for(int n =  transform.getN() - 1; 0 <= n; n--)
+     * for(unsigned int t = 0; t < transform.T; t++)
+     *   for(int n =  transform.N - 1; 0 <= n; n--)
      *      r += rho(n, t, transform.get(n, t));
-     * return r / (transform.getN() *  transform.getT());</pre>
+     * return r / (transform.N *  transform.T);</pre>
      * @return The criterion value to mnimize.
      */
     virtual double rho() const;
@@ -55,7 +55,7 @@ public:
 
     /** Gets the best previous estimated value.
      * - The method is to be overwritten if output values can be provided.
-     * @param n The input unit index in <tt>{0,getN(){</tt>.
+     * @param n The input unit index in <tt>{0,N{</tt>.
      * @param t The value time.
      * @return The best previous estimated value or NAN if undefined.
      */

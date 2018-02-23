@@ -6,7 +6,7 @@
 #include "util/gnuplot.h"
 
 ///@cond INTERNAL
-network::BufferedInput::BufferedInput(const BufferedInput& input) : Input(input.getN(), input.getT()), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
+network::BufferedInput::BufferedInput(const BufferedInput& input) : Input(input.N, input.T), vvalues(NULL), buffered(input.buffered), vectored(input.vectored)
 {
   if(buffered) {
     values = new double[N * (int) T];
@@ -20,7 +20,7 @@ network::BufferedInput::BufferedInput(const BufferedInput& input) : Input(input.
   }
 }
 ///@endcond
-network::BufferedInput::BufferedInput(const Input& input, unsigned int N0, unsigned int n0, unsigned int T0, unsigned int t0) : Input(0 < N0 ? N0 - n0 : input.getN(), 0 < T0 ? T0 - t0 : input.getT()), vvalues(NULL), buffered(true), vectored(false)
+network::BufferedInput::BufferedInput(const Input& input, unsigned int N0, unsigned int n0, unsigned int T0, unsigned int t0) : Input(0 < N0 ? N0 - n0 : input.N, 0 < T0 ? T0 - t0 : input.T), vvalues(NULL), buffered(true), vectored(false)
 {
   values = new double[N * (int) T];
   for(unsigned int t = 0, nt = 0; t < T; t++)
@@ -32,6 +32,7 @@ network::BufferedInput::BufferedInput(const double *values, unsigned int N, unsi
 network::BufferedInput::BufferedInput(unsigned int N) : Input(N, 0), values(NULL), vvalues(new std::vector < double >[N]), buffered(false), vectored(true) {}
 network::BufferedInput::BufferedInput(String file, String format) : Input(1, 1), vvalues(NULL), buffered(true), vectored(false)
 {
+  unsigned int N = 0; double T = 0;
   std::string ext = format == "csv" ? ".csv" : ".dat";
   FILE *fp = fopen((file + ext).c_str(), "r");
   assume(fp != NULL, "IO-Exception", "in network::BufferedInput unable to open %s%s", file.c_str(), ext.c_str());
@@ -64,6 +65,7 @@ network::BufferedInput::BufferedInput(String file, String format) : Input(1, 1),
     assume(false, "illegal-argument", "in network::BufferedInput %s is an unknown file format\n", format.c_str());
   assume(ferror(fp) == 0, "IO-Exception", "in network::BufferedInput error %s when loading in %s.dat", strerror(ferror(fp)), file.c_str());
   fclose(fp);
+  setN(N), setT(T);
 }
 network::BufferedInput::BufferedInput(String name, unsigned int N, unsigned int T, ...) : Input(N, T), values(new double[N * T]), vvalues(NULL), buffered(true), vectored(false)
 {
@@ -138,7 +140,7 @@ network::BufferedInput::BufferedInput(String name, unsigned int N, unsigned int 
   } else
     assume(false, "illegal-argument", "in network::BufferedInput %s is an unknown sequence name\n", name.c_str());
 }
-network::BufferedInput::BufferedInput(const Input& input, String name, ...) : Input(input.getN(), input.getT()), values(new double[input.getN() * (int) input.getT()]), vvalues(NULL), buffered(true), vectored(false)
+network::BufferedInput::BufferedInput(const Input& input, String name, ...) : Input(input.N, input.T), values(new double[input.N * (int) input.T]), vvalues(NULL), buffered(true), vectored(false)
 {
   va_list a;
   va_start(a, name);
@@ -186,7 +188,7 @@ void network::BufferedInput::add(const double *value)
   assume(vectored, "illegal-argument", "in network::BufferedInput::add, attempt to add a value on a fixed length buffer");
   for(unsigned int n = 0; n < N; n++)
     vvalues[n].push_back(value[n]);
-  T++;
+  setT(T+1);
 }
 void network::BufferedInput::save(String file, String format, bool show) const
 {

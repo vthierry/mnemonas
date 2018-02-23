@@ -1,28 +1,30 @@
 namespace network {
 /** Defines the input of a calculation network. */
   class Input {
-protected:
-    unsigned int N;
-    double T;
+    bool mutable_;
+public:
+    /** Gets the number of input units. */
+    const unsigned int N; 
+    /** Gets the maximal time range. */
+    const double T;
 public:
     /** Resets the input dimensions.
      * @param N The number of input units, defined unit indexes stand in <tt>{0, N{</tt>.
      * @param T The maximal time range, defined times stand in <tt>[0, T[</tt>.
+     * @param mutable_ If true N and T can be modified.
      */
-    Input(unsigned int N, double T);
+    Input(unsigned int N, double T, bool mutable_ = true);
     /// @cond INTERNAL
     virtual ~Input() {}
     ///@endcond
-    /** Gets the number of input units. */
-    unsigned int getN() const
-    {
-      return N;
-    }
-    /** Gets the maximal time range. */
-    double getT() const
-    {
-      return T;
-    }
+    /** Sets the number of input units.
+     * @param N The number of input units.
+     */
+    virtual void setN(unsigned int N);
+    /** Sets the maximal time range. 
+     * @param T The maximal time range
+     */
+    virtual void setT(double T);
     /** Returns the input value.
      * - The method is to be overwritten to implement a given input.
      * @param n The input unit index.

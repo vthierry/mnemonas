@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-network::KernelEstimator::KernelEstimator(KernelTransform& transform) : transform(transform), N(transform.getN()), T((int) transform.getT()), R(transform.getR()), upsilon(0), errors(new double[N * T]), grads(new double *[K_GRADS + K_SYLIN]), k_grads(new double[K_GRADS]), n_grads(new double[K_GRADS + K_SYLIN]), A(new double **[K_SYLIN]), b(new double **[K_SYLIN]), w1(new double[transform.getWeightCount()]), values0(new double[N * T]), w0(new double[transform.getWeightCount()])
+network::KernelEstimator::KernelEstimator(KernelTransform& transform) : transform(transform), N(transform.N), T((int) transform.T), R(transform.getR()), upsilon(0), errors(new double[N * T]), grads(new double *[K_GRADS + K_SYLIN]), k_grads(new double[K_GRADS]), n_grads(new double[K_GRADS + K_SYLIN]), A(new double **[K_SYLIN]), b(new double **[K_SYLIN]), w1(new double[transform.getWeightCount()]), values0(new double[N * T]), w0(new double[transform.getWeightCount()])
 {
   for(unsigned int k = 0; k < K_GRADS + K_SYLIN; k++) {
     grads[k] = new double[transform.getWeightCount()];

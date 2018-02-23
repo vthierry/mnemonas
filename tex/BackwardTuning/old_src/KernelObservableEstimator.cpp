@@ -46,7 +46,7 @@ network::KernelObservableEstimator::KernelObservableEstimator(KernelTransform& t
   }
   // Stores lambdas or default values
   {
-    double u = transform.getT() > 0 ? 1.0 / transform.getT() : 1;
+    double u = transform.T > 0 ? 1.0 / transform.T : 1;
     lambdas = new double[dimension];
     for(unsigned int k = 0; k < dimension; k++)
       lambdas[k] = lambdas_ == NULL ? u : fabs(lambdas_[k]);
@@ -75,8 +75,8 @@ double network::KernelObservableEstimator::rho() const
 {
   transform.reset(true);
   // - printf("W : %s\n", transform.asString().c_str());
-  for(unsigned int t = 0; t < transform.getT(); t++)
-    for(int n = transform.getN() - 1; 0 <= n; n--)
+  for(unsigned int t = 0; t < transform.T; t++)
+    for(int n = transform.N - 1; 0 <= n; n--)
       transform.get(n, t);
   double v = 0;
   for(unsigned int k = 0; k < dimension; k++)
@@ -117,9 +117,9 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::KernelObservableEstimator::MeanObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
+        assume(n0 < input->N, "illegal-argument", "network::KernelObservableEstimator::MeanObservable the unit index n0=%d must be in {0, %d{", n0, input->N);
         count = sum = 0;
-        for(unsigned int t = 0; t < input->getT(); t++)
+        for(unsigned int t = 0; t < input->T; t++)
           count++, sum += input->get(n0, t);
         return count == 0 ? 0 : sum / count;
       }
@@ -141,10 +141,10 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::KernelObservableEstimator::IcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
-        assume(m0 < input->getN(), "illegal-argument", "network::KernelObservableEstimator::IcorrObservable the unit index m0=%d must be in {0, %d{", m0, input->getN());
+        assume(n0 < input->N, "illegal-argument", "network::KernelObservableEstimator::IcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->N);
+        assume(m0 < input->N, "illegal-argument", "network::KernelObservableEstimator::IcorrObservable the unit index m0=%d must be in {0, %d{", m0, input->N);
         count = sum = 0;
-        for(unsigned int t = 0; t < input->getT(); t++)
+        for(unsigned int t = 0; t < input->T; t++)
           count++, sum += input->get(n0, t) * input->get(m0, t);
         return count == 0 ? 0 : sum / count;
       }
@@ -167,17 +167,17 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::KernelObservableEstimator::AcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
-        assume(tau < input->getT(), "illegal-argument", "network::KernelObservableEstimator::AcorrObservable the time shift tau=%d must be in {0, %d{", tau, input->getT());
+        assume(n0 < input->N, "illegal-argument", "network::KernelObservableEstimator::AcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->N);
+        assume(tau < input->T, "illegal-argument", "network::KernelObservableEstimator::AcorrObservable the time shift tau=%d must be in {0, %d{", tau, input->T);
         assume(tau <= 16, "illegal-argument", "network::KernelObservableEstimator::AcorrObservable the time shift tau=%d is numerically unrealistic, must be in {0, 16}", tau);
         count = sum = 0;
-        for(int t = tau; t < input->getT(); t++)
+        for(int t = tau; t < input->T; t++)
           count++, sum += input->get(n0, t) * input->get(n0, t - tau);
         return count == 0 ? 0 : sum / count;
       }
       double doValueDerivative(unsigned int n, double t)
       {
-        return count == 0 ? 0 : n == n0 ? ((tau <= t ? input->get(n0, t - tau) : 0) + (t + tau < input->getT() ? input->get(n0, t + tau) : 0)) / count : 0;
+        return count == 0 ? 0 : n == n0 ? ((tau <= t ? input->get(n0, t - tau) : 0) + (t + tau < input->T ? input->get(n0, t + tau) : 0)) / count : 0;
       }
     };
     return new AcorrObservable(n0, tau);

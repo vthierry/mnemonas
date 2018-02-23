@@ -11,7 +11,7 @@ network::TransformCriterion::~TransformCriterion()
 ///@endcond
 double network::TransformCriterion::rho() const
 {
-  unsigned int N = transform.getN(), T = (int) transform.getT();
+  unsigned int N = transform.N, T = (int) transform.T;
   double r = 0;
   transform.reset(true);
   // - printf("W: %s\n", transform.asString().c_str());
@@ -34,19 +34,19 @@ double network::TransformCriterion::drho(unsigned int n, double t) const
 }
 double network::TransformCriterion::get(unsigned int n, double t) const
 {
-  return estimates == NULL ? NAN : estimates[n + transform.getN() * (int) t];
+  return estimates == NULL ? NAN : estimates[n + transform.N * (int) t];
 }
 unsigned int network::TransformCriterion::getN0() const
 {
-  return estimates == NULL ? 0 : transform.getN();
+  return estimates == NULL ? 0 : transform.N;
 }
 void network::TransformCriterion::update()
 {
   if(estimates == NULL) {
-    estimates = new double[transform.getN() * ((int) transform.getT())];
-    destimates = new double[transform.getN() * ((int) transform.getT())];
+    estimates = new double[transform.N * ((int) transform.T)];
+    destimates = new double[transform.N * ((int) transform.T)];
   }
-  unsigned int N = transform.getN(), N0 = getN0(), T = transform.getT(), R = transform.getR();
+  unsigned int N = transform.N, N0 = getN0(), T = transform.T, R = transform.getR();
   transform.reset(true);
   double r = 1;
   static const unsigned int K = 20;

@@ -46,7 +46,7 @@ network::ObservableCriterion::ObservableCriterion(KernelTransform& transform, st
   }
   // Stores lambdas or default values
   {
-    double u = transform.getT() > 0 ? 1.0 / transform.getT() : 1;
+    double u = transform.T > 0 ? 1.0 / transform.T : 1;
     lambdas = new double[dimension];
     for(unsigned int k = 0; k < dimension; k++)
       lambdas[k] = lambdas_ == NULL ? u : fabs(lambdas_[k]);
@@ -76,8 +76,8 @@ double network::ObservableCriterion::rho() const
 {
   transform.reset(true);
   // -printf("W : %s\n", transform.asString().c_str());
-  for(unsigned int t = 0; t < transform.getT(); t++)
-    for(int n = transform.getN() - 1; 0 <= n; n--)
+  for(unsigned int t = 0; t < transform.T; t++)
+    for(int n = transform.N - 1; 0 <= n; n--)
       transform.get(n, t);
   double v = 0;
   for(unsigned int k = 0; k < dimension; k++)
@@ -105,7 +105,7 @@ double network::ObservableCriterion::getObservableExpectedValue(unsigned int k) 
 }
 double network::ObservableCriterion::get(unsigned int n, double t) const
 {
-  return estimates == NULL ? NAN : estimates[n + transform.getN() * (int) t];
+  return estimates == NULL ? NAN : estimates[n + transform.N * (int) t];
 }
 unsigned int network::ObservableCriterion::getN0() const
 {
@@ -114,7 +114,7 @@ unsigned int network::ObservableCriterion::getN0() const
 void network::ObservableCriterion::update()
 {
   if(reinject) {
-    unsigned int N = transform.getN(), T = transform.getT();
+    unsigned int N = transform.N, T = transform.T;
     if(estimates == NULL)
       estimates = new double[N * T];
     // Runs one simulation to buffer the actual values
@@ -144,7 +144,7 @@ void network::ObservableCriterion::update()
 }
 double network::ObservableCriterion::solver_project_c(const double *x, unsigned int d)
 {
-  unsigned int N = transform.getN(), T = transform.getT();
+  unsigned int N = transform.N, T = transform.T;
   if(d == 0)
     for(unsigned int t = 0, nt = 0; t < T; t++)
       for(unsigned int n = 0; n < N; n++, nt++)
@@ -154,7 +154,7 @@ double network::ObservableCriterion::solver_project_c(const double *x, unsigned 
 }
 double network::ObservableCriterion::solver_project_d(const double *x, unsigned int d, unsigned int nt)
 {
-  unsigned int N = transform.getN();
+  unsigned int N = transform.N;
   return observables[d]->getValueDerivative(nt % N, nt / N);
 }
 double network::ObservableCriterion::solver_project_this_c(const double *x, unsigned int d)
@@ -181,9 +181,9 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::ObservableCriterion::MeanObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
+        assume(n0 < input->N, "illegal-argument", "network::ObservableCriterion::MeanObservable the unit index n0=%d must be in {0, %d{", n0, input->N);
         count = sum = 0;
-        for(unsigned int t = 0; t < input->getT(); t++)
+        for(unsigned int t = 0; t < input->T; t++)
           count++, sum += input->get(n0, t);
         return count == 0 ? 0 : sum / count;
       }
@@ -205,10 +205,10 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::ObservableCriterion::IcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
-        assume(m0 < input->getN(), "illegal-argument", "network::ObservableCriterion::IcorrObservable the unit index m0=%d must be in {0, %d{", m0, input->getN());
+        assume(n0 < input->N, "illegal-argument", "network::ObservableCriterion::IcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->N);
+        assume(m0 < input->N, "illegal-argument", "network::ObservableCriterion::IcorrObservable the unit index m0=%d must be in {0, %d{", m0, input->N);
         count = sum = 0;
-        for(unsigned int t = 0; t < input->getT(); t++)
+        for(unsigned int t = 0; t < input->T; t++)
           count++, sum += input->get(n0, t) * input->get(m0, t);
         return count == 0 ? 0 : sum / count;
       }
@@ -231,17 +231,17 @@ public:
 protected:
       double doValue()
       {
-        assume(n0 < input->getN(), "illegal-argument", "network::ObservableCriterion::AcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->getN());
-        assume(tau < input->getT(), "illegal-argument", "network::ObservableCriterion::AcorrObservable the time shift tau=%d must be in {0, %d{", tau, input->getT());
+        assume(n0 < input->N, "illegal-argument", "network::ObservableCriterion::AcorrObservable the unit index n0=%d must be in {0, %d{", n0, input->N);
+        assume(tau < input->T, "illegal-argument", "network::ObservableCriterion::AcorrObservable the time shift tau=%d must be in {0, %d{", tau, input->T);
         assume(tau <= 16, "illegal-argument", "network::ObservableCriterion::AcorrObservable the time shift tau=%d is numerically unrealistic, must be in {0, 16}", tau);
         count = sum = 0;
-        for(int t = tau; t < input->getT(); t++)
+        for(int t = tau; t < input->T; t++)
           count++, sum += input->get(n0, t) * input->get(n0, t - tau);
         return count == 0 ? 0 : sum / (count - tau);
       }
       double doValueDerivative(unsigned int n, double t)
       {
-        return count == 0 ? 0 : n == n0 ? ((tau <= t ? input->get(n0, t - tau) : 0) + (t + tau < input->getT() ? input->get(n0, t + tau) : 0)) / (count - tau) : 0;
+        return count == 0 ? 0 : n == n0 ? ((tau <= t ? input->get(n0, t - tau) : 0) + (t + tau < input->T ? input->get(n0, t + tau) : 0)) / (count - tau) : 0;
       }
     };
     return new AcorrObservable(n0, tau);

@@ -43,7 +43,7 @@ public:
 protected:
       /** Calculates and returns the observable value expectation, given the measures.
        * - Typical implementation writes :<pre>  reset_the_calculation();
-       *  for(unsigned int t = 0; t < input->getT(); t++)
+       *  for(unsigned int t = 0; t < input->T; t++)
        *    add_new_values(t);
        *  return finalize_the_calculation(); </pre>
        */

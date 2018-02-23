@@ -60,16 +60,16 @@ bool network::IntegrateAndFireTransform::setWeight(unsigned int n, unsigned int 
 network::KernelTransform& network::IntegrateAndFireTransform::setWeights(const network::KernelTransform& network)
 {
   assume(dynamic_cast < const IntegrateAndFireTransform * > (&network) != NULL, "illegal-argument", "in network::IntegrateAndFireTransform::setWeights wrong network type");
-  unsigned int N0 = getN() < network.getN() ? getN() : network.getN();
+  unsigned int N0 = N < network.N ? N : network.N;
   for(unsigned int n = 0; n < N0 / 2; n++)
-    for(unsigned int k = 0, k0 = 0, k1 = 0; k < 2; k++, k0 += getN() / 2, k1 += network.getN() / 2)
+    for(unsigned int k = 0, k0 = 0, k1 = 0; k < 2; k++, k0 += N / 2, k1 += network.N / 2)
       for(unsigned int d = 1; d < getKernelDimension(n + k0); d++)
         setWeight(n + k0, d, network.getWeight(n + k1, d));
   return *this;
 }
 unsigned int network::IntegrateAndFireTransform::getKernelDimension(unsigned int n) const
 {
-  return n < N ? 2 + N + input.getN() : 1;
+  return n < N ? 2 + N + input.N : 1;
 }
 double network::IntegrateAndFireTransform::getKernelValue(unsigned int n, unsigned int d, double t) const
 {
@@ -84,7 +84,7 @@ double network::IntegrateAndFireTransform::getKernelValue(unsigned int n, unsign
     if(d < N)
       return zeta(get(d + N, t));
     d -= N;
-    if(d < input.getN())
+    if(d < input.N)
       return input.get(d, t - 1);
     return 0;
   } else

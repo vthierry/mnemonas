@@ -91,7 +91,7 @@ void network_test()
       }
       static void testDerivatives(String type, network::KernelTransform& transform)
       {
-        unsigned int N = transform.getN(), R = transform.getR(), T = transform.getT();
+        unsigned int N = transform.N, R = transform.getR(), T = transform.T;
         transform.reset(true);
         for(unsigned int t = 0; t < T; t++)
           for(int n = N - 1; 0 <= n; n--) {

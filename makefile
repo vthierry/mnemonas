@@ -130,7 +130,7 @@ vrun : .build/main.exe
 	@echo 'make vrun'
 	@ulimit -s 100000 2>/dev/null ; export GLIBCXX_FORCE_NEW=1; valgrind --max-stackframe=100000000 --leak-check=full --show-reachable=yes --show-leak-kinds=all --track-origins=yes .build/main.exe $(ARGS)
 
-test : .build/main.exe
+test : clean .build/main.exe
 	@$(MAKE) run ARGS=-test
 #
 # Code and latex documentation
@@ -226,10 +226,10 @@ rrun-out :
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Voir Histogram avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 
-ARGS = -experiment2
+ARGS = -test # -experiment2
 
 todo :
-	@$(MAKE) run
+	@$(MAKE) grun 
 #	@firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################
