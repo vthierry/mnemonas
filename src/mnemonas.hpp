@@ -31,6 +31,7 @@
 
 #include "network/TransformCriterion.hpp"
 #include "network/SupervisedCriterion.hpp"
+#include "network/Observable.hpp"
 #include "network/ObservableCriterion.hpp"
 #include "network/KernelEstimator.hpp"
 #include "network/KernelExperimentalEstimator.hpp"

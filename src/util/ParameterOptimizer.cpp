@@ -15,9 +15,9 @@ ParameterOptimizer::ParameterOptimizer(String parameters_, char timing, unsigned
   meta_parameters_sampled_values = new double *[D];
   meta_parameters_sampled_counts = new unsigned int[D];
   unsigned int d = 0;
-  for(Struct::Iterator i(parameters); i.next(); d++) {
-    Struct parameters_value = parameters[i.getName()];
-    assume(parameters_value.getLength() > 0, "illegal-argument", "in ParameterOptimizer::ParameterOptimizer the '%s' parameter has no value", ((String) i.getName()).c_str());
+  for(std::vector < std::string > ::const_iterator i = parameters.getNames().begin(); i != parameters.getNames().end(); i++, d++) {
+    Struct parameters_value = parameters[*i];
+    assume(parameters_value.getLength() > 0, "illegal-argument", "in ParameterOptimizer::ParameterOptimizer the '%s' parameter has no value", (*i).c_str());
     meta_parameters_sampled_counts[d] = parameters_value.getLength();
     meta_parameters_sampled_values[d] = new double[meta_parameters_sampled_counts[d]];
     for(unsigned int k = 0; k < meta_parameters_sampled_counts[d]; k++)

@@ -230,8 +230,7 @@ public:
         for(unsigned int n = 0; n < 3; n++) {
           unsigned int N = names[n][0] == 'i' ? 2 : 1;
           network::BufferedInput output(names[n], N, T, 0.12345);
-          std::vector < network::ObservableCriterion::Observable * > observables =
-            network::ObservableCriterion::getObservables(names[n], N, /* tau = */ 1);
+          std::vector < network::Observable * > observables = network::ObservableCriterion::getObservables(names[n], N, /* tau = */ 1);
           network::Input input(0, 0);
           network::KernelTransform transform(0, 0, input);
           network::ObservableCriterion criterion(transform, output, observables);
@@ -254,8 +253,7 @@ public:
         network::BufferedInput input("normal", 1, T, true);
         network::LinearNonLinearTransform transform(N, input, -2, 2);
         transform.setOffset(NAN).setLeak(NAN).setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-        std::vector < network::ObservableCriterion::Observable * > observables =
-          network::ObservableCriterion::getObservables("acorr", N0, 1);
+        std::vector < network::Observable * > observables = network::ObservableCriterion::getObservables("acorr", N0, 1);
         double values[3] = { 0.2345, 0.3456, 0.1234 }, values0[3];
         network::ObservableCriterion criterion(transform, observables, values, NULL, true);
         transform.reset(true);
@@ -279,8 +277,7 @@ public:
         network::BufferedInput input("normal", 1, T, true);
         network::LinearNonLinearTransform transform(N, input, -2, 2);
         transform.setOffset(NAN).setLeak(NAN).setWeightsRandom(0, 0.5 / N, false, "normal", 1);
-        std::vector < network::ObservableCriterion::Observable * > observables =
-          network::ObservableCriterion::getObservables("acorr", N0, 1);
+        std::vector < network::Observable * > observables = network::ObservableCriterion::getObservables("acorr", N0, 1);
         double values[3] = { 0.2345, 0.3456, 0.1234 };
         network::ObservableCriterion criterion(transform, observables, values, NULL, true);
         network::KernelExperimentalEstimator estimator(transform, criterion);

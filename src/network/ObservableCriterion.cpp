@@ -1,40 +1,6 @@
 #include "mnemonas.hpp"
 #include <stdarg.h>
 
-network::ObservableCriterion::Observable::Observable(String name) : name(name), value(NAN), input(NULL) {}
-/// @cond INTERNAL
-network::ObservableCriterion::Observable::~Observable() {}
-///@endcond
-network::ObservableCriterion::Observable& network::ObservableCriterion::Observable::reset(const network::Input& input_)
-{
-  input = &input_;
-  value = doValue();
-  return *this;
-}
-std::string network::ObservableCriterion::Observable::asString() const
-{
-  return s_printf("{ 'name' = '%s', 'value' = '%g' }", name.c_str(), value);
-}
-double network::ObservableCriterion::Observable::getValue() const
-{
-  assume(input != NULL, "illegal-state", "in network::ObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
-  return value;
-}
-double network::ObservableCriterion::Observable::getValueDerivative(unsigned int n, double t) const
-{
-  assume(input != NULL, "illegal-state", "in network::ObservableCriterion::Observable::getValueDerivative, attempt to call this method before the observable reset()");
-  return const_cast < Observable * > (this)->doValueDerivative(n, t);
-}
-double network::ObservableCriterion::Observable::doValue()
-{
-  assume(false, "illegal-state", "in network::ObservableCriterion::Observable::doValue, this virtual method must be overriden");
-  return NAN;
-}
-double network::ObservableCriterion::Observable::doValueDerivative(unsigned int n, double t)
-{
-  assume(false, "illegal-state", "in network::ObservableCriterion::Observable::doValueDerivative, this virtual method must be overriden");
-  return NAN;
-}
 network::ObservableCriterion::ObservableCriterion(KernelTransform& transform, std::vector < Observable * > observables_, const double *values_, const double *lambdas_, bool reinject) : network::TransformCriterion(transform), reinject(reinject), estimate_N0(0), estimates(NULL)
 {
   // Stores the observables as an array
@@ -166,7 +132,7 @@ double network::ObservableCriterion::solver_project_this_d(const double *x, unsi
   return solver_project_this->solver_project_d(x, d, nt);
 }
 network::ObservableCriterion *network::ObservableCriterion::solver_project_this = NULL;
-network::ObservableCriterion::Observable *network::ObservableCriterion::getObservable(String name, ...)
+network::Observable *network::ObservableCriterion::getObservable(String name, ...)
 {
   va_list a;
   va_start(a, name);
@@ -252,7 +218,7 @@ protected:
     return NULL;
   }
 }
-std::vector < network::ObservableCriterion::Observable * > network::ObservableCriterion::getObservables(String name, ...) {
+std::vector < network::Observable * > network::ObservableCriterion::getObservables(String name, ...) {
   va_list a;
   va_start(a, name);
   if(name == "mean") {
@@ -293,7 +259,7 @@ std::vector < network::ObservableCriterion::Observable * > network::ObservableCr
     return observables;
   }
 }
-void network::ObservableCriterion::deleteObservables(std::vector < network::ObservableCriterion::Observable * >& observables)
+void network::ObservableCriterion::deleteObservables(std::vector < Observable * >& observables)
 {
   for(std::vector < Observable * > ::const_iterator i = observables.begin(); i != observables.end(); ++i)
     delete *i;

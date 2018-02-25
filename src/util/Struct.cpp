@@ -499,14 +499,14 @@ private:
       } else {
         string += asBeginTag("{");
         bool once = true;
-        for(Struct::Iterator i(value); i.next();) {
+        for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
           if(once)
             once = false;
           else
             string += asNextTag(", ");
-          write_word(string, i.getName(), true);
+          write_word(string, *i, true);
           string += asMeta(": ", true);
-          write_value(string, value.get(i.getName()));
+          write_value(string, value.get(*i));
         }
         for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
           Struct value_i = value.get(i);

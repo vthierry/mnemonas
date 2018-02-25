@@ -222,36 +222,17 @@ public:
   {
     return unset(toName(index));
   }
-#ifndef SWIG
-
-  /** Defines an iterator over the struct named fields.
+  /** Returns the field names, in order to define an iterator over the struct.
    * - It is used in a construct of the form:
-   *  <div><tt>for(Struct::Iterator i(values); i.next();) { String name = i.getName();  ../.. }</tt>.</div>
-   * - It does not iterate over the indexed values, which is realized using a construct of the form:
-   *  <div><tt>for(int i = 0; i < values.getLength(); i++) { Struct &value = values[i]; ../.. }</tt>.</div>
+   *  <div><tt>for(std::vector < std::string >::const_iterator i = struct.getNames().begin(); i != struct.getNames().end(); i++) { String name = *i;  ../.. }</tt>.</div>
+   * or:
+   *  <div><tt>const std::vector < std::string >& names = struct.getNames(); for(unsigned int i = 0; i < names.size(); i++) { String name = names[i];  ../.. }</tt>.</div>
+   * - It does not iterate over the indexed struct, which is realized using a construct of the form:
+   *  <div><tt>for(unsigned int i = 0; i < struct.getLength(); i++) { Struct &value = struct[i]; ../.. }</tt>.</div>
    */
-  class Iterator {
-private:
-    std::vector < std::string > &names;
-    unsigned int index;
-public:
-    /** Constructs an iterator over the struct named fields.
-     * @param value The logical-structure to iterate on.
-     */
-    Iterator(const Struct &value) : names(const_cast < Struct & > (value).names), index(-1) {}
-    /** Returns the current name if any, else the result is undefined. */
-    String getName() const
-    {
-      assume(index < names.size(), "illegal-state", "in Struct::Iterator::getName() no more name to return");
-      return names[index];
-    }
-    /** Returns true if there is another element, enumerating a new element at each call. */
-    bool next()
-    {
-      return (++index) < names.size();
-    }
-  };
-#endif
+  const std::vector < std::string >& getNames() {
+    return names;
+  }
 
   // @}
   /** @name Copy and equality operator */

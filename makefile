@@ -88,9 +88,11 @@ pywrap : .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-pac
 .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-packages/mnemonas/mnemonas.so : $(SRC) $(INC)
 	@echo 'make mnemonas.py mnemonas.so'
 	@/bin/rm -rf .build/python ; mkdir -p .build/python/site-packages/mnemonas
-	@inc=`egrep "(util|network)/" < src/mnemonas.hpp | sed 's/^.include[^"]*"\([^"]*\)".*/src\/\1/'`; (echo "%module mnemonas"; echo "#pragma SWIG nowarn=SWIGWARN_PARSE_NESTED_CLASS" ; echo "%{"; cat $$inc ; echo "%}" ;  cat $$inc) >  .build/mnemonas.i
+	@inc=`egrep "(util|network)/" < src/mnemonas.hpp | sed 's/^.include[^"]*"\([^"]*\)".*/src\/\1/'`; echo " 1/3 wrapping: [`echo $$inc | sed 's/src\/[^\/]*\/\([^\.]*\)\.[a-z]*/\1/g'`]" ; (echo "%module mnemonas"; echo "%{"; cat $$inc ; echo "%}" ; cat $$inc) >  .build/mnemonas.i
+	@echo " 2/3 swiging   and building mnemonas.py"
 	@swig -module mnemonas -c++ -python -o .build/mnemonas.C .build/mnemonas.i
 	@mv .build/mnemonas.py .build/python/site-packages/mnemonas
+	@echo " 3/3 compiling and linking  mnemonas.so"
 	@$(GPP) $(CCFLAGS) -fPIC -c -I/usr/include/python3.6m .build/mnemonas.C $(SRC)
 	@$(GPP) -shared -o .build/python/site-packages/mnemonas/mnemonas.so *.o $(LDFLAGS)
 	@/bin/rm -f .build/mnemonas.i .build/mnemonas.C *.o
@@ -221,13 +223,11 @@ rrun-out :
 # On going
 #
 # - distributed : avec plus de D et N, des randoms w init nombreux
-# - voir souci avec critere qui peut diverger Distributed 
-# - Virer les iner classes pour Python et maj python : Struct.getNames() et Observable séparer
 
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Voir Histogram avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 
-ARGS = -experiment2
+ARGS = -test # -experiment2
 
 todo :
 	@$(MAKE) run 
