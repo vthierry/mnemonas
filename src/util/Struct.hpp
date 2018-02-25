@@ -172,9 +172,32 @@ public:
   {
     return isEmpty(toName(index));
   }
+  /** Returns the field names, in order to define an iterator over the struct.
+   * - It is used in a construct of the form:
+   * @code
+   * for(std::vector < std::string >::const_iterator i = struct.getNames().begin(); i != struct.getNames().end(); i++) {
+   *   String name = *i;
+   *   ../..
+   * } @endcode
+   * or:
+   * @code
+   * const std::vector < std::string >& names = struct.getNames();
+   * for(unsigned int i = 0; i < names.size(); i++) {
+   *   String name = names[i];
+   *   ../..
+   * } @endcode
+   * - It does not iterate over the indexed struct elements, which is realized with getLength().
+   */
+  const std::vector < std::string >& getNames() {
+    return names;
+  }
+
   /** Returns the maximal indexed value in the structure.
    * - It is used in a construct of the form:
-   *  <div><tt>for(int i = 0; i < value.getLength(); i++) { Struct &value = value.get(i); ../.. }</tt>.</div>
+   * @code
+   * for(int i = 0; i < value.getLength(); i++) {
+   *   Struct &value = value.get(i); ../..
+   * } @endcode
    */
   int getLength() const
   {
@@ -222,18 +245,6 @@ public:
   {
     return unset(toName(index));
   }
-  /** Returns the field names, in order to define an iterator over the struct.
-   * - It is used in a construct of the form:
-   *  <div><tt>for(std::vector < std::string >::const_iterator i = struct.getNames().begin(); i != struct.getNames().end(); i++) { String name = *i;  ../.. }</tt>.</div>
-   * or:
-   *  <div><tt>const std::vector < std::string >& names = struct.getNames(); for(unsigned int i = 0; i < names.size(); i++) { String name = names[i];  ../.. }</tt>.</div>
-   * - It does not iterate over the indexed struct, which is realized using a construct of the form:
-   *  <div><tt>for(unsigned int i = 0; i < struct.getLength(); i++) { Struct &value = struct[i]; ../.. }</tt>.</div>
-   */
-  const std::vector < std::string >& getNames() {
-    return names;
-  }
-
   // @}
   /** @name Copy and equality operator */
   // @{

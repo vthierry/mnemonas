@@ -219,8 +219,8 @@ rrun-out :
 #
 # On-going work, do not consider
 #
-# - warning: explicit link request to 'const_iterator' could not be resolved
 # - 
+#
 
 #
 # On going :
