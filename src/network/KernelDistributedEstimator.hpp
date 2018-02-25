@@ -6,6 +6,7 @@ namespace network {
 private:
     // Estimation algorithm variables
     double *A, *b, *w0, *w1;
+    unsigned int D_A, batch_size;
 
     /** Algorithm step. */
     void run_once(unsigned int batch_duration, unsigned int batch_count, bool with_update);

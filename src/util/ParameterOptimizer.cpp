@@ -5,6 +5,7 @@
 #include "s_printf.h"
 #include "now.h"
 
+/// @cond INTERNAL
 ParameterOptimizer::ParameterOptimizer(String parameters_, char timing, unsigned int window) : gamma(window == 0 ? 1 : pow(0.1, 1.0 / window)), timing(timing)
 {
   assume(timing == 'c' || timing == 'r' || timing == 'i', "illegal-argument", "in ParameterOptimizer::ParameterOptimizer bad timing value '%c'", timing);
@@ -120,3 +121,4 @@ std::string ParameterOptimizer::asString() const
                     d < D && k < meta_parameters_sampled_counts[d] - 1 ? ", " : (d < D - 1 ? " ],\n" : d < D ? " ]\n  ],\n  'global':\n" : "  ]\n  }\n}\n"));
   return s;
 }
+/// @endcond

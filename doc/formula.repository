@@ -18,95 +18,90 @@
 \form#17:$\tau$
 \form#18:$\nu$
 \form#19:$\beta$
-\form#20:$c({\bf x})$
-\form#21:${\bf p}$
-\form#22:$T(t)$
-\form#23:$\delta_c(t) = \frac{c(t) - c(t-1)}{c(t-1)} \, \frac{1}{T(t) - T(t-1)}$
-\form#24:$\delta_c$
-\form#25:${\cal L} = \sum_{nt} \rho_n(t) / (N \, T)$
-\form#26:$\begin{array}{rcl} x_n(t) &=& \gamma \, x_{n}(t-1) + \sum_{d = 0}^{D - 1} W_{nn_d} \, \zeta_{[0,\infty]}\left(x_{n_d}(t-1)\right) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \end{array}$
-\form#27:$(n,d)$
-\form#28:$d \in \{0,D\{$
-\form#29:$W_{nn_d}$
-\form#30:$(n,D+m)$
-\form#31:$m \in \{0,M\{$
-\form#32:$W_{nm}$
-\form#33:$\pm10^{6}$
-\form#34:$\gamma$
-\form#35:$\max(2, \sqrt{N})$
-\form#36:$\begin{array}{rcl} x_n(t) &=& \gamma_n \, \left(1 - \zeta_{[0,1]}\left(x_{n_1}(t)\right)\right) \, x_n(t-1) + \sum_{n' = 0}^{N} W_{nn'} \, \zeta_{[0,1]}\left(x_{n'_1}(t)\right) + \sum_{m = 0}^{N} W_{nm} \, i_m(t-1), \\ x_{n_1}(t) &=& \frac{1}{\epsilon} \, (x_n(t-1) - 1/2) \\ \end{array}$
-\form#37:$(n,1)$
-\form#38:$\gamma_n \in [0, 0.999]$
-\form#39:$(n,2)$
-\form#40:$\alpha_n$
-\form#41:$(n,2+n')$
-\form#42:$n' \in \{0,N\{$
-\form#43:$W_{nn'}$
-\form#44:$(n,2+N+m)$
-\form#45:$(n+N,1)$
-\form#46:$\frac{1}{\epsilon} \in [0, 100]$
-\form#47:$n_1 = N - n $
-\form#48:$\gamma_n$
-\form#49:$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$
-\form#50:$\frac{\partial \Phi_{nt}}{\partial x_{n'}(t')}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$
-\form#51:$\frac{\left.getValue(n, t)\right|_{x_{n'}(t') += \epsilon}-\left.getValue(n, t)\right|_{x_{n'}(t') -= \epsilon}}{\epsilon}$
-\form#52:$\lambda, \Delta(\|{\bf x}(t)\|) \simeq d_0 \, 2^{\lambda\, t}$
-\form#53:$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/2$
-\form#54:$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + |\hat{x}_n(t)-\bar{o}_n(t)|))$
-\form#55:$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + (\hat{x}_n(t)-\bar{o}_n(t))^2))$
-\form#56:$\rho_{nt}(x_n(t)) = \nu \, \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} \frac{x^2}{2} \, H(1 - |x|) + \left(|x| - \frac{1}{2}\right) \, H(|x| - 1)$
-\form#57:$\nu == 0$
-\form#58:$\rho_{nt}(x_n(t)) = \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} (x^6 - 3 \, x^4 + 3 \, x^2) \, H(1 - |x|) + H(|x| - 1)$
-\form#59:$\rho_{nt}(x_n(t)) = \rho(\nu - sg(\bar{o}_n(t) - 1/2) \, (x_n(t) - 1/2)), \;\;\; \rho(x) \stackrel{\rm def}{=} H(x) \, x^2/2$
-\form#60:$N$
-\form#61:$\{0, 1\}$
-\form#62:$x_n(t) = t \mbox{ mod } \frac{T}{n+1}$
-\form#63:$\in[-1,1]$
-\form#64:$\in[-1/2,1/2]$
-\form#65:$n \in \{0, N\{$
-\form#66:$t \in \{0, T\{$
-\form#67:$x_n(t) = \Phi_{n0t}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right) + \sum_{d = 1}^{D_{n}} W_{nd} \, \Phi_{ndt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$
-\form#68:$x_{n}(t)$
-\form#69:$R$
-\form#70:$t - R \leq t' < t$
-\form#71:$x_{n}(t) = 0, t < 0$
-\form#72:$N_0 \leq N$
-\form#73:$M$
-\form#74:$i_{m}(s)$
-\form#75:$m \in \{0, M\{$
-\form#76:$S$
-\form#77:$t - S \leq s < t$
-\form#78:$i_{m}(s) = 0, s < 0$
-\form#79:$1 + D_{n}$
-\form#80:$\Phi_{ndt}\left(\right)$
-\form#81:$W_{npd}$
-\form#82:$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$
-\form#83:$x_n[t]$
-\form#84:$x_k[s]$
-\form#85:$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$
-\form#86:$W_{nd}$
-\form#87:$\omega_n(t) = x_n(t)$
-\form#88:$\omega_{n,m}(t) = x_n(t) \, x_m(t)$
-\form#89:$\omega_{n,\tau}(t) = x_n(t) \, x_n(t - \tau)$
-\form#90:$\omega_n(t) = x_n(t), 0 \leq n < N$
-\form#91:$N + N \, (N+1) / 2$
-\form#92:$\omega_n(t) = x_n(t), \omega_{N + m + n * (n+1)/2}(t) = x_n(t) \, x_m(t), 0 \leq n < N, n \leq m < N$
-\form#93:$N + N \, (\tau + 1)$
-\form#94:$omega_n(t) = x_n(t), \omega_{N + n+ \tau \, N}(t) = x_n(t) \, x_n(t - \tau), 0 \leq n < \tau$
-\form#95:$\begin{array}{rcl} x_n(t) &=& x_{n_1}(t) / x_{z}(t)\\ x_{z}(t) &=& \sum_n x_{n_1}(t) \\ x_{n_1}(t) &=& exp(x_{n_2}(t)) \\ x_{n_2}(t) &=& \alpha_n + \sum_{n' = 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \\ \end{array}$
-\form#96:$(n+2\,N+1,1)$
-\form#97:$(n+2\,N+1,2+n')$
-\form#98:$(n+2\,N+1,2+N+m)$
-\form#99:$z = N, n_1 = N + 1 - n, n_2 = 2 \, N + 1 - n$
-\form#100:$10^{10}$
-\form#101:$x_n(t) = \alpha_n + \sum_{n'= 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m=0}^{M-1} W_{nm} \, i_m(t-1)$
-\form#102:$(n,1+n')$
-\form#103:$(n,1+N+m)$
-\form#104:$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$
-\form#105:$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$
-\form#106:$\begin{array}{rcl} x_n(t) &=& x_{n_1}(t) + \zeta_{[min,max]}\left(x_{n_2}(t)\right) \\ x_{n_1}(t) &=& \gamma_n \, x_{n}(t-1) \\ x_{n_2}(t) &=& \alpha_n + \sum_{n' = 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \\ \end{array}$
-\form#107:$(n+2\,N,1)$
-\form#108:$(n+2\,N,2+n')$
-\form#109:$(n+2\,N,2+N+m)$
-\form#110:$n_1 = N - n, n_2 = 2\,N - n$
-\form#111:$\zeta_{[min,\infty]}\left(u\right) = min + u \, H(u)$
+\form#20:${\cal L} = \sum_{nt} \rho_n(t) / (N \, T)$
+\form#21:$\begin{array}{rcl} x_n(t) &=& \gamma \, x_{n}(t-1) + \sum_{d = 0}^{D - 1} W_{nn_d} \, \zeta_{[0,\infty]}\left(x_{n_d}(t-1)\right) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \end{array}$
+\form#22:$(n,d)$
+\form#23:$d \in \{0,D\{$
+\form#24:$W_{nn_d}$
+\form#25:$(n,D+m)$
+\form#26:$m \in \{0,M\{$
+\form#27:$W_{nm}$
+\form#28:$\pm10^{6}$
+\form#29:$\gamma$
+\form#30:$\max(2, \sqrt{N})$
+\form#31:$\begin{array}{rcl} x_n(t) &=& \gamma_n \, \left(1 - \zeta_{[0,1]}\left(x_{n_1}(t)\right)\right) \, x_n(t-1) + \sum_{n' = 0}^{N} W_{nn'} \, \zeta_{[0,1]}\left(x_{n'_1}(t)\right) + \sum_{m = 0}^{N} W_{nm} \, i_m(t-1), \\ x_{n_1}(t) &=& \frac{1}{\epsilon} \, (x_n(t-1) - 1/2) \\ \end{array}$
+\form#32:$(n,1)$
+\form#33:$\gamma_n \in [0, 0.999]$
+\form#34:$(n,2)$
+\form#35:$\alpha_n$
+\form#36:$(n,2+n')$
+\form#37:$n' \in \{0,N\{$
+\form#38:$W_{nn'}$
+\form#39:$(n,2+N+m)$
+\form#40:$(n+N,1)$
+\form#41:$\frac{1}{\epsilon} \in [0, 100]$
+\form#42:$n_1 = N - n $
+\form#43:$\gamma_n$
+\form#44:$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$
+\form#45:$\frac{\partial \Phi_{nt}}{\partial x_{n'}(t')}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$
+\form#46:$\frac{\left.getValue(n, t)\right|_{x_{n'}(t') += \epsilon}-\left.getValue(n, t)\right|_{x_{n'}(t') -= \epsilon}}{\epsilon}$
+\form#47:$\lambda, \Delta(\|{\bf x}(t)\|) \simeq d_0 \, 2^{\lambda\, t}$
+\form#48:$N$
+\form#49:$\{0, 1\}$
+\form#50:$x_n(t) = t \mbox{ mod } \frac{T}{n+1}$
+\form#51:$\in[-1,1]$
+\form#52:$\in[-1/2,1/2]$
+\form#53:$\omega_n(t) = x_n(t)$
+\form#54:$\omega_{n,m}(t) = x_n(t) \, x_m(t)$
+\form#55:$\omega_{n,\tau}(t) = x_n(t) \, x_n(t - \tau)$
+\form#56:$\omega_n(t) = x_n(t), 0 \leq n < N$
+\form#57:$N + N \, (N+1) / 2$
+\form#58:$\omega_n(t) = x_n(t), \omega_{N + m + n * (n+1)/2}(t) = x_n(t) \, x_m(t), 0 \leq n < N, n \leq m < N$
+\form#59:$N + N \, (\tau + 1)$
+\form#60:$omega_n(t) = x_n(t), \omega_{N + n+ \tau \, N}(t) = x_n(t) \, x_n(t - \tau), 0 \leq n < \tau$
+\form#61:$\begin{array}{rcl} x_n(t) &=& x_{n_1}(t) / x_{z}(t)\\ x_{z}(t) &=& \sum_n x_{n_1}(t) \\ x_{n_1}(t) &=& exp(x_{n_2}(t)) \\ x_{n_2}(t) &=& \alpha_n + \sum_{n' = 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \\ \end{array}$
+\form#62:$(n+2\,N+1,1)$
+\form#63:$(n+2\,N+1,2+n')$
+\form#64:$(n+2\,N+1,2+N+m)$
+\form#65:$z = N, n_1 = N + 1 - n, n_2 = 2 \, N + 1 - n$
+\form#66:$10^{10}$
+\form#67:$x_n(t) = \alpha_n + \sum_{n'= 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m=0}^{M-1} W_{nm} \, i_m(t-1)$
+\form#68:$(n,1+n')$
+\form#69:$(n,1+N+m)$
+\form#70:$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/2$
+\form#71:$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + |\hat{x}_n(t)-\bar{o}_n(t)|))$
+\form#72:$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + (\hat{x}_n(t)-\bar{o}_n(t))^2))$
+\form#73:$\rho_{nt}(x_n(t)) = \nu \, \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} \frac{x^2}{2} \, H(1 - |x|) + \left(|x| - \frac{1}{2}\right) \, H(|x| - 1)$
+\form#74:$\nu == 0$
+\form#75:$\rho_{nt}(x_n(t)) = \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} (x^6 - 3 \, x^4 + 3 \, x^2) \, H(1 - |x|) + H(|x| - 1)$
+\form#76:$\rho_{nt}(x_n(t)) = \rho(\nu - sg(\bar{o}_n(t) - 1/2) \, (x_n(t) - 1/2)), \;\;\; \rho(x) \stackrel{\rm def}{=} H(x) \, x^2/2$
+\form#77:$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$
+\form#78:$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$
+\form#79:$n \in \{0, N\{$
+\form#80:$t \in \{0, T\{$
+\form#81:$x_n(t) = \Phi_{n0t}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right) + \sum_{d = 1}^{D_{n}} W_{nd} \, \Phi_{ndt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$
+\form#82:$x_{n}(t)$
+\form#83:$R$
+\form#84:$t - R \leq t' < t$
+\form#85:$x_{n}(t) = 0, t < 0$
+\form#86:$N_0 \leq N$
+\form#87:$M$
+\form#88:$i_{m}(s)$
+\form#89:$m \in \{0, M\{$
+\form#90:$S$
+\form#91:$t - S \leq s < t$
+\form#92:$i_{m}(s) = 0, s < 0$
+\form#93:$1 + D_{n}$
+\form#94:$\Phi_{ndt}\left(\right)$
+\form#95:$W_{npd}$
+\form#96:$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$
+\form#97:$x_n[t]$
+\form#98:$x_k[s]$
+\form#99:$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$
+\form#100:$W_{nd}$
+\form#101:$\begin{array}{rcl} x_n(t) &=& x_{n_1}(t) + \zeta_{[min,max]}\left(x_{n_2}(t)\right) \\ x_{n_1}(t) &=& \gamma_n \, x_{n}(t-1) \\ x_{n_2}(t) &=& \alpha_n + \sum_{n' = 0}^{N-1} W_{nn'} \, x_{n'}(t-1) + \sum_{m = 0}^{M-1} W_{nm} \, i_m(t-1) \\ \end{array}$
+\form#102:$(n+2\,N,1)$
+\form#103:$(n+2\,N,2+n')$
+\form#104:$(n+2\,N,2+N+m)$
+\form#105:$n_1 = N - n, n_2 = 2\,N - n$
+\form#106:$\zeta_{[min,\infty]}\left(u\right) = min + u \, H(u)$

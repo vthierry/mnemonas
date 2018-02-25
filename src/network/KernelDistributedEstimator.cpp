@@ -9,6 +9,7 @@ network::KernelDistributedEstimator::KernelDistributedEstimator(KernelTransform&
   }
   A = new double[D * D];
   b = new double[D];
+  D_A = batch_size = D;
   w0 = new double[D];
   w1 = new double[D];
 }
@@ -31,7 +32,15 @@ double network::KernelDistributedEstimator::run(double criterion_epsilon, unsign
 }
 void network::KernelDistributedEstimator::run_once(unsigned int batch_duration, unsigned int batch_count, bool with_update)
 {
-  // Performs backward tuning and calculates the 2nd order system
+  // Adjusts buffer sizes
+  if(batch_size < batch_duration) {
+    batch_size = batch_duration;
+    delete[] b;
+    delete[] A;
+    A = new double[batch_size * D_A];
+    b = new double[batch_size];
+  }
+  // Performs backward-tuning and calculates the 2nd order system
   double cost0 = KernelEstimator::run();
   for(unsigned int k = 0; k < batch_count; k++) {
     // Randomly selects a unit with weight to adjust

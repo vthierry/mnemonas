@@ -100,7 +100,7 @@ pywrap : .build/python/site-packages/mnemonas/mnemonas.py .build/python/site-pac
 ccwrap : .build/lib/libmnemonas.a .build/lib/libmnemonas.so .build/inc/mnemonas
 
 .build/lib/libmnemonas.a .build/lib/libmnemonas.so : $(SRC) $(INC)
-	@echo 'make libmnemonas.so'
+	@echo 'make libmnemonas.(a|so)'
 	@/bin/rm -rf .build/lib ; mkdir -p .build/lib
 	@$(GPP) $(CCFLAGS) -fPIC -c $(SRC)
 	@$(GPP) -o .build/lib/libmnemonas.a *.o $(LDFLAGS)
@@ -219,13 +219,16 @@ rrun-out :
 #
 # On-going work, do not consider
 #
+# - warning: explicit link request to 'const_iterator' could not be resolved
+# - 
 
-# On going
 #
-# - distributed : avec plus de D et N, des randoms w init nombreux
-
+# On going :
+#
+# - KernelDistributedEstimator : explorer les hyper-paramètres, ajouter mécanisme de reinit des W, insérer updateReadout
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
-# - Voir Histogram avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
+# - Histogram : voir avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
+#
 
 ARGS = -test # -experiment2
 

@@ -5,6 +5,8 @@
 #include "util/numeric.hpp"
 #include "util/Struct.hpp"
 
+/// @cond INTERNAL
+
 /** Defines a meta-parameter optimizer of a given parameter space.
  * ### Problem position
  * Given the mimization of a criterion \f$c({\bf x})\f$ by a minimization algorithm with meta-parameters \f${\bf p}\f$,
@@ -64,7 +66,7 @@ public:
   ParameterOptimizer(String parameters, char timing = 'i', unsigned int window = 10);
   /// @cond INTERNAL
   ~ParameterOptimizer();
-  ///@endcond
+  /// @endcond
 
   /** Clears the estimation. */
   void clear();
@@ -82,5 +84,6 @@ public:
   /** Returns the parameters estimation as a JSON string. */
   std::string asString() const;
 };
+/// @endcond
 
 #endif

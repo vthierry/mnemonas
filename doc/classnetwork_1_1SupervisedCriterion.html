@@ -149,19 +149,19 @@ Additional Inherited Members</h2></td></tr>
 </ul>
 </td></tr>
     <tr><td class="paramname">criterion</td><td>The criterion index:<ul>
-<li><code>2</code> The L2 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/2$" src="form_53.png"/>.</li>
-<li><code>1</code> The reweighted L1 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + |\hat{x}_n(t)-\bar{o}_n(t)|))$" src="form_54.png"/>.</li>
-<li><code>0</code> The reweighted L0 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + (\hat{x}_n(t)-\bar{o}_n(t))^2))$" src="form_55.png"/>.</li>
-<li><code>a</code> A L1 related unbounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \nu \, \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} \frac{x^2}{2} \, H(1 - |x|) + \left(|x| - \frac{1}{2}\right) \, H(|x| - 1)$" src="form_56.png"/>.<ul>
-<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_57.png"/> simply considers the absolute value of the error.</li>
+<li><code>2</code> The L2 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/2$" src="form_70.png"/>.</li>
+<li><code>1</code> The reweighted L1 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + |\hat{x}_n(t)-\bar{o}_n(t)|))$" src="form_71.png"/>.</li>
+<li><code>0</code> The reweighted L0 criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = (x_n(t)-\bar{o}_n(t))^2/(2 \, (\nu + (\hat{x}_n(t)-\bar{o}_n(t))^2))$" src="form_72.png"/>.</li>
+<li><code>a</code> A L1 related unbounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \nu \, \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} \frac{x^2}{2} \, H(1 - |x|) + \left(|x| - \frac{1}{2}\right) \, H(|x| - 1)$" src="form_73.png"/>.<ul>
+<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_74.png"/> simply considers the absolute value of the error.</li>
 </ul>
 </li>
-<li><code>b</code> A L0 related biweight bounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} (x^6 - 3 \, x^4 + 3 \, x^2) \, H(1 - |x|) + H(|x| - 1)$" src="form_58.png"/>.<ul>
-<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_57.png"/> simply counts the number of non-zero values.</li>
+<li><code>b</code> A L0 related biweight bounded criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho((x_n(t)-\bar{o}_n(t))/\nu), \rho(x) \stackrel{\rm def}{=} (x^6 - 3 \, x^4 + 3 \, x^2) \, H(1 - |x|) + H(|x| - 1)$" src="form_75.png"/>.<ul>
+<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_74.png"/> simply counts the number of non-zero values.</li>
 </ul>
 </li>
-<li><code>h</code> The L2 boolean criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho(\nu - sg(\bar{o}_n(t) - 1/2) \, (x_n(t) - 1/2)), \;\;\; \rho(x) \stackrel{\rm def}{=} H(x) \, x^2/2$" src="form_59.png"/>.<ul>
-<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_57.png"/> simply counts the number of wrong boolean values (not used as criterion but a posteriori precision). </li>
+<li><code>h</code> The L2 boolean criterion <img class="formulaInl" alt="$\rho_{nt}(x_n(t)) = \rho(\nu - sg(\bar{o}_n(t) - 1/2) \, (x_n(t) - 1/2)), \;\;\; \rho(x) \stackrel{\rm def}{=} H(x) \, x^2/2$" src="form_76.png"/>.<ul>
+<li>If <img class="formulaInl" alt="$\nu == 0$" src="form_74.png"/> simply counts the number of wrong boolean values (not used as criterion but a posteriori precision). </li>
 </ul>
 </li>
 </ul>
@@ -286,7 +286,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_105.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_78.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -428,4 +428,4 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 <li>src/network/<a class="el" href="SupervisedCriterion_8cpp_source.html">SupervisedCriterion.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-25 at 12:12:24) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-25 at 12:57:17) </tt> </div><hr/>
