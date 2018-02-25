@@ -19,7 +19,7 @@ network::BufferedInput::BufferedInput(const BufferedInput& input) : Input(input.
     vvalues = input.vvalues;
 }
 ///@endcond
-network::BufferedInput::BufferedInput(const Input& input, unsigned int N0, unsigned int n0, unsigned int T0, unsigned int t0) : Input(0 < N0 ? N0 - n0 : input.N, 0 < T0 ? T0 - t0 : input.T), vvalues(NULL), buffered(true), vectored(false)
+network::BufferedInput::BufferedInput(const Input& input, unsigned int N0, unsigned int n0, unsigned int T0, unsigned int t0) : Input(0 < N0 ? N0 : input.N, 0 < T0 ? T0 : input.T), vvalues(NULL), buffered(true), vectored(false)
 {
   values = new double[N * (int) T];
   for(unsigned int t = 0, nt = 0; t < T; t++)

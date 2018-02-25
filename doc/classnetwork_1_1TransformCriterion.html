@@ -151,7 +151,7 @@ Protected Attributes</h2></td></tr>
 <p>Defines the estimator criterion. </p>
 <ul>
 <li>The method is to be overwritten to implement a global estimator.</li>
-<li>The default implementation simply returns <img class="formulaInl" alt="$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$" src="form_82.png"/>, running:<pre>
+<li>The default implementation simply returns <img class="formulaInl" alt="$\frac{\sum_{nt} \rho_{nt}(x_n(t))}{N\,T}$" src="form_104.png"/>, running:<pre>
 double r = 0;
 transform.reset(true);
 for(unsigned int t = 0; t &lt; transform.T; t++)
@@ -273,7 +273,7 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_83.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The value derivative <img class="formulaInl" alt="$\frac{\partial \rho}{\partial x_n(t)}({\bf x})$" src="form_105.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -450,4 +450,4 @@ double network::MyCriterion::rho(unsigned int n, double t) const {
 <li>src/network/<a class="el" href="TransformCriterion_8cpp_source.html">TransformCriterion.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-23 at 15:42:54) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-25 at 11:28:53) </tt> </div><hr/>

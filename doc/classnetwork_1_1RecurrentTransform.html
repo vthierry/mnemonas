@@ -419,7 +419,7 @@ Additional Inherited Members</h2></td></tr>
 </li>
 <li>Recurrent values at time <code>t', t - R &lt;= t' &lt; t</code> can be called. <dl class="section return"><dt>Returns</dt><dd>The input value if defined, else raises a fatal error.</dd></dl>
 </li>
-<li>It calculates <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_49.png"/>,</center> </li>
+<li>It calculates <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_55.png"/>,</center> </li>
 </ul>
 
 <p>Reimplemented in <a class="el" href="classnetwork_1_1KernelTransform.html#a66398574065f69fdb6c500803dcf4880">network::KernelTransform</a>.</p>
@@ -497,7 +497,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The input value derivate if defined, 0 in the abscence of dependence, else raises a fatal error.</dd></dl>
 </li>
-<li>If the recurrent equation writes <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_49.png"/>,</center> this method returns: <center> <img class="formulaInl" alt="$\frac{\partial \Phi_{nt}}{\partial x_{n'}(t')}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_50.png"/>,</center> </li>
+<li>If the recurrent equation writes <center> <img class="formulaInl" alt="$x_n(t) = \Phi_{nt}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_55.png"/>,</center> this method returns: <center> <img class="formulaInl" alt="$\frac{\partial \Phi_{nt}}{\partial x_{n'}(t')}\left(\cdots, x_{n'}(t'), \cdots, i_{m}(s), \cdots\right)$" src="form_56.png"/>,</center> </li>
 </ul>
 
 <p>Reimplemented in <a class="el" href="classnetwork_1_1KernelTransform.html#a3f5fde673b0363b001f83d392c03c7af">network::KernelTransform</a>.</p>
@@ -637,7 +637,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The input value derivate approximation: <center> <img class="formulaInl" alt="$\frac{\left.getValue(n, t)\right|_{x_{n'}(t') += \epsilon}-\left.getValue(n, t)\right|_{x_{n'}(t') -= \epsilon}}{\epsilon}$" src="form_51.png"/></center> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The input value derivate approximation: <center> <img class="formulaInl" alt="$\frac{\left.getValue(n, t)\right|_{x_{n'}(t') += \epsilon}-\left.getValue(n, t)\right|_{x_{n'}(t') -= \epsilon}}{\epsilon}$" src="form_57.png"/></center> </dd></dl>
 </li>
 </ul>
 
@@ -691,7 +691,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The estimated statistic of <img class="formulaInl" alt="$\lambda, \Delta(\|{\bf x}(t)\|) \simeq d_0 \, 2^{\lambda\, t}$" src="form_52.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The estimated statistic of <img class="formulaInl" alt="$\lambda, \Delta(\|{\bf x}(t)\|) \simeq d_0 \, 2^{\lambda\, t}$" src="form_58.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -786,4 +786,4 @@ Additional Inherited Members</h2></td></tr>
 <li>src/network/<a class="el" href="RecurrentTransform_8cpp_source.html">RecurrentTransform.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-23 at 15:42:54) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-25 at 11:28:53) </tt> </div><hr/>

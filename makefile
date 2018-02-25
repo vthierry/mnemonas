@@ -221,7 +221,8 @@ rrun-out :
 # On going
 #
 # - distributed : avec plus de D et N, des randoms w init nombreux
-#
+# - voir souci avec critere qui peut diverger Distributed 
+# - Virer les iner classes pour Python et maj python : Struct.getNames() et Observable séparer
 
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Voir Histogram avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
@@ -229,7 +230,7 @@ rrun-out :
 ARGS = -experiment2
 
 todo :
-	@$(MAKE) grun 
+	@$(MAKE) run 
 #	@firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################
