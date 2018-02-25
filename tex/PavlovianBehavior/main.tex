@@ -1,4 +1,4 @@
-\documentclass[a4,12pt,twoside]{article}
+\documentclass[a4,12pt]{article}
 \newif\ifRR
 \RRfalse % \RRfalse or \RRtrue
 
@@ -55,6 +55,8 @@ Fr\'ed\'eric Alexandre \thanksref{affil}}
 \maketitle
 \begin{abstract}.../...\end{abstract}
 \fi
+
+\iffalse
 
 \section{Introduction}
 
@@ -114,9 +116,13 @@ Furthermore, the central claim of this approach is to propose the algorithmic le
 
 \paragraph{Paper description.} In the next data modeling section we are going to set up the data framework at both a the symbolic and numeric level. Then in the data container section we start proposing a specification of what is expected from active memories. This will allow us to further define generic algorithmic functions for these memories. We then will show how this may be used to model in a integrated manner Pavlovian and operant, say pavloperant, behaviors.
 
+\fi
+
 \iftrue
 
 \section{Data modeling}
+
+  As discussed in the introduction, 
 
 \section{Data container}
 
@@ -125,6 +131,90 @@ Furthermore, the central claim of this approach is to propose the algorithmic le
 \section{Application to pavlovian behaviors}
 
 \section{Conclusion}
+
+\appendix
+
+\section{Data type definition and numerical extended mapping}
+
+The following data-type are considered in our context. For each data we provide an informal and formal definition, the main data-type operation and the related numerical extended mapping.
+
+\subsection*{Enumeration} 
+
+Enumeration corresponds to a data with a fixed finite unordered $n$ values set, e.g. {\tt \{false, true\}} or {\tt \{you, her, me\}}. It is formally defined by the value set. Each value $x$ as an arbitrary index $i_x \in \{0, n\}$. It maps onto a standard simplex of degree $n$. 
+
+More formally, the data-type $E$ is defined for $n+1$ data-type value by its degree {\tt n} and a one-to-one correspondence between each value defined as a non-empty string and its related arbitrary index. 
+
+For index not in $\{0, n\{$ the related value is the {\tt empty} string value, i.e. the ``null'' value or ``undefined'' value. It means that each enumeration data has a default undefined value, and that notion of empty, null or undefined values corresponds to the same object in this context.
+
+A data value $x$ is represented by the related arbitrary value index $i_x \in \{0, n\}$, and its numerical extended mapping corresponds to $n$ real numbers ${\bf x} = (x_0, \cdots, x_{n})$, with $\sum_{i = 0}^{n} x_i = 1, x_i \in [0, 1]$, i.e., the barycentric coordinate system of the value on the data type related simplex, and the correspondence writes:
+\eqline{i_x = \mbox{argmax}_i \; x_i \mbox{ while } x_i = \delta_{i_x = i}}
+in words the value index corresponds to the highest barycentric coordinate value, or equivalently the projection onto the simplex closest vertex, while the barycentric coordinate corresponds to unitary value on the coordinate corresponding to the value index.
+
+A data value $x$ is also represented by the related string corresponding to the value index. At this this level of representation, a string normalization function {\tt canonicalize}, transforming text into a single canonical form has to be defined.
+
+On enumeration data, beyond getting (i.e., reading) and setting (i.e., writing) a value, the main operation corresponds to comparing two values.
+\\- The {\tt equality} is the fact that two related value indexes are the same, which corresponds to the discrete ultra-metric of this finite data space.
+\\- More generally, a \href{https://en.wikipedia.org/wiki/Metric\_(mathematics)}{\tt metric} between two values and/or a \href{https://en.wikipedia.org/wiki/Intrinsic_metric}{\tt path} between two values can also be defined. By default the standard simplex barycentric coordinate path in link with the \href{https://en.wikipedia.org/wiki/Total_variation_distance_of_probability_measures}{total variation} related intrinsic metric is defined:
+\eqline{p({\bf x}, {\bf x}', \theta \in [0, 1]) = \theta \, {\bf x}' + (1 - \theta) \, {\bf x}', \mbox{ with } d({\bf x}, {\bf x}') = \frac{1}{2} \, \sum_i |x_i - x'_i| \in [0, 1],}
+while application dependent {\tt path} and/or {\tt metric} may instantiate the semantic related to such data-type.
+
+A step further, we defined the notion of {\tt restriction} as positive normalized function $r(x) \in [0, 1]$ of a value, with the semantic that it is required to have $r(x) = 0$ in order to verify the contraint, while it might approximately be verified\footnote{{\bf Combination of restrictions.} Obsviously restrictions may be easily combined either considering a vectorial restriction stacking the scalar restrictions, or any scalar combination, e.g. the product of restrictions vanishes if at least one is verified, as in a disjunction, the sum of restrictions vanishes of all are verified, as in a conjunction, while, e.g., $\max(0, \nu - r(x))$ vanishes if the restriction is not verified, up to some threshold $\nu$. All these design choice are application dependent.}. Given a metric, we can define the exact (or at least approximate) {\tt projection} of a value on a contraint, providing that the restriction error function $r(x)$ and the related derivative in the barycenter coordinates $\partial_i r(x)$ are defined\footnote{{\bf Total variation metric projection.} Let us define the projection ${\bf x}_p$ of a value ${\bf x}^0$ on the vectorial restriction ${\bf r}({\bf x})$ as:
+\eqline{{\bf x}_p = \mbox{argmax}_{\bf x} d({\bf x}, {\bf x}^0), {\bf r}({\bf x}) = 0}
+which, for the default total variation metric, is the fixed point of the series
+\eqline{\begin{array}{rcl} {\bf x}^{n+1}_i &=& (1-\gamma_n) \, {\bf x}^{n} + \gamma_n \, \left({\bf x}^0_i - |x^{n}_i - x^0_i| \, \partial_i {\bf r}({\bf x}^{n}) \, \left[ \sum_i |x^{n}_i - x^0_i| \, \partial_i {\bf r}({\bf x}^{n}) \, \partial_i {\bf r}({\bf x}^{n})^T \right]^\dagger \, \right. \\ && \left. \left({\bf r}({\bf x}^{n}) - \sum_i \partial_i {\bf r}({\bf x}^{n}) \, \left(x^{n}_i - x^0_i\right)\right)\right) \\ \end{array}}
+for some $\gamma_n = \mbox{argmin}_\gamma |{\bf r}({\bf x}^{n+1})|$ while $\dagger$ stands for the matrix pseudo-inverse. As derived in, e.g., \cite{vieville:inria-00074888} for a ${\cal L}^2$ metric we obtain a 2nd order algorithm as soon as there is convexity with a 1st order fallback otherwise. The key-point of the present derivation is that it easily generalizes to the total variation metric as known from the litterature and made explicit here.}. If an applicaton data-type redefines the {\tt metric} it must redefined the {\tt projection} operator of a restriction.
+Projecting a data value ${\bf x}$ is to project onto the closest data-type value of index $i_x$ is the basic example of such mechanism.
+
+\subsection*{Specific and generalized enumeration} 
+
+The {\tt empty} data-type corresponds to an enumeration with no value, i.e., the simplex with no point, or simplex of degree $-1$.
+
+A {\tt const} data-type corresponds to an enumeration with only one value, i.e., a simplex of degree 0.
+
+The {\tt bool} data-type corresponds to the {\tt \{false, true\}} enumeration, i.e., a simplex of degree 1, in one-to-one correspondence, by convention, with the {\tt \{0, 1\}} enumeration (in this order), the {\tt \{no, yes\}} enumeration or any other, with a similar meaning.
+
+A {\tt mutable-enumeration} is a data-type is able to increase its value set, with time. This simply means that an additional data-type method is defined to {\tt add} such value. Previous data value are still well-defined, but with the caveat that previous data could better correspond to the new data-type value than a previous one. We do not consider deleting because this would generate data with undefined values, but may introduce a {\tt merge} method that would make two value identical, without undefining data value.
+
+An {\tt ordered enumeration} is a data-type with an additional {\tt comparator} compatible with the {\tt equality}, defined as a function:
+\eqline{c(x, x') \in \left\{\begin{array}{lr} -1 & x < x' \\ 0 & x = x' \\ 1 & x > x' \\ ? & \mbox{not comparable} \\ \end{array} \right.}
+considering the equality function only, being a special case where the comparator $c(x, x') \in \{0, ?\}$. Here the order can be a partial or a total order. One order is the {\tt fuzzy} comparison between two values, comparing which one is the closest to its related data-type value.
+
+More generally, since any other data-type maps onto a finite set, any other data-type maps onto an enumeration.
+
+\subsection*{Quantitative value} 
+
+In numerical algorithms a quantitative quantity $q$ is always reasonably defined within bounds $q \in [q_{\min}, q_{\max}]$, with a default value $q_0$ (the middle of the interval, if no better knowledge), and with a precision $q_\epsilon = \frac{q_{max} - q_{min}}{q_N}$, for some integer $q_N$, and such that:
+\eqline{|q' - q''| < q_\epsilon \;\;\Leftrightarrow\; \mbox{$q'$ and $q''$ are indistinguishable},}
+while this specification can be linear or logarithmic (i.e. apply on $\log(q')$).
+
+It is important to notice that such information is always available in practice, e.g., a pupil ruler has a precision of 1mm, with bounds defined by the ruler length; a location in an image is within the image sizes with a standard precision of one pixel; a car velocity is 0 by default and bounded by the vehicle performances, while the precision is not better than 1 km/h; and so on.
+
+One key point is that such quantitative value is in one-to-one correspondance with a fully ordered enumeration of index $x$, since we may consider the following {\tt sampling}:
+\eqline{q_i(i_{x'}) = q_{min} + i_{x'} \, q_\epsilon, \;\;\; i_{x'} \in \{0, q_N\}, \mbox{ with } i_q(q') = \mbox{trunc}\left(\frac{q' - q_{min}}{q_\epsilon}\right)}
+with the following coherent properties:
+\eqline{|q' - q''| < q_\epsilon \Leftrightarrow i_q(q') = i_q(q''), i_q(q_x(i_{x'})) = i_{x'}, |q_i(i_q(q')) - q'| <  q_\epsilon.}
+
+The {\tt deterministic} simplex representation considers that the uncertainty is only related to the sampling, we thus obtain:
+\eqline{x_i(q') = \delta_{|q' - q_i(i)| < q_\epsilon} \frac{|q' - q_i(i)|}{q_\epsilon},  \mbox{ with } q' = \sum_i x_i(q') \, q_i(i)}
+as easily verified from a few algebra, with no need to explictly store barycenter coordinates: Only the two barycenter values corresponding to simplex vertices adjacent to the true quantitive value are not zero, and there is a trivial one-to-one correspondence between $q'$ and the related ${\bf x}$.
+
+The {\tt fuzzy} simplex representation now consider that the quantitative itself suffers from uncertainty. In such a case, we now consider larger $q_\epsilon$, i.e, smaller $q_N$ and stores explicitly all barycenter as probabilities for the value to have the $q_i(i)$ value. In such a design choice, we still have by construction $q' = \sum_i x_i(q') \, q_i(i)$ but must introduce another ingredient in order to define the barycenter, i.e., a {\em kernel} $\rho_i()$, so that:
+\eqline{x_i(q') = \rho_i(q'), \mbox{with still} q' = \sum_i x_i(q') \, q_i(i),}
+these kernels defining a \href{https://en.wikipedia.org/wiki/Partition_of_unity}{partition of unity}, i.e., @todo
+
+
+
+\subsection*{Multidimensional numerical value} 
+
+\subsection*{Composed value} 
+
+\subsection*{Value list} 
+
+\subsection*{Value set} 
+
+\subsection*{Value triplet} 
+
+\subsection*{Value function} 
 
 \fi
 
