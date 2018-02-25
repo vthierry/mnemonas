@@ -299,7 +299,7 @@ public:
    * @param value The value given as a string, using weak <a href="http://json.org/">JSON</a> syntax.
    * - By default resets to an empty data structure.
    * - Value is either a string or a "format" a-la printf with the subsequent arguments.
-   * - The weak-syntax allows to:
+   * - The weak-syntax, with respect to the strict <a href="https://www.w3schools.com/js/js_json_intro.asp">JSON-syntax</a>allows to:
    *   - use either ':' or '=' between name and value
    *   - use either ',' or ';' as item separator
    *   - use either '"' or "'" as quote
@@ -307,6 +307,10 @@ public:
    *   - accept string with '\\n' line separators (replaced by the "\\n" sequence), also manage \\b, \\r, \\t, \\f
    *   - set the value 'true' for name without explicit value
    *   - However: '\\uXXXX' unicode string sequences and the '\/' solidus escaped sequence are not managed (i.e., but simply mirrored in the string value)
+   *
+   * In other words the input syntax accepts (i) implicit quote <tt>"</tt> when string reduces to one word, (ii) flexible use of comma <tt>,</tt> when optional, (iii) string on several lines, (iv) considering <tt>true</tt> as implicit value, (v) appending as a raw string trailer chars if any.
+   *
+   * One consequence is that there is no ``syntax error'' all strings map on a JSON structure (i.e., the exact or closest correct JSON structure, the implicit metric being defined by the parsing algorithm). On the reverse the string output is a human readable indented strict JSON syntax allowing to verify that the input was well-formed.
    */
   void reset(const char *value, ...);
   void reset(String value = "")
