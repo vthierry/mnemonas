@@ -198,7 +198,9 @@ The {\tt deterministic} simplex representation considers that the uncertainty is
 \eqline{x_i(q') = \delta_{|q' - q_i(i)| < q_\epsilon} \frac{|q' - q_i(i)|}{q_\epsilon},  \mbox{ with } q' = \sum_i x_i(q') \, q_i(i)}
 as easily verified from a few algebra, with no need to explictly store barycenter coordinates: Only the two barycenter values corresponding to simplex vertices adjacent to the true quantitive value are not zero, and there is a trivial one-to-one correspondence between $q'$ and the related ${\bf x}$.
 
-The {\tt stochastic} simplex representation now consider that the quantitative itself suffers from uncertainty. In such a case, we now consider larger $q_\epsilon$, i.e, smaller $q_N$ and stores explicitly all barycenter as probabilities for the value to have the $q_i(i)$ value. In such a design choice, we still have by construction $q' = \sum_i x_i(q') \, q_i(i)$ but must introduce another ingredient in order to define the barycenter, i.e., a {\em kernel} $\rho_i()$, so that:
+The {\tt stochastic} simplex representation now consider that the quantitative itself suffers from uncertainty. In such a case, we now consider larger $q_\epsilon$, i.e, smaller $q_N$ and stores explicitly all barycenter as probabilities for the value to have the $q_i(i)$ value. In such a design choice, we still have by construction $q' = \sum_i x_i(q') \, q_i(i)$, considering the expectation with respect to these probabilities.
+
+but must introduce another ingredient in order to define the barycenter, i.e., a {\em kernel} $\rho_i()$, so that:
 \eqline{x_i(q') = \rho_i\left(\frac{q' - q_{min}}{q_{min} - q_{max}}\right), \mbox{ with still } q' = \sum_i x_i(q') \, q_i(i),}
 these kernels defining a \href{https://en.wikipedia.org/wiki/Partition_of_unity}{partition of unity}, with:
 \eqline{\rho_i(u) \geq 0, u \notin [0, 1] \Rightarrow \rho_i(u) = 0, \sum_i \rho_i(u) = 1, u_i(i) = \max_u \rho_i(u), u_i \deq \frac{q_i - q_{min}}{q_{min} - q_{max}} \in [0, 1]}

@@ -219,12 +219,13 @@ rrun-out :
 #
 # On-going work, do not consider
 #
-# - 
+# - KernelTransform : calculer rayon spectral par SVD sur les poids x jacobien et par iteration
+#    - reasseye ren normaisamt par 1 et 10^-2
 #
 
 #
 # On going :
-#
+# - 
 # - KernelDistributedEstimator : explorer les hyper-paramètres, ajouter mécanisme de reinit des W, insérer updateReadout
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Histogram : voir avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
