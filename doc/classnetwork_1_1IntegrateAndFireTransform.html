@@ -75,7 +75,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a4b881a4c2767318b7aeb203efeca1d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a fixed common offset for this network.  <a href="#a4b881a4c2767318b7aeb203efeca1d7f">More...</a><br /></td></tr>
 <tr class="separator:a4b881a4c2767318b7aeb203efeca1d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a00a6eff042834bb89b4e5310bcdac5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1IntegrateAndFireTransform.html#a3a00a6eff042834bb89b4e5310bcdac5">setWeight</a> (unsigned int n, unsigned int d, double w)</td></tr>
-<tr class="memdesc:a3a00a6eff042834bb89b4e5310bcdac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_100.png"/> value.  <a href="#a3a00a6eff042834bb89b4e5310bcdac5">More...</a><br /></td></tr>
+<tr class="memdesc:a3a00a6eff042834bb89b4e5310bcdac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_81.png"/> value.  <a href="#a3a00a6eff042834bb89b4e5310bcdac5">More...</a><br /></td></tr>
 <tr class="separator:a3a00a6eff042834bb89b4e5310bcdac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3a884d558e593e395ee28647582dc41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classnetwork_1_1KernelTransform.html">KernelTransform</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1IntegrateAndFireTransform.html#aa3a884d558e593e395ee28647582dc41">setWeights</a> (const <a class="el" href="classnetwork_1_1KernelTransform.html">KernelTransform</a> &amp;network)</td></tr>
 <tr class="memdesc:aa3a884d558e593e395ee28647582dc41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets weights from another network of the same type.  <a href="#aa3a884d558e593e395ee28647582dc41">More...</a><br /></td></tr>
@@ -103,7 +103,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a03aa4a256f781efb64b5937fcdd7d228 inherit pub_methods_classnetwork_1_1KernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the total number of weights.  <a href="classnetwork_1_1KernelTransform.html#a03aa4a256f781efb64b5937fcdd7d228">More...</a><br /></td></tr>
 <tr class="separator:a03aa4a256f781efb64b5937fcdd7d228 inherit pub_methods_classnetwork_1_1KernelTransform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed8378faaac02ee9707b146a15ce9f4e inherit pub_methods_classnetwork_1_1KernelTransform"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1KernelTransform.html#aed8378faaac02ee9707b146a15ce9f4e">getWeight</a> (unsigned int n, unsigned int d) const</td></tr>
-<tr class="memdesc:aed8378faaac02ee9707b146a15ce9f4e inherit pub_methods_classnetwork_1_1KernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_100.png"/>.  <a href="classnetwork_1_1KernelTransform.html#aed8378faaac02ee9707b146a15ce9f4e">More...</a><br /></td></tr>
+<tr class="memdesc:aed8378faaac02ee9707b146a15ce9f4e inherit pub_methods_classnetwork_1_1KernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_81.png"/>.  <a href="classnetwork_1_1KernelTransform.html#aed8378faaac02ee9707b146a15ce9f4e">More...</a><br /></td></tr>
 <tr class="separator:aed8378faaac02ee9707b146a15ce9f4e inherit pub_methods_classnetwork_1_1KernelTransform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bb6ef8c5c47e66ab5ef249ec49c010d inherit pub_methods_classnetwork_1_1KernelTransform"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classnetwork_1_1KernelTransform.html">KernelTransform</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1KernelTransform.html#a7bb6ef8c5c47e66ab5ef249ec49c010d">setWeightsRandom</a> (double mean=0.0, double sigma=0.0, bool add=false, <a class="el" href="s__string_8h.html#a342f13820a6f9c4de28e5a0940976db7">String</a> mode=&quot;normal&quot;, int seed=-1)</td></tr>
 <tr class="memdesc:a7bb6ef8c5c47e66ab5ef249ec49c010d inherit pub_methods_classnetwork_1_1KernelTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets random or constant weights values.  <a href="classnetwork_1_1KernelTransform.html#a7bb6ef8c5c47e66ab5ef249ec49c010d">More...</a><br /></td></tr>
@@ -142,6 +142,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a072a765c9202e6de31d97ad572bfc10e inherit pub_methods_classnetwork_1_1RecurrentTransform"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1RecurrentTransform.html#a072a765c9202e6de31d97ad572bfc10e">asString</a> () const</td></tr>
 <tr class="memdesc:a072a765c9202e6de31d97ad572bfc10e inherit pub_methods_classnetwork_1_1RecurrentTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the transform parameters as a JSON string.  <a href="classnetwork_1_1RecurrentTransform.html#a072a765c9202e6de31d97ad572bfc10e">More...</a><br /></td></tr>
 <tr class="separator:a072a765c9202e6de31d97ad572bfc10e inherit pub_methods_classnetwork_1_1RecurrentTransform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56b45b24f2a60fcef3b0032c744fba6a inherit pub_methods_classnetwork_1_1RecurrentTransform"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1RecurrentTransform.html#a56b45b24f2a60fcef3b0032c744fba6a">getSpectralRadius</a> ()</td></tr>
+<tr class="memdesc:a56b45b24f2a60fcef3b0032c744fba6a inherit pub_methods_classnetwork_1_1RecurrentTransform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the recurrent network spectral radius.  <a href="classnetwork_1_1RecurrentTransform.html#a56b45b24f2a60fcef3b0032c744fba6a">More...</a><br /></td></tr>
+<tr class="separator:a56b45b24f2a60fcef3b0032c744fba6a inherit pub_methods_classnetwork_1_1RecurrentTransform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classnetwork_1_1Transform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classnetwork_1_1Transform')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classnetwork_1_1Transform.html">network::Transform</a></td></tr>
 <tr class="memitem:aebaa03b08f17419d600d56d06a274fbb inherit pub_methods_classnetwork_1_1Transform"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnetwork_1_1Transform.html#aebaa03b08f17419d600d56d06a274fbb">Transform</a> (unsigned int <a class="el" href="classnetwork_1_1Input.html#a5301d1989a9e789d89ff580c9ce92bb7">N</a>, const <a class="el" href="classnetwork_1_1Input.html">Input</a> &amp;<a class="el" href="classnetwork_1_1Transform.html#afa010245597e310f4a087c7ce656c2b4">input</a>)</td></tr>
 <tr class="memdesc:aebaa03b08f17419d600d56d06a274fbb inherit pub_methods_classnetwork_1_1Transform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the transform for the given parameters.  <a href="classnetwork_1_1Transform.html#aebaa03b08f17419d600d56d06a274fbb">More...</a><br /></td></tr>
@@ -391,7 +394,7 @@ with <img class="formulaInl" alt="$n_1 = N - n $" src="form_42.png"/>.</li>
 </table>
 </div><div class="memdoc">
 
-<p>Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_100.png"/> value. </p>
+<p>Sets one weight <img class="formulaInl" alt="$W_{nd}$" src="form_81.png"/> value. </p>
 <ul>
 <li>This routine is to be overriden if the weights are bounded (e.g. if positive). A typical implementation writes, e.g.:<pre>
  bool <a class="el" href="classnetwork_1_1IntegrateAndFireTransform.html#a3a00a6eff042834bb89b4e5310bcdac5" title="Sets one weight  value. ">setWeight(unsigned int n, unsigned int d, double w)</a> {
@@ -565,7 +568,7 @@ with <img class="formulaInl" alt="$n_1 = N - n $" src="form_42.png"/>.</li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The corresponding kernel value <img class="formulaInl" alt="$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$" src="form_96.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The corresponding kernel value <img class="formulaInl" alt="$\Phi_{ndt}\left(\cdots, x_{n'}[t'], \cdots, I_{m}[s], \cdots\right)$" src="form_77.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -643,7 +646,7 @@ with <img class="formulaInl" alt="$n_1 = N - n $" src="form_42.png"/>.</li>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns <code>0.0</code> if <img class="formulaInl" alt="$x_n[t]$" src="form_97.png"/> does not depend on <img class="formulaInl" alt="$x_k[s]$" src="form_98.png"/>, else <img class="formulaInl" alt="$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$" src="form_99.png"/>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns <code>0.0</code> if <img class="formulaInl" alt="$x_n[t]$" src="form_78.png"/> does not depend on <img class="formulaInl" alt="$x_k[s]$" src="form_79.png"/>, else <img class="formulaInl" alt="$\frac{\partial \phi_{ndt}}{\partial x_k[s]}$" src="form_80.png"/>. </dd></dl>
 </li>
 </ul>
 
@@ -725,4 +728,4 @@ with <img class="formulaInl" alt="$n_1 = N - n $" src="form_42.png"/>.</li>
 <li>src/network/<a class="el" href="IntegrateAndFireTransform_8cpp_source.html">IntegrateAndFireTransform.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-25 at 13:32:56) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-02-26 at 23:51:29) </tt> </div><hr/>

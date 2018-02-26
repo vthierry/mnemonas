@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <cfloat>
+#include "Density.hpp"
 
 #include "assume.h"
 #include <gsl/gsl_matrix.h>
@@ -274,6 +275,41 @@ double solver::projsolve(unsigned int M, unsigned int N, double c(const double *
   delete[] lambda;
   delete[] x1;
   delete[] x0;
+  return r0;
+}
+double solver::getSpectralRadius(const double *A, unsigned int N, double epsilon, unsigned int maxIterations)
+{
+  double r0 = 0, *u0 = new double[N], r1 = 0, *u1 = new double[N];
+  for(unsigned int n = 0; n < N; n++)
+    u1[n] = Density::gaussian(), r1 += u1[n] * u1[n];
+  r0 = sqrt(r1);
+  for(unsigned int k = 0; k < maxIterations && epsilon < fabs(r0 - r1); k++) {
+    r1 = r0;
+    if(r1 > 0)
+      for(unsigned int n = 0; n < N; n++)
+        u1[n] /= r1;
+    r0 = 0;
+    for(unsigned int n = 0, nn = 0; n < N; n++) {
+      u0[n] = 0;
+      for(unsigned int n_ = 0; n_ < N; n_++, nn++)
+        u0[n] += A[nn] * u1[n_];
+      r0 += u0[n] * u0[n];
+    }
+    r0 = sqrt(r0);
+#if 0
+    {
+      double e1 = 0;
+      if(r0 > 0)
+        for(unsigned int n = 0; n < N; n++)
+          e1 += fabs(u0[n] / r0 - u1[n]);
+      printf(">> k = %d r0 = %g |u0-u1| = %g\n", k, r0, e1);
+    }
+#endif
+    double *u;
+    u = u0, u0 = u1, u1 = u;
+  }
+  delete[] u0;
+  delete[] u1;
   return r0;
 }
 std::string solver::asString(const double *A, unsigned int M, unsigned int N, bool symmetric, String format)

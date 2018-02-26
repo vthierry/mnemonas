@@ -102,5 +102,10 @@ public:
 
     /** Returns the transform parameters as a JSON string. */
     std::string asString() const;
+
+    /** Gets the recurrent network spectral radius.
+     * - Computes the system Jacobian between <tt>t = R+1</tt> and <tt>t = R</tt>, applying the power method.
+     */
+    double getSpectralRadius();
   };
 }

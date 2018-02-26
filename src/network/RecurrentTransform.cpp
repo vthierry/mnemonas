@@ -139,6 +139,21 @@ Histogram network::RecurrentTransform::getLyapunovExponent(unsigned int W, unsig
     }
   return values;
 }
+double network::RecurrentTransform::getSpectralRadius()
+{
+  double *J = new double[N * N];
+  reset();
+  for(unsigned int t = 0; t <= R; t++)
+    for(int n = N - 1; 0 <= n; n--)
+      get(n, t);
+  for(unsigned int n = 0, nn = 0; n < N; n++)
+    for(unsigned int n_ = 0; n_ < N; n_++, nn++)
+      J[nn] = getValueDerivative(n, R, n_, R - 1);
+  // - printf("%s", solver::asString(J, N, N).c_str());
+  double r = solver::getSpectralRadius(J, N);
+  delete[] J;
+  return r;
+}
 std::string network::RecurrentTransform::asString() const
 {
   return s_printf("{ 'N' : %d, 'R' : %d, 'L' : %d, 'M' : %d, 'T' : %.0f }", N, R, L, input->N, input->T);

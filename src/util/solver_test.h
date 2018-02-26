@@ -63,5 +63,10 @@ public:
     double err = solver::projsolve(1, 3, c.c, c.d, x0, x0);
     assume(fabs(x0[0] - 1 / sqrt(3)) + fabs(x0[1] - 1 / sqrt(3)) + fabs(x0[2] - 1 / sqrt(3)) < 1e-13, "illegal-state", "solver_test/project [1 1 1]/3^1/2 != [%g %g %g] err = %g\n", x0[0], x0[1], x0[2], err);
   }
+  // solver::getspectralradius
+  {
+    double M[] = { 1, 2, 2, 1 }, r = solver::getSpectralRadius(M, 2);
+    assume(fabs(r - 3) < 1e-6, "illegal-state", "solver_test/getspectralradius r = %g != 3 err = %g\n", r, fabs(r - 3));
+  }
 }
 ///@endcond

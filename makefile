@@ -219,8 +219,7 @@ rrun-out :
 #
 # On-going work, do not consider
 #
-# - KernelTransform : calculer rayon spectral par SVD sur les poids x jacobien et par iteration
-#    - reasseye ren normaisamt par 1 et 10^-2
+# -
 #
 
 #
@@ -231,7 +230,7 @@ rrun-out :
 # - Histogram : voir avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 #
 
-ARGS = -test # -experiment2
+ARGS = -experiment2
 
 todo :
 	@$(MAKE) run 

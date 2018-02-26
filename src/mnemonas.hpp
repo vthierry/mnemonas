@@ -12,8 +12,8 @@
 #include "util/Struct.hpp"
 
 #include "util/numeric.hpp"
-#include "util/solver.hpp"
 #include "util/Density.hpp"
+#include "util/solver.hpp"
 #include "util/Histogram.hpp"
 #include "util/CurveFit.hpp"
 #include "util/ParameterOptimizer.hpp"

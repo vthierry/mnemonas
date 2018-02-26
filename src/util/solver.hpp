@@ -49,6 +49,15 @@ public:
    */
   static double projsolve(unsigned int M, unsigned int N, double c(const double *x, unsigned int m), double d(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
 
+  /** Gets the spectral radius of a squared matrix.
+   * @param A The matrix buffer <tt>double[N * N]</tt> buffer storing <tt>A(i, j) == A[i + j * N]</tt>.
+   * @param N The number of rows and columns.
+   * @param epsilon The threshold under which two values are indistinguishable.
+   * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
+   * @return The highest eigen-value of the matrix applying the power-method.
+   */
+  static double getSpectralRadius(const double *A, unsigned int N, double epsilon = 1e-6, unsigned int maxIterations = 100);
+
   /** Returns a matrix or vector as a string to dump.
    * @param A The matrix buffer <tt>double[M * N]</tt> buffer storing <tt>A(i, j) == A[i + j * N]</tt>.
    * @param M The number of rows.
