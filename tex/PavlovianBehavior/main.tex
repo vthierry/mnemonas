@@ -140,7 +140,7 @@ The following data-type are considered in our context. For each data we provide 
 
 \subsection*{Enumeration} 
 
-Enumeration corresponds to a data with a fixed finite unordered $n$ values set, e.g. {\tt \{false, true\}} or {\tt \{you, her, me\}}. It is formally defined by the value set. Each value $x$ as an arbitrary index $i_x \in \{0, n\}$. It maps onto a standard simplex of degree $n$. 
+Enumeration corresponds to a data with a fixed finite unordered $n$ values set, e.g. {\tt \{false, true\}} or {\tt \{you, her, me\}}. It is formally defined by the value set. These are the {\em meta-paremeters} of the data-type. Each value $x$ as an arbitrary index $i_x \in \{0, n\}$. It maps onto a standard simplex of degree $n$. 
 
 More formally, the data-type $E$ is defined for $n+1$ data-type value by its degree {\tt n} and a one-to-one correspondence between each value defined as a non-empty string and its related arbitrary index. 
 
@@ -158,11 +158,11 @@ On enumeration data, beyond getting (i.e., reading) and setting (i.e., writing) 
 \eqline{p({\bf x}, {\bf x}', \theta \in [0, 1]) = \theta \, {\bf x}' + (1 - \theta) \, {\bf x}', \mbox{ with } d({\bf x}, {\bf x}') = \frac{1}{2} \, \sum_i |x_i - x'_i| \in [0, 1],}
 while application dependent {\tt path} and/or {\tt metric} may instantiate the semantic related to such data-type.
 
-A step further, we defined the notion of {\tt restriction} as positive normalized function $r(x) \in [0, 1]$ of a value, with the semantic that it is required to have $r(x) = 0$ in order to verify the contraint, while it might approximately be verified\footnote{{\bf Combination of restrictions.} Obsviously restrictions may be easily combined either considering a vectorial restriction stacking the scalar restrictions, or any scalar combination, e.g. the product of restrictions vanishes if at least one is verified, as in a disjunction, the sum of restrictions vanishes of all are verified, as in a conjunction, while, e.g., $\max(0, \nu - r(x))$ vanishes if the restriction is not verified, up to some threshold $\nu$. All these design choice are application dependent.}. Given a metric, we can define the exact (or at least approximate) {\tt projection} of a value on a contraint, providing that the restriction error function $r(x)$ and the related derivative in the barycenter coordinates $\partial_i r(x)$ are defined\footnote{{\bf Total variation metric projection.} Let us define the projection ${\bf x}_p$ of a value ${\bf x}^0$ on the vectorial restriction ${\bf r}({\bf x})$ as:
+A step further, we defined the notion of {\tt restriction} as positive normalized function $r(x) \in [0, 1]$ of a value, with the semantic that it is required to have $r(x) = 0$ in order to verify the constraint, while it might approximately be verified\footnote{{\bf Combination of restrictions.} Obviously restrictions may be easily combined either considering a vectorial restriction stacking the scalar restrictions, or any scalar combination, e.g. the product of restrictions vanishes if at least one is verified, as in a disjunction, the sum of restrictions vanishes of all are verified, as in a conjunction, while, e.g., $\max(0, \nu - r(x))$ vanishes if the restriction is not verified, up to some threshold $\nu$. All these design choice are application dependent.}. Given a metric, we can define the exact (or at least approximate) {\tt projection} of a value on a constraint, providing that the restriction error function $r(x)$ and the related derivative in the barycenter coordinates $\partial_i r(x)$ are defined\footnote{{\bf Total variation metric projection.} Let us define the projection ${\bf x}_p$ of a value ${\bf x}^0$ on the vectorial restriction ${\bf r}({\bf x})$ as:
 \eqline{{\bf x}_p = \mbox{argmax}_{\bf x} d({\bf x}, {\bf x}^0), {\bf r}({\bf x}) = 0}
 which, for the default total variation metric, is the fixed point of the series
 \eqline{\begin{array}{rcl} {\bf x}^{n+1}_i &=& (1-\gamma_n) \, {\bf x}^{n} + \gamma_n \, \left({\bf x}^0_i - |x^{n}_i - x^0_i| \, \partial_i {\bf r}({\bf x}^{n}) \, \left[ \sum_i |x^{n}_i - x^0_i| \, \partial_i {\bf r}({\bf x}^{n}) \, \partial_i {\bf r}({\bf x}^{n})^T \right]^\dagger \, \right. \\ && \left. \left({\bf r}({\bf x}^{n}) - \sum_i \partial_i {\bf r}({\bf x}^{n}) \, \left(x^{n}_i - x^0_i\right)\right)\right) \\ \end{array}}
-for some $\gamma_n = \mbox{argmin}_\gamma |{\bf r}({\bf x}^{n+1})|$ while $\dagger$ stands for the matrix pseudo-inverse. As derived in, e.g., \cite{vieville:inria-00074888} for a ${\cal L}^2$ metric we obtain a 2nd order algorithm as soon as there is convexity with a 1st order fallback otherwise. The key-point of the present derivation is that it easily generalizes to the total variation metric as known from the litterature and made explicit here.}. If an applicaton data-type redefines the {\tt metric} it must redefined the {\tt projection} operator of a restriction.
+for some $\gamma_n = \mbox{argmin}_\gamma |{\bf r}({\bf x}^{n+1})|$ while $\dagger$ stands for the matrix pseudo-inverse. As derived in, e.g., \cite{vieville:inria-00074888} for a ${\cal L}^2$ metric we obtain a 2nd order algorithm as soon as there is convexity with a 1st order fallback otherwise. The key-point of the present derivation is that it easily generalizes to the total variation metric as known from the literature and made explicit here.}. If an application data-type redefines the {\tt metric} it must redefined the {\tt projection} operator of a restriction.
 Projecting a data value ${\bf x}$ is to project onto the closest data-type value of index $i_x$ is the basic example of such mechanism.
 
 \subsection*{Specific and generalized enumeration} 
@@ -185,33 +185,40 @@ More generally, since any other data-type maps onto a finite set, any other data
 
 In numerical algorithms a quantitative quantity $q$ is always reasonably defined within bounds $q \in [q_{\min}, q_{\max}]$, with a default value $q_0$ (the middle of the interval, if no better knowledge), and with a precision $q_\epsilon = \frac{q_{max} - q_{min}}{q_N}$, for some integer $q_N$, and such that:
 \eqline{|q' - q''| < q_\epsilon \;\;\Leftrightarrow\; \mbox{$q'$ and $q''$ are indistinguishable},}
-while this specification can be linear or logarithmic (i.e. apply on $\log(q')$).
+while this specification can be linear or logarithmic (i.e. apply on $\log(q')$). These are the {\em meta-parameters} of the data-type.
 
 It is important to notice that such information is always available in practice, e.g., a pupil ruler has a precision of 1mm, with bounds defined by the ruler length; a location in an image is within the image sizes with a standard precision of one pixel; a car velocity is 0 by default and bounded by the vehicle performances, while the precision is not better than 1 km/h; and so on.
 
-One key point is that such quantitative value is in one-to-one correspondance with a fully ordered enumeration of index $x$, since we may consider the following {\tt sampling}:
+One key point is that such quantitative value is in one-to-one correspondence with a fully ordered enumeration of index $x$, since we may consider the following {\tt sampling}:
 \eqline{q_i(i_{x'}) = q_{min} + i_{x'} \, q_\epsilon, \;\;\; i_{x'} \in \{0, q_N\}, \mbox{ with } i_q(q') = \mbox{trunc}\left(\frac{q' - q_{min}}{q_\epsilon}\right)}
 with the following coherent properties:
 \eqline{|q' - q''| < q_\epsilon \Leftrightarrow i_q(q') = i_q(q''), i_q(q_x(i_{x'})) = i_{x'}, |q_i(i_q(q')) - q'| <  q_\epsilon.}
 
 The {\tt deterministic} simplex representation considers that the uncertainty is only related to the sampling, we thus obtain:
 \eqline{x_i(q') = \delta_{|q' - q_i(i)| < q_\epsilon} \frac{|q' - q_i(i)|}{q_\epsilon},  \mbox{ with } q' = \sum_i x_i(q') \, q_i(i)}
-as easily verified from a few algebra, with no need to explictly store barycenter coordinates: Only the two barycenter values corresponding to simplex vertices adjacent to the true quantitive value are not zero, and there is a trivial one-to-one correspondence between $q'$ and the related ${\bf x}$.
+as easily verified from a few algebra, with no need to explicitly store barycenter coordinates: Only the two barycenter values corresponding to simplex vertices adjacent to the true quantitative value are not zero, and there is a trivial one-to-one correspondence between $q'$ and the related ${\bf x}$.
 
-The {\tt stochastic} simplex representation now consider that the quantitative itself suffers from uncertainty. In such a case, we now consider larger $q_\epsilon$, i.e, smaller $q_N$ and stores explicitly all barycenter as probabilities for the value to have the $q_i(i)$ value. In such a design choice, we still have by construction $q' = \sum_i x_i(q') \, q_i(i)$, considering the expectation with respect to these probabilities.
+The {\tt stochastic} simplex representation now consider that the quantitative itself suffers from uncertainty. In such a case, we now consider larger $q_\epsilon$, i.e, smaller $q_N$ and stores explicitly all barycenter as probabilities for the value to have the $q_i(i)$ value. In such a design choice, we still have by construction $q' = \sum_i x_i(q') \, q_i(i)$, considering the expectation with respect to these probabilities. We must introduce another, application dependent, ingredient in order to define $x_i(q')$, based on a priory information.
 
-but must introduce another ingredient in order to define the barycenter, i.e., a {\em kernel} $\rho_i()$, so that:
+\iffalse
+We must introduce another ingredient in order to define the barycenter, e.g., a {\em kernel} $\rho_i()$, so that:
 \eqline{x_i(q') = \rho_i\left(\frac{q' - q_{min}}{q_{min} - q_{max}}\right), \mbox{ with still } q' = \sum_i x_i(q') \, q_i(i),}
 these kernels defining a \href{https://en.wikipedia.org/wiki/Partition_of_unity}{partition of unity}, with:
-\eqline{\rho_i(u) \geq 0, u \notin [0, 1] \Rightarrow \rho_i(u) = 0, \sum_i \rho_i(u) = 1, u_i(i) = \max_u \rho_i(u), u_i \deq \frac{q_i - q_{min}}{q_{min} - q_{max}} \in [0, 1]}
-in words a maximal entropy, bounded distribution, maximal on each vertex. Given this specification, we consider here the maximal entropy choice, i.e., 
-\eqline{\rho(u) = \mbox{argmax}_\rho \sum_i \rho_i(u) \, \log_2(\rho_i(u)), \rho_i(0) = 0, \rho_i(1) = 1, \rho(q) \geq 0, \rho'_i(u_i) = 0}
-
-
-
-
+\eqline{\begin{array}{l} \rho_i(u) = \mbox{argmax}_\rho \sum_i \rho(u) \, \log_2(\rho(u)), \;\;\; \rho_i(u) \geq 0, \;\;\; \sum_i \rho_i(u) = 1, \\ u \notin [0, 1] \Rightarrow \rho_i(u) = 0, \;\;\; u_i(i) = \mbox{argmax}_u \rho_i(u) \end{array}}
+with $u_i \deq \frac{q_i - q_{min}}{q_{min} - q_{max}} \in [0, 1]$, in words a maximal entropy, bounded distribution, maximal on each vertex.
+\fi
 
 \subsection*{Multidimensional numerical value} 
+
+We first consider low-dimensional numerical values such as 2D or 3D-translation in a {\em bounded} Euclidean sub-space, and 2D or 3D-rotation. For such quantities, there is always a natural {\tt metric} and {\tt path}. 
+
+For instance considering 3D-rotation of matrix ${\bf R}$, angle $\theta \in [-\pi, \pi]$ and axis ${\bf r}, \|{\bf r}\| = \sin\left(\frac{\theta}{2}\right)$, according to the \href{https://en.wikipedia.org/wiki/Euler-Rodrigues\_formula}{Euler-Rodrigues formula}, we can choose:
+\eqline{d({\bf r}, {\bf r}') = 1 - \left({\bf r}^T \, {\bf r}' + \sqrt{(1-\|{\bf r}\|^2)\,(1-\|{\bf r}'\|^2)}\right) = 1 - \cos(\Delta\theta) \in [0, 1],}
+where $\Delta\theta$ is the angle of the relative rotation $R_{\bf r} \, R_{{\bf r}'}^{-1}$ between two rotations, in one-to-one correspondence with the $SO(3)$ compact Lie group natural Riemannian metric, equal to $2\,\arccos(1 - d({\bf r}, {\bf r}'))$, while a {\tt path} is defined on the related Lie algebra $so(3)$ considering the $\omega \deq \theta \, {\bf r} / \|{\bf r}\|$ vector, as developed in \cite{huynh2009metrics}.
+
+Given some linear and angular accuracy, default values being the center of the bounded region and, say, upright orientation, such quantities are easily specified in term of bounds, precision and default value, thus providing the meta-parameter of an underlying discrete enumeration sampled representation.
+
+A step further we have to consider high-dimensional numerical values such as an image or image-sequence. For instance a few seconds of volumic image sequence of standard nowadays resolution is defined by an order of magnitude of $1024^3 \, 100 \simeq 10^11$ voxel values. Such data space is still bounded, with a bounded accuracy, and some obvious default value. However, sampled representation is meaningless, due the curse of dimensionality.
 
 \subsection*{Composed value} 
 
