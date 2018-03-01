@@ -16,7 +16,7 @@ private:
   static const unsigned int G = 13;
   static constexpr double gammas[G] = { 0.10, 0.20, 0.30, 0.40, 0.53, 0.64, 0.73, 0.81, 0.87, 0.92, 0.95, 0.98, 0.99 };
 private:
-  double P[G][3], bias[G][3], gain[G][3], decay[G][3], error[G][3];
+  double lgammas[G], tgammas[G], c0, c1, P[G][3], bias[G][3], gain[G][3], decay[G][3], error[G][3];
   unsigned int count, igamma, imode;
   std::vector < double > values;
   void update();
@@ -42,31 +42,31 @@ public:
   /** Gets the exponential decay \f$\tau\f$ or NAN if undefined. */
   double getDecay() const
   {
-    update();
+    const_cast<CurveFit*>(this)->update();
     return decay[igamma][imode];
   }
   /** Gets the best model gain \f$\nu\f$ or 0 NAN in undefined. */
   double getGain() const
   {
-    update();
+    const_cast<CurveFit*>(this)->update();
     return gain[igamma][imode];
   }
   /** Gets the best model bias \f$\beta\f$. */
   double getBias() const
   {
-    update();
+     const_cast<CurveFit*>(this)->update();
     return bias[igamma][imode];
   }
   /** Gets the best model average L1 error. */
   double getError() const
   {
-    update();
+    const_cast<CurveFit*>(this)->update();
     return error[igamma][imode];
   }
   /** Gets the best model gamma filtering. */
   double getGamma() const
   {
-    update();
+    const_cast<CurveFit*>(this)->update();
     return gammas[igamma];
   }
   /** Gets the best model mode.
@@ -74,7 +74,7 @@ public:
    */
   char getMode() const
   {
-    update();
+    const_cast<CurveFit*>(this)->update();
     return imode == 2 ? 'e' : imode == 1 ? 'a' : 'c';
   }
   /** Returns the parameters as a JSON string. */

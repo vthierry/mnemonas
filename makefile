@@ -231,7 +231,7 @@ rrun-out :
 # - Histogram : voir avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 #
 
-ARGS = -experiment2
+ARGS = -test # experiment2
 
 todo :
 	@$(MAKE) run 
