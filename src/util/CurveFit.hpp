@@ -19,6 +19,10 @@ private:
   double lgammas[G], tgammas[G], c0, P[G][3], bias[G][3], gain[G][3], decay[G][3], error[G][3];
   unsigned int count, igamma, imode;
   std::vector < double > values;
+  double solver_minimize_f(double c);
+  static double solver_minimize_this_f(double c);
+  static double *solver_minimize_this_data;
+  static CurveFit *solver_minimize_this;
 public:
   /// @cond INTERNAL
   CurveFit(const CurveFit &fit);

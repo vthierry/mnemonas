@@ -66,12 +66,31 @@ void CurveFit::add(double c)
 
 	// Estimates the exponential value model parameters
 	if (count > 2 &&  P[g][0] != P[g][1]) {
+	  double 
+	    // g * p3 - p2
+	    gp3p2 = gammas[g] * P[g][2] - P[g][1],
+	    // g * p2 - p1
+	    gp2p1 = gammas[g] * P[g][1] - P[g][0],
+	    // g^2
+	    g2 = sqr(gammas[g]);
+	  double data[] = { 
+			   // g * (g * p2 - p1) * gT + g^2 * (p1 - p2)
+			   gammas[g] * gp2p1 * tgammas[g] + g2 * (P[g][0] - P[g][1]),
+			   // (p1 - g^2 * p3) * gT - g^2 * (p1 - p3)
+			   (P[g][0] - g2 * P[g][2]) * tgammas[g] - g2 * (P[g][0] - P[g][2]),
+			   // (g * p3 - p2) * gT + g^2 * (p2 - p3)
+			   gp3p2 * tgammas[g] + g2 * (P[g][1] - P[g][2]),
+			   // (1 - g) * ((g * p2 - p1) - (g * p3 - p2)) g^T
+			   (1 - gammas[g]) * (gp2p1 - gp3p2) * tgammas[g], 
+			   // g
+			   gammas[g]};
+	  // z = (((data[3] * pow(g / c, count) + data[2]) * c + data[1]) * c + data[0]) / (1 - c)
+	  // z = (1 - g) * ((g * p2 - p1) - (g * p3 - p2)) * cT * c^2 + ((g * p3 - p2) * gT + g^2 * (p2 - p3)) * c^2 + ((p1 - g^2 * p3 ) * gT - g^2 * (p1 - p3)) * c + g * (g * p2 - p1) * gT + g^2 * (p1 - p2)
+	  solver_minimize_this = this;
+	  solver_minimize_this_data = data;
 	  double cdecay0 = (P[g][0] - P[g][1]) / (P[g][1] - P[g][2]), cdecay = exp(-1/3.1416);
-	  // @todo
-	  // z = -(-1 + g) * (g * p2 - g * p3 - p1 + p2) * cT * c * c + ((g * p3 - p2) * gT + g * g * (p2 - p3)) * c * c + ((-g * g * p3 + p1) * gT - g * g * (p1 - p3)) * c + g * (g * p2 - p1) * gT + g * g * (p1 - p2);
-	  // function comme pr solver et printer avec decay et cdecay0
-	  // double cdecay = solver::minimize(solver_minimize_this_f, 0, 1, 1e-12);
-
+	  printf(" cdecay = %g -> %g, z = %g < %g\n", cdecay, cdecay0, solver_minimize_f(cdecay), solver_minimize_f(cdecay0));
+	  // double cdecay1 = solver::minimize(solver_minimize_this_f, 0, 1, 1e-12);
 
 	  if (cdecay > gammas[g]) {
 	    double 
@@ -103,14 +122,16 @@ void CurveFit::add(double c)
   }
   values.push_back(c0 = c), count++;
 }
-double CurveFit::solver_minimize_f(double u)
+double CurveFit::solver_minimize_f(double c)
 {
-  return 0;
+  // z = (((data[3] * cT + data[2]) * c + data[1]) * c + data[0]) / (1 - c)
+  return fabs((((solver_minimize_this_data[3] * pow(solver_minimize_this_data[4] / c, count) + solver_minimize_this_data[2]) * c + solver_minimize_this_data[1]) * c + solver_minimize_this_data[0]) / (1 - c));
 }
-double CurveFit::solver_minimize_this_f(double u)
+double CurveFit::solver_minimize_this_f(double c)
 {
-  return solver_minimize_this->solver_minimize_f(u);
+  return solver_minimize_this->solver_minimize_f(c);
 }
+double *CurveFit::solver_minimize_this_data = NULL;
 CurveFit *CurveFit::solver_minimize_this = NULL;
 std::string CurveFit::asString() const
 {
