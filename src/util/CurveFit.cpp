@@ -1,10 +1,11 @@
 #include "CurveFit.hpp"
 
 #include <cmath>
+#include "solver.hpp"
 #include "s_printf.h"
 #include "s_save.h"
 #include "gnuplot.h"
-#define sqr(x) ((x)*(x))
+#define sqr(x) ((x) * (x))
 
 /// @cond INTERNAL
 CurveFit::CurveFit(const CurveFit& fit)
@@ -41,84 +42,78 @@ void CurveFit::add(double c)
 {
   for(unsigned int g = 0; g < G; g++) {
     double p0 = gammas[g] * (P[g][0] - c0) + c0;
-    P[g][2] = P[g][1], P[g][1]= P[g][0], P[g][0] = p0;
+    P[g][2] = P[g][1], P[g][1] = P[g][0], P[g][0] = p0;
   }
-
   for(unsigned int g = 0; g < G; g++) {
     // Estimates the constant value model parameters
-    if (count > 0) {
+    if(count > 0) {
       bias[g][0] = P[g][0] / (1 - tgammas[g]);
       error[g][0] = lgammas[g] * sqr(c - bias[g][0]) + gammas[g] * error[g][0];
-
       // Estimates the linear value model parameters
-      if (count > 1) {      
-	double 
-	  M00 = (1 - tgammas[g]), 
-	  M01 = (1 - tgammas[g] / gammas[g]), 
-	  M10 = tgammas[g] * count - (1 - tgammas[g]) / (1 - gammas[g]),
-	  M11 = (tgammas[g] * count + (gammas[g] * (gammas[g] - 2) + tgammas[g]) / (1 - gammas[g]))/gammas[g],
-	  d = M00 * M11 - M01 * M10;
-	if (d != 0) {
-	  gain[g][1] = (P[g][1] * M00 - P[g][0] * M01) / d;
-	  bias[g][1] = (P[g][0] * M11 - P[g][1] * M10) / d;
-	  error[g][1] = lgammas[g] * sqr(c - bias[g][1]) + gammas[g] * error[g][1];
-	}
-
-	// Estimates the exponential value model parameters
-	if (count > 2 &&  P[g][0] != P[g][1]) {
-	  double 
-	    // g * p3 - p2
-	    gp3p2 = gammas[g] * P[g][2] - P[g][1],
-	    // g * p2 - p1
-	    gp2p1 = gammas[g] * P[g][1] - P[g][0],
-	    // g^2
-	    g2 = sqr(gammas[g]);
-	  double data[] = { 
-			   // g * (g * p2 - p1) * gT + g^2 * (p1 - p2)
-			   gammas[g] * gp2p1 * tgammas[g] + g2 * (P[g][0] - P[g][1]),
-			   // (p1 - g^2 * p3) * gT - g^2 * (p1 - p3)
-			   (P[g][0] - g2 * P[g][2]) * tgammas[g] - g2 * (P[g][0] - P[g][2]),
-			   // (g * p3 - p2) * gT + g^2 * (p2 - p3)
-			   gp3p2 * tgammas[g] + g2 * (P[g][1] - P[g][2]),
-			   // (1 - g) * ((g * p2 - p1) - (g * p3 - p2)) g^T
-			   (1 - gammas[g]) * (gp2p1 - gp3p2) * tgammas[g], 
-			   // g
-			   gammas[g]};
-	  // z = (((data[3] * pow(g / c, count) + data[2]) * c + data[1]) * c + data[0]) / (1 - c)
-	  // z = (1 - g) * ((g * p2 - p1) - (g * p3 - p2)) * cT * c^2 + ((g * p3 - p2) * gT + g^2 * (p2 - p3)) * c^2 + ((p1 - g^2 * p3 ) * gT - g^2 * (p1 - p3)) * c + g * (g * p2 - p1) * gT + g^2 * (p1 - p2)
-	  solver_minimize_this = this;
-	  solver_minimize_this_data = data;
-	  double cdecay0 = (P[g][0] - P[g][1]) / (P[g][1] - P[g][2]), cdecay = exp(-1/3.1416);
-	  printf(" cdecay = %g -> %g, z = %g < %g\n", cdecay, cdecay0, solver_minimize_f(cdecay), solver_minimize_f(cdecay0));
-	  // double cdecay1 = solver::minimize(solver_minimize_this_f, 0, 1, 1e-12);
-
-	  if (cdecay > gammas[g]) {
-	    double 
-	      cT = pow(gammas[g] / cdecay, count),
-	      M10 = (1 - gammas[g]) * (1 - cT) / (cdecay - gammas[g]),
-	      M11 = (1 - gammas[g]) * (1 / cdecay - cT / gammas[g]) / (cdecay - gammas[g]),
-	      d = M00 * M11 - M01 * M10;
-	    if (d != 0) {
-	      decay[g][2] = -1 / log(cdecay);
-	      gain[g][2] = (P[g][1] * M00 - P[g][0] * M01) / d;
-	      bias[g][2] = (P[g][0] * M11 - P[g][1] * M10) / d;
-	      error[g][2] = lgammas[g] * sqr(c - (bias[g][2] + gain[g][2])) + gammas[g] * error[g][2];
-	    }
-	  }
-	}
+      if(count > 1) {
+        double
+          M00 = (1 - tgammas[g]),
+          M01 = (1 - tgammas[g] / gammas[g]),
+          M10 = tgammas[g] * count - (1 - tgammas[g]) / (1 - gammas[g]),
+          M11 = (tgammas[g] * count + (gammas[g] * (gammas[g] - 2) + tgammas[g]) / (1 - gammas[g])) / gammas[g],
+          d = M00 * M11 - M01 * M10;
+        if(d != 0) {
+          gain[g][1] = (P[g][1] * M00 - P[g][0] * M01) / d;
+          bias[g][1] = (P[g][0] * M11 - P[g][1] * M10) / d;
+          error[g][1] = lgammas[g] * sqr(c - bias[g][1]) + gammas[g] * error[g][1];
+        }
+        // Estimates the exponential value model parameters
+        if(count > 2) {
+          // z = (1-g)*((g*p2-p1)-(g*p3-p2)) * c^2*cT + ((g*p3-p2)*gT+g^2*(p2-p3)) * c^2 + ((p1-g^2*p3)*gT-g^2*(p1-p3)) * c + g*(g*p2-p1)*gT+g^2*(p1-p2)
+          double
+          // g * p3 - p2
+            gp3p2 = gammas[g] * P[g][2] - P[g][1],
+          // g * p2 - p1
+            gp2p1 = gammas[g] * P[g][1] - P[g][0],
+          // g^2
+            g2 = sqr(gammas[g]);
+          // z = (((data[3] * pow(g / c, count) + data[2]) * c + data[1]) * c + data[0]) / (1 - c)
+          double data[] = {
+            // g * (g * p2 - p1) * gT + g^2 * (p1 - p2)
+            gammas[g] * gp2p1 * tgammas[g] + g2 * (P[g][0] - P[g][1]),
+            // (p1 - g^2 * p3) * gT - g^2 * (p1 - p3)
+            (P[g][0] - g2 * P[g][2]) * tgammas[g] - g2 * (P[g][0] - P[g][2]),
+            // (g * p3 - p2) * gT + g^2 * (p2 - p3)
+            gp3p2 * tgammas[g] + g2 * (P[g][1] - P[g][2]),
+            // (1 - g) * ((g * p2 - p1) - (g * p3 - p2))
+            (1 - gammas[g]) * (gp2p1 - gp3p2),
+            // g
+            gammas[g]
+          };
+          solver_minimize_this = this;
+          solver_minimize_this_data = data;
+          double cdecay = solver::minimize(solver_minimize_this_f, 0, 10, 1e-12);
+          if(cdecay > gammas[g]) {
+            double
+              cT = pow(gammas[g] / cdecay, count),
+              M10 = (1 - gammas[g]) * (1 - cT) / (cdecay - gammas[g]),
+              M11 = (1 - gammas[g]) * (1 / cdecay - cT / gammas[g]) / (cdecay - gammas[g]),
+              d = M00 * M11 - M01 * M10;
+            if(d != 0) {
+              decay[g][2] = -1 / log(cdecay);
+              gain[g][2] = (P[g][1] * M00 - P[g][0] * M01) / d;
+              bias[g][2] = (P[g][0] * M11 - P[g][1] * M10) / d;
+              error[g][2] = lgammas[g] * sqr(c - (bias[g][2] + gain[g][2])) + gammas[g] * error[g][2];
+            }
+          }
+        }
       }
     }
     tgammas[g] *= gammas[g];
   }
-  
   // Estimates the best model
   {
     double emin = 1e100;
     igamma = 0, imode = 0;
     for(int g = G - 1; 0 <= g; g--)
       for(unsigned int m = 0; m < 3; m++)
-	if (m < count  && (m < 2 || 0 < error[g][m]) && error[g][m] < emin)
-	  emin = error[igamma = g][imode = m];
+        if((m < count) && ((m < 2) || (0 < error[g][m])) && (error[g][m] < emin))
+          emin = error[igamma = g][imode = m];
   }
   values.push_back(c0 = c), count++;
 }

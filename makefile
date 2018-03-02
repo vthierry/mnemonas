@@ -219,8 +219,7 @@ rrun-out :
 #
 # On-going work, do not consider
 #
-# - CurveFit : avec nv methode
-#
+
 
 #
 # On going :
@@ -231,7 +230,7 @@ rrun-out :
 # - Histogram : voir avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 #
 
-ARGS = -test # experiment2
+ARGS = -experiment2
 
 todo :
 	@$(MAKE) run 
