@@ -288,7 +288,7 @@ void Struct::reset(const char *value, ...)
   // Now reads the String
   if(result != "") {
     // Implements the weak parsing of a JSON structure
-    class StructReader {
+    class StructJsonReader {
 public:
       void read(Struct& value, String string)
       {
@@ -433,8 +433,23 @@ private:
         for(; index < length && isspace(chars[index]); index++) {}
       }
     }
-    reader;
-    reader.read(*this, result);
+    reader1;
+    /*
+    class StructJReader {
+    public:
+      void read(Struct& value, String string)
+      {
+        // Initializes the input buffer
+        chars = string.c_str(), index = 0, length = string.length();
+        // Clears and set the value
+        value.clear();
+      }
+    private :
+      const char *chars;
+      int index, length;
+    } reader2;
+    */
+    reader1.read(*this, result);
   }
 }
 Struct::Struct(int argc, const char *argv[])

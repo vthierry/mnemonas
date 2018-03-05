@@ -224,13 +224,13 @@ rrun-out :
 #
 # On going :
 #
-# - RecurrentTransform : rayon spectral en calant values[] = 1e6 >0 et vir si rayon plus important sur Sparse et NLN 
+# - RecurrentTransform : rayon spectral en calant values[] = 1e-6 > 0 pour avoir l rayon max en ReLU et voir si rayon plus important sur Sparse et NLN 
 # - KernelDistributedEstimator : explorer les hyper-paramètres, ajouter mécanisme de reinit des W, insérer updateReadout
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Histogram : voir avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
 #
 
-ARGS = -experiment2
+ARGS = -test # -experiment2
 
 todo :
 	@$(MAKE) run 
