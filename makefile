@@ -139,7 +139,7 @@ test : clean .build/main.exe
 #
 
 show : api
-	@firefox doc/index.html
+	@firefox ./index.html
 
 api : doc/index.html
 

@@ -287,8 +287,7 @@ void Struct::reset(const char *value, ...)
   }
   // Now reads the String
   if(result != "") {
-    // Implements the weak parsing of a JSON structure
-    class StructJsonReader {
+    class StructReader {
 public:
       void read(Struct& value, String string)
       {
@@ -302,27 +301,12 @@ public:
         if(index < length)
           value.add(chars + index);
       }
-private:
+protected:
+      virtual void read_value(Struct& value) {}
       // String input buffer, index and length
       const char *chars;
       int index, length;
       std::string word;
-      // Reads a value from the string starting at index i and set it
-      void read_value(Struct& value)
-      {
-        next_space();
-        switch(chars[index]) {
-        case '{':
-          read_tuple_value(value);
-          break;
-        case '[':
-          read_list_value(value);
-          break;
-        default:
-          value = read_word();
-          break;
-        }
-      }
       // Reads a word
       String read_word()
       {
@@ -382,6 +366,39 @@ private:
         word = std::string(chars + i0, index - i0);
         return word;
       }
+      // Shifts until the next non-space char
+      void next_space()
+      {
+        for(; index < length && isspace(chars[index]); index++) {}
+      }
+    };
+    // Implements the weak parsing of a J= structure
+    class StructJsonReader : public StructReader {
+    protected:
+      // Reads a value from the string starting at index i and set it
+      void read_value(Struct& value)
+      {
+      }
+    };
+    // Implements the weak parsing of a JSON structure
+    class StructJsonReader : public StructReader {
+    protected:
+      // Reads a value from the string starting at index i and set it
+      void read_value(Struct& value)
+      {
+        next_space();
+        switch(chars[index]) {
+        case '{':
+          read_tuple_value(value);
+          break;
+        case '[':
+          read_list_value(value);
+          break;
+        default:
+          value = read_word();
+          break;
+        }
+      }
       // Reads a list
       void read_list_value(Struct& value)
       {
@@ -427,28 +444,8 @@ private:
             index++;
         }
       }
-      // Shifts until the next non-space char
-      void next_space()
-      {
-        for(; index < length && isspace(chars[index]); index++) {}
-      }
     }
     reader1;
-    /*
-    class StructJReader {
-    public:
-      void read(Struct& value, String string)
-      {
-        // Initializes the input buffer
-        chars = string.c_str(), index = 0, length = string.length();
-        // Clears and set the value
-        value.clear();
-      }
-    private :
-      const char *chars;
-      int index, length;
-    } reader2;
-    */
     reader1.read(*this, result);
   }
 }
