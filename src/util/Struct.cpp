@@ -292,7 +292,7 @@ public:
       void read(Struct& value, String string)
       {
         // Initializes the input buffer
-        chars = string.c_str(), index = 0, length = string.length();
+        chars = string.c_str(), index = 0, length = string.length(), itab0 = itab = tab ;
         // Clears and set the value
         value.clear();
         read_value(value);
@@ -306,6 +306,7 @@ protected:
       // String input buffer, index and length
       const char *chars;
       int index, length;
+      int itab0, itab, tab;
       std::string word;
       // Reads a word
       String read_word()
@@ -369,7 +370,19 @@ protected:
       // Shifts until the next non-space char
       void next_space()
       {
-        for(; index < length && isspace(chars[index]); index++) {}
+        for(; index < length && isspace(chars[index]); index++) {
+	  switch(chars[index]) {
+	    case '\n':
+	      itab0 = itab, itab = 1;
+	      break;
+	    case '\t' :
+	      itab += 6;
+	      break;
+	  default :
+	    itab++;
+	    break;
+	  }
+	}
       }
     };
     // Implements the weak parsing of a JSON structure
