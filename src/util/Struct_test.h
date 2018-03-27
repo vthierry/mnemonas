@@ -42,6 +42,7 @@ void Struct_test()
 #endif
   }
   // @todo
+  return;
   exit(0);
   // Tests the J= syntax mechanism
   {

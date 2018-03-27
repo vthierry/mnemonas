@@ -450,6 +450,7 @@ protected:
           StructJsonReader::read_value(value);
           break;
         default:
+          // @todo
           value = read_word();
           break;
         }
@@ -506,45 +507,8 @@ public:
       write_value(string, value);
       string += stringTrailer();
     }
-private:
-    // Recursively writes a value
-    void write_value(std::string& string, const Struct& value)
-    {
-      if(value.isAtomic())
-        write_word(string, value.value);
-      else if(value.getCount() == 0) {
-        string += asBeginTag("[");
-        for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-          write_value(string, value.get(i));
-          string += (i < l ? asNextTag(", ") : asEndTag("]"));
-        }
-      } else {
-        string += asBeginTag("{");
-        bool once = true;
-        for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
-          if(once)
-            once = false;
-          else
-            string += asNextTag(", ");
-          write_word(string, *i, true);
-          string += asMeta(": ", true);
-          write_value(string, value.get(*i));
-        }
-        for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-          Struct value_i = value.get(i);
-          if(!value_i.isEmpty()) {
-            if(once)
-              once = false;
-            else
-              string += asNextTag(", ");
-            write_word(string, toName(i), true);
-            string += asMeta(": ", true);
-            write_value(string, value_i);
-          }
-        }
-        string += asEndTag("}");
-      }
-    }
+protected:
+    virtual void write_value(std::string& string, const Struct& value) {}
     void write_word(std::string& string, String value, bool name = false)
     {
       string += asBeginValue("\"", name);
@@ -626,10 +590,63 @@ private:
       return (std::string) (tab == depth && depth > 0 ? "," : "") + (mode == 2 ? "</div>" : mode == 1 ? "\n" : "");
     }
     int mode, tab, depth;
+  };
+  class StructJSonWriter: public StructWriter {
+protected:
+    // Recursively writes a value
+    void write_value(std::string& string, const Struct& value)
+    {
+      if(value.isAtomic())
+        write_word(string, value.value);
+      else if(value.getCount() == 0) {
+        string += asBeginTag("[");
+        for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
+          write_value(string, value.get(i));
+          string += (i < l ? asNextTag(", ") : asEndTag("]"));
+        }
+      } else {
+        string += asBeginTag("{");
+        bool once = true;
+        for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
+          if(once)
+            once = false;
+          else
+            string += asNextTag(", ");
+          write_word(string, *i, true);
+          string += asMeta(": ", true);
+          write_value(string, value.get(*i));
+        }
+        for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
+          Struct value_i = value.get(i);
+          if(!value_i.isEmpty()) {
+            if(once)
+              once = false;
+            else
+              string += asNextTag(", ");
+            write_word(string, toName(i), true);
+            string += asMeta(": ", true);
+            write_value(string, value_i);
+          }
+        }
+        string += asEndTag("}");
+      }
+    }
   }
-  writer;
+  writer1;
+  class StructJWriter: public StructWriter {
+protected:
+    // Recursively writes a value
+    void write_value(std::string& string, const Struct& value)
+    {
+      // @todo
+    }
+  }
+  writer2;
   std::string string;
-  writer.write(string, *this, format, depth);
+  if((format == "jplain") || (format == "jhtml"))
+    writer2.write(string, *this, format == "jhtml" ? "html" : "plain", depth);
+  else
+    writer1.write(string, *this, format, depth);
   return string;
 }
 void Struct::load(String location)
