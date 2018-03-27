@@ -280,9 +280,11 @@ public:
    * @param location The file path.
    * - If "stdout" / "stderr", prints the data in the console as stdout or stderr stream.
    * @param format The output format:
-   * - "raw" : 1D raw compact format with minimal space.
-   * - "plain" : 2D human editable format with tabulation.
-   * - "html" : HTML human readable format.
+   * - "raw" : 1D raw compact JSON format with minimal space.
+   * - "plain" : 2D human editable JSON format with tabulation.
+   * - "html" : HTML human readable JSON format.
+   * - "jplain" : human readable J= format.
+   * - "jhtml" : HTML human readable J= format.
    */
   void save(String location, String format = "raw") const;
 
@@ -291,6 +293,8 @@ public:
    * - "raw" : 1D raw compact format with minimal space.
    * - "plain" : 2D human editable format with tabulation.
    * - "html" : HTML 2D human readable format.
+   * - "jplain" : human readable J= format.
+   * - "jhtml" : HTML human readable J= format.
    * @param depth If this data structure is a sub-structure, indicates the absolute depth for 2D format.
    */
   std::string asString(String format = "raw", unsigned int depth = 0) const;

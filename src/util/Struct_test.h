@@ -41,5 +41,18 @@ void Struct_test()
     system("firefox /tmp/test.json.html");
 #endif
   }
+  // @todo
+  exit(0);
+  // Tests the J= syntax mechanism
+  {
+    String input = s_load("./src/util/Struct_j=.j=");
+    Struct value;
+    value.reset(input);
+    String output = value.asString("jplain");
+    assume(input == output, "illegal-state", "in Struct_test_js 2/2 error in the C/C++ J= implementation");
+#if 1
+    assume(system("cd ./src/util ; cat Struct.js Struct_test.js | node -") == 0, "illegal-state", "in Struct_test_js 2/2 error in the JavaScript J= implementation");
+#endif
+  }
 }
 ///@endcond

@@ -1,0 +1,48 @@
+{
+  title = The J= specification language;
+  text = The J= language aims at being a smart minimal specification language to define objects with data and data-operation;
+  {
+    title = Data structure;
+    = The main data-structure is of the form \{ name = value ... \};
+    = The value is either another data-structure or a string;
+    = A string is parsable, i.e., may contain some data-structure with a predefined syntax {
+      = Structures strings contains internal sub-division, such as this present list of parsable string;
+      = Functions and expressions define operation on data-structure;
+      = Uniform ressource identifier allow to reference other objects, including data-structure;
+    };
+    = A list is simply a data-structure with values indexed by non-negative integer;
+    = The name-value pairs are stored in the input order for readability, but this order has no semantic;
+  }
+  {
+    title = Data syntax;
+    = It is based on five reserved chars \{, \}, =, \; and \\ in order to escape tem, e.g. \{ and \; in strings;
+    = String have no quote but starts with = and ends with \;. They may be multi-line;
+    = Name is registered US-us word or compound-word, containing only alphanumeric character (ASCII letter, digit and the '_' dash) {
+      = when ommited, an implicit non-negative integer value stands for the name;
+      = other letter or symbol are encoded (as __xxx_ where xxx is the Unicode decimal value);
+    };
+    = Functions are defined by construct of the form = (parameter, ...) \{ body, \}. Expressions are function with implicit argument;
+    = Uniform ressource identifiers 
+	@definir #segment dans une structure
+    = The J= input syntax is weak, i.e, any string maps onto a well-formed data-structure;
+    = The J= output syntax is a fixed indented normalized string, reflecting the corresponding data-structure;
+    = Space character have no semantic;
+  }
+  {
+    title = Data-structure operation;
+    = A field of the form { name = (parameter, ...) { body\; } } defines evaluable functions;
+  }
+  {
+    title = Structured string: On HTML text wrapping;
+    = Here, {p class=example\; a text with {i alternate presentation} or {p id=label\; class=strong\; other sub-text} and {a url=http://somewhere.on-the-web\; links}} is directly parsable, allowing us to define rich structured text with links;
+    = By contract, only the {p class=...\; ...} construct is used to define the text division (usual role of <div>), visual change (usual role of <span>), element-grouping or adding a hook (using the id attribute) to index a part of the text;
+    = By contract, other HTML tags are considered as ``shortcode´´ (e.g. {i ...} means {p class=i\; ...}) for the previous one {
+      = The {b tag} to indicate an important part of the text (usual role of <strong>)\;
+      = The {i tag} to indicate an alternate piece of text (e.g., other language or technical term)\;
+      = The {q tag} to indicate a quotation in the text\;
+      = The {s tag} to indicate a deprecated part of the text\;
+      = The {u tag} to indicate text that should be stylistically different (not necessarily underline)\;
+  };
+    = Other HTML tags allowing to represent floating objects such as image (using <img>), video (using <video>), or embedded object (using <object>) are to be defined outside textual section in order to help making out text with respect to other components;
+  }
+}

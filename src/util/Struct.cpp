@@ -372,17 +372,9 @@ protected:
         for(; index < length && isspace(chars[index]); index++) {}
       }
     };
-    // Implements the weak parsing of a J= structure
-    class StructJsonReader : public StructReader {
-    protected:
-      // Reads a value from the string starting at index i and set it
-      void read_value(Struct& value)
-      {
-      }
-    };
     // Implements the weak parsing of a JSON structure
-    class StructJsonReader : public StructReader {
-    protected:
+    class StructJsonReader: public StructReader {
+protected:
       // Reads a value from the string starting at index i and set it
       void read_value(Struct& value)
       {
@@ -442,6 +434,24 @@ protected:
           next_space();
           if((index < length) && ((chars[index] == ',') || (chars[index] == ';')))
             index++;
+        }
+      }
+    };
+    // Implements the weak parsing of a J= structure
+    class StructJReader: public StructJsonReader {
+protected:
+      // Reads a value from the string starting at index i and set it
+      void read_value(Struct& value)
+      {
+        next_space();
+        switch(chars[index]) {
+        case '{':
+        case '[':
+          StructJsonReader::read_value(value);
+          break;
+        default:
+          value = read_word();
+          break;
         }
       }
     }
