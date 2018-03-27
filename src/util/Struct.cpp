@@ -638,7 +638,44 @@ protected:
     // Recursively writes a value
     void write_value(std::string& string, const Struct& value)
     {
-      // @todo
+      if(value.isAtomic())
+        write_word(string, value.value);
+      else if(value.getCount() == 0) {
+	/*
+	  string += asBeginTag("[");
+	  for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
+          write_value(string, value.get(i));
+          string += (i < l ? asNextTag(", ") : asEndTag("]"));
+	  }
+	*/
+      } else {
+	/*
+	  string += asBeginTag("{");
+	  bool once = true;
+	  for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
+          if(once)
+	  once = false;
+          else
+	  string += asNextTag(", ");
+          write_word(string, *i, true);
+          string += asMeta(": ", true);
+          write_value(string, value.get(*i));
+	  }
+	  for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
+          Struct value_i = value.get(i);
+          if(!value_i.isEmpty()) {
+	  if(once)
+	  once = false;
+	  else
+	  string += asNextTag(", ");
+	  write_word(string, toName(i), true);
+	  string += asMeta(": ", true);
+	  write_value(string, value_i);
+          }
+	  }
+	  string += asEndTag("}");
+	*/
+      }
     }
   }
   writer2;
