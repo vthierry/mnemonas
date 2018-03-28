@@ -292,7 +292,7 @@ public:
       void read(Struct& value, String string)
       {
         // Initializes the input buffer
-        chars = string.c_str(), index = 0, length = string.length(), itab0 = itab = tab ;
+        chars = string.c_str(), index = 0, length = string.length(), itab0 = itab = tab0 = tab ;
         // Clears and set the value
         value.clear();
         read_value(value);
@@ -306,7 +306,7 @@ protected:
       // String input buffer, index and length
       const char *chars;
       int index, length;
-      int itab0, itab, tab;
+      int itab0, itab, tab0, tab;
       std::string word;
       // Reads a word
       String read_word()
@@ -372,16 +372,23 @@ protected:
       {
         for(; index < length && isspace(chars[index]); index++) {
 	  switch(chars[index]) {
-	    case '\n':
-	      itab0 = itab, itab = 1;
-	      break;
-	    case '\t' :
-	      itab += 6;
-	      break;
+	  case '\n':
+	    itab0 = itab, tab0 = tab, itab = 1;
+	    break;
+	  case '\t' :
+	    itab += 6;
+	    break;
 	  default :
 	    itab++;
 	    break;
 	  }
+	}
+	if (itab > 0) {
+	  if (itab > itab0) 
+	    tab++;
+	  if (itab < itab0) 
+	    tab++;
+	  itab = 0;
 	}
       }
     };
