@@ -256,7 +256,7 @@ Static Public Member Functions</h2></td></tr>
 <li>"min" : the observed minimal value.</li>
 <li>"max" : the observed maximal value.</li>
 <li>"mean" : the mean value.</li>
-<li>"stdev" : the standard-deviation <img class="formulaInl" alt="$\sigma$" src="form_0.png"/>. (2nd order).<ul>
+<li>"stdev" : the standard-deviation <img class="formulaInl" alt="$\sigma$" src="form_3.png"/>. (2nd order).<ul>
 <li>Returns an unbiased estimator of the theoretical standard-deviation <code>E[(x-m)^2]^(1/2)</code> (Any standard-deviation lower than DBL_EPSILON (1e-15) is set to 0).</li>
 </ul>
 </li>
@@ -282,8 +282,8 @@ Static Public Member Functions</h2></td></tr>
 <li>"density" : the observed probability for value <code>v</code>. It returns the value of <code><a class="el" href="classHistogram.html#a34d72ca219b83796cfa30728227af9ae" title="Returns the probability for the given value. ">Histogram::p()</a></code>.</li>
 <li>"mode" : the mode value, i.e. the most frequent value.</li>
 <li>"quantile" : The median corresponds to the quantile for v = 0.5. The quartiles to the quantiles for v = 0.25 and 0.75.</li>
-<li>"entropy" : The distribution entropy, in bits, i.e. using <img class="formulaInl" alt="$\log_2$" src="form_1.png"/>.<ul>
-<li>We use the approximation: <img class="formulaInl" alt="$ h \sim - \sum_{i} p_i \log p_i + log \epsilon $" src="form_2.png"/>, where <img class="formulaInl" alt="$p_i$" src="form_3.png"/> is the probability of the <img class="formulaInl" alt="$i$" src="form_4.png"/>-th box of size <img class="formulaInl" alt="$\epsilon$" src="form_5.png"/>.</li>
+<li>"entropy" : The distribution entropy, in bits, i.e. using <img class="formulaInl" alt="$\log_2$" src="form_4.png"/>.<ul>
+<li>We use the approximation: <img class="formulaInl" alt="$ h \sim - \sum_{i} p_i \log p_i + log \epsilon $" src="form_5.png"/>, where <img class="formulaInl" alt="$p_i$" src="form_6.png"/> is the probability of the <img class="formulaInl" alt="$i$" src="form_7.png"/>-th box of size <img class="formulaInl" alt="$\epsilon$" src="form_8.png"/>.</li>
 </ul>
 </li>
 <li>"uniform-divergence" : The Kullback-Leibler divergence between the empirical distribution and a uniform distribution having the same mean and variance. If <code>v &lt; 0</code> computes the inverse divergence.</li>
@@ -681,4 +681,4 @@ Static Public Member Functions</h2></td></tr>
 <li>src/util/<a class="el" href="Histogram_8cpp_source.html">Histogram.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-03-27 at 07:36:11) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-03-29 at 18:20:28) </tt> </div><hr/>

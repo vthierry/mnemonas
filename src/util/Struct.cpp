@@ -292,7 +292,7 @@ public:
       void read(Struct& value, String string)
       {
         // Initializes the input buffer
-        chars = string.c_str(), index = 0, length = string.length(), itab0 = itab = tab0 = tab ;
+        chars = string.c_str(), index = 0, length = string.length(), itab0 = itab = tab0 = tab;
         // Clears and set the value
         value.clear();
         read_value(value);
@@ -370,26 +370,25 @@ protected:
       // Shifts until the next non-space char
       void next_space()
       {
-        for(; index < length && isspace(chars[index]); index++) {
-	  switch(chars[index]) {
-	  case '\n':
-	    itab0 = itab, tab0 = tab, itab = 1;
-	    break;
-	  case '\t' :
-	    itab += 6;
-	    break;
-	  default :
-	    itab++;
-	    break;
-	  }
-	}
-	if (itab > 0) {
-	  if (itab > itab0) 
-	    tab++;
-	  if (itab < itab0) 
-	    tab++;
-	  itab = 0;
-	}
+        for(; index < length && isspace(chars[index]); index++)
+          switch(chars[index]) {
+          case '\n':
+            itab0 = itab, tab0 = tab, itab = 1;
+            break;
+          case '\t':
+            itab += 6;
+            break;
+          default:
+            itab++;
+            break;
+          }
+        if(itab > 0) {
+          if(itab > itab0)
+            tab++;
+          if(itab < itab0)
+            tab++;
+          itab = 0;
+        }
       }
     };
     // Implements the weak parsing of a JSON structure
@@ -661,40 +660,40 @@ protected:
       if(value.isAtomic())
         write_word(string, value.value);
       else if(value.getCount() == 0) {
-	/*
-	  string += asBeginTag("[");
-	  for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-          write_value(string, value.get(i));
-          string += (i < l ? asNextTag(", ") : asEndTag("]"));
-	  }
-	*/
+        /*
+         *  string += asBeginTag("[");
+         *  for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
+         *       write_value(string, value.get(i));
+         *       string += (i < l ? asNextTag(", ") : asEndTag("]"));
+         *  }
+         */
       } else {
-	/*
-	  string += asBeginTag("{");
-	  bool once = true;
-	  for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
-          if(once)
-	  once = false;
-          else
-	  string += asNextTag(", ");
-          write_word(string, *i, true);
-          string += asMeta(": ", true);
-          write_value(string, value.get(*i));
-	  }
-	  for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-          Struct value_i = value.get(i);
-          if(!value_i.isEmpty()) {
-	  if(once)
-	  once = false;
-	  else
-	  string += asNextTag(", ");
-	  write_word(string, toName(i), true);
-	  string += asMeta(": ", true);
-	  write_value(string, value_i);
-          }
-	  }
-	  string += asEndTag("}");
-	*/
+        /*
+         *  string += asBeginTag("{");
+         *  bool once = true;
+         *  for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
+         *       if(once)
+         *  once = false;
+         *       else
+         *  string += asNextTag(", ");
+         *       write_word(string, *i, true);
+         *       string += asMeta(": ", true);
+         *       write_value(string, value.get(*i));
+         *  }
+         *  for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
+         *       Struct value_i = value.get(i);
+         *       if(!value_i.isEmpty()) {
+         *  if(once)
+         *  once = false;
+         *  else
+         *  string += asNextTag(", ");
+         *  write_word(string, toName(i), true);
+         *  string += asMeta(": ", true);
+         *  write_value(string, value_i);
+         *       }
+         *  }
+         *  string += asEndTag("}");
+         */
       }
     }
   }
