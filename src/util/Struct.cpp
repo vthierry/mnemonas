@@ -471,7 +471,8 @@ protected:
           StructJsonReader::read_value(value);
           break;
         default:
-	  read_jvalue(value);
+	  value = read_word();
+ 	  // @todo read_jvalue(value);
 	  break;
 	}
       }
