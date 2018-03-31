@@ -25,7 +25,6 @@ void Struct_test()
   }
   // In/Out parsing test
   {
-#if 0
     Struct value;
     String input = "{ 1 = A, b = [2, 3], a = 1, 0 = Z, 10 = 'M', c= \"ah que \\/ \t oui\", 2 = B}";
     value.reset(input);
@@ -36,23 +35,21 @@ void Struct_test()
     Struct value2;
     value2.load(file);
     assume(value == value2, "illegal-state", "in Struct_test 4/4: value != value2 =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), ((String) value2).c_str());
-    //#if 0
+#if 0
     system("json-glib-validate /tmp/test.json");
     value.save("/tmp/test.json.html", "html");
     system("firefox /tmp/test.json.html");
 #endif
   }
-  
+
   {
-    String input ="titre = TT\nwhat = WW\n";
+    String input = "titre =\n AA=TT\n BB=WW\n= WW\nUU=XX\n=ZZ\n et le reste\n = toto\n = titi";
     Struct value;
     value.reset(input);
-    String output = value.asString("plain");
-    printf(">>\n%s\n", ((String) output).c_str());
-    
+    printf("JSON>\n%s\n", ((String) value.asString("plain")).c_str());
+    printf("J=>%s\n", ((String) value.asString("jplain")).c_str());
   }
   exit(0);
-
 
   // Tests the J= syntax mechanism
   {
