@@ -5,6 +5,7 @@
 
 #include "s_load.h"
 #include "s_save.h"
+#include "s_printf.h"
 
 /////////////////////////////////////////////
 
@@ -292,7 +293,7 @@ public:
       void read(Struct& value, String string)
       {
         // Initializes the input buffer
-        chars = string.c_str(), index = 0, length = string.length(), itab0 = itab = iline = tab = 0;
+        chars = string.c_str(), index = 0, length = string.length(), iline = ichar0 = ichar = itab = tab = 1;
         // Clears and set the value
         value.clear();
         read_value(value);
@@ -306,15 +307,12 @@ protected:
       // String input buffer, index and length
       const char *chars;
       int index, length;
-      unsigned int itab0, itab, iline, tab;
+      unsigned int iline, ichar0, ichar, itab, tab;
       std::string word;
       // Reads a word
       String read_word()
       {
-        if((chars[index] == '"') || (chars[index] == '\''))
-          return read_quoted_word(chars[index]);
-        else
-          return read_nospace_word();
+	return chars[index] == '"' || chars[index] == '\'' ? read_quoted_word(chars[index]) : read_nospace_word();
       }
       // Reads a quoted word
       String read_quoted_word(char quote)
@@ -359,13 +357,17 @@ protected:
       String read_nospace_word()
       {
         int i0;
-        for(i0 = index; index < length && !(isspace(chars[index]) ||
-                                            chars[index] == ',' || chars[index] == ';' ||
-                                            chars[index] == ':' || chars[index] == '=' ||
-                                            chars[index] == '}' || chars[index] == ']'); index++)
+        for(i0 = index; index < length && no_space(chars[index]); index++)
         {}
         word = std::string(chars + i0, index - i0);
         return word;
+      }
+      bool no_space(char c) 
+      {
+	return !isspace(chars[index]) &&
+		 chars[index] != ',' && chars[index] != ';' &&
+		 chars[index] != ':' && chars[index] != '=' &&
+		 chars[index] != '}' && chars[index] != ']';
       }
       // Shifts until the next non-space char
       void next_space()
@@ -373,21 +375,20 @@ protected:
         for(; index < length && isspace(chars[index]); index++) {
 	  switch(chars[index]) {
 	  case '\n':
-	    iline++, itab0 = itab, itab = 1;
+	    iline++, ichar0 = ichar, ichar = 1, itab = 1;
 	    break;
 	  case '\t' :
-	    itab += 6;
+	    if (itab > 0)
+	      ichar += 6;
 	    break;
-	  default :
-	    itab++;
+	  case ' ' :
+	    if (itab > 0)
+	      ichar++;
 	    break;
 	  }
 	}
 	if (itab > 0) {
-	  if (itab > itab0) 
-	    tab++;
-	  if (itab < itab0) 
-	    tab--;
+	  tab = ichar > ichar0 ? tab + 1 : ichar < ichar0 ? tab - 1 : tab;
 	  itab = 0;
 	}
       }
@@ -424,7 +425,7 @@ protected:
             return;
           }
           Struct item;
-          read_value(item);
+          StructJsonReader::read_value(item);
           value.set(value.getLength(), item);
           next_space();
           if((index < length) && ((chars[index] == ',') || (chars[index] == ';')))
@@ -448,7 +449,7 @@ protected:
           Struct item = true;
           if((index < length) && ((chars[index] == ':') || (chars[index] == '='))) {
             index++;
-            read_value(item);
+            StructJsonReader::read_value(item);
           }
           value.set(name, item);
           next_space();
@@ -471,33 +472,48 @@ protected:
           StructJsonReader::read_value(value);
           break;
         default:
-	  value = read_word();
- 	  // @todo read_jvalue(value);
+ 	  read_jvalue(value);
 	  break;
 	}
       }
       void read_jvalue(Struct& value) {
-	unsigned int tab0 = tab;
-        while(tab == tab0) {
+	unsigned int tab0 = tab, iline0 = iline;
+	printf("read_jvalue(iline = %d tab = %d text = '%s'\n", tab, iline, std::string(chars + index, 20).c_str());
+        while(index < length) {
 	  next_space();
+	  if (tab < tab0)
+	    break;
 	  if (chars[index] == '=') {
 	    index++;
 	    Struct item;
-	    read_value(item);
+	    read_jvalue(item);
 	    value.set(value.getLength(), item);
+	    printf(">>Now value = %s\n", ((String) value).c_str());
 	  } else {
+	    next_space();
 	    std::string word = read_word();
+	    next_space();
 	    if (chars[index] == '=') {
 	      index++;
 	      Struct item;
-	      read_value(item);
+	      read_jvalue(item);
 	      value.set(word, item);
+	      printf(">>Now value = %s\n", ((String) value).c_str());
 	    } else {
-	      for(unsigned int iline0 = iline, iline1 = iline; iline == iline0 || tab > tab0;) {
-		word += iline > iline1 ? "\n" : " ";
-		iline1 = iline;
-		word += read_word();
+	      std::string string = word;
+	      unsigned int iline1 = iline;
+	      while(index < length) {
+		next_space();
+		if(iline > iline0 && tab <= tab0)
+		  break;
+		string += iline > iline1 ? "\n" : " ", iline1 = iline;
+		if (no_space(chars[index])) {
+		  string += read_word();
+		} else {
+		  string += chars[index++];
+		}
 	      }
+	      value = string;
 	    }
 	  }
 	}
@@ -541,7 +557,7 @@ Struct::Struct(int argc, const char *argv[])
 }
 std::string Struct::asString(String format, unsigned int depth) const
 {
-  assume(format == "raw" || format == "plain" || format == "html", "illegal-argument", "in Struct::asString undefined format %s", format.c_str());
+  assume(format == "raw" || format == "plain" || format == "html" || format == "jplain" || format == "jhtml", "illegal-argument", "in Struct::asString undefined format %s", format.c_str());
   // Implements the string writing of a JSON structure
   class StructWriter {
 public:

@@ -58,7 +58,7 @@ void network_test()
     network::SupervisedCriterion criterion(transform2, output, '2', 1e-3, 'o');
     network::KernelExperimentalEstimator estimator(transform2, criterion);
     double err = estimator.run(1e-12, 1e-4, 100, "");
-    assume(err < 1e-12, "illegal-state", "in network_test/KernelSupervisedEstimation over-threshold error = %g\n", err);
+    assume(err < 1e-12, "illegal-state", "in network_test/KernelExperimentalEstimator over-threshold error = %g\n", err);
   }
   // Tests the recurrent weight estimation mechanism with distributed estimator
   {
@@ -73,7 +73,7 @@ void network_test()
     network::SupervisedCriterion criterion(transform2, output);
     network::KernelDistributedEstimator estimator(transform2, criterion);
     double err = estimator.run();
-    assume(err < 1e-6, "illegal-state", "in network_test/KernelSupervisedEstimation over-threshold error = %g\n", err);
+    assume(err < 1e-3, "illegal-state", "in network_test/KernelDistributedEstimator over-threshold error = %g\n", err);
   }
   // Tests the different model basic mechanism
   {
