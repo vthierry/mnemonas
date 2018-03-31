@@ -42,6 +42,7 @@ void Struct_test()
 #endif
   }
 
+#if 0
   {
     String input = "titre =\n AA=TT\n BB=WW\n= WW\nUU=XX\n=ZZ\n et le reste\n = toto\n = titi";
     Struct value;
@@ -64,5 +65,7 @@ void Struct_test()
     assume(system("cd ./src/util ; cat Struct.js Struct_test.js | node -") == 0, "illegal-state", "in Struct_test_js 2/2 error in the JavaScript J= implementation");
 #endif
   }
+
+#endif
 }
 ///@endcond
