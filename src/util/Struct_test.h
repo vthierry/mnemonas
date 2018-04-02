@@ -41,17 +41,26 @@ void Struct_test()
     system("firefox /tmp/test.json.html");
 #endif
   }
-
-#if 0
+  
+  // Tests the J= syntax mechanism
   {
-    String input = "titre =\n AA=TT\n BB=WW\n= WW\nUU=XX\n=ZZ\n et le reste\n = toto\n = titi";
+    String input ="titre = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ\n et le reste\n = toto\n = titi\n";
     Struct value;
     value.reset(input);
-    printf("JSON>\n%s\n", ((String) value.asString("plain")).c_str());
-    printf("J=>%s\n", ((String) value.asString("jplain")).c_str());
+    assume(input == value.asString("jplain"),  "illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
   }
-  exit(0);
 
+  {
+    String input ="title = The J= specification language\ntext = The J= language aims at being a smart minimal specification language to define objects with meta-data, data and data-operation";
+    Struct value;
+    value.reset(input);
+    assume(input == value.asString("jplain"),  " illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
+  }
+
+
+
+
+#if 0
   // Tests the J= syntax mechanism
   {
     String input = s_load("./src/util/Struct_j=.j=");

@@ -312,24 +312,25 @@ protected:
       // Shifts until the next non-space char
       void next_space(bool noline = false)
       {
-        for(; index < length && (chars[index] != '\n' || !noline) && isspace(chars[index]); index++)
-          switch(chars[index]) {
-          case '\n':
-            iline++, ichar0 = ichar, ichar = 1, itab = 1;
-            break;
-          case '\t':
-            if(itab > 0)
-              ichar += 6;
-            break;
-          case ' ':
-            if(itab > 0)
-              ichar++;
-            break;
-          }
-        if(itab > 0) {
-          tab = ichar > ichar0 ? tab + 1 : ichar < ichar0 ? tab - 1 : tab;
-          itab = 0;
-        }
+        for(; index < length && (chars[index] != '\n' || !noline) && isspace(chars[index]); index++) {
+	  switch(chars[index]) {
+	  case '\n':
+	    iline++, ichar0 = ichar, ichar = 1, itab = 1;
+	    break;
+	  case '\t' :
+	    if (itab > 0)
+	      ichar += 6;
+	    break;
+	  case ' ' :
+	    if (itab > 0)
+	      ichar++;
+	    break;
+	  }
+	}
+	if (itab > 0) {
+	  tab = ichar > ichar0 ? tab + 1 : ichar < ichar0 ? tab - 1 : tab;
+	  itab = 0;
+	}
       }
     };
     // Implements the weak parsing of a JSON structure
@@ -399,7 +400,7 @@ protected:
       // Reads a word
       String read_word()
       {
-        return chars[index] == '"' || chars[index] == '\'' ? read_quoted_word(chars[index]) : read_nospace_word();
+	return chars[index] == '"' || chars[index] == '\'' ? read_quoted_word(chars[index]) : read_nospace_word();
       }
       // Reads a quoted word
       String read_quoted_word(char quote)
@@ -444,16 +445,17 @@ protected:
       String read_nospace_word()
       {
         int i0;
-        for(i0 = index; index < length && no_space(chars[index]); index++) {}
+        for(i0 = index; index < length && no_space(chars[index]); index++)
+        {}
         word = std::string(chars + i0, index - i0);
         return word;
       }
-      bool no_space(char c)
+      bool no_space(char c) 
       {
-        return !isspace(chars[index]) &&
-               chars[index] != ',' && chars[index] != ';' &&
-               chars[index] != ':' && chars[index] != '=' &&
-               chars[index] != '}' && chars[index] != ']';
+	return !isspace(chars[index]) &&
+		 chars[index] != ',' && chars[index] != ';' &&
+		 chars[index] != ':' && chars[index] != '=' &&
+		 chars[index] != '}' && chars[index] != ']';
       }
     };
     // Implements the weak parsing of a J= structure
@@ -463,56 +465,53 @@ protected:
       void read_value(Struct& value)
       {
         next_space();
-        // Reads JSON within J= if any
+	// Reads JSON within J= if any
         switch(chars[index]) {
         case '{':
         case '[':
           StructJsonReader::read_value(value);
           break;
         default:
-          read_jvalue(value);
-          break;
-        }
+ 	  read_jvalue(value);
+	  break;
+	}
       }
-      void read_jvalue(Struct& value)
-      {
-        next_space();
-        unsigned int tab0 = tab;
-        // -printf("read_jvalue(iline = %d tab = %d text = '\n%s\n'\n", tab, iline, std::string(chars + index, 20).c_str());
+      void read_jvalue(Struct& value) {
+	next_space();
+	unsigned int tab0 = tab;
         while(index < length) {
-          next_space();
-          if(tab < tab0)
-            break;
-          std::string label = read_label();
-          next_space(true);
-          if(chars[index] == '=') {
-            index++;
-            Struct item;
-            read_jvalue(item);
-            if(label == "")
-              value.add(item);
-            else
-              value.set(label, item);
-          } else {
-            std::string string = label;
-            while(index < length) {
-              next_space();
-              if(tab <= tab0)
-                break;
-              string += "\n" + read_line();
-            }
-            value = string;
-            // -printf(">>Now string = %s\n", ((String) value).c_str());
-            return;
-          }
-        }
-        // -printf(">>Now value = %s\n", ((String) value).c_str());
+	  next_space();
+	  if (tab < tab0)
+	    break;
+	  std::string label = read_label();
+	  next_space(true);
+	  if (chars[index] == '=') {
+	    index++;
+	    Struct item;
+	    read_jvalue(item);
+	    if (label == "")
+	      value.add(item);
+	    else
+	      value.set(label, item);
+	  } else {
+	    std::string string = label;
+	    while(index < length) {
+	      next_space();
+	      if (tab <= tab0)
+		break;
+	      string += "\n" + read_line();
+	    }
+	    value = string;
+	    return;
+	  }
+	}
       }
-      // Reads a label before the =
+      // Reads a label before the = 
       String read_label()
       {
         int i0;
-        for(i0 = index; index < length && !isspace(chars[index]) && chars[index] != '='; index++) {}
+        for(i0 = index; index < length && !isspace(chars[index]) && chars[index] != '=' ; index++)
+        {}
         word = std::string(chars + i0, index - i0);
         return word;
       }
@@ -520,7 +519,8 @@ protected:
       String read_line()
       {
         int i0;
-        for(i0 = index; index < length && chars[index] != '\n'; index++) {}
+        for(i0 = index; index < length && chars[index] != '\n' ; index++)
+        {}
         word = std::string(chars + i0, index - i0);
         return word;
       }
@@ -583,10 +583,17 @@ protected:
       tab += t;
       std::string s;
       if(mode == 1) {
-        s += "\n";
-        for(int i = 0; i < 2 * tab; i++)
-          s += " ";
+	s += "\n";
+	for(int i = 0; i < 2 * tab; i++)
+	  s += " ";
       }
+      return s;
+    }
+    std::string addTab()
+    {
+      std::string s; 
+      for(int i = 0; i < tab - 1; i++)
+	s += " ";
       return s;
     }
     // HTML and 2D-raw mechanisms
@@ -610,9 +617,9 @@ protected:
     {
       return mode == 2 ? "</span>" + asMeta(c) : c;
     }
-    std::string asBeginLine()
+    std::string asBeginLine(bool empty)
     {
-      return mode == 2 ? "<div class='struct-block'>" : addLn(0);
+      return mode == 2 ? "<div class='struct-block'>" : (empty ? "" : "\n") + addTab();
     }
     std::string asEndLine()
     {
@@ -620,7 +627,7 @@ protected:
     }
     std::string asNewLine()
     {
-      return mode == 2 ? "<br/>" : addLn(0) + " ";
+      return mode == 2 ? "<br/> " : "\n" + addTab() + " ";
     }
     std::string asMeta(String c, bool space = false)
     {
@@ -722,34 +729,34 @@ protected:
       if(value.isAtomic())
         write_word(string, value.value);
       else {
-        tab++;
-        for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
-          string += asBeginLine();
-          write_word(string, *i, true);
-          string += asMeta(" = ");
-          write_value(string, value.get(*i));
-          string += asEndLine();
-        }
-        for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-          string += asBeginLine();
-          string += asMeta("= ");
-          write_value(string, value.get(i));
-          string += asEndLine();
-        }
-        tab--;
+	tab++;
+	for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
+	  string += asBeginLine(string == "");
+	  write_word(string, *i, true);
+	  string += asMeta(" = ");
+	  write_value(string, value.get(*i));
+	  string += asEndLine();
+	}
+	for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
+	  string += asBeginLine(string == "");
+	  string += asMeta("= ");
+	  write_value(string, value.get(i));
+	  string += asEndLine();
+	}
+	tab--;
       }
     }
     void write_word(std::string& string, String value, bool name = false)
     {
       string += asBeginValue("", name);
       for(unsigned int i = 0; i < value.length(); i++)
-        if(value[i] == '\n')
-          string += asNewLine();
-        else
-          string += value[i];
+	if (value[i] == '\n')
+	  string += asNewLine();
+	else 
+	string+= value[i];
       string += asEndValue("");
     }
-  }
+   }
   writer2;
   std::string string;
   if((format == "jplain") || (format == "jhtml"))
