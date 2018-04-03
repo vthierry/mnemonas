@@ -36,18 +36,22 @@ void Struct_test()
     value2.load(file);
     assume(value == value2, "illegal-state", "in Struct_test 4/4: value != value2 =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), ((String) value2).c_str());
 #if 0
-    system("json-glib-validate /tmp/test.json");
     value.save("/tmp/test.json.html", "html");
+    system("json-glib-validate /tmp/test.json");
     system("firefox /tmp/test.json.html");
 #endif
   }
   
   // Tests the J= syntax mechanism
   {
-    String input ="titre = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ\n et le reste\n = toto\n = titi\n";
+    String input ="what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ\n et le reste\n = toto\n = titi\n";
     Struct value;
     value.reset(input);
     assume(input == value.asString("jplain"),  "illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
+#if 0
+    value.save("/tmp/test.j=.html", "jhtml");
+    system("firefox /tmp/test.j=.html");
+#endif
   }
 
   {

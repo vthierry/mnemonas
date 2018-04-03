@@ -1,5 +1,6 @@
 title = The J= specification language
-text = The J= language aims at being a smart minimal specification language to define objects with meta-data, data and data-operation
+text = 
+ = The J= language aims at being a smart minimal specification language
  data-structure =
   title = Data structure
   = The main data-structure is of the form { label = value ... }
@@ -10,7 +11,7 @@ text = The J= language aims at being a smart minimal specification language to d
    For instance:
    = This document is in J= syntax with two data, title and text
    = The title is a data which value is a string
-   = The text is a data which is itself data-structure, with this entitled "Data structure" and indexed "data-structure" section as sub-structure
+   = The text is a data which is itself data-structure, the first section being entitled "Data structure" and indexed "data-structure" section as sub-structure
   = This section is separated from the next one by the following equal sign
  =
   title = More details on the syntax
@@ -36,6 +37,4 @@ text = The J= language aims at being a smart minimal specification language to d
   = The label-value pairs are stored in the input order for readability, but this order has no semantic
   = 
    # Discussion
-   This syntax allows to define data-structure equivalent to a [https://www.json.org JSON] data-structure, but with a much simpler syntax, 
-    it also allows have the expressive power of the [https://en.wikipedia.org/wiki/Markdown Markdown] syntax, allowing to structure and decorate an 
-     hyper-text. The idea comes from both the [https://en.wikipedia.org/wiki/YAML Yaml] syntax, here simplified, and the way code is structured in [https://en.wikipedia.org/wiki/Python_(programming_language) Python] by indentation.
+   This syntax allows to define data-structure equivalent to a [https://www.json.org JSON] data-structure, but with a much simpler syntax, it also allows have the expressive power of the [https://en.wikipedia.org/wiki/Markdown Markdown] syntax, allowing to structure and decorate an hyper-text. The idea comes from both the [https://en.wikipedia.org/wiki/YAML Yaml] syntax, here simplified, and the way code is structured in [https://en.wikipedia.org/wiki/Python_(programming_language) Python] by indentation.

@@ -293,7 +293,7 @@ public:
       void read(Struct& value, String string)
       {
         // Initializes the input buffer
-        chars = string.c_str(), index = 0, length = string.length(), iline = ichar0 = ichar = itab = tab = 1;
+        chars = string.c_str(), index = 0, length = string.length();
         // Clears and set the value
         value.clear();
         read_value(value);
@@ -304,34 +304,14 @@ public:
       }
 protected:
       virtual void read_value(Struct& value) {}
+      // Shifts until the next non-space char
+      void next_space()
+      {
+        for(; index < length && isspace(chars[index]); index++) {}
+      }
       // String input buffer, index and length
       const char *chars;
       int index, length;
-      unsigned int iline, ichar0, ichar, itab, tab;
-      std::string word;
-      // Shifts until the next non-space char
-      void next_space(bool noline = false)
-      {
-        for(; index < length && (chars[index] != '\n' || !noline) && isspace(chars[index]); index++) {
-	  switch(chars[index]) {
-	  case '\n':
-	    iline++, ichar0 = ichar, ichar = 1, itab = 1;
-	    break;
-	  case '\t' :
-	    if (itab > 0)
-	      ichar += 6;
-	    break;
-	  case ' ' :
-	    if (itab > 0)
-	      ichar++;
-	    break;
-	  }
-	}
-	if (itab > 0) {
-	  tab = ichar > ichar0 ? tab + 1 : ichar < ichar0 ? tab - 1 : tab;
-	  itab = 0;
-	}
-      }
     };
     // Implements the weak parsing of a JSON structure
     class StructJsonReader: public StructReader {
@@ -457,6 +437,7 @@ protected:
 		 chars[index] != ':' && chars[index] != '=' &&
 		 chars[index] != '}' && chars[index] != ']';
       }
+      std::string word;
     };
     // Implements the weak parsing of a J= structure
     class StructJReader: public StructJsonReader {
@@ -472,59 +453,72 @@ protected:
           StructJsonReader::read_value(value);
           break;
         default:
- 	  read_jvalue(value);
+ 	  read_jvalue(value, 0);
 	  break;
 	}
       }
-      void read_jvalue(Struct& value) {
-	next_space();
-	unsigned int tab0 = tab;
+      void read_jvalue(Struct& value, unsigned int tab0) {
+	unsigned int index0;
         while(index < length) {
-	  next_space();
-	  if (tab < tab0)
-	    break;
-	  std::string label = read_label();
-	  next_space(true);
+	  unsigned int tab = 0;
+	  // Reads tab
+	  for(index0 = index; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
+	    switch(chars[index]) {
+	    case '\t' :
+	      tab += 6;
+	      break;
+	    case ' ' :
+	      tab++;
+	      break;
+	    }
+	  printf(">tab = %d\n", tab);
+	  if (tab < tab0) {
+	    index = index0;
+	    printf(">return\n");
+	    return;
+	  }
+	  // Reads label
+	  for(index0 = index; index < length && !isspace(chars[index]) && chars[index] != '='; index++)
+	    {}
+	  std::string label = std::string(chars + index0, index - index0);
+	  printf(">label = %s\n", label.c_str());
+	  // Detects equal
+	  for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
+	    {}
+	  // Reads line trailer  
 	  if (chars[index] == '=') {
+	    for(index++; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
+	      {}
+	    for(index0 = index; index < length && chars[index] != '\n'; index++) 
+	      {}
+	    std::string suffix = std::string(chars + index0, index - index0);
 	    index++;
+	    printf(">suffix = %s\n", suffix.c_str());
 	    Struct item;
-	    read_jvalue(item);
+	    read_jvalue(item, tab+1);
+	    if (item.isEmpty())
+	      item = suffix;
+	    else if (suffix != "") {
+	      printf("item = %s\n", ((String) item).c_str());
+	      item.set("=", suffix);
+	    }
+	    printf(">label = %s item = %s\n", label.c_str(), ((String) item).c_str());
 	    if (label == "")
 	      value.add(item);
 	    else
 	      value.set(label, item);
+	    printf("value = %s\n", ((String) value).c_str());
 	  } else {
-	    std::string string = label;
-	    while(index < length) {
-	      next_space();
-	      if (tab <= tab0)
-		break;
-	      string += "\n" + read_line();
-	    }
-	    value = string;
+	    for(; index < length && chars[index] != '\n'; index++) 
+	      {}
+	    std::string line = std::string(chars + index0, index - index0);
+	    printf(">line = %s\n", line.c_str());
+	    value = line;
 	    return;
 	  }
 	}
       }
-      // Reads a label before the = 
-      String read_label()
-      {
-        int i0;
-        for(i0 = index; index < length && !isspace(chars[index]) && chars[index] != '=' ; index++)
-        {}
-        word = std::string(chars + i0, index - i0);
-        return word;
-      }
-      // Reads the end of the line
-      String read_line()
-      {
-        int i0;
-        for(i0 = index; index < length && chars[index] != '\n' ; index++)
-        {}
-        word = std::string(chars + i0, index - i0);
-        return word;
-      }
-    }
+     }
     reader1;
     reader1.read(*this, result);
   }
@@ -635,7 +629,7 @@ protected:
     }
     std::string stringHeader()
     {
-      return mode == 2 ? "<style>body {background-color:lightgrey}.struct-block{margin-left:20px}.struct-meta-char{color:#330033;font-weight:bold}.struct-name{color:#000066}.struct-value{color:#006600}</style><div class'struct-block'>" : "";
+      return mode == 2 ? "<style>body{background-color:lightgrey} .struct-block{margin-left:20px} .struct-meta-char{color:#330033;font-weight:bold} .struct-name{color:#000066} .struct-value{color:#006600}</style>\n" : "";
     }
     std::string stringTrailer()
     {
