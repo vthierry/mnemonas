@@ -453,15 +453,18 @@ protected:
           StructJsonReader::read_value(value);
           break;
         default:
- 	  read_jvalue(value, 0);
+ 	  read_jvalue();
+ 	  parse_jvalue(value, 0);
 	  break;
 	}
       }
-      void read_jvalue(Struct& value, unsigned int tab0) {
+      void read_jvalue() {
 	unsigned int index0;
-        while(index < length) {
-	  unsigned int tab = 0;
-	  // Reads tab
+	// Builds the text line structure
+        for(; index < length; index++) {	
+	  Struct line;
+	  // Counts tab
+	  int tab = 0;
 	  for(index0 = index; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
 	    switch(chars[index]) {
 	    case '\t' :
@@ -469,56 +472,59 @@ protected:
 	      break;
 	    case ' ' :
 	      tab++;
-	      break;
+		break;
 	    }
-	  printf(">tab = %d\n", tab);
-	  if (tab < tab0) {
-	    index = index0;
-	    printf(">return\n");
-	    return;
-	  }
-	  // Reads label
+	  line.set("tab", tab);
 	  for(index0 = index; index < length && !isspace(chars[index]) && chars[index] != '='; index++)
 	    {}
 	  std::string label = std::string(chars + index0, index - index0);
-	  printf(">label = %s\n", label.c_str());
-	  // Detects equal
 	  for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
 	    {}
-	  // Reads line trailer  
 	  if (chars[index] == '=') {
+	    line.set("label", label);
 	    for(index++; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
 	      {}
 	    for(index0 = index; index < length && chars[index] != '\n'; index++) 
 	      {}
-	    std::string suffix = std::string(chars + index0, index - index0);
-	    index++;
-	    printf(">suffix = %s\n", suffix.c_str());
-	    Struct item;
-	    read_jvalue(item, tab+1);
-	    if (item.isEmpty())
-	      item = suffix;
-	    else if (suffix != "") {
-	      printf("item = %s\n", ((String) item).c_str());
-	      item.set("=", suffix);
-	    }
-	    printf(">label = %s item = %s\n", label.c_str(), ((String) item).c_str());
-	    if (label == "")
-	      value.add(item);
-	    else
-	      value.set(label, item);
-	    printf("value = %s\n", ((String) value).c_str());
+	    std::string string = std::string(chars + index0, index - index0);
+	    line.set("string", string);
+	    input.add(line);
 	  } else {
 	    for(; index < length && chars[index] != '\n'; index++) 
 	      {}
-	    std::string line = std::string(chars + index0, index - index0);
-	    printf(">line = %s\n", line.c_str());
-	    value = line;
-	    return;
+	    std::string string = std::string(chars + index0, index - index0);
+	    line.set("string", string);
+	    int l = input.getLength();
+	    if (l > 0 && (int) input.get(l - 1).get("tab") <= tab)
+	      input.get(l - 1).set("string", (String) input.get(l - 1).get("string") + "\n" + string);
+	    else
+	      input.add(line);
 	  }
 	}
       }
-     }
+      int parse_jvalue(Struct& value, int index) {
+	int tab = (int) input.get(index).get("tab");
+	for(; index < input.getLength() && (int) input.get(index).get("tab") == tab; index++) {
+	  int index0 = index;
+	  printf("> input %s\n", ((String) input.get(index)).c_str());
+	  Struct item;
+	  if (index + 1 < input.getLength() && tab < (int) input.get(index + 1).get("tab")) {
+	    if (input.get(index).get("string") != "")
+	      item.add(input.get(index).get("string"));
+	    printf("> item %s\n", ((String) item).c_str());
+	    index = parse_jvalue(item, index + 1);
+	  } else 
+	    item = input.get(index).get("string");
+	  if (input.get(index0).get("label").isEmpty())
+	    value.add(item);
+	  else
+	    value.set((String) input.get(index0).get("label"), item);
+	  printf("> value %s\n", ((String) value).c_str());
+	}
+	return index - 1;
+      }
+      Struct input;
+    }
     reader1;
     reader1.read(*this, result);
   }

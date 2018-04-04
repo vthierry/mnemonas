@@ -29,7 +29,7 @@ void Struct_test()
     String input = "{ 1 = A, b = [2, 3], a = 1, 0 = Z, 10 = 'M', c= \"ah que \\/ \t oui\", 2 = B}";
     value.reset(input);
     String result = "{\"b\": [\"2\", \"3\"], \"a\": \"1\", \"c\": \"ah que / \\t oui\", \"0\": \"Z\", \"1\": \"A\", \"2\": \"B\", \"10\": \"M\"}";
-    assume(((String) value) == result, "illegal-state", "in Struct_test 3/4: value != result =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), result.c_str());
+    assume(((String) value) == result, " illegal-state", "in Struct_test 3/4: value != result =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), result.c_str());
     String file = "/tmp/test.json";
     value.save(file, "plain");
     Struct value2;
@@ -44,15 +44,17 @@ void Struct_test()
   
   // Tests the J= syntax mechanism
   {
-    String input ="what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ\n et le reste\n = toto\n = titi\n";
+    String input ="what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ1\n et le reste\n   = toto\n   = titi\n= ZZ2\n et le reste\n toto\n titi\n";
     Struct value;
     value.reset(input);
-    assume(input == value.asString("jplain"),  "illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
+    assume(input == value.asString("jplain"),  " illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
 #if 0
     value.save("/tmp/test.j=.html", "jhtml");
     system("firefox /tmp/test.j=.html");
 #endif
   }
+
+  exit(0);
 
   {
     String input ="title = The J= specification language\ntext = The J= language aims at being a smart minimal specification language to define objects with meta-data, data and data-operation";
@@ -61,10 +63,7 @@ void Struct_test()
     assume(input == value.asString("jplain"),  " illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
   }
 
-
-
-
-#if 0
+#if 1
   // Tests the J= syntax mechanism
   {
     String input = s_load("./src/util/Struct_j=.j=");

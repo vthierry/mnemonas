@@ -1,21 +1,19 @@
 title = The J= specification language
-text = 
- = The J= language aims at being a smart minimal specification language
+text = The J= language aims at being a smart minimal specification language
  data-structure =
   title = Data structure
   = The main data-structure is of the form { label = value ... }
   = The value is either a string or another data-structure
   = Indentation allows to specify data sub-structure
-  = Adjacent sub-sructures are separated by a equal sign
   examples =
    For instance:
-   = This document is in J= syntax with two data, title and text
-   = The title is a data which value is a string
-   = The text is a data which is itself data-structure, the first section being entitled "Data structure" and indexed "data-structure" section as sub-structure
+    = This document is in J= syntax with two data, title and text
+    = The title is a data which value is a string
+    = The text is a data which is itself data-structure, the first section being entitled "Data structure" and indexed "data-structure" section as sub-structure
   = This section is separated from the next one by the following equal sign
  =
   title = More details on the syntax
-  = A list is simply a data-structure with values indexed by implicit labels, which are non-negative integer automatically incremented
+  = A list is simply a data-structure with values indexed by non-negative integer, automatically incremented
   = To minimize typing :
    = The text label may be ommited as in the present section
    = The title label my be replaced by a # as in the next section
@@ -32,8 +30,8 @@ text =
      = The "_s_..._" class indicates a deprecated part of the text (s for strikethrough)
     Other classes can be defined, at the implementation level, they corresponds to the HTML/CSS class specification
   = A string may extends on several line, as for this one
-   the subsequent lines being indented with respect to
-   the first line of the string
+  the subsequent lines being indented with respect to
+  the first line of the string
   = The label-value pairs are stored in the input order for readability, but this order has no semantic
   = 
    # Discussion
