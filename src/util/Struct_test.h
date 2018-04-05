@@ -45,6 +45,7 @@ void Struct_test()
   // Tests the J= syntax mechanism
   {
     String input ="what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ1\n et le reste\n   = toto\n   = titi\n= ZZ2\n et le reste\n toto\n titi\n";
+    printf("%s\n", input.c_str());
     Struct value;
     value.reset(input);
     assume(input == value.asString("jplain"),  " illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());

@@ -458,14 +458,15 @@ protected:
 	  break;
 	}
       }
+      // Lexical analysis : builds an input of the form 
+      // [ { tab : line-tabulation, label : label-before-equal, string : line-string } ]
       void read_jvalue() {
-	unsigned int index0;
-	// Builds the text line structure
-        for(; index < length; index++) {	
-	  Struct line;
-	  // Counts tab
+	input.clear();
+        for(int ll = 0; index < length; index++) {	
+	  unsigned int index0, index1, index2;
+	  bool line = true;
 	  int tab = 0;
-	  for(index0 = index; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
+	  for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
 	    switch(chars[index]) {
 	    case '\t' :
 	      tab += 6;
@@ -474,44 +475,55 @@ protected:
 	      tab++;
 		break;
 	    }
-	  line.set("tab", tab);
-	  for(index0 = index; index < length && !isspace(chars[index]) && chars[index] != '='; index++)
+	  for(index0 = index; index < length && chars[index] != '=' && !isspace(chars[index]); index++)
 	    {}
-	  std::string label = std::string(chars + index0, index - index0);
+	  index1 = index;
 	  for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
 	    {}
 	  if (chars[index] == '=') {
-	    line.set("label", label);
 	    for(index++; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
 	      {}
-	    for(index0 = index; index < length && chars[index] != '\n'; index++) 
+	    for(index2 = index; index < length && chars[index] != '\n'; index++) 
 	      {}
-	    std::string string = std::string(chars + index0, index - index0);
-	    line.set("string", string);
-	    input.add(line);
 	  } else {
-	    for(; index < length && chars[index] != '\n'; index++) 
+	    for(index2 = index0; index < length && chars[index] != '\n'; index++) 
 	      {}
-	    std::string string = std::string(chars + index0, index - index0);
-	    line.set("string", string);
-	    int l = input.getLength();
-	    if (l > 0 && (int) input.get(l - 1).get("tab") <= tab)
-	      input.get(l - 1).set("string", (String) input.get(l - 1).get("string") + "\n" + string);
-	    else
-	      input.add(line);
+	    // Manages multi-line strings
+	    if (ll > 0 && (int) input.get(ll - 1).get("tab") <= tab) {
+	      input.get(ll - 1).set("string", 
+				   (String) input.get(ll - 1).get("string") + "\n" + 
+				   std::string(chars + index2, index - index2));
+	      line = false;
+	    }
+	  }
+	  // Manages nested data-structure with a string on the label line
+	  if (ll > 0 && (int) input.get(ll - 1).get("tab") < tab && input.get(ll - 1).get("string") != "") {
+	    input.get(ll).set("tab", 1 + (int) input.get(ll - 1).get("tab"));
+	    input.get(ll).set("string", (String) input.get(ll - 1).get("string"));
+	    input.get(ll - 1).set("string", "");
+	    if (1 + (int) input.get(ll - 1).get("tab") < tab) {
+	      ll++;
+	      input.get(ll).set("tab", (int) input.get(ll - 1).get("tab"));
+	    }
+	    ll++;
+	  }
+	  if (line) {
+	    input.get(ll).set("tab", tab);
+	    input.get(ll).set("label", std::string(chars + index0, index1 - index0));
+	    input.get(ll).set("string", std::string(chars + index2, index - index2));
+	    ll++;
 	  }
 	}
+	//- for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
       }
+      // Syntax analysis : converts the input to a data-structure
       int parse_jvalue(Struct& value, int index) {
 	int tab = (int) input.get(index).get("tab");
 	for(; index < input.getLength() && (int) input.get(index).get("tab") == tab; index++) {
 	  int index0 = index;
-	  printf("> input %s\n", ((String) input.get(index)).c_str());
 	  Struct item;
 	  if (index + 1 < input.getLength() && tab < (int) input.get(index + 1).get("tab")) {
-	    if (input.get(index).get("string") != "")
-	      item.add(input.get(index).get("string"));
-	    printf("> item %s\n", ((String) item).c_str());
+	    assume(input.get(index).get("string") == "", "illegal-state", "in Struct::StructJReader::parse_jvalue spurious string on label line at %s, this is a bug\n", ((String) input.get(index)).c_str());
 	    index = parse_jvalue(item, index + 1);
 	  } else 
 	    item = input.get(index).get("string");
@@ -519,7 +531,6 @@ protected:
 	    value.add(item);
 	  else
 	    value.set((String) input.get(index0).get("label"), item);
-	  printf("> value %s\n", ((String) value).c_str());
 	}
 	return index - 1;
       }
@@ -737,11 +748,15 @@ protected:
 	  write_value(string, value.get(*i));
 	  string += asEndLine();
 	}
-	for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-	  string += asBeginLine(string == "");
-	  string += asMeta("= ");
-	  write_value(string, value.get(i));
-	  string += asEndLine();
+	for(int i = 0; i < value.getLength(); i++) {
+	  if (string == "" && i == 0 && value.get(i).isAtomic()) {
+	    write_word(string, (String) value.get(i));
+	  } else {
+	    string += asBeginLine(string == "");
+	    string += asMeta("= ");
+	    write_value(string, value.get(i));
+	    string += asEndLine();
+	  }
 	}
 	tab--;
       }
