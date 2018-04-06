@@ -486,6 +486,7 @@ protected:
 	    for(index2 = index; index < length && chars[index] != '\n'; index++) 
 	      {}
 	  } else {
+	    index1 = index0;
 	    for(index2 = index0; index < length && chars[index] != '\n'; index++) 
 	      {}
 	    // Manages multi-line strings
@@ -497,10 +498,10 @@ protected:
 	    }
 	  }
 	  // Manages nested data-structure with a string on the label line
-	  if (ll > 0 && (int) input.get(ll - 1).get("tab") < tab && input.get(ll - 1).get("string") != "") {
+	  if (line && ll > 0 && (int) input.get(ll - 1).get("tab") < tab && input.get(ll - 1).get("string") != "") {
 	    input.get(ll).set("tab", 1 + (int) input.get(ll - 1).get("tab"));
 	    input.get(ll).set("string", (String) input.get(ll - 1).get("string"));
-	    input.get(ll - 1).set("string", "");
+	    input.get(ll - 1).unset("string");
 	    if (1 + (int) input.get(ll - 1).get("tab") < tab) {
 	      ll++;
 	      input.get(ll).set("tab", (int) input.get(ll - 1).get("tab"));
@@ -514,7 +515,7 @@ protected:
 	    ll++;
 	  }
 	}
-	//- for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
+	for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
       }
       // Syntax analysis : converts the input to a data-structure
       int parse_jvalue(Struct& value, int index) {
@@ -748,9 +749,13 @@ protected:
 	  write_value(string, value.get(*i));
 	  string += asEndLine();
 	}
+	unsigned int tab0 = tab;
 	for(int i = 0; i < value.getLength(); i++) {
-	  if (string == "" && i == 0 && value.get(i).isAtomic()) {
-	    write_word(string, (String) value.get(i));
+	  if (i == 0 && value.getCount() == 0 && value.get(i).isAtomic()) {
+	    std::string string = (String) value.get(i);
+	    write_word(string, string);
+	    if (string.find("\n") != std::string::npos)
+	      tab++;
 	  } else {
 	    string += asBeginLine(string == "");
 	    string += asMeta("= ");
@@ -758,6 +763,7 @@ protected:
 	    string += asEndLine();
 	  }
 	}
+	tab = tab0;
 	tab--;
       }
     }
@@ -768,7 +774,7 @@ protected:
 	if (value[i] == '\n')
 	  string += asNewLine();
 	else 
-	string+= value[i];
+	string += value[i];
       string += asEndValue("");
     }
    }

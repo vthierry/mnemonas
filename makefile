@@ -233,7 +233,7 @@ rrun-out :
 ARGS = -test # -experiment2
 
 todo :
-	@$(MAKE) run 
+	@$(MAKE) vrun 
 #	@firefox doc/$(MAIN).pdf doc/index.html https://vthierry.github.io/mnemonas
 
 #################################################################################################

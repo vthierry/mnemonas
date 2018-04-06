@@ -44,7 +44,7 @@ void Struct_test()
   
   // Tests the J= syntax mechanism
   {
-    String input ="what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ1\n et le reste\n   = toto\n   = titi\n= ZZ2\n et le reste\n toto\n titi\n";
+    String input ="what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ1\n et le reste\n  = toto\n  = titi\n= ZZ2\n et le reste\n toto\n titi\n";
     printf("%s\n", input.c_str());
     Struct value;
     value.reset(input);
