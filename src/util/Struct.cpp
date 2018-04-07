@@ -751,11 +751,9 @@ protected:
 	}
 	unsigned int tab0 = tab;
 	for(int i = 0; i < value.getLength(); i++) {
-	  if (i == 0 && value.getCount() == 0 && value.get(i).isAtomic()) {
-	    std::string string = (String) value.get(i);
-	    write_word(string, string);
-	    if (string.find("\n") != std::string::npos)
-	      tab++;
+	  if (false && i == 0 && value.getCount() == 0 && value.get(i).isAtomic()) {
+	    printf("> write %s\n", ((String) value.get(i)).c_str());
+	    write_word(string, value.get(i));
 	  } else {
 	    string += asBeginLine(string == "");
 	    string += asMeta("= ");
@@ -769,12 +767,13 @@ protected:
     }
     void write_word(std::string& string, String value, bool name = false)
     {
-      string += asBeginValue("", name);
-      for(unsigned int i = 0; i < value.length(); i++)
+      string += asBeginValue("", name); 
+      for(unsigned int i = 0; i < value.length(); i++) {
 	if (value[i] == '\n')
 	  string += asNewLine();
 	else 
-	string += value[i];
+	  string += value[i];
+      }
       string += asEndValue("");
     }
    }
