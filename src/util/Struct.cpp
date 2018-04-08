@@ -499,13 +499,10 @@ protected:
 	  }
 	  // Manages nested data-structure with a string on the label line
 	  if (line && ll > 0 && (int) input.get(ll - 1).get("tab") < tab && input.get(ll - 1).get("string") != "") {
-	    input.get(ll).set("tab", 1 + (int) input.get(ll - 1).get("tab"));
+	    input.get(ll).set("tab", tab);
+	    input.get(ll).set("label", "title");
 	    input.get(ll).set("string", (String) input.get(ll - 1).get("string"));
 	    input.get(ll - 1).unset("string");
-	    if (1 + (int) input.get(ll - 1).get("tab") < tab) {
-	      ll++;
-	      input.get(ll).set("tab", (int) input.get(ll - 1).get("tab"));
-	    }
 	    ll++;
 	  }
 	  if (line) {
@@ -515,7 +512,7 @@ protected:
 	    ll++;
 	  }
 	}
-	for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
+	//- for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
       }
       // Syntax analysis : converts the input to a data-structure
       int parse_jvalue(Struct& value, int index) {
@@ -528,7 +525,7 @@ protected:
 	    index = parse_jvalue(item, index + 1);
 	  } else 
 	    item = input.get(index).get("string");
-	  if (input.get(index0).get("label").isEmpty())
+	  if (input.get(index0).isEmpty("label"))
 	    value.add(item);
 	  else
 	    value.set((String) input.get(index0).get("label"), item);
@@ -741,25 +738,24 @@ protected:
       if(value.isAtomic())
         write_word(string, value.value);
       else {
+	bool notitle = value.isEmpty("title") || string == "";
+	if (!notitle)
+	  write_word(string, value.get("title"));
 	tab++;
-	for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++) {
-	  string += asBeginLine(string == "");
-	  write_word(string, *i, true);
-	  string += asMeta(" = ");
-	  write_value(string, value.get(*i));
-	  string += asEndLine();
-	}
-	unsigned int tab0 = tab;
-	for(int i = 0; i < value.getLength(); i++) {
-	  if (false && i == 0 && value.getCount() == 0 && value.get(i).isAtomic()) {
-	    printf("> write %s\n", ((String) value.get(i)).c_str());
-	    write_word(string, value.get(i));
-	  } else {
+	for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++)
+	  if (notitle || *i != "title") {
 	    string += asBeginLine(string == "");
-	    string += asMeta("= ");
-	    write_value(string, value.get(i));
+	    write_word(string, *i, true);
+	    string += asMeta(" = ");
+	    write_value(string, value.get(*i));
 	    string += asEndLine();
 	  }
+	unsigned int tab0 = tab;
+	for(int i = 0; i < value.getLength(); i++) {
+	  string += asBeginLine(string == "");
+	  string += asMeta("= ");
+	  write_value(string, value.get(i));
+	  string += asEndLine();
 	}
 	tab = tab0;
 	tab--;

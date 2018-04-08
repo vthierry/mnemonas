@@ -1,7 +1,6 @@
 title = The J= specification language
 text = The J= language aims at being a smart minimal specification language
- data-structure =
-  title = Data structure
+ data-structure = Data structure
   = The main data-structure is of the form { label = value ... }
   = The value is either a string or another data-structure
   = Indentation allows to specify data sub-structure
@@ -11,12 +10,11 @@ text = The J= language aims at being a smart minimal specification language
     = The title is a data which value is a string
     = The text is a data which is itself data-structure, the first section being entitled "Data structure" and indexed "data-structure" section as sub-structure
   = This section is separated from the next one by the following equal sign
- =
-  title = More details on the syntax
+ = More details on the syntax
   = A list is simply a data-structure with values indexed by non-negative integer, automatically incremented
   = To minimize typing :
    = The text label may be ommited as in the present section
-   = The title label my be replaced by a # as in the next section
+   = The title label corresponds to 1st line of the data-structure
   = A string may contains additional syntaxic construct 
    = Quoted sub-string in order to avoid parsing them
    = Links, via Uniform ressource identifier (URL) allowing to reference other objects 
@@ -33,6 +31,5 @@ text = The J= language aims at being a smart minimal specification language
   the subsequent lines being indented with respect to
   the first line of the string
   = The label-value pairs are stored in the input order for readability, but this order has no semantic
-  = 
-   # Discussion
+  = Discussion
    This syntax allows to define data-structure equivalent to a [https://www.json.org JSON] data-structure, but with a much simpler syntax, it also allows have the expressive power of the [https://en.wikipedia.org/wiki/Markdown Markdown] syntax, allowing to structure and decorate an hyper-text. The idea comes from both the [https://en.wikipedia.org/wiki/YAML Yaml] syntax, here simplified, and the way code is structured in [https://en.wikipedia.org/wiki/Python_(programming_language) Python] by indentation.
