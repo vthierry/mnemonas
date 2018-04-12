@@ -166,7 +166,7 @@ void network_test()
 public:
       static void run()
       {
-        std::vector < std::string > types = { "LinearTransform", "LinearNonLinearTransform", "SparseNonLinearTransform", "SoftMaxTransform", "IntegrateAndFireTransform" };
+        std::vector < std::string > types = { /*"LinearTransform",*/ "LinearNonLinearTransform", "SparseNonLinearTransform", "SoftMaxTransform", "IntegrateAndFireTransform" };
         for(std::vector < std::string > ::const_iterator i = types.begin(); i != types.end(); ++i)
           testReverseEngineering(*i);
         testReadout();

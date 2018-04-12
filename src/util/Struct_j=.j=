@@ -4,11 +4,10 @@ text = The J= language aims at being a smart minimal specification language
   = The main data-structure is of the form { label = value ... }
   = The value is either a string or another data-structure
   = Indentation allows to specify data sub-structure
-  examples =
-   For instance:
-    = This document is in J= syntax with two data, title and text
-    = The title is a data which value is a string
-    = The text is a data which is itself data-structure, the first section being entitled "Data structure" and indexed "data-structure" section as sub-structure
+  examples = For instance:
+   = This document is in J= syntax with two data, title and text
+   = The title is a data which value is a string
+   = The text is a data which is itself data-structure, the first section being entitled "Data structure" and indexed "data-structure" section as sub-structure
   = This section is separated from the next one by the following equal sign
  = More details on the syntax
   = A list is simply a data-structure with values indexed by non-negative integer, automatically incremented
@@ -26,10 +25,10 @@ text = The J= language aims at being a smart minimal specification language
      = The "_e_..._" class indicates an important part of the text (e for emphasized), it is the defaut, i.e. corresponds to simply using "__..."
      = The "_q_..._" class indicates a quotation of another text in the text 
      = The "_s_..._" class indicates a deprecated part of the text (s for strikethrough)
-    Other classes can be defined, at the implementation level, they corresponds to the HTML/CSS class specification
+   = Other classes can be defined, at the implementation level, they corresponds to the HTML/CSS class specification
   = A string may extends on several line, as for this one
-  the subsequent lines being indented with respect to
-  the first line of the string
+   the subsequent lines being indented with respect to
+   the first line of the string
   = The label-value pairs are stored in the input order for readability, but this order has no semantic
   = Discussion
    This syntax allows to define data-structure equivalent to a [https://www.json.org JSON] data-structure, but with a much simpler syntax, it also allows have the expressive power of the [https://en.wikipedia.org/wiki/Markdown Markdown] syntax, allowing to structure and decorate an hyper-text. The idea comes from both the [https://en.wikipedia.org/wiki/YAML Yaml] syntax, here simplified, and the way code is structured in [https://en.wikipedia.org/wiki/Python_(programming_language) Python] by indentation.

@@ -516,7 +516,7 @@ protected:
       }
       // Syntax analysis : converts the input to a data-structure
       int parse_jvalue(Struct& value, int index) {
-	int tab = (int) input.get(index).get("tab");
+	int tab = (int) input.get(index).get("tab"), length = 0;
 	for(; index < input.getLength() && (int) input.get(index).get("tab") == tab; index++) {
 	  int index0 = index;
 	  Struct item;
@@ -525,9 +525,9 @@ protected:
 	    index = parse_jvalue(item, index + 1);
 	  } else 
 	    item = input.get(index).get("string");
-	  if (input.get(index0).isEmpty("label"))
-	    value.add(item);
-	  else
+	  if (input.get(index0).isEmpty("label")) {
+	    value.set(s_printf("#%d", length++),  item);
+	  } else
 	    value.set((String) input.get(index0).get("label"), item);
 	}
 	return index - 1;
@@ -745,19 +745,21 @@ protected:
 	for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++)
 	  if (notitle || *i != "title") {
 	    string += asBeginLine(string == "");
-	    write_word(string, *i, true);
-	    string += asMeta(" = ");
+	    if ((*i)[0] != '#') {
+	      write_word(string, *i, true);
+	      string += asMeta(" = ");
+	    } else 
+	      string += asMeta("= ");
 	    write_value(string, value.get(*i));
 	    string += asEndLine();
 	  }
-	unsigned int tab0 = tab;
 	for(int i = 0; i < value.getLength(); i++) {
 	  string += asBeginLine(string == "");
-	  string += asMeta("= ");
+	  write_word(string, s_printf("##%d", i), true);
+	  string += asMeta(" = ");
 	  write_value(string, value.get(i));
 	  string += asEndLine();
 	}
-	tab = tab0;
 	tab--;
       }
     }
