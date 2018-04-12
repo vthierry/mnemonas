@@ -380,7 +380,7 @@ protected:
       // Reads a word
       String read_word()
       {
-	return chars[index] == '"' || chars[index] == '\'' ? read_quoted_word(chars[index]) : read_nospace_word();
+        return chars[index] == '"' || chars[index] == '\'' ? read_quoted_word(chars[index]) : read_nospace_word();
       }
       // Reads a quoted word
       String read_quoted_word(char quote)
@@ -425,17 +425,16 @@ protected:
       String read_nospace_word()
       {
         int i0;
-        for(i0 = index; index < length && no_space(chars[index]); index++)
-        {}
+        for(i0 = index; index < length && no_space(chars[index]); index++) {}
         word = std::string(chars + i0, index - i0);
         return word;
       }
-      bool no_space(char c) 
+      bool no_space(char c)
       {
-	return !isspace(chars[index]) &&
-		 chars[index] != ',' && chars[index] != ';' &&
-		 chars[index] != ':' && chars[index] != '=' &&
-		 chars[index] != '}' && chars[index] != ']';
+        return !isspace(chars[index]) &&
+               chars[index] != ',' && chars[index] != ';' &&
+               chars[index] != ':' && chars[index] != '=' &&
+               chars[index] != '}' && chars[index] != ']';
       }
       std::string word;
     };
@@ -446,91 +445,88 @@ protected:
       void read_value(Struct& value)
       {
         next_space();
-	// Reads JSON within J= if any
+        // Reads JSON within J= if any
         switch(chars[index]) {
         case '{':
         case '[':
           StructJsonReader::read_value(value);
           break;
         default:
- 	  read_jvalue();
- 	  parse_jvalue(value, 0);
-	  break;
-	}
+          read_jvalue();
+          parse_jvalue(value, 0);
+          break;
+        }
       }
-      // Lexical analysis : builds an input of the form 
+      // Lexical analysis : builds an input of the form
       // [ { tab : line-tabulation, label : label-before-equal, string : line-string } ]
-      void read_jvalue() {
-	input.clear();
-        for(int ll = 0; index < length; index++) {	
-	  unsigned int index0, index1, index2;
-	  bool line = true;
-	  int tab = 0;
-	  for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
-	    switch(chars[index]) {
-	    case '\t' :
-	      tab += 6;
-	      break;
-	    case ' ' :
-	      tab++;
-		break;
-	    }
-	  for(index0 = index; index < length && chars[index] != '=' && !isspace(chars[index]); index++)
-	    {}
-	  index1 = index;
-	  for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
-	    {}
-	  if (chars[index] == '=') {
-	    for(index++; index < length && chars[index] != '\n' && isspace(chars[index]); index++) 
-	      {}
-	    for(index2 = index; index < length && chars[index] != '\n'; index++) 
-	      {}
-	  } else {
-	    index1 = index0;
-	    for(index2 = index0; index < length && chars[index] != '\n'; index++) 
-	      {}
-	    // Manages multi-line strings
-	    if (ll > 0 && (int) input.get(ll - 1).get("tab") <= tab) {
-	      input.get(ll - 1).set("string", 
-				   (String) input.get(ll - 1).get("string") + "\n" + 
-				   std::string(chars + index2, index - index2));
-	      line = false;
-	    }
-	  }
-	  // Manages nested data-structure with a string on the label line
-	  if (line && ll > 0 && (int) input.get(ll - 1).get("tab") < tab && input.get(ll - 1).get("string") != "") {
-	    input.get(ll).set("tab", tab);
-	    input.get(ll).set("label", "title");
-	    input.get(ll).set("string", (String) input.get(ll - 1).get("string"));
-	    input.get(ll - 1).unset("string");
-	    ll++;
-	  }
-	  if (line) {
-	    input.get(ll).set("tab", tab);
-	    input.get(ll).set("label", std::string(chars + index0, index1 - index0));
-	    input.get(ll).set("string", std::string(chars + index2, index - index2));
-	    ll++;
-	  }
-	}
-	//- for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
+      void read_jvalue()
+      {
+        input.clear();
+        for(int ll = 0; index < length; index++) {
+          unsigned int index0, index1, index2;
+          bool line = true;
+          int tab = 0;
+          for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++)
+            switch(chars[index]) {
+            case '\t':
+              tab += 6;
+              break;
+            case ' ':
+              tab++;
+              break;
+            }
+          for(index0 = index; index < length && chars[index] != '=' && !isspace(chars[index]); index++) {}
+          index1 = index;
+          for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) {}
+          if(chars[index] == '=') {
+            for(index++; index < length && chars[index] != '\n' && isspace(chars[index]); index++) {}
+            for(index2 = index; index < length && chars[index] != '\n'; index++) {}
+          } else {
+            index1 = index0;
+            for(index2 = index0; index < length && chars[index] != '\n'; index++) {}
+            // Manages multi-line strings
+            if((ll > 0) && ((int) input.get(ll - 1).get("tab") <= tab)) {
+              input.get(ll - 1).set("string",
+                                    (String) input.get(ll - 1).get("string") + "\n" +
+                                    std::string(chars + index2, index - index2));
+              line = false;
+            }
+          }
+          // Manages nested data-structure with a string on the label line
+          if(line && (ll > 0) && ((int) input.get(ll - 1).get("tab") < tab) && (input.get(ll - 1).get("string") != "")) {
+            input.get(ll).set("tab", tab);
+            input.get(ll).set("label", "title");
+            input.get(ll).set("string", (String) input.get(ll - 1).get("string"));
+            input.get(ll - 1).unset("string");
+            ll++;
+          }
+          if(line) {
+            input.get(ll).set("tab", tab);
+            input.get(ll).set("label", std::string(chars + index0, index1 - index0));
+            input.get(ll).set("string", std::string(chars + index2, index - index2));
+            ll++;
+          }
+        }
+        // - for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
       }
       // Syntax analysis : converts the input to a data-structure
-      int parse_jvalue(Struct& value, int index) {
-	int tab = (int) input.get(index).get("tab"), length = 0;
-	for(; index < input.getLength() && (int) input.get(index).get("tab") == tab; index++) {
-	  int index0 = index;
-	  Struct item;
-	  if (index + 1 < input.getLength() && tab < (int) input.get(index + 1).get("tab")) {
-	    assume(input.get(index).get("string") == "", "illegal-state", "in Struct::StructJReader::parse_jvalue spurious string on label line at %s, this is a bug\n", ((String) input.get(index)).c_str());
-	    index = parse_jvalue(item, index + 1);
-	  } else 
-	    item = input.get(index).get("string");
-	  if (input.get(index0).isEmpty("label")) {
-	    value.set(s_printf("#%d", length++),  item);
-	  } else
-	    value.set((String) input.get(index0).get("label"), item);
-	}
-	return index - 1;
+      int parse_jvalue(Struct& value, int index)
+      {
+        int tab = (int) input.get(index).get("tab"), length = 0;
+        for(; index < input.getLength() && (int) input.get(index).get("tab") == tab; index++) {
+          int index0 = index;
+          Struct item;
+          if((index + 1 < input.getLength()) && (tab < (int) input.get(index + 1).get("tab"))) {
+            assume(input.get(index).get("string") == "", "illegal-state", "in Struct::StructJReader::parse_jvalue spurious string on label line at %s, this is a bug\n", ((String) input.get(index)).c_str());
+            index = parse_jvalue(item, index + 1);
+          } else
+            item = input.get(index).get("string");
+          if(input.get(index0).isEmpty("label"))
+            value.set(s_printf("#%d", length++), item);
+          else
+            value.set((String) input.get(index0).get("label"), item);
+        }
+        return index - 1;
       }
       Struct input;
     }
@@ -592,17 +588,17 @@ protected:
       tab += t;
       std::string s;
       if(mode == 1) {
-	s += "\n";
-	for(int i = 0; i < 2 * tab; i++)
-	  s += " ";
+        s += "\n";
+        for(int i = 0; i < 2 * tab; i++)
+          s += " ";
       }
       return s;
     }
     std::string addTab()
     {
-      std::string s; 
+      std::string s;
       for(int i = 0; i < tab - 1; i++)
-	s += " ";
+        s += " ";
       return s;
     }
     // HTML and 2D-raw mechanisms
@@ -738,43 +734,43 @@ protected:
       if(value.isAtomic())
         write_word(string, value.value);
       else {
-	bool notitle = value.isEmpty("title") || string == "";
-	if (!notitle)
-	  write_word(string, value.get("title"));
-	tab++;
-	for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++)
-	  if (notitle || *i != "title") {
-	    string += asBeginLine(string == "");
-	    if ((*i)[0] != '#') {
-	      write_word(string, *i, true);
-	      string += asMeta(" = ");
-	    } else 
-	      string += asMeta("= ");
-	    write_value(string, value.get(*i));
-	    string += asEndLine();
-	  }
-	for(int i = 0; i < value.getLength(); i++) {
-	  string += asBeginLine(string == "");
-	  write_word(string, s_printf("##%d", i), true);
-	  string += asMeta(" = ");
-	  write_value(string, value.get(i));
-	  string += asEndLine();
-	}
-	tab--;
+        bool notitle = value.isEmpty("title") || string == "";
+        if(!notitle)
+          write_word(string, value.get("title"));
+        tab++;
+        for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++)
+          if(notitle || (*i != "title")) {
+            string += asBeginLine(string == "");
+            if((*i)[0] != '#') {
+              write_word(string, *i, true);
+              string += asMeta(" = ");
+            } else
+              string += asMeta("= ");
+            write_value(string, value.get(*i));
+            string += asEndLine();
+          }
+        for(int i = 0; i < value.getLength(); i++) {
+          string += asBeginLine(string == "");
+          write_word(string, s_printf("##%d", i), true);
+          string += asMeta(" = ");
+          write_value(string, value.get(i));
+          string += asEndLine();
+        }
+        tab--;
       }
     }
     void write_word(std::string& string, String value, bool name = false)
     {
-      string += asBeginValue("", name); 
+      string += asBeginValue("", name);
       for(unsigned int i = 0; i < value.length(); i++) {
-	if (value[i] == '\n')
-	  string += asNewLine();
-	else 
-	  string += value[i];
+        if(value[i] == '\n')
+          string += asNewLine();
+        else
+          string += value[i];
       }
       string += asEndValue("");
     }
-   }
+  }
   writer2;
   std::string string;
   if((format == "jplain") || (format == "jhtml"))

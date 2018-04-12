@@ -41,30 +41,30 @@ void Struct_test()
     system("firefox /tmp/test.json.html");
 #endif
   }
-  
+
   // Tests the J= syntax mechanism
   {
-    String input ="what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ1\n et le reste\n = toto\n = titi\n= ZZ2\n et le reste\n toto\n titi\n";
+    String input = "what = \n AA = TT\n BB = WW\nUU = XX\n= WW\n= ZZ1\n et le reste\n = toto\n = titi\n= ZZ2\n et le reste\n toto\n titi\n";
     Struct value;
     value.reset(input);
-    assume(input == value.asString("jplain"),  " illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
+    assume(input == value.asString("jplain"), " illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
 #if 0
     value.save("/tmp/test.j=.html", "jhtml");
     system("firefox /tmp/test.j=.html");
 #endif
   }
   {
-    String input ="title = The J= specification language\ntext = The J= language aims at being a smart minimal specification language to define objects with meta-data, data and data-operation\n";
+    String input = "title = The J= specification language\ntext = The J= language aims at being a smart minimal specification language to define objects with meta-data, data and data-operation\n";
     Struct value;
     value.reset(input);
-    assume(input == value.asString("jplain"),  "illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
+    assume(input == value.asString("jplain"), "illegal-state", "in Struct_test_js 1/2 the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
   }
 #if 1
   {
     String input = s_load("./src/util/Struct_j=.j=");
     Struct value;
     value.reset(input);
-    String output = value.asString("jplain"); 
+    String output = value.asString("jplain");
     assume(input == output, "illegal-state", "in Struct_test_js 2/2 error in the C/C++ J= implementation,  the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
 #if 0
     assume(system("cd ./src/util ; cat Struct.js Struct_test.js | node -") == 0, "illegal-state", "in Struct_test_js 2/2 error in the JavaScript J= implementation");

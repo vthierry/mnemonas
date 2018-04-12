@@ -12,17 +12,110 @@ Struct =
     * @return {object} The parsed data-structure.
     */
    "string2data" : function(value) {
-      // @todo
+     // Lexical analysis : builds an input of the form 
+     // [ { tab : line-tabulation, label : label-before-equal, string : line-string } ]
+     var input = [];     
+     for(var index = 0, ll =0; index < value.length; index++) {
+       var index0, index1, index2, line = true; tab = 0;
+       for(; index < value.length && value.charAt(index) != '\n' && Struct.isspace(value.charAt(index)); index++) 
+	 switch(value.charAt(index)) {
+	 case '\t' :
+	   tab += 6;
+	   break;
+	 case ' ' :
+	   tab++;
+	   break;
+	 }
+       for(index0 = index; index < value.length && value.charAt(index) != '=' && !Struct.isspace(value.charAt(index)); index++);
+       index1 = index;
+       for(; index < value.length && value.charAt(index) != '\n' && Struct.isspace(value.charAt(index)); index++){}
+       if (value.charAt(index) == '=') {
+         for(index++; index < value.length && value.charAt(index) != '\n' && Struct.isspace(value.charAt(index)); index++);
+	 for(index2 = index; index < value.length && value.charAt(index) != '\n'; index++);
+       } else {
+	 index1 = index0;
+	 for(index2 = index0; index < value.length && value.charAt(index) != '\n'; index++); 
+	 // Manages multi-line strings
+	 if (ll > 0 && input[ll - 1]["tab"] <= tab) {
+	   input[ll - 1]["string"] = input[ll - 1]["string"] + "\n" + value.substr(index2, index - index2);
+	   line = false;
+	 }
+       }
+       // Manages nested data-structure with a string on the label line
+       if (line && ll > 0 && input[ll - 1]["tab"] < tab && input[ll - 1]["string"] != "") {
+	 input[ll] = { "tab" : tab, "label" : "title", "string" : input[ll - 1]["string"]};
+	 input[ll - 1]["string"] = undefined;
+	 ll++;
+       }
+       if (line) {
+	 input[ll] = { "tab" : tab, "label" : value.substr(index0, index1 - index0), "string" : value.substr(index2, index - index2)};
+	 ll++;
+       }
+     }
+     //-for(var index = 0; index < input.length; index++) console.log(input[index]);
+     var data = {}
+     Struct.parse_jvalue(data, input, 0);
+     //-console.log(data);
+     return data;
    },
+   // Syntax analysis : converts the input to a data-structure
+   "parse_jvalue" : function(value, input, index) {
+     var tab = input[index]["tab"], length = 0;
+     for(; index < input.length && input[index]["tab"] == tab; index++) {
+       var index0 = index, item = {};
+       if (index + 1 < input.length && tab < input[index + 1]["tab"]) {
+	 index = Struct.parse_jvalue(item, input, index + 1);
+       } else 
+	 item = input[index]["string"];
+       if (input[index0]["label"] == "") {
+	 value["#"+(length++)] = item;
+       } else
+	 value[input[index0]["label"]] = item;
+     }
+     return index - 1;
+   },
+   "isspace" : function(c) { return /\s/.test(c); },
    /** Converts a data structure to string in J= syntax.
     * @param {object} data The data-structure to render.
-    * @param {string} mode The display mode: 
-    * - ``plain`` to obtain a plain-text string
-    * - ``html`` to obtain an HTML display 
     * @return {string} A string view of the data-structure.
     */
-   "data2string" : function(value, mode) {
-      // @todo
+   "data2string" : function(data) {
+     return Struct.write_value(data, 0) + "\n";
+   },
+   "write_value" : function(value, tab) {
+     var string = "";
+     if(!(value instanceof Object)) {
+       string += Struct.write_word(value, tab);
+     } else {
+        var root = tab == 0, notitle = value["title"] == "" || value["title"] == undefined || root;
+	if (!notitle)
+	  string += Struct.write_word(value["title"], tab);
+        for(var label in value) {
+	  if (notitle || label != "title") {
+            string += Struct.write_word(root ? "" : "\n", tab);
+	    root = false;
+	    if (label.charAt(0) != '#') {
+	      string += Struct.write_word(label, tab);
+	      string += " = ";
+	    } else 
+	      string += "= ";
+	    string += Struct.write_value(value[label], tab + 1);
+	  }
+	}
+     }
+     return string;
+   },
+   "write_word" : function(value, tab) {
+      var string = "";
+      for(var i = 0; i < value.length; i++) {
+	if (value.charAt(i) == '\n') {
+	  string += '\n';
+          for(var j = 0; j < tab; j++) 
+            string += ' ';
+	} else 
+	  string += value.charAt(i);
+      }
+      return string;
    }
-  };
+ };
 
