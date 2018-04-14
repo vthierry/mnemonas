@@ -77,45 +77,49 @@ Struct =
    "isspace" : function(c) { return /\s/.test(c); },
    /** Converts a data structure to string in J= syntax.
     * @param {object} data The data-structure to render.
+    * @param {string} format The string format, either "plain" or "html".
     * @return {string} A string view of the data-structure.
     */
-   "data2string" : function(data) {
-     return Struct.write_value(data, 0) + "\n";
+   "data2string" : function(data, format = "plain") {
+     return Struct.write_value(data, 0, format) + "\n";
    },
-   "write_value" : function(value, tab) {
+   "write_value" : function(value, tab, format) {
      var string = "";
      if(!(value instanceof Object)) {
-       string += Struct.write_word(value, tab);
+       string += Struct.write_word(value, tab, "value", format);
      } else {
         var root = tab == 0, notitle = value["title"] == "" || value["title"] == undefined || root;
 	if (!notitle)
-	  string += Struct.write_word(value["title"], tab);
+	  string += Struct.write_word(value["title"], tab, "value", format);
         for(var label in value) {
 	  if (notitle || label != "title") {
-            string += Struct.write_word(root ? "" : "\n", tab);
+            string += Struct.write_word(root ? "" : "\n", tab, "line", format);
 	    root = false;
 	    if (label.charAt(0) != '#') {
-	      string += Struct.write_word(label, tab);
-	      string += " = ";
+	      string += Struct.write_word(label, tab, "label", format);
+	      string += Struct.write_word(" = ", tab, "meta", format);
 	    } else 
-	      string += "= ";
-	    string += Struct.write_value(value[label], tab + 1);
+	      string += Struct.write_word("= ", tab, "meta", format);
+	    string += Struct.write_value(value[label], tab + 1, format);
 	  }
 	}
      }
      return string;
    },
-   "write_word" : function(value, tab) {
-      var string = "";
+     "write_word" : function(value, tab, type, format) {
+      var string = format != "html" ? "" : type == "meta" ? "<span class='js_meta'>" : type == "name" ? "<span class='js_name'>" : type == "value" ? "<span class='js_value'>" : type == "line" ? "<div class='js_line'>" : "";
       for(var i = 0; i < value.length; i++) {
 	if (value.charAt(i) == '\n') {
+          string += format == "html" ? "</div>" : "";
 	  string += '\n';
+          string += format == "html" && type == "value" ? "<div>" : "";
           for(var j = 0; j < tab; j++) 
             string += ' ';
 	} else 
 	  string += value.charAt(i);
       }
+      string += format != "html" ? "" : type == "meta" || type == "name" || type == "value" ? "</span>" : "";
       return string;
-   }
+   },
  };
 
