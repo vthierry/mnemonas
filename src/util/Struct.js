@@ -152,6 +152,14 @@ var Struct = {
     return JSON.stringify(Struct.string2data(value));
   },
 
+  /** Converts a string in J= syntax to HTML for display.
+   * @param {string} value The string to parse in J= syntax.
+   * @return {string} The parsed string in HTML.
+   */
+  j2html : function(value) {
+    return Struct.data2string(Struct.string2data(value), "html");
+  },
+
   /** Converts a string in JSON syntax in J= syntax.
    * @param {string} value The string to parse in JSON syntax.
    * @return {string} The parsed string in J= syntax.
