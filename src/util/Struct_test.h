@@ -66,10 +66,16 @@ void Struct_test()
     value.reset(input);
     String output = value.asString("jplain");
     assume(input == output, "illegal-state", "in Struct_test_js 2/2 error in the C/C++ J= implementation,  the input:«\n%s» differs from output:«\n%s» as json:«\n%s»", input.c_str(), ((String) value.asString("jplain")).c_str(), ((String) value.asString("plain")).c_str());
-#if 0
+#if 1
     assume(system("cd ./src/util ; cat Struct.js Struct_test.js | node -") == 0, "illegal-state", "in Struct_test_js 2/2 error in the JavaScript J= implementation");
 #endif
   }
 #endif
+
+  {
+    printf(">> %s\n", s_exec("/usr/bin/find -name 'Struct.js'").c_str());
+  }
+
+  exit(0); // todo
 }
 ///@endcond

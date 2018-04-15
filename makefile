@@ -39,6 +39,7 @@ usage :
 
 export SRC = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*.c)
 export INC = $(wildcard src/*.hpp) $(wildcard src/*/*.hpp) $(wildcard src/*/*.h) $(wildcard tex/*/*.h)
+export JSRC = $(wildcard src/*/*.js)
 
 CCFLAGS =  -Isrc -std=c++0x -x c++ -Wall -Wextra -Wno-unused-parameter -Wno-varargs
 LDFLAGS =  -lgsl -lgslcblas -lm
@@ -155,7 +156,7 @@ doc/index.html : ./src/index.h $(INC) $(SRC)
 	@for f in doc/*.html ; do mv $$f $$f~ ; sed 's/\(<td id="projectlogo">\)\(<img alt="Logo" src="logo.png"\/>\)\(<\/td>\)/\1<a href="https:\/\/vthierry.github.io\/mnemonas">\2<\/a>\3/' < $$f~ > $$f ; rm $$f~ ; done
 	@echo '<script>location.replace("doc/index.html");</script>' > index.html
 
-uncrustify : $(INC) $(SRC)
+uncrustify : $(INC) $(SRC) $(JSRC)
 	@if command uncrustify > /dev/null ; then for f in $^ ; do mv $$f $$f~ ; uncrustify -q -c src/etc/uncrustify.cfg -f $$f~ -o $$f ; touch $$f -r $$f~ ; done ; fi
 
 ifndef MAIN
