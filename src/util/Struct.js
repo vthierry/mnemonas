@@ -75,7 +75,7 @@ var Struct = {
     return index - 1;
   },
   isspace : function(c) {
-    return / \ s /.test(c);
+    return new RegExp("\\s").test(c);
   },
 
   /** Converts a data structure to string in J= syntax.
@@ -113,23 +113,24 @@ var Struct = {
   write_word : function(value, tab, type, format) {
     var string = format != "html" ? "" : type == "meta" ? "<span class='struct-meta-char'>" : type == "name" ? "<span class='struct-name'>" : type == "value" ? "<span class='struct-value'>" : "";
     // Applies the [link] and _span_ transform
-    if(format == "html")
-      var quoted = false
-                   for(var i = 0; i < value.length; i++) {
+    if(format == "html") {
+      var quoted = false;
+      for(var i = 0; i < value.length; i++) {
         if(value[i] == '"')
           quoted = !quoted;
         if(!quoted) {
           if(value[i] == "[") {
-            value = value.substr(0, i) + value.substr(i).replace(/ \[([^ \ s \]] +) \ s + ([^ \]] *) \] /, "<a class='struct-link' href='$1'>$2</a>");
-            value = value.substr(0, i) + value.substr(i).replace(/ \[([^ \ s \]] +) \] /, "<a class='struct-link' href='$1'>$1</a>");
-            i += value.substr(i).search(/ > /);
+            value = value.substr(0, i) + value.substr(i).replace(new RegExp("\\[([^\\s\\]]+)\\s+([^\\]]*)\\]"), "<a class='struct-link' href='$1'>$2</a>");
+            value = value.substr(0, i) + value.substr(i).replace(new RegExp("\\[([^\\s\\]]+)\\]"), "<a class='struct-link' href='$1'>$1</a>");
+            i += value.substr(i).search(">");
           } else if(value[i] == "_") {
-            value = value.substr(0, i) + value.substr(i).replace(/ _([^ _]) _([^ _] +) _ /, "<span class='struct-$1'>$2</span>");
-            value = value.substr(0, i) + value.substr(i).replace(/ _([^ _] +) _ /, "<span class='struct-e'>$1</span>");
-            i += value.substr(i).search(/ > /);
+            value = value.substr(0, i) + value.substr(i).replace(new RegExp("_([^_])_([^_]+)_"), "<span class='struct-$1'>$2</span>");
+            value = value.substr(0, i) + value.substr(i).replace(new RegExp("_([^_]+)_"), "<span class='struct-e'>$1</span>");
+            i += value.substr(i).search(">");
           }
         }
       }
+    }
     // Applies the \n transform
     for(var i = 0; i < value.length; i++) {
       if(value[i] == '\n') {

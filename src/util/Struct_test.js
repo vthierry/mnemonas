@@ -14,5 +14,7 @@ if(input != output) {
               "\n!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=!=\n" +
               output +
               "\n--------------------------------------------------------------\n");
+  fs.writeFileSync("./input.txt", input);
+  fs.writeFileSync("./output.txt", output);
   process.exit(-1);
 }
