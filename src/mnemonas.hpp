@@ -7,6 +7,7 @@
 #include "util/s_regex.h"
 #include "util/s_load.h"
 #include "util/s_save.h"
+#include "util/s_exec.h"
 #include "util/assume.h"
 #include "util/now.h"
 #include "util/Struct.hpp"

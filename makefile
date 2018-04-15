@@ -28,6 +28,7 @@ usage :
 	@echo "This makefile uses the following software set :"
 	@echo " - clang++ gsl gslcblas swig  		for software development"
 	@echo " - makefile git doxygen uncrustify	for source file management and documentation"
+	@echo " - nodejs nodejs-fs-ext                  for J= data manipulation"
 	@echo " - pdflatex bibtex 			for publication compilaton"
 	@echo " - gdb valgrind                          for code debugging"
 	@echo "with other software standard unix distribution"
@@ -225,7 +226,11 @@ rrun-out :
 # On going :
 #
 # - Voir à simplifier Struct en ne separant pas les [ ] des {} mais juste considérer in isArray()
-# - Ajouter gestion du HTML et data2html
+# - Virer la sortie en HTML de JSON poru simplifier
+# - Wrapper J= par nodejs et remonter std::string s_exec(String command) et Struct_js.js json2j et j2json donc avoir un find de Struct.js 
+# - 
+
+#
 # - RecurrentTransform : rayon spectral en calant values[] = 1e-6 > 0 pour avoir l rayon max en ReLU et voir si rayon plus important sur Sparse et NLN 
 # - KernelDistributedEstimator : explorer les hyper-paramètres, ajouter mécanisme de reinit des W, insérer updateReadout
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
