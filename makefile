@@ -226,10 +226,8 @@ rrun-out :
 #
 # On going :
 #
-# - Voir à simplifier Struct en ne separant pas les [ ] des {} mais juste considérer in isArray()
-# - Virer la sortie en HTML de JSON poru simplifier
-# - Wrapper J= par nodejs et remonter std::string s_exec(String command) et Struct_js.js json2j et j2json donc avoir un find de Struct.js 
-# - 
+# - Voir à simplifier ls laod/save de Struct
+#
 
 #
 # - RecurrentTransform : rayon spectral en calant values[] = 1e-6 > 0 pour avoir l rayon max en ReLU et voir si rayon plus important sur Sparse et NLN 

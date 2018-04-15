@@ -12,7 +12,7 @@ void Struct_test()
     Struct list;
     list.add("et").add("de").add("un");
     value.set("l", list);
-    String result = "{\"u\": \"ok\", \"v\": \"okay\", \"w\": {\"d\": \"okay\", \"b\": \"666\", \"a\": \"1.234\", \"c\": \"false\"}, \"l\": [\"et\", \"de\", \"un\"], \"0\": \"a\", \"1\": \"b\"}";
+    String result = "{\"u\": \"ok\", \"v\": \"okay\", \"0\": \"a\", \"1\": \"b\", \"w\": {\"d\": \"okay\", \"b\": \"666\", \"a\": \"1.234\", \"c\": \"false\"}, \"l\": [\"et\", \"de\", \"un\"]}";
     assume(((String) value) == result, "illegal-state", "in Struct_test 1/4: value != result =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), result.c_str());
     // - value.save("stdout", "plain");
     // - for(std::vector < std::string >::const_iterator i = value.getNames().begin(); i != value.getNames().end(); i++) printf("> %s\n", (*i).c_str());
@@ -28,8 +28,8 @@ void Struct_test()
     Struct value;
     String input = "{ 1 = A, b = [2, 3], a = 1, 0 = Z, 10 = 'M', c= \"ah que \\/ \t oui\", 2 = B}";
     value.reset(input);
-    String result = "{\"b\": [\"2\", \"3\"], \"a\": \"1\", \"c\": \"ah que / \\t oui\", \"0\": \"Z\", \"1\": \"A\", \"2\": \"B\", \"10\": \"M\"}";
-    assume(((String) value) == result, " illegal-state", "in Struct_test 3/4: value != result =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), result.c_str());
+    String result = "{\"1\": \"A\", \"b\": [\"2\", \"3\"], \"a\": \"1\", \"0\": \"Z\", \"10\": \"M\", \"c\": \"ah que / \\t oui\", \"2\": \"B\"}";
+    assume(((String) value) == result, "illegal-state", "in Struct_test 3/4: value != result =>\n\t«%s»\t!=\n\t«%s»\n", ((String) value).c_str(), result.c_str());
     String file = "/tmp/test.json";
     value.save(file, "plain");
     Struct value2;
@@ -72,10 +72,7 @@ void Struct_test()
   }
 #endif
 
-  {
-    printf(">> %s\n", s_exec("/usr/bin/find -name 'Struct.js'").c_str());
-  }
-
-  exit(0); // todo
+  // printf(">> %s\n", s_exec("/usr/bin/find -name 'Struct.js'").c_str());
+  // exit(0); // todo
 }
 ///@endcond

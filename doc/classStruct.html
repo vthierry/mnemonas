@@ -48,12 +48,15 @@ Scalar value implementation</h2></td></tr>
 <tr class="memitem:a32f4ba65652f045d7218a0738c382004"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classStruct.html">Struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#a32f4ba65652f045d7218a0738c382004">EMPTY</a></td></tr>
 <tr class="memdesc:a32f4ba65652f045d7218a0738c382004"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a empty struct, for initialization.  <a href="#a32f4ba65652f045d7218a0738c382004">More...</a><br /></td></tr>
 <tr class="separator:a32f4ba65652f045d7218a0738c382004"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1090bdd89cb5f5d14c4e64fcde7ee5c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#a1090bdd89cb5f5d14c4e64fcde7ee5c6">isAtomic</a> () const</td></tr>
-<tr class="memdesc:a1090bdd89cb5f5d14c4e64fcde7ee5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this corresponds to a scalar (boolean, numeric, string) value and false otherwise.  <a href="#a1090bdd89cb5f5d14c4e64fcde7ee5c6">More...</a><br /></td></tr>
-<tr class="separator:a1090bdd89cb5f5d14c4e64fcde7ee5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a670f2d95f1ee1ade34f8bf9369ab64c0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#a670f2d95f1ee1ade34f8bf9369ab64c0">isEmpty</a> () const</td></tr>
 <tr class="memdesc:a670f2d95f1ee1ade34f8bf9369ab64c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this corresponds to an empty scalar value corresponding to the empty string and false otherwise.  <a href="#a670f2d95f1ee1ade34f8bf9369ab64c0">More...</a><br /></td></tr>
 <tr class="separator:a670f2d95f1ee1ade34f8bf9369ab64c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1090bdd89cb5f5d14c4e64fcde7ee5c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#a1090bdd89cb5f5d14c4e64fcde7ee5c6">isAtomic</a> () const</td></tr>
+<tr class="memdesc:a1090bdd89cb5f5d14c4e64fcde7ee5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this corresponds to a scalar (boolean, numeric, string) value and false otherwise.  <a href="#a1090bdd89cb5f5d14c4e64fcde7ee5c6">More...</a><br /></td></tr>
+<tr class="separator:a1090bdd89cb5f5d14c4e64fcde7ee5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af92e9995081448bcf68f517215cc7a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#a0af92e9995081448bcf68f517215cc7a">isArray</a> () const</td></tr>
+<tr class="memdesc:a0af92e9995081448bcf68f517215cc7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if this corresponds to an array with values indexed by numbers and false otherwise.  <a href="#a0af92e9995081448bcf68f517215cc7a">More...</a><br /></td></tr>
+<tr class="separator:a0af92e9995081448bcf68f517215cc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d6df53ceac2e02517d2fe1c785ecf56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#a9d6df53ceac2e02517d2fe1c785ecf56">nop</a> () const</td></tr>
 <tr class="memdesc:a9d6df53ceac2e02517d2fe1c785ecf56"><td class="mdescLeft">&#160;</td><td class="mdescRight">A no operation method, just used to avoid compilation warning in empty callbacks.  <a href="#a9d6df53ceac2e02517d2fe1c785ecf56">More...</a><br /></td></tr>
 <tr class="separator:a9d6df53ceac2e02517d2fe1c785ecf56"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,11 +124,11 @@ Container value read</h2></td></tr>
 <tr class="memitem:ac09fd38855de37fa147de222a965f8c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#ac09fd38855de37fa147de222a965f8c2">isEmpty</a> (int index) const</td></tr>
 <tr class="separator:ac09fd38855de37fa147de222a965f8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4a02b6f6cadebdc58b1ad05203a198a"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#ac4a02b6f6cadebdc58b1ad05203a198a">getNames</a> ()</td></tr>
-<tr class="memdesc:ac4a02b6f6cadebdc58b1ad05203a198a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the field names, in order to define an iterator over the struct.  <a href="#ac4a02b6f6cadebdc58b1ad05203a198a">More...</a><br /></td></tr>
+<tr class="memdesc:ac4a02b6f6cadebdc58b1ad05203a198a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the field names, including numeric indexes, in order to define an iterator over the struct.  <a href="#ac4a02b6f6cadebdc58b1ad05203a198a">More...</a><br /></td></tr>
 <tr class="separator:ac4a02b6f6cadebdc58b1ad05203a198a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac97de12721ff7b3062954e42edda66a5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#ac97de12721ff7b3062954e42edda66a5">getLength</a> () const</td></tr>
-<tr class="memdesc:ac97de12721ff7b3062954e42edda66a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximal indexed value in the structure.  <a href="#ac97de12721ff7b3062954e42edda66a5">More...</a><br /></td></tr>
-<tr class="separator:ac97de12721ff7b3062954e42edda66a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae038950bfb95c3ba8e78c50d6a82dd09"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#ae038950bfb95c3ba8e78c50d6a82dd09">getLength</a> () const</td></tr>
+<tr class="memdesc:ae038950bfb95c3ba8e78c50d6a82dd09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximal indexed value in the structure.  <a href="#ae038950bfb95c3ba8e78c50d6a82dd09">More...</a><br /></td></tr>
+<tr class="separator:ae038950bfb95c3ba8e78c50d6a82dd09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43bbaf2c6a6d0702bd18dc872155061c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStruct.html#a43bbaf2c6a6d0702bd18dc872155061c">getCount</a> () const</td></tr>
 <tr class="memdesc:a43bbaf2c6a6d0702bd18dc872155061c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of named value in the structure.  <a href="#a43bbaf2c6a6d0702bd18dc872155061c">More...</a><br /></td></tr>
 <tr class="separator:a43bbaf2c6a6d0702bd18dc872155061c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,8 +192,8 @@ String input/output interface</h2></td></tr>
 <div class="textblock"><p>Implements a generic minimal iterative structure. </p>
 <p>Such a value corresponds to:</p><ul>
 <li>scalar values: boolean, number, or string;</li>
-<li>value list, indexed from <code>0</code>, written <code>[value, ...]</code>;</li>
-<li>parameter set, written <code>{name = value, ...}</code>. Key properties of such data structure:</li>
+<li>parameter set, written <code>{name = value, ...}</code>.</li>
+<li>value list, indexed from <code>0</code>, written <code>[value, ...]</code>; Key properties of such data structure:</li>
 <li>They corresponds to <a href="http://json.org/">JSON</a> structures (i.e. correspond to a data object model).</li>
 <li>By construction (value copy when set), they can neither be cyclic (i.e. and infinite tree with a leaf linked to an ancestor), nor have common branches (i.e. two <a class="el" href="classStruct.html" title="Implements a generic minimal iterative structure. ">Struct</a> instance sharing the same value in memory).</li>
 <li>When a named parameter is set, the previous scalar value if any is erased, while the previous ordered list of value is now considered as value indexed by number converted as name. </li>
@@ -216,7 +219,7 @@ String input/output interface</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00032">32</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00320">reset()</a>, and <a class="el" href="Struct_8hpp_source.html#l00244">unset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00325">reset()</a>, and <a class="el" href="Struct_8hpp_source.html#l00249">unset()</a>.</p>
 
 </div>
 </div>
@@ -338,7 +341,7 @@ String input/output interface</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00101">101</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00106">INT_NAN</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00111">INT_NAN</a>.</p>
 
 </div>
 </div>
@@ -407,36 +410,13 @@ String input/output interface</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00537">537</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00535">535</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1090bdd89cb5f5d14c4e64fcde7ee5c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1090bdd89cb5f5d14c4e64fcde7ee5c6">&#9670;&nbsp;</a></span>isAtomic()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Struct::isAtomic </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns true if this corresponds to a scalar (boolean, numeric, string) value and false otherwise. </p>
-
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00040">40</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>, and <a class="el" href="Struct_8cpp_source.html#l00244">equals()</a>.</p>
-
-</div>
-</div>
 <a id="a670f2d95f1ee1ade34f8bf9369ab64c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a670f2d95f1ee1ade34f8bf9369ab64c0">&#9670;&nbsp;</a></span>isEmpty() <span class="overload">[1/3]</span></h2>
 
@@ -454,9 +434,55 @@ String input/output interface</h2></td></tr>
 
 <p>Returns true if this corresponds to an empty scalar value corresponding to the empty string and false otherwise. </p>
 
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00040">40</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>, <a class="el" href="Struct_8cpp_source.html#l00224">get()</a>, <a class="el" href="Struct_8hpp_source.html#l00172">isEmpty()</a>, and <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
+
+</div>
+</div>
+<a id="a1090bdd89cb5f5d14c4e64fcde7ee5c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1090bdd89cb5f5d14c4e64fcde7ee5c6">&#9670;&nbsp;</a></span>isAtomic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Struct::isAtomic </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if this corresponds to a scalar (boolean, numeric, string) value and false otherwise. </p>
+
 <p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00045">45</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>, <a class="el" href="Struct_8cpp_source.html#l00226">get()</a>, <a class="el" href="Struct_8hpp_source.html#l00167">isEmpty()</a>, and <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>, and <a class="el" href="Struct_8cpp_source.html#l00242">equals()</a>.</p>
+
+</div>
+</div>
+<a id="a0af92e9995081448bcf68f517215cc7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0af92e9995081448bcf68f517215cc7a">&#9670;&nbsp;</a></span>isArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Struct::isArray </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns true if this corresponds to an array with values indexed by numbers and false otherwise. </p>
+
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00050">50</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>.</p>
 
 </div>
 </div>
@@ -477,7 +503,7 @@ String input/output interface</h2></td></tr>
 
 <p>A no operation method, just used to avoid compilation warning in empty callbacks. </p>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00050">50</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00055">55</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -505,7 +531,7 @@ String input/output interface</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00026">26</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>.</p>
 
 </div>
 </div>
@@ -618,7 +644,7 @@ String input/output interface</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00112">112</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="Struct_8hpp_source.html#l00053">EMPTY</a>, <a class="el" href="Struct_8hpp_source.html#l00106">INT_NAN</a>, and <a class="el" href="Struct_8hpp_source.html#l00045">isEmpty()</a>.</p>
+<p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="Struct_8hpp_source.html#l00058">EMPTY</a>, <a class="el" href="Struct_8hpp_source.html#l00111">INT_NAN</a>, and <a class="el" href="Struct_8hpp_source.html#l00040">isEmpty()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00052">operator bool()</a>, <a class="el" href="Struct_8cpp_source.html#l00077">operator double()</a>, <a class="el" href="Struct_8cpp_source.html#l00086">operator int()</a>, and <a class="el" href="Struct_8cpp_source.html#l00091">operator unsigned int()</a>.</p>
 
@@ -643,7 +669,7 @@ String input/output interface</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00086">86</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00106">INT_NAN</a>, and <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00111">INT_NAN</a>, and <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
 
 </div>
 </div>
@@ -664,7 +690,7 @@ String input/output interface</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00091">91</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00106">INT_NAN</a>, and <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00111">INT_NAN</a>, and <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
 
 </div>
 </div>
@@ -707,11 +733,11 @@ String input/output interface</h2></td></tr>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00226">226</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00224">224</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00045">isEmpty()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00040">isEmpty()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>, and <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>, and <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>.</p>
 
 </div>
 </div>
@@ -731,7 +757,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00232">232</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00230">230</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
 </div>
 </div>
@@ -751,7 +777,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00144">144</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00149">149</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -781,7 +807,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00148">148</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00153">153</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -801,7 +827,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00153">153</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00158">158</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -821,7 +847,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00156">156</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00161">161</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -841,7 +867,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00159">159</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00164">164</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -869,9 +895,9 @@ String input/output interface</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00167">167</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00172">172</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00045">isEmpty()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00040">isEmpty()</a>.</p>
 
 </div>
 </div>
@@ -891,9 +917,9 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00171">171</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00176">176</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00045">isEmpty()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00040">isEmpty()</a>.</p>
 
 </div>
 </div>
@@ -912,24 +938,24 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the field names, in order to define an iterator over the struct. </p>
+<p>Returns the field names, including numeric indexes, in order to define an iterator over the struct. </p>
 <ul>
 <li>It is used in a construct of the form: <div class="fragment"><div class="line"><span class="keywordflow">for</span>(std::vector &lt; std::string &gt;::const_iterator i = <span class="keyword">struct</span>.<a class="code" href="classStruct.html#ac4a02b6f6cadebdc58b1ad05203a198a">getNames</a>().begin(); i != <span class="keyword">struct</span>.getNames().end(); i++) {</div><div class="line">  <a class="code" href="s__string_8h.html#a342f13820a6f9c4de28e5a0940976db7">String</a> name = *i;</div><div class="line">  ../..</div><div class="line">} </div></div><!-- fragment --> or: <div class="fragment"><div class="line"><span class="keyword">const</span> std::vector &lt; std::string &gt;&amp; names = <span class="keyword">struct</span>.getNames();</div><div class="line"><span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; names.size(); i++) {</div><div class="line">  <a class="code" href="s__string_8h.html#a342f13820a6f9c4de28e5a0940976db7">String</a> name = names[i];</div><div class="line">  ../..</div><div class="line">} </div></div><!-- fragment --></li>
-<li>It does not iterate over the indexed struct elements, which is realized with <a class="el" href="classStruct.html#ac97de12721ff7b3062954e42edda66a5" title="Returns the maximal indexed value in the structure. ">getLength()</a>. </li>
+<li>It also iterates over the indexed struct elements. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00191">191</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00196">196</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ac97de12721ff7b3062954e42edda66a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac97de12721ff7b3062954e42edda66a5">&#9670;&nbsp;</a></span>getLength()</h2>
+<a id="ae038950bfb95c3ba8e78c50d6a82dd09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae038950bfb95c3ba8e78c50d6a82dd09">&#9670;&nbsp;</a></span>getLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Struct::getLength </td>
+          <td class="memname">unsigned int Struct::getLength </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -942,9 +968,9 @@ String input/output interface</h2></td></tr>
 <li>It is used in a construct of the form: <div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; value.getLength(); i++) {</div><div class="line">  <a class="code" href="classStruct.html">Struct</a> &amp;value = value.<a class="code" href="classStruct.html#ae7b6ca07e050c5f5fb7a2be842fb307d">get</a>(i); ../..</div><div class="line">} </div></div><!-- fragment --> </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00202">202</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00207">207</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00234">add()</a>, <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>, and <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00239">add()</a>, <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>, and <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>.</p>
 
 </div>
 </div>
@@ -965,9 +991,7 @@ String input/output interface</h2></td></tr>
 
 <p>Returns the number of named value in the structure. </p>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00207">207</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00212">212</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -1009,9 +1033,9 @@ String input/output interface</h2></td></tr>
 </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00238">238</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00236">236</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>.</p>
 
 </div>
 </div>
@@ -1041,7 +1065,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00221">221</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00226">226</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -1061,7 +1085,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00225">225</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00230">230</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +1105,7 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00229">229</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00234">234</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 </div>
 </div>
@@ -1103,11 +1127,11 @@ String input/output interface</h2></td></tr>
 
 <p>Appends an indexed value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00234">234</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00239">239</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00202">getLength()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00207">getLength()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>.</p>
 
 </div>
 </div>
@@ -1129,9 +1153,9 @@ String input/output interface</h2></td></tr>
 
 <p>Erases a named or indexed value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00239">239</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00244">244</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00244">unset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00249">unset()</a>.</p>
 
 </div>
 </div>
@@ -1151,9 +1175,9 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00244">244</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00249">249</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00032">Struct()</a>, and <a class="el" href="Struct_8hpp_source.html#l00239">unset()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00032">Struct()</a>, and <a class="el" href="Struct_8hpp_source.html#l00244">unset()</a>.</p>
 
 </div>
 </div>
@@ -1173,9 +1197,9 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00256">256</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00261">261</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00244">equals()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00242">equals()</a>.</p>
 
 </div>
 </div>
@@ -1200,11 +1224,11 @@ String input/output interface</h2></td></tr>
 <li>Also available via the <code>==</code> and <code>!=</code> operators. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00244">244</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00242">242</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00244">equals()</a>, and <a class="el" href="Struct_8hpp_source.html#l00040">isAtomic()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00242">equals()</a>, and <a class="el" href="Struct_8hpp_source.html#l00045">isAtomic()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00244">equals()</a>, <a class="el" href="Struct_8hpp_source.html#l00270">operator!=()</a>, <a class="el" href="Struct_8hpp_source.html#l00256">operator=()</a>, and <a class="el" href="Struct_8hpp_source.html#l00267">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00242">equals()</a>, <a class="el" href="Struct_8hpp_source.html#l00275">operator!=()</a>, <a class="el" href="Struct_8hpp_source.html#l00261">operator=()</a>, and <a class="el" href="Struct_8hpp_source.html#l00272">operator==()</a>.</p>
 
 </div>
 </div>
@@ -1224,9 +1248,9 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00267">267</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00272">272</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00244">equals()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00242">equals()</a>.</p>
 
 </div>
 </div>
@@ -1246,9 +1270,9 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00270">270</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00275">275</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>, <a class="el" href="Struct_8cpp_source.html#l00244">equals()</a>, <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00786">save()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>, <a class="el" href="Struct_8cpp_source.html#l00242">equals()</a>, <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00772">save()</a>.</p>
 
 </div>
 </div>
@@ -1297,11 +1321,11 @@ String input/output interface</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00786">786</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00772">772</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00569">asString()</a>, and <a class="el" href="s__save_8c_source.html#l00013">s_save()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00567">asString()</a>, and <a class="el" href="s__save_8c_source.html#l00013">s_save()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00270">operator!=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00275">operator!=()</a>.</p>
 
 </div>
 </div>
@@ -1347,11 +1371,11 @@ String input/output interface</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00569">569</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00567">567</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="Struct_8cpp_source.html#l00226">get()</a>, <a class="el" href="Struct_8hpp_source.html#l00207">getCount()</a>, <a class="el" href="Struct_8hpp_source.html#l00202">getLength()</a>, <a class="el" href="Struct_8hpp_source.html#l00040">isAtomic()</a>, <a class="el" href="Struct_8hpp_source.html#l00045">isEmpty()</a>, and <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>.</p>
+<p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="Struct_8cpp_source.html#l00224">get()</a>, <a class="el" href="Struct_8hpp_source.html#l00207">getLength()</a>, <a class="el" href="Struct_8hpp_source.html#l00050">isArray()</a>, <a class="el" href="Struct_8hpp_source.html#l00045">isAtomic()</a>, <a class="el" href="Struct_8hpp_source.html#l00040">isEmpty()</a>, and <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00026">operator String()</a>, <a class="el" href="Struct_8hpp_source.html#l00270">operator!=()</a>, and <a class="el" href="Struct_8cpp_source.html#l00786">save()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00026">operator String()</a>, <a class="el" href="Struct_8hpp_source.html#l00275">operator!=()</a>, and <a class="el" href="Struct_8cpp_source.html#l00772">save()</a>.</p>
 
 </div>
 </div>
@@ -1405,11 +1429,11 @@ String input/output interface</h2></td></tr>
 <p>In other words the input syntax accepts (i) implicit quote <code>"</code> when string reduces to one word, (ii) flexible use of comma <code>,</code> when optional, (iii) string on several lines, (iv) considering <code>true</code> as implicit value, (v) appending as a raw string trailer chars if any.</p>
 <p>One consequence is that there is no ``syntax error'' all strings map on a JSON structure (i.e., the exact or closest correct JSON structure, the implicit metric being defined by the parsing algorithm). On the reverse the string output is a human readable indented strict JSON syntax allowing to verify that the input was well-formed. </p>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00275">275</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00273">273</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00234">add()</a>, <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="Struct_8cpp_source.html#l00226">get()</a>, <a class="el" href="Struct_8hpp_source.html#l00202">getLength()</a>, <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>, and <a class="el" href="Struct_8cpp_source.html#l00238">set()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8hpp_source.html#l00239">add()</a>, <a class="el" href="assume_8c_source.html#l00007">assume()</a>, <a class="el" href="Struct_8cpp_source.html#l00224">get()</a>, <a class="el" href="Struct_8hpp_source.html#l00207">getLength()</a>, <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>, and <a class="el" href="Struct_8cpp_source.html#l00236">set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00782">load()</a>, <a class="el" href="Struct_8hpp_source.html#l00270">operator!=()</a>, <a class="el" href="Struct_8hpp_source.html#l00320">reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00537">Struct()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00768">load()</a>, <a class="el" href="Struct_8hpp_source.html#l00275">operator!=()</a>, <a class="el" href="Struct_8hpp_source.html#l00325">reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00535">Struct()</a>.</p>
 
 </div>
 </div>
@@ -1429,9 +1453,9 @@ String input/output interface</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00320">320</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00325">325</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00782">load()</a>, <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00032">Struct()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00768">load()</a>, <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>, and <a class="el" href="Struct_8cpp_source.html#l00032">Struct()</a>.</p>
 
 </div>
 </div>
@@ -1459,11 +1483,11 @@ String input/output interface</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00782">782</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8cpp_source.html#l00768">768</a> of file <a class="el" href="Struct_8cpp_source.html">Struct.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00275">reset()</a>, and <a class="el" href="s__load_8c_source.html#l00007">s_load()</a>.</p>
+<p class="reference">References <a class="el" href="Struct_8cpp_source.html#l00273">reset()</a>, and <a class="el" href="s__load_8c_source.html#l00007">s_load()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00320">reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="Struct_8hpp_source.html#l00325">reset()</a>.</p>
 
 </div>
 </div>
@@ -1490,7 +1514,7 @@ String input/output interface</h2></td></tr>
 
 <p>Defines a empty struct, for initialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00053">53</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00058">58</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
 
@@ -1518,7 +1542,7 @@ String input/output interface</h2></td></tr>
 
 <p>The 0x10000000 (INT_MIN) undefined int value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00106">106</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Struct_8hpp_source.html#l00111">111</a> of file <a class="el" href="Struct_8hpp_source.html">Struct.hpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="Struct_8cpp_source.html#l00086">operator int()</a>, <a class="el" href="Struct_8cpp_source.html#l00091">operator unsigned int()</a>, <a class="el" href="Struct_8cpp_source.html#l00101">Struct()</a>, and <a class="el" href="Struct_8cpp_source.html#l00112">toDouble()</a>.</p>
 
@@ -1529,4 +1553,4 @@ String input/output interface</h2></td></tr>
 <li>src/util/<a class="el" href="Struct_8cpp_source.html">Struct.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-04-15 at 13:52:38) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-04-15 at 15:48:49) </tt> </div><hr/>

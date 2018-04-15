@@ -14,8 +14,8 @@
 /** Implements a generic minimal iterative structure.
  * Such a value corresponds to:
  * - scalar values: boolean, number, or string;
- * - value list, indexed from <tt>0</tt>, written <tt>[value, ...]</tt>;
  * - parameter set, written <tt>{name = value, ...}</tt>.
+ * - value list, indexed from <tt>0</tt>, written <tt>[value, ...]</tt>;
  * Key properties of such data structure:
  * - They corresponds to <a href="http://json.org/">JSON</a> structures (i.e. correspond to a data object model).
  * - By construction (value copy when set), they can
@@ -36,15 +36,20 @@ public:
   ~Struct();
   ///@endcond
 
+  /** Returns true if this corresponds to an empty scalar value corresponding to the empty string and false otherwise. */
+  bool isEmpty() const
+  {
+    return values.size() == 0 && value == "";
+  }
   /** Returns true if this corresponds to a scalar (boolean, numeric, string) value and false otherwise. */
   bool isAtomic() const
   {
     return values.size() == 0;
   }
-  /** Returns true if this corresponds to an empty scalar value corresponding to the empty string and false otherwise. */
-  bool isEmpty() const
+  /** Returns true if this corresponds to an array with values indexed by numbers and false otherwise. */
+  bool isArray() const
   {
-    return values.size() == 0 && value == "";
+    return values.size() == length;
   }
   /** A no operation method, just used to avoid compilation warning in empty callbacks. */
   void nop() const {}
@@ -119,7 +124,7 @@ private:
   std::vector < std::string > names;
   std::map < std::string, Struct > values;
   // Maximal indexed value
-  int length;
+  unsigned int length;
   // Clears the values
   void clear();
   // Recursively copy the values
@@ -172,7 +177,7 @@ public:
   {
     return isEmpty(toName(index));
   }
-  /** Returns the field names, in order to define an iterator over the struct.
+  /** Returns the field names, including numeric indexes, in order to define an iterator over the struct.
    * - It is used in a construct of the form:
    * @code
    * for(std::vector < std::string >::const_iterator i = struct.getNames().begin(); i != struct.getNames().end(); i++) {
@@ -186,7 +191,7 @@ public:
    *   String name = names[i];
    *   ../..
    * } @endcode
-   * - It does not iterate over the indexed struct elements, which is realized with getLength().
+   * - It also iterates over the indexed struct elements.
    */
   const std::vector < std::string >& getNames() {
     return names;
@@ -199,7 +204,7 @@ public:
    *   Struct &value = value.get(i); ../..
    * } @endcode
    */
-  int getLength() const
+  unsigned int getLength() const
   {
     return length;
   }

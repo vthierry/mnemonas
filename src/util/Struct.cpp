@@ -154,9 +154,8 @@ void Struct::insert(String name, bool setting)
   if(values.find(name) == values.end()) {
     // Manages the names and length
     int l = toInt(name);
-    if(l == INT_NAN)
-      names.push_back(name);
-    else if(l >= length)
+    names.push_back(name);
+    if((l >= 0) && (l != INT_NAN) && (l >= (int) length))
       length = l + 1;
     // Resets the corresponding string value
     if(setting)
@@ -170,13 +169,12 @@ void Struct::erase(String name)
     values.erase(name);
     // Manages the names and length
     int l = toInt(name);
-    if(l == INT_NAN)
-      names.erase(std::remove(names.begin(), names.end(), name), names.end());
-    else {
+    names.erase(std::remove(names.begin(), names.end(), name), names.end());
+    if((l >= 0) && (l != INT_NAN)) {
       length = 0;
       for(std::map < std::string, Struct > ::const_iterator i = values.begin(); i != values.end(); i++) {
         int l = toInt(i->first);
-        if((l != INT_NAN) && (length < l + 1))
+        if((l != INT_NAN) && ((int) length < l + 1))
           length = l + 1;
       }
     }
@@ -202,7 +200,7 @@ void Struct::clean(bool recursive)
       i->second.clean();
   // Cleans indexed values
   assume(values.size() > 0 || length == 0, "illegal-Struct", "Spurious length %d for an empty or atomic value in '%s'", length, value.c_str());
-  for(int i = 0; i < length; i++) {
+  for(unsigned int i = 0; i < length; i++) {
     String n = toName(i);
     if(values.count(n) > 0) {
       Struct& s = values[n];
@@ -311,7 +309,7 @@ protected:
       }
       // String input buffer, index and length
       const char *chars;
-      int index, length;
+      unsigned int index, length;
     };
     // Implements the weak parsing of a JSON structure
     class StructJsonReader: public StructReader {
@@ -510,7 +508,7 @@ protected:
         // - for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
       }
       // Syntax analysis : converts the input to a data-structure
-      int parse_jvalue(Struct& value, int index)
+      int parse_jvalue(Struct& value, unsigned int index)
       {
         int tab = (int) input.get(index).get("tab"), length = 0;
         for(; index < input.getLength() && (int) input.get(index).get("tab") == tab; index++) {
@@ -655,7 +653,7 @@ protected:
     {
       if(value.isAtomic())
         write_word(string, value.value);
-      else if(value.getCount() == 0) {
+      else if(value.isArray()) {
         string += asBeginTag("[");
         for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
           write_value(string, value.get(i));
@@ -672,18 +670,6 @@ protected:
           write_word(string, *i, true);
           string += asMeta(": ", true);
           write_value(string, value.get(*i));
-        }
-        for(int i = 0, l = value.getLength() - 1; i <= l; i++) {
-          Struct value_i = value.get(i);
-          if(!value_i.isEmpty()) {
-            if(once)
-              once = false;
-            else
-              string += asNextTag(", ");
-            write_word(string, toName(i), true);
-            string += asMeta(": ", true);
-            write_value(string, value_i);
-          }
         }
         string += asEndTag("}");
       }
@@ -749,7 +735,7 @@ protected:
             write_value(string, value.get(*i));
             string += asEndLine();
           }
-        for(int i = 0; i < value.getLength(); i++) {
+        for(unsigned int i = 0; i < value.getLength(); i++) {
           string += asBeginLine(string == "");
           write_word(string, s_printf("##%d", i), true);
           string += asMeta(" = ");

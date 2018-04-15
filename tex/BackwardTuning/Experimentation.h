@@ -369,7 +369,7 @@ public:
                   "{what: sequence_generation, name: ramp, criterion: 2}," +
                   "]");
       int i = what;
-      if((i != Struct::INT_NAN) && (0 <= i) && (i < tasks.getLength()))
+      if((i != Struct::INT_NAN) && (0 <= i) && (i < (int) tasks.getLength()))
         run(tasks.get(i));
       else
         assume(false, " illegal-argument", "in Experimentation1::run nothing to do");
