@@ -37,17 +37,33 @@ public:
   static double minimize(double f(double x), double xmin, double xmax, double xeps = NAN, unsigned int imax = 0);
 
   /** Projects a point onto a manifold defined by implicit equation.
-   * @param M The number of equations, the manifold is defined by M equations.
    * @param N The number of unknows.
+   * @param M The number of equations, the manifold is defined by M equations.
    * @param c The constraint <tt>m</tt>-th equation value, \f$c_m({\bf x})\f$.
-   * @param d The constraint <tt>m</tt>-th equation, <tt>n</tt>-th component derivative value, \f$\partial_{x_n}c_m({\bf x})\f$.
+   * @param d_c The constraint <tt>m</tt>-th equation, <tt>n</tt>-th component derivative value, \f$\partial_{x_n}c_m({\bf x})\f$.
    * @param x A <tt>double[N]</tt> output buffer.
    * @param x0 A <tt>double[N]</tt> input buffer. If NULL considers the zero vector. We may have x0 == x.
    * @param epsilon The threshold under which two <tt>x[n]</tt> values are indistinguishable.
    * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
    * @return The estimation error <tt>| c(x) |<sup>2</sup></tt>
    */
-  static double projsolve(unsigned int M, unsigned int N, double c(const double *x, unsigned int m), double d(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
+  static double projsolve(unsigned int N, unsigned int M, double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
+
+  /** Minimizes a lost with constraints using augmented Lagrangian method.
+   * @param N The number of unknows.
+   * @param M The number of equations, the manifold is defined by M equations.
+   * @param c The loss value, \f$l({\bf x})\f$.
+   * @param l_c The loss <tt>n</tt>-th component derivative value, \f$\partial_{x_n}l({\bf x})\f$.
+   * @param c The constraint <tt>m</tt>-th equation value, \f$c_m({\bf x})\f$.
+   * @param d_c The constraint <tt>m</tt>-th equation, <tt>n</tt>-th component derivative value, \f$\partial_{x_n}c_m({\bf x})\f$.
+   * @param x A <tt>double[N]</tt> output buffer.
+   * @param x0 A <tt>double[N]</tt> input buffer. If NULL considers the zero vector. We may have x0 == x.
+   * @param epsilon The threshold under which two <tt>x[n]</tt> values are indistinguishable.
+   * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
+   * @return The final loss error <tt>l(x)</tt>
+   *
+  static double projminize(unsigned int N, unsigned int M, double l(const double *x), double d_l(const double *x, unsigned int n), double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
+  */
 
   /** Gets the spectral radius of a squared matrix.
    * @param A The matrix buffer <tt>double[N * N]</tt> buffer storing <tt>A(i, j) == A[i + j * N]</tt>.

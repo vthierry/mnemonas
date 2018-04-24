@@ -213,7 +213,7 @@ double solver::minimize(double f(double x), double xmin, double xmax, double xep
   }
   return x0;
 }
-double solver::projsolve(unsigned int M, unsigned int N, double c(const double *x, unsigned int m), double d(const double *x, unsigned int m, unsigned int n), double *x, const double *x0_, double epsilon, unsigned int maxIterations)
+double solver::projsolve(unsigned int N, unsigned int M, double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0_, double epsilon, unsigned int maxIterations)
 {
   double *x0 = new double[N], *x1 = new double[N], *lambda = new double[M], *b = new double[M], *A = new double[(M * (M + 1)) / 2];
   // Initial point
@@ -229,14 +229,14 @@ double solver::projsolve(unsigned int M, unsigned int N, double c(const double *
       for(unsigned int m = 0; m < M; m++) {
         b[m] = c(x, m);
         for(unsigned int n = 0; n < N; n++)
-          b[m] -= d(x, m, n) * (x[n] - x0[n]);
+          b[m] -= d_c(x, m, n) * (x[n] - x0[n]);
       }
       for(unsigned int mm_ = 0; mm_ < (M * (M + 1)) / 2; mm_++)
         A[mm_] = 0;
       for(unsigned int n = 0; n < N; n++)
         for(unsigned int m = 0, mm_ = 0; m < M; m++)
           for(unsigned int m_ = 0; m_ <= m; m_++, mm_++)
-            A[mm_] += d(x, m, n) * d(x, m_, n);
+            A[mm_] += d_c(x, m, n) * d_c(x, m_, n);
       solver::linsolve(M, M, A, true, b, lambda);
       // printf(" A:\n %s b:\n %s lambda:\n %s", solver::asString(A, M, M, true).c_str(), solver::asString(b, M).c_str(), solver::asString(lambda, M).c_str());
     }
@@ -249,7 +249,7 @@ double solver::projsolve(unsigned int M, unsigned int N, double c(const double *
           // Updates the estimates
           for(unsigned int n = 0; n < N; n++)
             for(unsigned int m = 0; m < M; m++)
-              x1[n] = x[n] - u * (x[n] - x0[n] + d(x, m, n) * lambda[m]);
+              x1[n] = x[n] - u * (x[n] - x0[n] + d_c(x, m, n) * lambda[m]);
           // Recomputes the projection error
           {
             double r1 = 0;

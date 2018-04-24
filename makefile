@@ -226,7 +226,7 @@ rrun-out :
 #
 # On going :
 #
-# - Voir à simplifier ls laod/save de Struct
+# 
 #
 
 #
@@ -234,7 +234,7 @@ rrun-out :
 # - KernelDistributedEstimator : explorer les hyper-paramètres, ajouter mécanisme de reinit des W, insérer updateReadout
 # - ObservableCriterion: implémenter la notion d'observable normalisé et voir amélioration avec update
 # - Histogram : voir avec value vector pour gerer automatiquement les échelles et le cas m0 == 0
-#
+# - Voir à simplifier ls laod/save de Struct
 
 ARGS = -test # -experiment2
 

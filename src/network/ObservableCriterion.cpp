@@ -93,7 +93,7 @@ void network::ObservableCriterion::update()
     // Defines a projector onto the observable values
     {
       solver_project_this = this;
-      solver::projsolve(dimension, N * T, solver_project_this_c, solver_project_this_d, estimates, estimates);
+      solver::projsolve(N * T, dimension, solver_project_this_c, solver_project_this_d, estimates, estimates);
     }
     // Estimates N0
     {
