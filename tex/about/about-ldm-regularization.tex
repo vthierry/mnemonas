@@ -1,4 +1,17 @@
-\documentclass{article}\begin{document}
+\documentclass{article}\usepackage{hyperref}\newcommand{\deq}{\stackrel {\rm def}{=}} \newcommand{\eqline}[1]{\\\centerline{$#1$}\\}\newcommand{\tab}{\hphantom{6mm}}\begin{document}
+
+\section*{Low dimensional manifold reguralization}
+
+\subsection*{Problem position}
+
+The goal is to adjust a parametric distributed input-output computation 
+\eqline{{\bf o}_n = {\bf f}_{\bf w}({\bf i}_n),}
+mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal R}^O$, as a function of a parameter ${\bf w} \in {\cal R}^W$.
+
+Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_n(\cdot)$ we consider the empirical, i.e., average loss:
+\eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_n({\bf f}_{\bf w}({\bf i}_n))}
+consider that the data sample the union of low-dimensional manifolds ${\cal M}$ isometrically embedded in ${\cal R}^O$ and introduce the manifold dimension as regularizer, namely:
+\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \frac{\lambda}{vol({\cal M})} \int_{\cal M} d {\bf p} \, dim({\cal M}({\bf p})), \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^O\]
 
 \end{document}
 
