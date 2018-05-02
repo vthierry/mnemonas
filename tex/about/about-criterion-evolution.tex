@@ -1,0 +1,70 @@
+\documentclass{article}\usepackage[width=17cm,height=22cm]{geometry}\usepackage[english]{babel} \usepackage[utf8]{inputenc}\usepackage{fancyvrb} \usepackage{authblk} \usepackage{hyperref}\usepackage{outlines} \usepackage{graphicx} \usepackage{color}\DeclareGraphicsExtensions{.pdf,.png,.jpg}\definecolor{vthierry}{RGB}{80,0,120}\newcommand{\vthierry}[1]{{\color{vthierry}{#1}}}\definecolor{thalita}{RGB}{51, 153, 255}\newcommand{\thalita}[1]{{\color{thalita}{#1}}} 
+
+\begin{document}
+
+\subsubsection*{Parameter evolution observer}
+
+~\\
+
+During the learning phase we experimentally observe that:
+\\- The parameter evolution is piece-wise linear (more than exponential, for instance). 
+\\- If the parameter decays to zero, due to the use of a ${\cal L}_1$ criterion, it neither re-increases, nor changes sign and increases as an opposite value. 
+\\ -If the parameter increases or decreases, during a stable period of time (of say about $T_1=10^3$ iterations) it remains monotonic.
+\\ -If the parameter decreases to zero, this happens in a bounded period of time (of say about $T_2=10^4$ iterations).
+
+~\\
+
+As a consequence, it is reasonable to design a test, that:
+\\ -1- interpolates the parameter profile, in a short-term window (of say about $T_0=10^2$ iterations)), as a linear function, 
+\\ -2- compares the interpolation relevance with respect to a pure random estimation,
+\\ -3- in case of the estimation is relevant, implements the previous observation to decide if a parameter vanishes or not.
+
+~\\
+
+In order to implement these idea we average quantities using an exponential window. For a quantity $f_t$, this writes:
+\[ \Gamma_T[f_t] = \sum_{t = 0}^T \gamma^{T-t} \, f_t = f_T + \gamma \, \Gamma_{T-1}[f_t], \mbox{ with } \gamma = \frac{T_0 - 1}{T_0}, \]
+in order to privilege recent quantities with respect to ancient ones, and average on a windows of size $T_0 \simeq \frac{1}{1-\gamma}, \gamma \in ]0, 1[$.
+
+Given this design choice, the estimation of step -1- and the test of step -2-, for a parameter sequence $w_t$, writes:
+\[
+   \frac{\min_{a, b} \Gamma_T\left[ (w_t - (a \, t + b ))^2 \right]}{\Gamma[1] - 2}
+   \begin{array}{c}<\\>\end{array}
+   \frac{\min_{c} \Gamma_T\left[ (w_t - c)^2 \right]}{\Gamma[1] - 1}
+\]
+i.e., a least-square model:
+\\ - of linear model in the left hand side, 
+\\ - versus a constant in the right hand side,
+\\ both weighted by the number of degrees of freedom (i.e., the number of measures taken into account minus the number of parameters) as in a $\Xi^2$ test.
+
+We thus have to compute $\Gamma_T[1], \Gamma_T[t], \Gamma_T[t^2], \Gamma_T[w_t], \Gamma_T[t \, w_t], \Gamma_T[(w_t - \bar{a}_T \, t - \bar{b}_T)^2], \Gamma_T[(w_t - \bar{c}_T)^2]$ using the above recurrent equation, and obtain after a few algebra:
+\[\left\{\begin{array}{rcl}
+\bar{d}_T &=& \Gamma_T[t]^2 - \Gamma_T[t^2] \, \Gamma_T[1] \\
+\bar{a}_T &=& \left(\Gamma_T[w_t] \, \Gamma_T[t] - \Gamma_T[t \, w_t] \, \Gamma_T[1]\right) / \bar{d}_T \\
+\bar{b}_T &=& \left(-\Gamma_T[w_t] \, \Gamma_T[t^2] + \Gamma_T[t \, w_t] \, \Gamma_T[t]\right) / \bar{d}_T \\
+\bar{c}_T &=& \Gamma_T[w_t] / \Gamma_T[1] \\
+\end{array}\right.\]
+While: \begin{itemize}
+\item $\bar{ok}^0$ is true if the linear approximation is relevant, according to the proposerd test:
+\[ \bar{ok}^0_T = \Gamma_T[(w_t - \bar{a}_T \, t - \bar{b}_T)^2] / (\Gamma_T[1] - 2) < \Gamma_T[(w_t - \bar{c}_T)^2] / (\Gamma_T[1] - 1), \]
+\item $\bar{sg}^1$ counts the number of time the linear model slope sign has been constant:
+\[ \bar{sg}^1_T = \mbox{ if } \bar{ok}^0_T \mbox{ and } \bar{a}_T \, \bar{a}_{T-1} > 0 \mbox{ then } \bar{sg}^1_{T-1} + 1 \mbox{ else } 0, \mbox{ while } \bar{sg}^1_0 = 0, \]
+\item $\bar{ok}^1$ is true if the linear model slope has been constant at least $T_1$ times, the slope linear interpolation decays to zero and the zero crossing will occur before $T_2$:
+\[ \bar{ok}^1_T = \bar{sg}^1_T > T_1 \mbox{ and } (\bar{a}_T \, T - \bar{b}_T) \, \bar{a}_T < 0 \mbox{ and } (\bar{a}_T \, T_2 - \bar{b}_T) \, \bar{a}_T > 0. \]
+\end{itemize}
+
+This is to be done for each sparse switch parameter.
+
+This estimation relies on three order of magnitude parameters $T_0$, $T_1$ and $T_2$ [MAIS ON POURRA VOIR A S EN AFFRANCHI ENSUITE]
+
+\subsubsection*{Lambda Iterator}
+
+ICI JE PROPOSE JUSTE DE PARTIR DE $\lambda_0 = 0$ ET D'AUGMENTER LINÉAIREMENT AVEC LE TEMPS 
+\[
+\lambda_T = \frac{\lambda_{max}}{T_{max}} \, T 
+\]
+with, say, $\lambda_{max} = 1$ and $T_{max} = 10^5$, and to observer when $\bar{ok}^1$ occurs.
+
+ENSUITE IL FAUDRA VOIR QUAND ON ESTIME ÊTRE ``CONTENT'' ET JE PENSE QUE QUE POUR ÇA IL FAUDRA OBSERVER L'ACCURACY PAR EXEMPLE TANT QUE L ACCURACY RESTE STABE; OU S AMELIORE ON CONTINUE DE DÉCIMER LES SHORT-CUTS.
+
+
+\end{document}

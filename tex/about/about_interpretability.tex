@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage[width=17cm,height=22cm]{geometry}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyvrb}
+\usepackage{authblk}
+\usepackage{hyperref}
+\usepackage{outlines}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{natbib}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\definecolor{vthierry}{RGB}{80,0,120}\newcommand{\vthierry}[1]{{\color{vthierry}{#1}}}
+\definecolor{thalita}{RGB}{51, 153, 255}\newcommand{\thalita}[1]{{\color{thalita}{#1}}}
+\title{Some literature on interpretability}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+Here at NIPS I came along the interpretability comunity and noticed that there are some common literature and methods I was not aware of. I think listing up some literature on this topic might be useful to position and guide our development of the prototypes idea.
+
+\section{Raw listing}
+\subsection{A Unified Approach to Interpreting Model Predictions}
+by Scott Lundberg, Su-In Lee.
+\url{https://arxiv.org/abs/1705.07874}
+
+\paragraph{Abstract} Understanding why a model makes a certain prediction can be as crucial as the prediction's accuracy in many applications. However, the highest accuracy for large modern datasets is often achieved by complex models that even experts struggle to interpret, such as ensemble or deep learning models, creating a tension between accuracy and interpretability. In response, various methods have recently been proposed to help users interpret the predictions of complex models, but it is often unclear how these methods are related and when one method is preferable over another. To address this problem, we present a unified framework for interpreting predictions, SHAP (SHapley Additive exPlanations). SHAP assigns each feature an importance value for a particular prediction. Its novel components include: (1) the identification of a new class of additive feature importance measures, and (2) theoretical results showing there is a unique solution in this class with a set of desirable properties. The new class unifies six existing methods, notable because several recent methods in the class lack the proposed desirable properties. Based on insights from this unification, we present new methods that show improved computational performance and/or better consistency with human intuition than previous approaches.
+
+\paragraph{Coments}
+Many efforts in general interpretability were cited on this paper's presentation, motivated me to review the topic.
+
+Here interpretability concerns justification of predictions.
+The focus here is provide a tool to explain any complex model. A model agnostic tool.
+This tool is itself a model. an explanation model.
+
+Then they define a class of explanation models : Additive Feature Attribution Methods. They focus on local methods designed to explain a prediction f(x) based on a single input x, as proposed in LIME\citep{Ribeiro2016Why}.
+
+They review 6 other methods that can be framed in this class, that includes of course their own propositions.
+
+\subsection{Feature visualization and attribution}
+``Feature visualization answers questions about what a network -- or parts of a network -- are looking for by generating examples.
+Attribution  studies what part of an example is responsible for the network activating a particular way.'' \citep{Olah2017Feature}
+
+This aims to understand the model itsself and not having a side explanation model.
+
+Feature visualization focus on reconstructing inputs that maximize activation of a certain neuron/layer.
+
+Attribution focus on identifying on a given image the portions that maximally activate a certain neuron/layer.
+
+One of the early vis was done with the deconvnet \citep[same paper of the clarifai net]{Zeiler2014Visualizing}. They use a reversed version of the network sharing weights with the forward one.
+
+\citet[paper proposing to use only convs and no pooling]{Springenberg2014Striving} propose guided backprop, a different way of going back through relu units.
+
+
+\bibliographystyle{apalike}
+\bibliography{bib/thalita}
+\end{document}

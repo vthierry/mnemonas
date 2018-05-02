@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [
+ <!ATTLIST svg xmlns:xlink CDATA #FIXED "http://www.w3.org/1999/xlink">
+]>
+<svg width="343pt" height="332pt" viewBox="0 0 343 332" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" style="font-family: Times-Roman;">
+
+<!-- xyz -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="171" cy="22" rx="27" ry="18"/>
+<text text-anchor="middle" x="171" y="27" style="font-family: 'Bitstream Vera Sans';">1</text>
+
+<!-- yz -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="293" cy="94" rx="27" ry="18"/>
+<text text-anchor="middle" x="293" y="99" style="font-family: 'Bitstream Vera Sans';">c</text>
+
+<!-- xyz___yz -->
+<path style="fill: none; stroke: black;" d="M202,40C224,54 254,71 273,82"/>
+<polygon style="fill: none; stroke: black;" points="200,43 193,35 203,37 200,43"/>
+
+<!-- xz -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="171" cy="94" rx="27" ry="18"/>
+<text text-anchor="middle" x="171" y="99" style="font-family: 'Bitstream Vera Sans';">b</text>
+
+<!-- xyz___xz -->
+<path style="fill: none; stroke: black;" d="M171,50C171,59 171,68 171,76"/>
+<polygon style="fill: none; stroke: black;" points="168,50 171,40 175,50 168,50"/>
+
+<!-- xy -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="49" cy="94" rx="27" ry="18"/>
+<text text-anchor="middle" x="49" y="99" style="font-family: 'Bitstream Vera Sans';">a</text>
+
+<!-- xyz___xy -->
+<path style="fill: none; stroke: black;" d="M140,40C118,54 88,71 69,82"/>
+<polygon style="fill: none; stroke: black;" points="139,37 149,35 142,43 139,37"/>
+
+
+
+<!-- y -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="171" cy="166" rx="27" ry="18"/>
+<text text-anchor="middle" x="171" y="171" style="font-family: 'Bitstream Vera Sans';">e</text>
+
+<!-- yz___y -->
+<path style="fill: none; stroke: black;" d="M264,111C242,125 211,143 192,154"/>
+<polygon style="fill: none; stroke: black;" points="263,108 273,106 266,114 263,108"/>
+
+<!-- z -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="293" cy="166" rx="27" ry="18"/>
+<text text-anchor="middle" x="293" y="171" style="font-family: 'Bitstream Vera Sans';">f</text>
+
+<!-- yz___z -->
+<path style="fill: none; stroke: black;" d="M293,122C293,131 293,140 293,148"/>
+<polygon style="fill: none; stroke: black;" points="290,122 293,112 297,122 290,122"/>
+
+<!-- x -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="49" cy="166" rx="27" ry="18"/>
+<text text-anchor="middle" x="49" y="171" style="font-family: 'Bitstream Vera Sans';">d</text>
+
+<!-- xz___x -->
+<path style="fill: none; stroke: black;" d="M142,111C120,125 89,143 70,154"/>
+<polygon style="fill: none; stroke: black;" points="141,108 151,106 144,114 141,108"/>
+
+<!-- xz___z -->
+<path style="fill: none; stroke: black;" d="M200,111C222,125 253,143 272,154"/>
+<polygon style="fill: none; stroke: black;" points="198,114 191,106 201,108 198,114"/>
+
+<!-- xy___x -->
+<path style="fill: none; stroke: black;" d="M49,122C49,131 49,140 49,148"/>
+<polygon style="fill: none; stroke: black;" points="46,122 49,112 53,122 46,122"/>
+
+<!-- xy___y -->
+<path style="fill: none; stroke: black;" d="M78,111C100,125 131,143 150,154"/>
+<polygon style="fill: none; stroke: black;" points="76,114 69,106 79,108 76,114"/>
+
+
+
+<!-- y -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="171" cy="238" rx="27" ry="18"/>
+<text text-anchor="middle" x="171" y="243" style="font-family: 'Bitstream Vera Sans';">h</text>
+
+<!-- yz___y -->
+<path style="fill: none; stroke: black;" d="M264,183C242,197 211,215 192,226"/>
+<polygon style="fill: none; stroke: black;" points="263,180 273,178 266,186 263,180"/>
+
+<!-- z -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="293" cy="238" rx="27" ry="18"/>
+<text text-anchor="middle" x="293" y="243" style="font-family: 'Bitstream Vera Sans';">i</text>
+
+<!-- yz___z -->
+<path style="fill: none; stroke: black;" d="M293,194C293,203 293,212 293,220"/>
+<polygon style="fill: none; stroke: black;" points="290,194 293,184 297,194 290,194"/>
+
+<!-- x -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="49" cy="238" rx="27" ry="18"/>
+<text text-anchor="middle" x="49" y="243" style="font-family: 'Bitstream Vera Sans';">g</text>
+
+<!-- xz___x -->
+<path style="fill: none; stroke: black;" d="M142,183C120,197 89,215 70,226"/>
+<polygon style="fill: none; stroke: black;" points="141,180 151,178 144,186 141,180"/>
+
+<!-- xz___z -->
+<path style="fill: none; stroke: black;" d="M200,183C222,197 253,215 272,226"/>
+<polygon style="fill: none; stroke: black;" points="198,186 191,178 201,180 198,186"/>
+
+<!-- xy___x -->
+<path style="fill: none; stroke: black;" d="M49,194C49,203 49,212 49,220"/>
+<polygon style="fill: none; stroke: black;" points="46,194 49,184 53,194 46,194"/>
+
+<!-- xy___y -->
+<path style="fill: none; stroke: black;" d="M78,183C100,197 131,215 150,226"/>
+<polygon style="fill: none; stroke: black;" points="76,186 69,178 79,180 76,186"/>
+
+
+
+<!-- 0 -->
+<ellipse style="fill: rgb(224,224,255); stroke: black;" cx="171" cy="310" rx="27" ry="18"/>
+<text text-anchor="middle" x="171" y="315" style="font-family: 'Bitstream Vera Sans';">0</text>
+
+<!-- x___0 -->
+<path style="fill: none; stroke: black;" d="M78,255C100,269 131,287 150,298"/>
+<polygon style="fill: none; stroke: black;" points="76,258 69,250 79,252 76,258"/>
+
+<!-- y___0 -->
+<path style="fill: none; stroke: black;" d="M171,266C171,275 171,284 171,292"/>
+<polygon style="fill: none; stroke: black;" points="168,266 171,256 175,266 168,266"/>
+
+<!-- z___0 -->
+<path style="fill: none; stroke: black;" d="M264,255C242,269 211,287 192,298"/>
+<polygon style="fill: none; stroke: black;" points="263,252 273,250 266,258 263,252"/>
+
+</g>
+</svg>

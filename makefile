@@ -180,6 +180,7 @@ $(MAIN).pdf : $(shell find $(dir $(MAIN)) -name '*.tex')
 clean :
 	@/bin/rm -f `find . -name '*~' -o -name '.#*#' -o -name '*.o'`
 	@/bin/rm -f `find tex -name '*.aux' -o -name '*.toc' -o -name '*.ind' -o -name '*.bbl' -o -name '*.blg' -o -name '*.dvi' -o -name '*.idx' -o -name '*.lof' -o -name '*.log' -o -name '*.ilg' -o -name '*.nav' -o -name '*.spl' -o -name '*.snm' -o -name '*.sol' -o -name '*.out'`
+	@/bin/rm -f tex/about/about-*.pdf
 	@/bin/rm -rf .build stdout
 
 git : clean api

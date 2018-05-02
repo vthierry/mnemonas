@@ -1,0 +1,24 @@
+\documentclass{article}\begin{document}
+
+We have to choose between, say, L colors, $l \in \{1, L\}$.
+
+Alice and Bob have a probabilistic information about it $c_l(w)$, with $w \in \{A, B\}$, and indeed $\sum_{l=1}^L c_l(w) = 1$.
+
+How to combine then ? We have no more information, but we wonder if we should not rely on entropy $E(w) = \sum_l c_l(w) \, \log_2\left(c_l(w)\right)$. The lower the entropy, the less ``random'' the choice of A or B.
+
+We may consider the choice of the one with the lower entropy ?  
+
+{\em Q en penses tu Bruno ?}
+
+We may also consider the combined choice that minimize entropy: 
+\[ c_l^\alpha = \alpha \, c_l(A) + (1 - \alpha) \, c_l(B), \alpha \in [0, 1] \] and choose:
+\[ c_l^{\alpha_\bullet}, \alpha_\bullet = \mbox{arg min}_\alpha \sum_l c_l^\alpha \, \log_2\left(c_l^\alpha\right) \]
+this is indeed in relation with Baysian rule (considering $p(l|A) = c_l(A)$ ...) but we not have a-priori information.
+
+{\em Ca te parait qq chose de pertinent Bruno ?}
+
+{\em Y aurait autre chose à faire de mieux ?}
+
+\end{document}
+
+
