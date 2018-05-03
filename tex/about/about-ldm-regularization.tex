@@ -6,12 +6,45 @@
 
 The goal is to adjust a parametric distributed input-output computation 
 \eqline{{\bf o}_n = {\bf f}_{\bf w}({\bf i}_n),}
-mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal R}^O$, as a function of a parameter ${\bf w} \in {\cal R}^W$.
+mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal R}^D$, as a function of a parameter ${\bf w} \in {\cal R}^W$.
 
 Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_n(\cdot)$ we consider the empirical, i.e., average loss:
-\eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_n({\bf f}_{\bf w}({\bf i}_n))}
-consider that the data sample the union of low-dimensional manifolds ${\cal M}$ isometrically embedded in ${\cal R}^O$ and introduce the manifold dimension as regularizer, namely:
-\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \frac{\lambda}{vol({\cal M})} \int_{\cal M} d {\bf p} \, dim({\cal M}({\bf p})), \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^O\]
+\eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_n({\bf f}_{\bf w}({\bf i}_n)).}
+
+Here, we consider that the data sample the manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d$, and isometrically embedded in ${\cal R}^D$.
+
+\subsection*{Manifold notation}
+
+The manifold is locally parameterized by:
+\eqline{\psi: {\bf q} \in U \subset {\cal R}^d \rightarrow {\bf p} \in {\cal M} \subset {\cal R}^D}
+thus ${\bf p} = \psi({\bf q})$, i.e., in coordinates, $p^j = \psi^j((\cdots q^i \cdots)^T), i \in \{1, d\}, j \in \{1, D\}$, while $d = \left.dim({\cal M})\right|_{\bf p}$ at the point ${\bf p}$. The point ${\bf p}$ is represented by $D$ coordinates, subject to $D - d$ constraints. 
+
+At each point the tangent space is a $d$-dimensional linear space $T_{\bf p}{\cal M}$, equiped with an inner product written $<\cdot, \cdot>$.
+
+Between two points ${\bf p}, {\bf p}' \in {\cal M}$ there is a notion of distance induced by a minimal length path, called geodesic. Locally, we can map a point ${\bf p}$ onto a point ${\bf p}'$ along a geodesic given an infinitesimal displacement along a vector ${\bf v}$ of the tangent space (notion of ``exponential'' map).
+
+In order to define the required quantities, let us use the implicit summation convention in conjonction with the Kronecker symbol:
+~
+\\- The tangent vector along a direction $q^i$, writes $\partial_i = (\cdots \frac{\partial \psi^j({\bf q})}{\partial q_i} \cdots)^T$.
+\\- The metric tensor writes $g_{ii'} = <\partial_i, \partial_{i'}> = \delta_{jj'} \frac{\partial \psi^j({\bf q})}{\partial q_i} \, \frac{\partial \psi^{j'}({\bf q})}{\partial q_{i'}} = \sum_{j''=1}^D \frac{\partial \psi^{j''}({\bf q})}{\partial q_i} \, \frac{\partial \psi^{j''}({\bf q})}{\partial q_{i'}} $.
+\\- Its inverse writes $g^{i'i''}$, with $g_{ii'} \, g^{i'i''} = \delta_i^{i''}$.
+\\- The gradient of a function $f$ writes: $\nabla f = f^i \, \partial_i = g^{ii'} \, \partial_{i'} f \, \partial_i$.
+\\- The differential of a function $f$ writes: $d f $, with $d f(X) = \partial_i f \, X^i = <\nabla f, X>$, i.e., in matrix form: $\nabla f = g^{-1} df$.
+
+\subsection*{Proposed criteria}
+
+If we introduce the manifold dimension as regularizer, we can write after \cite{}:
+\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \frac{\lambda}{vol({\cal M})} \int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
+i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$, while:
+\eqline{\begin{array}{rcl}
+\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p} &=& 
+\sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 \\
+\end{array}}
+since the sum of the squared norm of the coordinate function gradient precisely corresponds to the local dimension \cite{}.
+
+This differs from usual manifold regularization, requiring the input-output map itself to be a smooth function, in the sense of changing slowly where the input data is dense, i.e.:
+\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \lambda \int_{\cal M} {\bf p} \; P({\bf p}) \,
+\|\nabla f\|^2 \] 
 
 \end{document}
 
