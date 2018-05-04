@@ -6,14 +6,56 @@
 
 The goal is to adjust a parametric distributed input-output computation 
 \eqline{{\bf o}_n = {\bf f}_{\bf w}({\bf i}_n),}
-mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal R}^D$, as a function of a parameter ${\bf w} \in {\cal R}^W$.
+mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal M} \subset {\cal R}^D$, as a function of a parameter ${\bf w} \in {\cal R}^W$. The key point is that we consider that output is a subset ${\cal M}$ of the data space.
 
 Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_n(\cdot)$ we consider the empirical, i.e., average loss:
 \eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_n({\bf f}_{\bf w}({\bf i}_n)).}
 
-Here, we consider that the data sample the manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d$, and isometrically embedded in ${\cal R}^D$.
+Here, we consider that the data sample uniformly at random the manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d$, and isometrically embedded in ${\cal R}^D$.
 
-\subsection*{Manifold notation}
+\subsection*{Proposed criterion}
+
+If we introduce the manifold dimension as regularizer, we can write after \cite{}:
+\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \mu \frac{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}}{\int_{\cal M} d {\bf p} \; 1}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
+i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$.
+
+The manifold is locally parameterized by coordinate functions $\psi(\cdot)$ that ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Ajusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension.
+
+Furthermore, from  \cite{}:
+\eqline{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p} = \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2}
+since the sum of the squared norm of the coordinate function gradient precisely corresponds to the local dimension \cite{}. 
+
+With this result, the criterion is very clode to usual manifold regularization \cite{}, requiring the input-output map itself to be a smooth function, in the sense of changing slowly on the data manifold, i.e., on where the input data is dense, i.e.:
+\eqline{\min_{{\bf w}} \; {\cal L}({\bf w}) + \mu \int_{\cal M} {\bf p} \; P({\bf p}) \, \|\nabla {\bf f}_{\bf w}\|^2}
+where $P({\bf p})$ stands for the data propability density: Since it is assumed that the data sample uniformly at random the manifold, the data probability is uniform. Since in the ideal case $\psi(\cdot) = {\bf f}_{\bf w}(\cdot)$, both criteria are equal, though not minimized the same way.
+
+Here, we consider perturbated coordinate functions, and will not only adjust the input-output computation parameters ${\bf w}$, but also the manifold itself, parameterized by the coordinate functions.
+
+The original method further separate the minimization with respect to calculation weights ${\bf w}$ from the manifold parameterization, compute the Euler-Lagrange equation in the continuous formand discretize the resulting Laplace-Beltrami operator, via a point integral method, in order to derive a tractable algorithm.
+
+Here we consider a direct discretization of the gradient, instead.
+
+Considering the discrete set of data point the standard method to discretize an integral is to:
+\\- Identify the neighbours of each data point ${\bf o}_n$. This can be done by finding the k-nearest neighbours, or by choosing all points within some fixed radius $\rho$ in ${\cal R}^D$.
+\\- Choose a kernel $R({\bf p}, {\bf p}')$ (e.g. $R({\bf p}, {\bf p}') = \alpha \, e^{-\beta\, d_{{\cal R}^D}({\bf p}, {\bf p}')}$, allowing to approximate the gradient by finite difference, i.e., alloe us to write:
+\[ \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 
+\simeq \int_{\cal M} d {\bf p} \int_{\cal M} d {{\bf p}'} R({\bf p}, {\bf p}') \, \|{\bf p} - {\bf p}'\|^2
+\simeq \sum_{n,n'} R({\bf o}_n, {\bf o}_{n'}) \, \|{\bf o}_n -  {\bf o}_{n'}\|^2 \]
+
+The left-hand size approximation is directly related to point integral method since by the Stroke's theorem gradient and Laplacian are linked. The right-hand size approximation is a simple sampling. 
+
+Merging these elements we are left with the variational problem:
+\[  \min_{{\bf w}, {\bf \psi}} \; {\cal C},\; {\cal C} \deq {\cal L}({\bf w}) + \mu \, \sum_{n,n'} R_{nn'} \, \|{\bf \psi}_n -  {\bf \psi}_{n'}\|^2 + \sum_n \lambda_n \, ({\bf o}_n - {\bf \psi}_n) \]
+where ${\bf o}_n = {\bf f}_{\bf w}({\bf i}_n)$, we write $R_{nn'} \deq R({\bf o}_n, {\bf o}_{n'})$, ${\bf \psi}_n$ is a perturbated value of ${\bf o}_n$ which tends to reduce the dimension and $\lambda_n$ are Lagrange multipliers. Being in a discrete set-up allows us to derive basic normal equations:
+\[ \begin{array}{rcl}
+ \nabla_{\bf w} {\cal C} &=& \nabla_{\bf w} {\cal L}({\bf w}) + \sum_n \lambda_n \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n) \\
+0 = \nabla_{{\bf \psi}_n} {\cal C}^T &=& \mu \, 2 \sum_n' (R_{nn'} + R_{n'n}) \, {\bf \psi}_n - {\bf \psi}_{n'} - \lambda_n \\
+0 = \nabla_{{\bf \lambda}_n} {\cal C}^T &=& {\bf o}_n - {\bf \psi}_n \\
+\end{array} \]
+
+\appendix \clearpage
+
+\section{Manifold notation}
 
 The manifold is locally parameterized by:
 \eqline{\psi: {\bf q} \in U \subset {\cal R}^d \rightarrow {\bf p} \in {\cal M} \subset {\cal R}^D}
@@ -31,20 +73,6 @@ In order to define the required quantities, let us use the implicit summation co
 \\- The gradient of a function $f$ writes: $\nabla f = f^i \, \partial_i = g^{ii'} \, \partial_{i'} f \, \partial_i$.
 \\- The differential of a function $f$ writes: $d f $, with $d f(X) = \partial_i f \, X^i = <\nabla f, X>$, i.e., in matrix form: $\nabla f = g^{-1} df$.
 
-\subsection*{Proposed criteria}
-
-If we introduce the manifold dimension as regularizer, we can write after \cite{}:
-\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \frac{\lambda}{vol({\cal M})} \int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
-i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$, while:
-\eqline{\begin{array}{rcl}
-\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p} &=& 
-\sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 \\
-\end{array}}
-since the sum of the squared norm of the coordinate function gradient precisely corresponds to the local dimension \cite{}.
-
-This differs from usual manifold regularization, requiring the input-output map itself to be a smooth function, in the sense of changing slowly where the input data is dense, i.e.:
-\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \lambda \int_{\cal M} {\bf p} \; P({\bf p}) \,
-\|\nabla f\|^2 \] 
 
 \end{document}
 
