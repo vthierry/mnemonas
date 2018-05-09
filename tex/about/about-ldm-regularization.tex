@@ -1,77 +1,111 @@
 \documentclass{article}\usepackage{hyperref}\newcommand{\deq}{\stackrel {\rm def}{=}} \newcommand{\eqline}[1]{\\\centerline{$#1$}\\}\newcommand{\tab}{\hphantom{6mm}}\begin{document}
 
-\section*{Low dimensional manifold reguralization}
+\section*{Low dimensional manifold regularization}
 
 \subsection*{Problem position}
 
-The goal is to adjust a parametric distributed input-output computation 
+The goal is to adjust a parametric distributed input-output computation:
 \eqline{{\bf o}_n = {\bf f}_{\bf w}({\bf i}_n),}
-mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal M} \subset {\cal R}^D$, as a function of a parameter ${\bf w} \in {\cal R}^W$. The key point is that we consider that output is a subset ${\cal M}$ of the data space.
+mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal M} \subset {\cal R}^D$, as a function of parameters (e.g., network weights) ${\bf w} \in {\cal R}^W$. 
 
-Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_n(\cdot)$ we consider the empirical, i.e., average loss:
+The key point is that we consider that the output is in a manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d$, and isometrically embedded in ${\cal R}^D$.
+
+Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_n(\cdot)$ we consider the empirical (i.e., average) loss:
 \eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_n({\bf f}_{\bf w}({\bf i}_n)).}
 
-Here, we consider that the data sample uniformly at random the manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d$, and isometrically embedded in ${\cal R}^D$.
+Here, we consider that the data sample uniformly at random the manifold ${\cal M}$.
 
 \subsection*{Proposed criterion}
 
-If we introduce the manifold dimension as regularizer, we can write after \cite{}:
+If we introduce the manifold dimension as a regularizer, we can write after \cite{}:
 \[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \mu \frac{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}}{\int_{\cal M} d {\bf p} \; 1}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
 i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$.
 
-The manifold is locally parameterized by coordinate functions $\psi(\cdot)$ that ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Ajusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension.
-
-Furthermore, from  \cite{}:
+The manifold is locally parameterized by coordinate functions $\psi(\cdot)$ that ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Adjusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension. Furthermore, from  \cite{} (see also Appendix~\ref{manifold}):
 \eqline{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p} = \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2}
 since the sum of the squared norm of the coordinate function gradient precisely corresponds to the local dimension \cite{}. 
 
-With this result, the criterion is very clode to usual manifold regularization \cite{}, requiring the input-output map itself to be a smooth function, in the sense of changing slowly on the data manifold, i.e., on where the input data is dense, i.e.:
-\eqline{\min_{{\bf w}} \; {\cal L}({\bf w}) + \mu \int_{\cal M} {\bf p} \; P({\bf p}) \, \|\nabla {\bf f}_{\bf w}\|^2}
-where $P({\bf p})$ stands for the data propability density: Since it is assumed that the data sample uniformly at random the manifold, the data probability is uniform. Since in the ideal case $\psi(\cdot) = {\bf f}_{\bf w}(\cdot)$, both criteria are equal, though not minimized the same way.
+With this result, the criterion is close to usual manifold regularization \cite{}, requiring the input-output map itself to be a smooth function, in the sense of changing slowly on the data manifold, i.e., on where the input data is dense, i.e.:
+\eqline{\min_{{\bf w}} \; {\cal L}({\bf w}) + \mu' \int_{\cal M} {\bf p} \; P({\bf p}) \, \|\nabla {\bf f}_{\bf w}\|^2}
+writing $\mu = \mu' \, vol({\cal M})$. Here $P({\bf p})$ stands for the data probability density while $P(p) \equiv 1$ since the sampling is assumed to be uniform. Since in the ideal case $\psi(\cdot) = {\bf f}_{\bf w}(\cdot)$, both criteria correspond. They are however not minimized the same way.
 
-Here, we consider perturbated coordinate functions, and will not only adjust the input-output computation parameters ${\bf w}$, but also the manifold itself, parameterized by the coordinate functions.
+Here, we consider perturbed coordinate functions, and will not only adjust the input-output computation parameters ${\bf w}$, but also the manifold itself, parameterized by the coordinate functions.
 
-The original method further separate the minimization with respect to calculation weights ${\bf w}$ from the manifold parameterization, compute the Euler-Lagrange equation in the continuous formand discretize the resulting Laplace-Beltrami operator, via a point integral method, in order to derive a tractable algorithm.
+The original method further separate the minimization with respect to calculation weights ${\bf w}$ from the manifold parameterization, compute the Euler-Lagrange equation in the continuous formalism and then discretize the resulting Laplace-Beltrami operator, via a point integral method, in order to derive a tractable algorithm.
 
 Here we consider a direct discretization of the gradient, instead.
 
 Considering the discrete set of data point the standard method to discretize an integral is to:
-\\- Identify the neighbours of each data point ${\bf o}_n$. This can be done by finding the k-nearest neighbours, or by choosing all points within some fixed radius $\rho$ in ${\cal R}^D$.
-\\- Choose a kernel $R({\bf p}, {\bf p}')$ (e.g. $R({\bf p}, {\bf p}') = \alpha \, e^{-\beta\, d_{{\cal R}^D}({\bf p}, {\bf p}')}$, allowing to approximate the gradient by finite difference, i.e., alloe us to write:
-\[ \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 
-\simeq \int_{\cal M} d {\bf p} \int_{\cal M} d {{\bf p}'} R({\bf p}, {\bf p}') \, \|{\bf p} - {\bf p}'\|^2
-\simeq \sum_{n,n'} R({\bf o}_n, {\bf o}_{n'}) \, \|{\bf o}_n -  {\bf o}_{n'}\|^2 \]
+\\- Identify the neighbors of each data point ${\bf o}_n$. This can be done by finding the k-nearest neighbors, or by choosing all points within some fixed radius $\rho$ in ${\cal R}^D$.
+\\- Choose a local kernel $R({\bf p}, {\bf p}')$ (see Appendix~\ref{integral}) allowing to approximate the gradient by finite difference, i.e., to write:
+\[ \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 
+\simeq \int_{\cal M} d {\bf p} \int_{\cal M} d {{\bf p}'} \; R({\bf p}, {\bf p}') \, \|\psi({\bf p}) - \psi({\bf p}')\|^2
+\simeq \sum_{n,n'} R({\bf o}_n, {\bf o}_{n'}) \, \|{\bf o}_n - {\bf o}_{n'}\|^2 \]
 
-The left-hand size approximation is directly related to point integral method since by the Stroke's theorem gradient and Laplacian are linked. The right-hand size approximation is a simple sampling. 
+The left-hand size approximation is directly related to point integral method since by the Stroke's theorem gradient and Laplacian are linked, as reviewed in Appendix~\ref{integral}. The right-hand size approximation is a simple sampling. 
 
 Merging these elements we are left with the variational problem:
 \[  \min_{{\bf w}, {\bf \psi}} \; {\cal C},\; {\cal C} \deq {\cal L}({\bf w}) + \mu \, \sum_{n,n'} R_{nn'} \, \|{\bf \psi}_n -  {\bf \psi}_{n'}\|^2 + \sum_n \lambda_n \, ({\bf o}_n - {\bf \psi}_n) \]
-where ${\bf o}_n = {\bf f}_{\bf w}({\bf i}_n)$, we write $R_{nn'} \deq R({\bf o}_n, {\bf o}_{n'})$, ${\bf \psi}_n$ is a perturbated value of ${\bf o}_n$ which tends to reduce the dimension and $\lambda_n$ are Lagrange multipliers. Being in a discrete set-up allows us to derive basic normal equations:
+where ${\bf o}_n = {\bf f}_{\bf w}({\bf i}_n)$, we write $R_{nn'} \deq R({\bf o}_n, {\bf o}_{n'})$, ${\bf \psi}_n$ is a perturbed value of ${\bf o}_n$ which tends to reduce the dimension and $\lambda_n$ are Lagrange multipliers. Being in a discrete set-up allows us to derive basic normal equations:
 \[ \begin{array}{rcl}
- \nabla_{\bf w} {\cal C} &=& \nabla_{\bf w} {\cal L}({\bf w}) + \sum_n \lambda_n \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n) \\
-0 = \nabla_{{\bf \psi}_n} {\cal C}^T &=& \mu \, 2 \sum_n' (R_{nn'} + R_{n'n}) \, {\bf \psi}_n - {\bf \psi}_{n'} - \lambda_n \\
+ \nabla_{\bf w} {\cal C} &=& \nabla_{\bf w} {\cal L}({\bf w}) + \sum_n \lambda_n \, \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n) \\
+0 = \nabla_{{\bf \psi}_n} {\cal C}^T &=& \mu \, 2 \sum_n' (R_{nn'} + R_{n'n}) \, ({\bf \psi}_n - {\bf \psi}_{n'}) - \lambda_n \\
 0 = \nabla_{{\bf \lambda}_n} {\cal C}^T &=& {\bf o}_n - {\bf \psi}_n \\
 \end{array} \]
+and we obtain the following modified minimization gradient:
+\eqline{\nabla_{\bf w} {\cal C} = \nabla_{\bf w} {\cal L}({\bf w}) + 2 \, \mu \, \sum_{nn'} (R_{nn'} + R_{n'n}) \, ({\bf o}_n - {\bf o}_{n'}) \, \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n).}
+
 
 \appendix \clearpage
 
-\section{Manifold notation}
+\section{Manifold notation}\label{manifold}
 
 The manifold is locally parameterized by:
 \eqline{\psi: {\bf q} \in U \subset {\cal R}^d \rightarrow {\bf p} \in {\cal M} \subset {\cal R}^D}
 thus ${\bf p} = \psi({\bf q})$, i.e., in coordinates, $p^j = \psi^j((\cdots q^i \cdots)^T), i \in \{1, d\}, j \in \{1, D\}$, while $d = \left.dim({\cal M})\right|_{\bf p}$ at the point ${\bf p}$. The point ${\bf p}$ is represented by $D$ coordinates, subject to $D - d$ constraints. 
 
-At each point the tangent space is a $d$-dimensional linear space $T_{\bf p}{\cal M}$, equiped with an inner product written $<\cdot, \cdot>$.
+At each point the tangent space is a $d$-dimensional linear space $T_{\bf p}{\cal M}$, equipped with an inner product written $<\cdot, \cdot>$.
 
 Between two points ${\bf p}, {\bf p}' \in {\cal M}$ there is a notion of distance induced by a minimal length path, called geodesic. Locally, we can map a point ${\bf p}$ onto a point ${\bf p}'$ along a geodesic given an infinitesimal displacement along a vector ${\bf v}$ of the tangent space (notion of ``exponential'' map).
 
-In order to define the required quantities, let us use the implicit summation convention in conjonction with the Kronecker symbol:
+In order to define the required quantities, let us use the implicit summation convention in conjunction with the Kronecker symbol:
 ~
-\\- The tangent vector along a direction $q^i$, writes $\partial_i = (\cdots \frac{\partial \psi^j({\bf q})}{\partial q_i} \cdots)^T$.
-\\- The metric tensor writes $g_{ii'} = <\partial_i, \partial_{i'}> = \delta_{jj'} \frac{\partial \psi^j({\bf q})}{\partial q_i} \, \frac{\partial \psi^{j'}({\bf q})}{\partial q_{i'}} = \sum_{j''=1}^D \frac{\partial \psi^{j''}({\bf q})}{\partial q_i} \, \frac{\partial \psi^{j''}({\bf q})}{\partial q_{i'}} $.
-\\- Its inverse writes $g^{i'i''}$, with $g_{ii'} \, g^{i'i''} = \delta_i^{i''}$.
+\\- We writes $\partial_i^j = \frac{\partial \psi^j({\bf q})}{\partial q^i}$.
+\\- The tangent vector along a direction $q^i$, writes $\partial_i = (\cdots \partial_i^j \cdots)^T$.
+\\- The metric tensor writes $g_{ii'} = <\partial_i, \partial_{i'}> = \delta_{jj'} \, \partial_i^j \, \partial_i^{j'}$.
+\\- Its inverse writes $g^{i'i''} = \partial^{i'} \partial^{i''}$, with $g_{ii'} \, g^{i'i''} = \delta_i^{i''}$.
 \\- The gradient of a function $f$ writes: $\nabla f = f^i \, \partial_i = g^{ii'} \, \partial_{i'} f \, \partial_i$.
 \\- The differential of a function $f$ writes: $d f $, with $d f(X) = \partial_i f \, X^i = <\nabla f, X>$, i.e., in matrix form: $\nabla f = g^{-1} df$.
+
+\subsection*{A few derivations}
+
+We can relate $f^i$ to $\partial_{i} f$ by the following derivation:
+\eqline{\partial_{i} f = df(\partial_{i}) = <\nabla f, \partial_{i}> = <f^{i'} \, \partial_{i'}, \partial_{i}> = f^{i'} \, <\partial_{i'}, \partial_{i}> = f^{i'} \, g_{i'i}}
+and in the reverse:
+\eqline{g^{ii'} \, \partial_{i'} f = g^{ii'} \, f^{i''} \, g_{i''i'} = f^{i''} \,  g^{ii'} \, g_{i''i'} = f^{i''} \, \delta_{ii''} = f^i}
+considering that $g$ is symmetric.
+
+We these notations, we easily derive after \cite{}:
+\eqline{\begin{array}{rcl} \sum_{j=1}^D \|\nabla \psi^j\|^2 
+&=& \delta_{jj'} \, (g^{ii'} \, \partial_{i'} \psi^j \, \partial_i) \, (g^{i''i'''} \, \partial_{i'''} \psi^{j'} \, \partial_{i''}) \\
+&=& (g^{ii'} \, \partial_i) \, (g^{i''i'''} \, \partial_{i''}) \, (\delta_{jj'} \, \partial_{i'} \psi^j \, \partial_{i'''} \psi^{j'})   \\
+&=& (g^{ii'} \, \partial_i) \, (g^{i''i'''} \, \partial_{i''}) \, g_{i'i'''} \\
+&=& (\partial^{i'} \, \partial^{i''}) \, g_{i'i'''} \\
+&=& g^{i'i'''} \, g_{i'i'''} = \delta_{i'}^{i'} = d \\
+\end{array}}
+
+\section{Integral approximation of gradient norm} \label{integral}
+
+Let us derive:
+\[ \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 
+\simeq \int_{\cal M} d {\bf p} \int_{\cal M} d {{\bf p}'} \; R({\bf p}, {\bf p}') \, \|\psi({\bf p}) - \psi({\bf p}')\|^2 \]
+
+We use the Taylor expansion:
+\eqline{f({\bf p}) - \psi({\bf p}') = ({\bf p} - {\bf p}') \nabla f({\bf p}) + O(\|{\bf p} - {\bf p}'\|^2)}
+and the fact that for a local kernel such as $R({\bf p}, {\bf p}') = \nu \, e^{-\frac{\|{\bf p} - {\bf p}'\|^2}{\rho^2}}$
+\eqline{\int_{\cal M} d {\bf p} \|{\bf p} - {\bf p}'\|^n = O(\rho^n)}
+
+
 
 
 \end{document}
