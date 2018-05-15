@@ -1,4 +1,4 @@
-\documentclass{article}\usepackage{hyperref}\newcommand{\deq}{\stackrel {\rm def}{=}} \newcommand{\eqline}[1]{\\\centerline{$#1$}\\}\newcommand{\tab}{\hphantom{6mm}}\begin{document}
+\documentclass{article}\usepackage{hyperref}\newcommand{\deq}{\stackrel {\rm def}{=}} \newcommand{\eqline}[1]{\\\centerline{$#1$}\\}\newcommand{\tab}{\hphantom{6mm}}\newcommand{\well}[1]{\vspace{0.3cm}\hspace{-2cm}{\tt #1}} \begin{document}
 
 \section*{Low dimensional manifold regularization}
 
@@ -8,34 +8,42 @@ The goal is to adjust a parametric distributed input-output computation:
 \eqline{{\bf o}_n = {\bf f}_{\bf w}({\bf i}_n),}
 mapping an input ${\bf i}_n \in {\cal R}^I$ onto an output ${\bf o}_n \in {\cal M} \subset {\cal R}^D$, as a function of parameters (e.g., network weights) ${\bf w} \in {\cal R}^W$. 
 
-The key point is that we consider that the output is in a manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d$, and isometrically embedded in ${\cal R}^D$.
+The key point is that we consider that the output is in a manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d \ll D$, and isometrically embedded in ${\cal R}^D$.
 
 Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_n(\cdot)$ we consider the empirical (i.e., average) loss:
 \eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_n({\bf f}_{\bf w}({\bf i}_n)).}
 
 We consider that the data sample uniformly at random the manifold ${\cal M}$.
 
+\well{@Thalita : do you like the notations .. or prefer another choice ?}
+
 \subsection*{Proposed criterion}
 
 If we introduce the manifold dimension as a regularizer, we can write after \cite{}:
-\[ \min_{{\bf w}, {\cal M}} \; {\cal L}({\bf w}) + \mu \frac{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}}{\int_{\cal M} d {\bf p} \; 1}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
-i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$.
+\[ \min_{{\bf w}, {\cal M}} \; (1 - \mu) \, {\cal L}({\bf w}) + \mu \frac{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}}{\int_{\cal M} d {\bf p} \; 1}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
+i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$. Here $\mu \in [0, 1]$ allows to balance the regularization.
 
-The manifold is locally parameterized by coordinate functions $\psi(\cdot)$ that ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Adjusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension. Furthermore, from  \cite{} (see also Appendix~\ref{manifold}):
+The manifold is locally parameterized by coordinate functions $\psi(\cdot)$:
+\eqline{\psi: {\bf q} \in U \subset {\cal R}^d \rightarrow {\bf p} \in {\cal M} \subset {\cal R}^D}
+These coordinates function ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Adjusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension. Furthermore, from  \cite{} (see Appendix~\ref{manifold}):
 \eqline{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p} = \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2}
 since the sum of the squared norm of the coordinate function gradient precisely corresponds to the local dimension \cite{}. 
+
+\subsubsection*{Manifold regularization}
 
 With this result, the criterion is close to usual manifold regularization \cite{}, requiring the input-output map itself to be a smooth function, in the sense of changing slowly on the data manifold, i.e., on where the input data is dense, i.e.:
 \eqline{\min_{{\bf w}} \; {\cal L}({\bf w}) + \mu' \int_{\cal M} {\bf p} \; P({\bf p}) \, \|\nabla {\bf f}_{\bf w}\|^2}
 writing $\mu = \mu' \, vol({\cal M})$. Here $P({\bf p})$ stands for the data probability density while $P(p) \equiv 1$ since the sampling is assumed to be uniform. Since in the ideal case $\psi(\cdot) = {\bf f}_{\bf w}(\cdot)$, both criteria correspond. They are however not minimized the same way.
 
+\well{@Wei Is this exact, or do i miss something ?}
+
+\subsubsection*{Discretized criterion}
+
 Here, we consider perturbed coordinate functions, and will not only adjust the input-output computation parameters ${\bf w}$, but also the manifold itself, parameterized by the coordinate functions.
 
-The original method further separate the minimization with respect to calculation weights ${\bf w}$ from the manifold parameterization, compute the Euler-Lagrange equation in the continuous formalism and then discretize the resulting Laplace-Beltrami operator, via a point integral method, in order to derive a tractable algorithm.
+The original method further separate the minimization with respect to weights ${\bf w}$ calculation, from the manifold parameterization optimization (using alternating direction method of multipliers), compute the Euler-Lagrange equation in the continuous formalism and then discretize the resulting Laplace-Beltrami operator, via a point integral method, in order to derive a tractable algorithm.
 
-Here we consider a direct discretization of the gradient, instead.
-
-Considering the discrete set of data point the standard method to discretize an integral is to:
+We may also consider a direct discretization of the gradient, instead. Considering the discrete set of data point the standard method to discretize an integral is to:
 \\- Identify the neighbors of each data point ${\bf o}_n$. This can be done by finding the k-nearest neighbors, or by choosing all points within some fixed radius $\rho$ in ${\cal R}^D$.
 \\- Choose a local kernel $R({\bf p}, {\bf p}')$ (see Appendix~\ref{integral}) allowing to approximate the gradient by finite difference, i.e., to write:
 \[ \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 
@@ -44,20 +52,36 @@ Considering the discrete set of data point the standard method to discretize an 
 
 The left-hand size approximation is directly related to point integral method since by the Stroke's theorem gradient and Laplacian are linked, as reviewed in Appendix~\ref{integral}. The right-hand size approximation is a simple sampling. 
 
+\well{@Wei Looks ``too simple'' is something wrong proceeding that way ?}
+
+\subsubsection*{Criterion minimization}
+
 Merging these elements we are left with the variational problem:
-\[  \min_{{\bf w}, {\bf \psi}} \; {\cal C},\; {\cal C} \deq {\cal L}({\bf w}) + \mu \, \sum_{n,n'} R_{nn'} \, \|{\bf \psi}_n -  {\bf \psi}_{n'}\|^2 + \sum_n \lambda_n \, ({\bf o}_n - {\bf \psi}_n) + \gamma \, \|{\bf o}_n - {\bf \psi}_n\|^2\]
-where ${\bf o}_n = {\bf f}_{\bf w}({\bf i}_n)$, we write $R_{nn'} \deq R({\bf o}_n, {\bf o}_{n'})$, ${\bf \psi}_n$ is a perturbed value of ${\bf o}_n$ which tends to reduce the dimension and $\lambda_n$ are Lagrange multipliers. Being in a discrete set-up allows us to derive basic normal equations:
+\[  \min_{{\bf w}, {\bf \psi}} \; {\cal C},\; {\cal C} \deq (1 - \mu) \, {\cal L}({\bf w}) + \mu \, \sum_{n,n'} R_{nn'} \, \|{\bf \psi}_n -  {\bf \psi}_{n'}\|^2 + \sum_n \lambda_n \, ({\bf o}_n - {\bf \psi}_n) + \gamma \, \|{\bf o}_n - {\bf \psi}_n\|^2\]
+where ${\bf o}_n = {\bf f}_{\bf w}({\bf i}_n)$, we write $R_{nn'} \deq R({\bf o}_n, {\bf o}_{n'})$, ${\bf \psi}_n$ is a perturbed value of ${\bf o}_n$ which tends to reduce the dimension and $\lambda_n$ are Lagrange multipliers while the term with $\gamma$ introduces a augmented Lagragian mechanism. Being in a discrete set-up allows us to derive basic normal equations:
 \[ \begin{array}{rcl}
  \nabla_{\bf w} {\cal C} &=& \nabla_{\bf w} {\cal L}({\bf w}) + \sum_n (\lambda_n + 2 \, \gamma \, ({\bf o}_n - {\bf \psi}_n))\, \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n) \\
 0 = \nabla_{{\bf \psi}_n} {\cal C}^T &=& \mu \, 2 \sum_n' (R_{nn'} + R_{n'n}) \, ({\bf \psi}_n - {\bf \psi}_{n'}) - \lambda_n + 2 \, \gamma \, ({\bf \psi}_n - {\bf o}_n) \\
 0 = \nabla_{{\bf \lambda}_n} {\cal C}^T &=& {\bf o}_n - {\bf \psi}_n \\
 \end{array} \]
-and we obtain the following modified minimization gradient:
-\eqline{\nabla_{\bf w} {\cal C} = \nabla_{\bf w} {\cal L}({\bf w}) + 2 \, \mu \, \sum_{nn'} (R_{nn'} + R_{n'n}) \, ({\bf o}_n - {\bf o}_{n'}) \, \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n).}
 
-The adjustment of the variational problem hyper-parameters can be performed following different heuristics:
-\\ - Starts minimizing the criterion with $\mu = 0$ (i.e., without regularization) and then increase $\mu$ until the cross-validation improves. The drawback of this simple approach is that the optimization problem is highly nonlinear and nonconvex. We thus may get stuck in a local minima.
-\\- Starts considering the manifold as the union of 0-dimensional manifolds, i.e., prototypes 
+{\em Direct minimization} When eliminating ${\bf \psi}$ (thus ${\bf \lambda}$ and $\gamma$) we obtain the following modified minimization gradient:
+\eqline{\nabla_{\bf w} {\cal C} = \nabla_{\bf w} {\cal L}({\bf w}) + 2 \, \mu \, \sum_{nn'} (R_{nn'} + R_{n'n}) \, ({\bf o}_n - {\bf o}_{n'}) \, \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n).} The drawback of this simple approach is that the optimization problem is highly nonlinear and nonconvex. We thus may get stuck in a local minimum.
+
+{\em Alternating minimization} If we maintain a alternating minimization, the equation $0 = \nabla_{{\bf \psi}_n} {\cal C}^T$ provides, given $\gamma$ and $\lambda$, linear equations in ${\bf \psi}$, while the modified minimization gradient is given by $\nabla_{\bf w} {\cal C}$. In that case the minimization may start with ${\bf \lambda} = 0$, $\gamma = \mu$ and when a minimum is obtained 
+\eqline{{\bf \lambda}^{t+1} \leftarrow  {\bf \lambda}^{t} + \gamma_k^{t} \, ({\bf o}_n - {\bf \psi}_n), \gamma_k^{t+1} \leftarrow \left\{ \begin{array}{ll}
+\gamma_k^{t} & \mbox{ if $\|{\bf o}_n - {\bf \psi}_n\|^2$ decreases} \\ 2\, \gamma_k^{t} & \mbox{ otherwise } \\ \end{array}\right.}
+This completely specify the algorithmic hyper-parameters.
+
+\well{@Wei I understand that ADMM allows to ``convexify'' the criterion, but since $J(\cdot)$ is not, why should we gain something with respect to direct gradient minimization ?}
+
+\subsubsection*{Initialization and hyper-parameter adjustment.}
+
+We may start considering the manifold as the union of 0-dimensional manifolds, i.e., prototypes, thus start by a k-mean clustering. This provides us with an initial value of $\sum_{n,n'} R_{nn'} \, \|{\bf \psi}_n -  {\bf \psi}_{n'}\|^2$, likely maximal since we choose here a solution with a minimal number of degree of freedom, with respect to a more general manifold representation. 
+
+Performing the minimization with $\mu = 0$ (i.e., without regularization) provides us with a minimal value of $J(\cdot)$ on the learning set (not on the cross-validation) since we expect over-fitting, that is going to be avoided by regularization.
+
+We then can explore values of $\mu \in [0, 1]$ and choose the best meta-learning result.
 
 \appendix \clearpage
 
@@ -99,7 +123,7 @@ We these notations, we easily derive after \cite{}:
 
 \section{Integral approximation of gradient norm} \label{integral}
 
-Let us derive:
+The goal is to derive:
 \[ \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 
 \simeq \int_{\cal M} d {\bf p} \int_{\cal M} d {{\bf p}'} \; R({\bf p}, {\bf p}') \, \|\psi({\bf p}) - \psi({\bf p}')\|^2 \]
 
@@ -110,8 +134,7 @@ and the fact that for a local kernel such as $R({\bf p}, {\bf p}') = \nu \, e^{-
 while from the Stroke theorem:
 \eqline{\int_{\cal M} d {\bf p} \; \|\nabla f({\bf p})\|^2 = \int_{\cal M} d {\bf p} \; f({\bf p})\, \Delta f({\bf p})}
 
-
-
+\well{@vthierry To be done, this seems to be no more than a variant of usual PIM}
 
 \end{document}
 
