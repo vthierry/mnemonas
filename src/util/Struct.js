@@ -90,7 +90,7 @@ var Struct = {
   write_value : function(value, tab, format) {
     var string = "";
     if(!(value instanceof Object))
-      string += Struct.write_word(value, tab, "value", format);
+      string += Struct.write_word(String(value), tab, "value", format);
     else {
       var root = tab == 0, notitle = value["title"] == "" || value["title"] == undefined || root;
       if(!notitle)

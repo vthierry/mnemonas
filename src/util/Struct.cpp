@@ -300,8 +300,7 @@ public:
         if(index < length)
           value.add(chars + index);
       }
-protected:
-      virtual void read_value(Struct& value) {}
+private:
       // Shifts until the next non-space char
       void next_space()
       {
@@ -310,10 +309,7 @@ protected:
       // String input buffer, index and length
       const char *chars;
       unsigned int index, length;
-    };
-    // Implements the weak parsing of a JSON structure
-    class StructJsonReader: public StructReader {
-protected:
+      //
       // Reads a value from the string starting at index i and set it
       void read_value(Struct& value)
       {
@@ -343,7 +339,7 @@ protected:
             return;
           }
           Struct item;
-          StructJsonReader::read_value(item);
+          read_value(item);
           value.set(value.getLength(), item);
           next_space();
           if((index < length) && ((chars[index] == ',') || (chars[index] == ';')))
@@ -367,7 +363,7 @@ protected:
           Struct item = true;
           if((index < length) && ((chars[index] == ':') || (chars[index] == '='))) {
             index++;
-            StructJsonReader::read_value(item);
+            read_value(item);
           }
           value.set(name, item);
           next_space();
@@ -435,101 +431,8 @@ protected:
                chars[index] != '}' && chars[index] != ']';
       }
       std::string word;
-    };
-    // Implements the weak parsing of a J= structure
-    class StructJReader: public StructJsonReader {
-protected:
-      // Reads a value from the string starting at index i and set it
-      void read_value(Struct& value)
-      {
-        next_space();
-        // Reads JSON within J= if any
-        switch(chars[index]) {
-        case '{':
-        case '[':
-          StructJsonReader::read_value(value);
-          break;
-        default:
-          read_jvalue();
-          parse_jvalue(value, 0);
-          break;
-        }
-      }
-      // Lexical analysis : builds an input of the form
-      // [ { tab : line-tabulation, label : label-before-equal, string : line-string } ]
-      void read_jvalue()
-      {
-        input.clear();
-        for(int ll = 0; index < length; index++) {
-          unsigned int index0, index1, index2;
-          bool line = true;
-          int tab = 0;
-          for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++)
-            switch(chars[index]) {
-            case '\t':
-              tab += 6;
-              break;
-            case ' ':
-              tab++;
-              break;
-            }
-          for(index0 = index; index < length && chars[index] != '=' && !isspace(chars[index]); index++) {}
-          index1 = index;
-          for(; index < length && chars[index] != '\n' && isspace(chars[index]); index++) {}
-          if(chars[index] == '=') {
-            for(index++; index < length && chars[index] != '\n' && isspace(chars[index]); index++) {}
-            for(index2 = index; index < length && chars[index] != '\n'; index++) {}
-          } else {
-            index1 = index0;
-            for(index2 = index0; index < length && chars[index] != '\n'; index++) {}
-            // Manages multi-line strings
-            if((ll > 0) && ((int) input.get(ll - 1).get("tab") <= tab)) {
-              input.get(ll - 1).set("string",
-                                    (String) input.get(ll - 1).get("string") + "\n" +
-                                    std::string(chars + index2, index - index2));
-              line = false;
-            }
-          }
-          // Manages nested data-structure with a string on the label line
-          if(line && (ll > 0) && ((int) input.get(ll - 1).get("tab") < tab) && (input.get(ll - 1).get("string") != "")) {
-            input.get(ll).set("tab", tab);
-            input.get(ll).set("label", "title");
-            input.get(ll).set("string", (String) input.get(ll - 1).get("string"));
-            input.get(ll - 1).unset("string");
-            ll++;
-          }
-          if(line) {
-            input.get(ll).set("tab", tab);
-            input.get(ll).set("label", std::string(chars + index0, index1 - index0));
-            input.get(ll).set("string", std::string(chars + index2, index - index2));
-            ll++;
-          }
-        }
-        // - for(int index = 0; index < input.getLength(); index++) printf(">> %s\n", ((String) input.get(index)).c_str());
-      }
-      // Syntax analysis : converts the input to a data-structure
-      int parse_jvalue(Struct& value, unsigned int index)
-      {
-        int tab = (int) input.get(index).get("tab"), length = 0;
-        for(; index < input.getLength() && (int) input.get(index).get("tab") == tab; index++) {
-          int index0 = index;
-          Struct item;
-          if((index + 1 < input.getLength()) && (tab < (int) input.get(index + 1).get("tab"))) {
-            assume(input.get(index).get("string") == "", "illegal-state", "in Struct::StructJReader::parse_jvalue spurious string on label line at %s, this is a bug\n", ((String) input.get(index)).c_str());
-            index = parse_jvalue(item, index + 1);
-          } else
-            item = input.get(index).get("string");
-          if(input.get(index0).isEmpty("label"))
-            value.set(s_printf("#%d", length++), item);
-          else
-            value.set((String) input.get(index0).get("label"), item);
-        }
-        return index - 1;
-      }
-      Struct input;
-    }
-    reader1;
-    reader1.read(*this, result);
+    } reader;
+    reader.read(*this, result);
   }
 }
 Struct::Struct(int argc, const char *argv[])
@@ -579,8 +482,7 @@ public:
       write_value(string, value);
       string += stringTrailer();
     }
-protected:
-    virtual void write_value(std::string& string, const Struct& value) {}
+private:
     std::string addLn(int t)
     {
       tab += t;
@@ -645,9 +547,7 @@ protected:
       return (std::string) (tab == depth && depth > 0 ? "," : "") + (mode == 2 ? "</div>" : mode == 1 ? "\n" : "");
     }
     int mode, tab, depth;
-  };
-  class StructJSonWriter: public StructWriter {
-protected:
+    //
     // Recursively writes a value
     void write_value(std::string& string, const Struct& value)
     {
@@ -711,58 +611,9 @@ protected:
       string += asEndValue("\"");
     }
   }
-  writer1;
-  class StructJWriter: public StructWriter {
-protected:
-    // Recursively writes a value
-    void write_value(std::string& string, const Struct& value)
-    {
-      if(value.isAtomic())
-        write_word(string, value.value);
-      else {
-        bool notitle = value.isEmpty("title") || string == "";
-        if(!notitle)
-          write_word(string, value.get("title"));
-        tab++;
-        for(std::vector < std::string > ::const_iterator i = value.names.begin(); i != value.names.end(); i++)
-          if(notitle || (*i != "title")) {
-            string += asBeginLine(string == "");
-            if((*i)[0] != '#') {
-              write_word(string, *i, true);
-              string += asMeta(" = ");
-            } else
-              string += asMeta("= ");
-            write_value(string, value.get(*i));
-            string += asEndLine();
-          }
-        for(unsigned int i = 0; i < value.getLength(); i++) {
-          string += asBeginLine(string == "");
-          write_word(string, s_printf("##%d", i), true);
-          string += asMeta(" = ");
-          write_value(string, value.get(i));
-          string += asEndLine();
-        }
-        tab--;
-      }
-    }
-    void write_word(std::string& string, String value, bool name = false)
-    {
-      string += asBeginValue("", name);
-      for(unsigned int i = 0; i < value.length(); i++) {
-        if(value[i] == '\n')
-          string += asNewLine();
-        else
-          string += value[i];
-      }
-      string += asEndValue("");
-    }
-  }
-  writer2;
+  writer;
   std::string string;
-  if((format == "jplain") || (format == "jhtml"))
-    writer2.write(string, *this, format == "jhtml" ? "html" : "plain", depth);
-  else
-    writer1.write(string, *this, format, depth);
+  writer.write(string, *this, format, depth);
   return string;
 }
 void Struct::load(String location)
