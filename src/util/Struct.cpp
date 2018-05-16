@@ -431,7 +431,8 @@ private:
                chars[index] != '}' && chars[index] != ']';
       }
       std::string word;
-    } reader;
+    }
+    reader;
     reader.read(*this, result);
   }
 }

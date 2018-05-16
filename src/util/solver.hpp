@@ -62,8 +62,8 @@ public:
    * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
    * @return The final loss error <tt>l(x)</tt>
    *
-  static double projminize(unsigned int N, unsigned int M, double l(const double *x), double d_l(const double *x, unsigned int n), double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
-  */
+   *  static double projminize(unsigned int N, unsigned int M, double l(const double *x), double d_l(const double *x, unsigned int n), double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
+   */
 
   /** Gets the spectral radius of a squared matrix.
    * @param A The matrix buffer <tt>double[N * N]</tt> buffer storing <tt>A(i, j) == A[i + j * N]</tt>.

@@ -61,11 +61,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a16ce3bb11795bd3b61ed01197802415b"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#a16ce3bb11795bd3b61ed01197802415b">minimize</a> (double f(double x), double xmin, double xmax, double xeps=NAN, unsigned int imax=0)</td></tr>
 <tr class="memdesc:a16ce3bb11795bd3b61ed01197802415b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimizes a 1D function in a given interval.  <a href="#a16ce3bb11795bd3b61ed01197802415b">More...</a><br /></td></tr>
 <tr class="separator:a16ce3bb11795bd3b61ed01197802415b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b2f2bebf21c0115f591ea5c548c2c79"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#a6b2f2bebf21c0115f591ea5c548c2c79">projsolve</a> (unsigned int M, unsigned int N, double c(const double *x, unsigned int m), double d(const double *x, unsigned int m, unsigned int n), double *x, const double *x0=NULL, double epsilon=1e-6, unsigned int maxIterations=0)</td></tr>
-<tr class="memdesc:a6b2f2bebf21c0115f591ea5c548c2c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects a point onto a manifold defined by implicit equation.  <a href="#a6b2f2bebf21c0115f591ea5c548c2c79">More...</a><br /></td></tr>
-<tr class="separator:a6b2f2bebf21c0115f591ea5c548c2c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83d2982c6ac8b4d5906c8fc5c1fe92e3"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#a83d2982c6ac8b4d5906c8fc5c1fe92e3">projsolve</a> (unsigned int N, unsigned int M, double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0=NULL, double epsilon=1e-6, unsigned int maxIterations=0)</td></tr>
+<tr class="memdesc:a83d2982c6ac8b4d5906c8fc5c1fe92e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects a point onto a manifold defined by implicit equation.  <a href="#a83d2982c6ac8b4d5906c8fc5c1fe92e3">More...</a><br /></td></tr>
+<tr class="separator:a83d2982c6ac8b4d5906c8fc5c1fe92e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb60ade7fa8c356e3925b82519ccfaa6"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#afb60ade7fa8c356e3925b82519ccfaa6">getSpectralRadius</a> (const double *A, unsigned int N, double epsilon=1e-6, unsigned int maxIterations=100)</td></tr>
-<tr class="memdesc:afb60ade7fa8c356e3925b82519ccfaa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the spectral radius of a squared matrix.  <a href="#afb60ade7fa8c356e3925b82519ccfaa6">More...</a><br /></td></tr>
+<tr class="memdesc:afb60ade7fa8c356e3925b82519ccfaa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimizes a lost with constraints using augmented Lagrangian method.  <a href="#afb60ade7fa8c356e3925b82519ccfaa6">More...</a><br /></td></tr>
 <tr class="separator:afb60ade7fa8c356e3925b82519ccfaa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3305d0098d07316e094cda5143a6f1b2"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#a3305d0098d07316e094cda5143a6f1b2">asString</a> (const double *A, unsigned int M, unsigned int N=1, bool symmetric=false, <a class="el" href="s__string_8h.html#a342f13820a6f9c4de28e5a0940976db7">String</a> format=&quot;%8.1g&quot;)</td></tr>
 <tr class="memdesc:a3305d0098d07316e094cda5143a6f1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a matrix or vector as a string to dump.  <a href="#a3305d0098d07316e094cda5143a6f1b2">More...</a><br /></td></tr>
@@ -245,8 +245,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6b2f2bebf21c0115f591ea5c548c2c79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b2f2bebf21c0115f591ea5c548c2c79">&#9670;&nbsp;</a></span>projsolve()</h2>
+<a id="a83d2982c6ac8b4d5906c8fc5c1fe92e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83d2982c6ac8b4d5906c8fc5c1fe92e3">&#9670;&nbsp;</a></span>projsolve()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,13 +258,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">double solver::projsolve </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>M</em>, </td>
+          <td class="paramname"><em>N</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>N</em>, </td>
+          <td class="paramname"><em>M</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -276,7 +276,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double &#160;</td>
-          <td class="paramname"><em>d</em>const double *x, unsigned int m, unsigned int n, </td>
+          <td class="paramname"><em>d_c</em>const double *x, unsigned int m, unsigned int n, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -318,10 +318,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Projects a point onto a manifold defined by implicit equation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">M</td><td>The number of equations, the manifold is defined by M equations. </td></tr>
     <tr><td class="paramname">N</td><td>The number of unknows. </td></tr>
+    <tr><td class="paramname">M</td><td>The number of equations, the manifold is defined by M equations. </td></tr>
     <tr><td class="paramname">c</td><td>The constraint <code>m</code>-th equation value, <img class="formulaInl" alt="$c_m({\bf x})$" src="form_11.png"/>. </td></tr>
-    <tr><td class="paramname">d</td><td>The constraint <code>m</code>-th equation, <code>n</code>-th component derivative value, <img class="formulaInl" alt="$\partial_{x_n}c_m({\bf x})$" src="form_12.png"/>. </td></tr>
+    <tr><td class="paramname">d_c</td><td>The constraint <code>m</code>-th equation, <code>n</code>-th component derivative value, <img class="formulaInl" alt="$\partial_{x_n}c_m({\bf x})$" src="form_12.png"/>. </td></tr>
     <tr><td class="paramname">x</td><td>A <code>double[N]</code> output buffer. </td></tr>
     <tr><td class="paramname">x0</td><td>A <code>double[N]</code> input buffer. If NULL considers the zero vector. We may have x0 == x. </td></tr>
     <tr><td class="paramname">epsilon</td><td>The threshold under which two <code>x[n]</code> values are indistinguishable. </td></tr>
@@ -385,8 +385,24 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Gets the spectral radius of a squared matrix. </p>
+<p>Minimizes a lost with constraints using augmented Lagrangian method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">N</td><td>The number of unknows. </td></tr>
+    <tr><td class="paramname">M</td><td>The number of equations, the manifold is defined by M equations. </td></tr>
+    <tr><td class="paramname">c</td><td>The loss value, <img class="formulaInl" alt="$l({\bf x})$" src="form_13.png"/>. </td></tr>
+    <tr><td class="paramname">l_c</td><td>The loss <code>n</code>-th component derivative value, <img class="formulaInl" alt="$\partial_{x_n}l({\bf x})$" src="form_14.png"/>. </td></tr>
+    <tr><td class="paramname">c</td><td>The constraint <code>m</code>-th equation value, <img class="formulaInl" alt="$c_m({\bf x})$" src="form_11.png"/>. </td></tr>
+    <tr><td class="paramname">d_c</td><td>The constraint <code>m</code>-th equation, <code>n</code>-th component derivative value, <img class="formulaInl" alt="$\partial_{x_n}c_m({\bf x})$" src="form_12.png"/>. </td></tr>
+    <tr><td class="paramname">x</td><td>A <code>double[N]</code> output buffer. </td></tr>
+    <tr><td class="paramname">x0</td><td>A <code>double[N]</code> input buffer. If NULL considers the zero vector. We may have x0 == x. </td></tr>
+    <tr><td class="paramname">epsilon</td><td>The threshold under which two <code>x[n]</code> values are indistinguishable. </td></tr>
+    <tr><td class="paramname">maxIterations</td><td>The maximal number of iteration. The 0 value corresponds to unbounded interation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The final loss error <code>l(x)</code></dd></dl>
+<p>static double projminize(unsigned int N, unsigned int M, double l(const double *x), double d_l(const double *x, unsigned int n), double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0); Gets the spectral radius of a squared matrix. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>The matrix buffer <code>double[N * N]</code> buffer storing <code>A(i, j) == A[i + j * N]</code>. </td></tr>
     <tr><td class="paramname">N</td><td>The number of rows and columns. </td></tr>
@@ -480,4 +496,4 @@ Static Public Member Functions</h2></td></tr>
 <li>src/util/<a class="el" href="solver_8cpp_source.html">solver.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-04-15 at 15:48:49) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-05-16 at 10:41:05) </tt> </div><hr/>

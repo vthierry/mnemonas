@@ -60,6 +60,5 @@ void Struct_test()
     }
   }
 #endif
-
 }
 ///@endcond
