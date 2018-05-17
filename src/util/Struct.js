@@ -1,4 +1,4 @@
-/** Implements the JavaScript read/write a generic minimal iterative structure in J= syntax.
+/** Implements the JavaScript read/write a generic minimal iterative structure in J syntax.
  *
  * @version 0.0.1
  * @copyright <a href='http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html'>CeCILL-C</a>
@@ -6,7 +6,7 @@
  *
  */
 var Struct = {
-  /** Parses a string in J= syntax and return the related data-structure.
+  /** Parses a string in J syntax and return the related data-structure.
    * @param {string} value The string to parse.
    * @return {object} The parsed data-structure.
    */
@@ -26,8 +26,10 @@ var Struct = {
           tab++;
           break;
         }
-      for(index0 = index; index < value.length && value[index] != '=' && !Struct.isspace(value[index]); index++) ;
-      index1 = index;
+      // Parses the label before '='
+      for(index0 = index; index < value.length && value[index] != '=' && value[index] != '\n'; index++) ;
+      index1 = value[index] == '=' ? index-1 : index0;
+      // Parses the value 
       for(; index < value.length && value[index] != '\n' && Struct.isspace(value[index]); index++) {}
       if(value[index] == '=') {
         for(index++; index < value.length && value[index] != '\n' && Struct.isspace(value[index]); index++) ;
@@ -37,7 +39,8 @@ var Struct = {
         for(index2 = index0; index < value.length && value[index] != '\n'; index++) ;
         // Manages multi-line strings
         if((ll > 0) && (input[ll - 1]["tab"] <= tab)) {
-          input[ll - 1]["string"] = input[ll - 1]["string"] + "\n" + value.substr(index2, index - index2);
+	  var index3 = index0 - Math.max(0, tab - input[ll - 1]["tab"] - 1);
+          input[ll - 1]["string"] = input[ll - 1]["string"] + "\n" + value.substr(index3, index - index3);
           line = false;
         }
       }
@@ -52,33 +55,41 @@ var Struct = {
         ll++;
       }
     }
-    // -for(var index = 0; index < input.length; index++) console.log(input[index]);
-    var data = {}
-    Struct.parse_jvalue(data, input, 0);
-    // -console.log(data);
-    return data;
+    //-for(var index = 0; index < input.length; index++) console.log(input[index]);
+    return Struct.parse_jvalue({input: input, index :0});
   },
   // Syntax analysis : converts the input to a data-structure
-  parse_jvalue : function(value, input, index) {
-    var tab = input[index]["tab"], length = 0;
-    for(; index < input.length && input[index]["tab"] == tab; index++) {
-      var index0 = index, item = {};
-      if((index + 1 < input.length) && (tab < input[index + 1]["tab"]))
-        index = Struct.parse_jvalue(item, input, index + 1);
-      else
-        item = input[index]["string"];
-      if(input[index0]["label"] == "")
-        value["#" + (length++)] = item;
-      else
-        value[input[index0]["label"]] = item;
+  parse_jvalue : function(data) {
+    var s_value = {}, t_value = [], tab = data.input[data.index]["tab"], size = 0, length = 0;
+    for(; data.index < data.input.length && data.input[data.index]["tab"] == tab; data.index++) {
+      var index0 = data.index, item;
+      if((data.index + 1 < data.input.length) && (tab < data.input[data.index + 1]["tab"])) {
+	data.index++;
+        item = Struct.parse_jvalue(data);
+      } else {
+        item = data.input[data.index]["string"];
+	if (new RegExp("^(true|false)$").test(item))
+	  item = item == "true";
+	else if (new RegExp("^[-+]?[0-9]+$").test(item))
+	  item = parseInt(item);
+	else if (new RegExp("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$").test(item))
+	  item = parseFloat(item);
+      }
+      if(data.input[index0]["label"] == "") {
+        s_value["#" + (length++)] = item;
+	t_value[t_value.length] = item;
+      } else
+        s_value[data.input[index0]["label"]] = item;
+      size++;
     }
-    return index - 1;
+    data.index--;
+    return size == length ? t_value : s_value;
   },
   isspace : function(c) {
     return new RegExp("\\s").test(c);
   },
 
-  /** Converts a data structure to string in J= syntax.
+  /** Converts a data structure to string in J syntax.
    * @param {object} data The data-structure to render.
    * @param {string} format The string format, either "plain" or "html".
    * @return {string} A string view of the data-structure.
@@ -89,9 +100,16 @@ var Struct = {
   },
   write_value : function(value, tab, format) {
     var string = "";
-    if(!(value instanceof Object))
+    if(!(value instanceof Object)) {
       string += Struct.write_word(String(value), tab, "value", format);
-    else {
+    } else if (value instanceof Array) {
+     for(var label = 0; label < value.length; label++) {
+       string += Struct.write_word(format == "html" ? "<div class='struct-block'>" : "\n", tab, "line", format);
+       string += Struct.write_word("= ", tab, "meta", format);
+       string += Struct.write_value(value[label], tab + 1, format);
+       string += format == "html" ? "</div>" : ""
+      }
+    } else {
       var root = tab == 0, notitle = value["title"] == "" || value["title"] == undefined || root;
       if(!notitle)
         string += Struct.write_word(value["title"], tab, "value", format);
@@ -144,28 +162,25 @@ var Struct = {
     return string;
   },
 
-  /** Converts a string in J= syntax to JSON syntax.
-   * @param {string} value The string to parse in J= syntax.
-   * @return {string} The parsed string in JSON syntax.
+  /** Converts a string from a format to another format.
+   * @param {string} what The conversion to perform:
+   * - 'j2json' : Converts a string from J syntax to JSON syntax.
+   * - 'json2j' : Converts a string from JSON syntax to J syntax.
+   * - 'j2html' : Converts a string in J syntax to HTML for display.
+   * - 'j2j' : Reformats a J syntax string to a nomalized form.
+   * - 'json2json' : Reformats a JSON syntax string to a nomalized form.
+   * @param {string} value The string to parse in the input format.
+   * @return {string} The parsed string in the output format.
    */
-  j2json : function(value) {
-    return JSON.stringify(Struct.string2data(value));
-  },
-
-  /** Converts a string in J= syntax to HTML for display.
-   * @param {string} value The string to parse in J= syntax.
-   * @return {string} The parsed string in HTML.
-   */
-  j2html : function(value) {
-    return Struct.data2string(Struct.string2data(value), "html");
-  },
-
-  /** Converts a string in JSON syntax in J= syntax.
-   * @param {string} value The string to parse in JSON syntax.
-   * @return {string} The parsed string in J= syntax.
-   */
-  json2j : function(value) {
-    return Struct.data2string(JSON.parse(value));
+  convert : function(what, value) {
+    switch(what) {
+      case 'j2json' : return JSON.stringify(Struct.string2data(value), null, 2);
+      case 'json2j' : return Struct.data2string(JSON.parse(value));
+      case 'j2html' : return Struct.data2string(Struct.string2data(value), "html");
+      case 'j2j' : return Struct.data2string(Struct.string2data(value));
+      case 'json2json' : return JSON.stringify(JSON.parse(value), null, 2);
+      default : return value;
+    }
   },
 };
 
