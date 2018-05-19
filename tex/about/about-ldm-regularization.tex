@@ -19,19 +19,19 @@ We consider that the data sample uniformly at random the manifold ${\cal M}$.
 
 \subsection*{Proposed criterion}
 
-If we introduce the manifold dimension as a regularizer, we can write after \cite{}:
+If we introduce the manifold dimension as a regularizer, we can write after \cite{zhu2017ldmnet}:
 \[ \min_{{\bf w}, {\cal M}} \; (1 - \mu) \, {\cal L}({\bf w}) + \mu \frac{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}}{\int_{\cal M} d {\bf p} \; 1}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
 i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$. Here $\mu \in [0, 1]$ allows to balance the regularization.
 
 The manifold is locally parameterized by coordinate functions $\psi(\cdot)$:
 \eqline{\psi: {\bf q} \in U \subset {\cal R}^d \rightarrow {\bf p} \in {\cal M} \subset {\cal R}^D}
-These coordinates function ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Adjusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension. Furthermore, from  \cite{} (see Appendix~\ref{manifold}):
+These coordinates function ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Adjusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension. Furthermore, from  \cite{zhu2017nonlocal} (see Appendix~\ref{manifold}):
 \eqline{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p} = \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2}
-since the sum of the squared norm of the coordinate function gradient precisely corresponds to the local dimension \cite{}. 
+since the sum of the squared norm of the coordinate function gradient precisely corresponds to the local dimension (see Appendix~\ref{manifold}).
 
 \subsubsection*{Manifold regularization}
 
-With this result, the criterion is close to usual manifold regularization \cite{}, requiring the input-output map itself to be a smooth function, in the sense of changing slowly on the data manifold, i.e., on where the input data is dense, i.e.:
+With this result, the criterion is close to usual manifold regularization \cite{belkin2006manifold}, requiring the input-output map itself to be a smooth function, in the sense of changing slowly on the data manifold, i.e., on where the input data is dense, i.e.:
 \eqline{\min_{{\bf w}} \; {\cal L}({\bf w}) + \mu' \int_{\cal M} {\bf p} \; P({\bf p}) \, \|\nabla {\bf f}_{\bf w}\|^2}
 writing $\mu = \mu' \, vol({\cal M})$. Here $P({\bf p})$ stands for the data probability density while $P(p) \equiv 1$ since the sampling is assumed to be uniform. Since in the ideal case $\psi(\cdot) = {\bf f}_{\bf w}(\cdot)$, both criteria correspond. They are however not minimized the same way.
 
@@ -112,7 +112,7 @@ and in the reverse:
 \eqline{g^{ii'} \, \partial_{i'} f = g^{ii'} \, f^{i''} \, g_{i''i'} = f^{i''} \,  g^{ii'} \, g_{i''i'} = f^{i''} \, \delta_{ii''} = f^i}
 considering that $g$ is symmetric.
 
-We these notations, we easily derive after \cite{}:
+We these notations, we easily derive after \cite{zhu2017nonlocal}:
 \eqline{\begin{array}{rcl} \sum_{j=1}^D \|\nabla \psi^j\|^2 
 &=& \delta_{jj'} \, (g^{ii'} \, \partial_{i'} \psi^j \, \partial_i) \, (g^{i''i'''} \, \partial_{i'''} \psi^{j'} \, \partial_{i''}) \\
 &=& (g^{ii'} \, \partial_i) \, (g^{i''i'''} \, \partial_{i''}) \, (\delta_{jj'} \, \partial_{i'} \psi^j \, \partial_{i'''} \psi^{j'})   \\
