@@ -23,6 +23,8 @@ If we introduce the manifold dimension as a regularizer, we can write after \cit
 \[ \min_{{\bf w}, {\cal M}} \; (1 - \mu) \, {\cal L}({\bf w}) + \mu \frac{\int_{\cal M} d {\bf p} \; \left.dim({\cal M})\right|_{\bf p}}{\int_{\cal M} d {\bf p} \; 1}, \mbox{ with } {\bf f}_{\bf w}({\bf i}_n) \in {\cal M}  \subset {\cal R}^D\] 
 i.e. the average dimension, averaged by the volume $vol({\cal M}) = \int_{\cal M} d {\bf p} \; 1$. Here $\mu \in [0, 1]$ allows to balance the regularization.
 
+This idea has been originaly applied in computer vision \cite{osher2017low}, includinf e-paiting \cite{zhu2017nonlocal} and scientific data interpolation \cite{zhu2018scientific}.
+
 The manifold is locally parameterized by coordinate functions $\psi(\cdot)$:
 \eqline{\psi: {\bf q} \in U \subset {\cal R}^d \rightarrow {\bf p} \in {\cal M} \subset {\cal R}^D}
 These coordinates function ideally correspond to the computation output ${\bf f}_{\bf w}(\cdot)$. Adjusting the manifold ${\cal M}$ means adjusting these coordination functions $\psi(\cdot)$ in order to reduce the average dimension. Furthermore, from  \cite{zhu2017nonlocal} (see Appendix~\ref{manifold}):
@@ -36,6 +38,9 @@ With this result, the criterion is close to usual manifold regularization \cite{
 writing $\mu = \mu' \, vol({\cal M})$. Here $P({\bf p})$ stands for the data probability density while $P(p) \equiv 1$ since the sampling is assumed to be uniform. Since in the ideal case $\psi(\cdot) = {\bf f}_{\bf w}(\cdot)$, both criteria correspond. They are however not minimized the same way.
 
 \well{@Wei Is this exact, or do i miss something ?}
+
+Similarly this criterion can be related to \cite{mukherjee2010learning} learning gradients on manifolds for dimension reduction for high-dimensional data with few observations. The authors obtain generalization error bounds for the gradient estimates and show that the convergence rate depends on the intrinsic dimension of the manifold and not on the dimension of the ambient space.
+
 
 \subsubsection*{Discretized criterion}
 
@@ -104,6 +109,10 @@ In order to define the required quantities, let us use the implicit summation co
 \\- The gradient of a function $f$ writes: $\nabla f = f^i \, \partial_i = g^{ii'} \, \partial_{i'} f \, \partial_i$.
 \\- The differential of a function $f$ writes: $d f $, with $d f(X) = \partial_i f \, X^i = <\nabla f, X>$, i.e., in matrix form: $\nabla f = g^{-1} df$.
 
+See \cite{lee2003smooth} for a complete introduction on smooth manifold and \cite{gudmundsson2008introduction} for an introduction on Riemannian geometry.
+
+
+
 \subsection*{A few derivations}
 
 We can relate $f^i$ to $\partial_{i} f$ by the following derivation:
@@ -112,7 +121,7 @@ and in the reverse:
 \eqline{g^{ii'} \, \partial_{i'} f = g^{ii'} \, f^{i''} \, g_{i''i'} = f^{i''} \,  g^{ii'} \, g_{i''i'} = f^{i''} \, \delta_{ii''} = f^i}
 considering that $g$ is symmetric.
 
-We these notations, we easily derive after \cite{zhu2017nonlocal}:
+We these notations, we easily derive after \cite{zhu2018scientific}:
 \eqline{\begin{array}{rcl} \sum_{j=1}^D \|\nabla \psi^j\|^2 
 &=& \delta_{jj'} \, (g^{ii'} \, \partial_{i'} \psi^j \, \partial_i) \, (g^{i''i'''} \, \partial_{i'''} \psi^{j'} \, \partial_{i''}) \\
 &=& (g^{ii'} \, \partial_i) \, (g^{i''i'''} \, \partial_{i''}) \, (\delta_{jj'} \, \partial_{i'} \psi^j \, \partial_{i'''} \psi^{j'})   \\
@@ -127,7 +136,7 @@ The goal is to derive:
 \[ \sum_{j=1}^D \int_{\cal M} d {\bf p} \; \|\nabla \psi^j\|^2 
 \simeq \int_{\cal M} d {\bf p} \int_{\cal M} d {{\bf p}'} \; R({\bf p}, {\bf p}') \, \|\psi({\bf p}) - \psi({\bf p}')\|^2 \]
 
-We use the Taylor expansion:
+Following \cite{li2017point}, we use the Taylor expansion:
 \eqline{f({\bf p}) - f({\bf p}') = ({\bf p} - {\bf p}') \nabla f({\bf p}) + O(\|{\bf p} - {\bf p}'\|^2)}
 and the fact that for a local kernel such as $R({\bf p}, {\bf p}') = \nu \, e^{-\frac{\|{\bf p} - {\bf p}'\|^2}{\rho^2}}$
 \eqline{\int_{\cal M} d {\bf p} R({\bf p}, {\bf p}')\, \|{\bf p} - {\bf p}'\|^n = O(\rho^n)}

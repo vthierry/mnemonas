@@ -1,4 +1,49 @@
 \documentclass{article}\usepackage{hyperref}\newcommand{\deq}{\stackrel {\rm def}{=}} \newcommand{\eqline}[1]{\\\centerline{$#1$}\\}\newcommand{\tab}{\hphantom{6mm}}\newcommand{\well}[1]{\vspace{0.3cm}\hspace{-2cm}{\tt #1}} \begin{document}
 
+Hyper-parameter tuning is required to maximize predictive accuracy.
+
+
+No free-lunch theorem for optimization \cite{wolpert1997no}: A general-purpose, universal optimization strategy is impossible. The only way one strategy can outperform another is if it is specialized to the structure of the specific problem under consideration.
+
+A review of automatic selection methods for machine learning algorithms and hyper-parameter values \cite{luo2016review}.
+Hyper-heuristics: A survey of the state of the art \cite{burke2013hyper}
+Automatic problem-specific hyperparameter optimization and model selection for supervised machine learning \cite{bermudez2014automatic}
+
+Efficient hyperparameter optimization and infinitely many armed bandits \cite{li2016efficient}.
+
+Expected improvement using tree-structured Parzen estimator \cite{bergstra2011algorithms} or Gaussian process \cite{snoek2012practical} or  (see \cite{qin2017improving} for a discussion and an important improvement).
+
+Train-test samples can easily be matched across candidate hyper-parameter configurations, early elimination of suboptimal candidates to minimize the number of evaluations {zheng2013lazy}. Full cross-validation is not necessary if hypothesis testing
+is embedded in the search algorithm.
+cross-validation-based protocols with simultaneous hyper-parameter optimization \cite{tsamardinos2015performance}
+
+Best arm identification and hyperparameter optimization \cite{jamieson2016non}.
+
+Exact gradients of cross-validation performance with respect to all hyperparameters by chaining derivatives backwards through the entire training procedure \cite{maclaurin2015gradient}.
+
+Hyperparameters can be updated before model parameters have fully converged \cite{pedregosa2016hyperparameter}
+
+Sequential model-based optimization that transfers information by constructing a common response surface for all dataset \cite{yogatama2014efficient}.
+
+Adam, an algorithm for first-order gradient-based optimization of
+stochastic objective functions, based on adaptive estimates of lower-order mo-
+ments \cite{kingma2014adam}
+
+Quasi-diagonal Riemannian metric, improving natural gradient, involving the Fisher information matrix \cite{marceau2016practical}
+
+Adaptively learning artificial neural networks architecture \cite{cortes2016adanet}.
+Automatic model design, searching for an optimal subgraph within a large computational graph,subgraph that maximizes
+the expected reward on a validation set \cite{pham2018efficient}, all child models to share weights.
+
+
+\cite{kotthoff2017auto} Auto-WEKA, a system designed to help such users by automati-
+cally searching through the joint space of WEKA’s learning algorithms and their respective
+hyperparameter settings to maximize performance, using a state-of-the-art Bayesian opti-
+mization method.
+
+issues such as privacy \cite{kusner2015differentially} (not infer private data from optimization output).
+
++ alternatives to k-mean algorithms.
+
 
 \bibliographystyle{alpha}\bibliography{../etc/main.bib} \end{document}
