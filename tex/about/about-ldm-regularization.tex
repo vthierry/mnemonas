@@ -15,6 +15,8 @@ Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding 
 
 We consider that the data sample uniformly at random the manifold ${\cal M}$.
 
+++ Softmax et LL
+
 \well{@Thalita : do you like the notations .. or prefer another choice ?}
 
 \subsection*{Proposed criterion}
@@ -65,26 +67,26 @@ Merging these elements we are left with the variational problem:
 \[  \min_{{\bf w}, {\bf \psi}} \; {\cal C},\; {\cal C} \deq (1 - \mu) \, {\cal L}({\bf w}) + \mu \, \sum_{n,n'} R_{nn'} \, \|{\bf \psi}_n -  {\bf \psi}_{n'}\|^2 + \sum_n \lambda_n \, ({\bf o}_n - {\bf \psi}_n) + \gamma \, \|{\bf o}_n - {\bf \psi}_n\|^2\]
 where ${\bf o}_n = {\bf f}_{\bf w}({\bf i}_n)$, we write $R_{nn'} \deq R({\bf o}_n, {\bf o}_{n'})$, ${\bf \psi}_n$ is a perturbed value of ${\bf o}_n$ which tends to reduce the dimension and $\lambda_n$ are Lagrange multipliers while the term with $\gamma$ introduces a augmented Lagragian mechanism. Being in a discrete set-up allows us to derive basic normal equations:
 \[ \begin{array}{rcl}
- \nabla_{\bf w} {\cal C} &=& \nabla_{\bf w} {\cal L}({\bf w}) + \sum_n (\lambda_n + 2 \, \gamma \, ({\bf o}_n - {\bf \psi}_n))\, \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n) \\
-0 = \nabla_{{\bf \psi}_n} {\cal C}^T &=& \mu \, 2 \sum_n' (R_{nn'} + R_{n'n}) \, ({\bf \psi}_n - {\bf \psi}_{n'}) - \lambda_n + 2 \, \gamma \, ({\bf \psi}_n - {\bf o}_n) \\
+ \nabla_{\bf w} {\cal C} &=& \nabla_{\bf w} {\cal L}({\bf w}) + \sum_n (\lambda_n + 2 \, \gamma \, ({\bf o}_n - {\bf \psi}_n))\, \nabla_{\bf w} {\bf f}_{\bf w}({\bf i}_n) \\
+0 = \nabla_{{\bf \psi}_n} {\cal C}^T &=& \mu \, 2 \sum_{nn'} (R_{nn'} + R_{n'n}) \, ({\bf \psi}_n - {\bf \psi}_{n'}) - \lambda_n + 2 \, \gamma \, ({\bf \psi}_n - {\bf o}_n) \\
 0 = \nabla_{{\bf \lambda}_n} {\cal C}^T &=& {\bf o}_n - {\bf \psi}_n \\
 \end{array} \]
 
 {\em Direct minimization} When eliminating ${\bf \psi}$ (thus ${\bf \lambda}$ and $\gamma$) we obtain the following modified minimization gradient:
-\eqline{\nabla_{\bf w} {\cal C} = \nabla_{\bf w} {\cal L}({\bf w}) + 2 \, \mu \, \sum_{nn'} (R_{nn'} + R_{n'n}) \, ({\bf o}_n - {\bf o}_{n'}) \, \partial_{\bf w} {\bf f}_{\bf w}({\bf i}_n).} The drawback of this simple approach is that the optimization problem is highly nonlinear and nonconvex. We thus may get stuck in a local minimum.
+\eqline{\nabla_{\bf w} {\cal C} = \nabla_{\bf w} {\cal L}({\bf w}) + 2 \, \mu \, \sum_{nn'} (R_{nn'} + R_{n'n}) \, ({\bf o}_n - {\bf o}_{n'}) \, \nabla_{\bf w} {\bf f}_{\bf w}({\bf i}_n).} According to \cite{zhu2017nonlocal}, the drawback of this simple approach is that the optimization problem is highly nonlinear and nonconvex, and we thus may get stuck in a local minimum.
 
 {\em Alternating minimization} If we maintain a alternating minimization, the equation $0 = \nabla_{{\bf \psi}_n} {\cal C}^T$ provides, given $\gamma$ and $\lambda$, linear equations in ${\bf \psi}$, while the modified minimization gradient is given by $\nabla_{\bf w} {\cal C}$. In that case the minimization may start with ${\bf \lambda} = 0$, $\gamma = \mu$ and when a minimum is obtained 
-\eqline{{\bf \lambda}^{t+1} \leftarrow  {\bf \lambda}^{t} + \gamma_k^{t} \, ({\bf o}_n - {\bf \psi}_n), \gamma_k^{t+1} \leftarrow \left\{ \begin{array}{ll}
-\gamma_k^{t} & \mbox{ if $\|{\bf o}_n - {\bf \psi}_n\|^2$ decreases} \\ 2\, \gamma_k^{t} & \mbox{ otherwise } \\ \end{array}\right.}
+\eqline{{\bf \lambda}_n^{t+1} \leftarrow  {\bf \lambda}_n^{t} + \gamma^{t} \, ({\bf o}_n - {\bf \psi}_n), \gamma^{t+1} \leftarrow \left\{ \begin{array}{ll}
+\gamma^{t} & \mbox{ if $\|{\bf o}_n - {\bf \psi}_n\|^2$ decreases} \\ 2\, \gamma^{t} & \mbox{ otherwise } \\ \end{array}\right.}
 This completely specify the algorithmic hyper-parameters.
 
-\well{@Wei I understand that ADMM allows to ``convexify'' the criterion, but since $J(\cdot)$ is not, why should we gain something with respect to direct gradient minimization ?}
+\well{@Wei I understand that ADMM allows to ``convexify'' the criterion, but since ${\cal L}(\cdot)$ is not, why should we gain something with respect to direct gradient minimization ?}
 
 \subsubsection*{Initialization and hyper-parameter adjustment.}
 
 We may start considering the manifold as the union of 0-dimensional manifolds, i.e., prototypes, thus start by a k-mean clustering. This provides us with an initial value of $\sum_{n,n'} R_{nn'} \, \|{\bf \psi}_n -  {\bf \psi}_{n'}\|^2$, likely maximal since we choose here a solution with a minimal number of degree of freedom, with respect to a more general manifold representation. 
 
-Performing the minimization with $\mu = 0$ (i.e., without regularization) provides us with a minimal value of $J(\cdot)$ on the learning set (not on the cross-validation) since we expect over-fitting, that is going to be avoided by regularization.
+Performing the minimization with $\mu = 0$ (i.e., without regularization) provides us with a minimal value of ${\cal L}(\cdot)$ on the learning set (not on the cross-validation) since we expect over-fitting, that is going to be avoided by regularization.
 
 We then can explore values of $\mu \in [0, 1]$ and choose the best meta-learning result.
 
@@ -97,6 +99,7 @@ The manifold is locally parameterized by:
 thus ${\bf p} = \psi({\bf q})$, i.e., in coordinates, $p^j = \psi^j((\cdots q^i \cdots)^T), i \in \{1, d\}, j \in \{1, D\}$, while $d = \left.dim({\cal M})\right|_{\bf p}$ at the point ${\bf p}$. The point ${\bf p}$ is represented by $D$ coordinates, subject to $D - d$ constraints. 
 
 At each point the tangent space is a $d$-dimensional linear space $T_{\bf p}{\cal M}$, equipped with an inner product written $<\cdot, \cdot>$.
++CONTRA COVAR
 
 Between two points ${\bf p}, {\bf p}' \in {\cal M}$ there is a notion of distance induced by a minimal length path, called geodesic. Locally, we can map a point ${\bf p}$ onto a point ${\bf p}'$ along a geodesic given an infinitesimal displacement along a vector ${\bf v}$ of the tangent space (notion of ``exponential'' map).
 
@@ -145,6 +148,6 @@ while from the Stroke theorem:
 
 \well{@vthierry To be done, this seems to be no more than a variant of usual PIM}
 
-\bibliographystyle{alpha}\bibliography{../etc/main.bib}\end{document}
+{\scriptsize \bibliographystyle{alpha}\bibliography{../etc/main.bib}}\end{document}
 
 
