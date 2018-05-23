@@ -1,4 +1,4 @@
-\documentclass{article}\usepackage{hyperref}\newcommand{\deq}{\stackrel {\rm def}{=}} \newcommand{\eqline}[1]{\\\centerline{$#1$}\\}\newcommand{\tab}{\hphantom{6mm}}\newcommand{\well}[1]{\vspace{0.3cm}\hspace{-2cm}{\tt #1}} \begin{document}
+\documentclass{article}\usepackage{hyperref}\usepackage{graphicx}\newcommand{\deq}{\stackrel {\rm def}{=}} \newcommand{\eqline}[1]{\\\centerline{$#1$}\\}\newcommand{\tab}{\hphantom{6mm}}\newcommand{\well}[1]{\vspace{0.3cm}\hspace{-2cm}{\tt #1}} \begin{document}
 
 \section*{Low dimensional manifold regularization}
 
@@ -10,14 +10,13 @@ mapping an input ${\bf i} \in {\cal R}^I$ onto an output ${\bf o} \in {\cal M} \
 
 The key point is that we consider that the output is in a manifold ${\cal M}$, union of low-dimensional manifolds, of local dimension $d \ll D$, and isometrically embedded in ${\cal R}^D$.
 
-Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_n(\cdot)$ we consider the empirical (i.e., average) loss:
-\eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_n({\bf f}_{\bf w}({\bf i}_n)).}
-
+Given $N$ input ${\bf i} = \{ \cdots {\bf i}_n \cdots \}$ and $N$ corresponding loss functions $l_{{\bf w}, n}(\cdot)$, we consider the empirical (i.e., average) loss:
+\eqline{{\cal L}({\bf w}) = \frac{1}{N} \sum_{n=1}^N l_{{\bf w}, n}({\bf f}_{\bf w}({\bf i}_n)).}
 We consider that the data sample uniformly at random the manifold ${\cal M}$.
 
-++ Softmax et LL
+As an example ${\bf f}_{\bf w}()$ could be a deep-network and $l_{{\bf w}, n}()$ a labeling task including a softmax layer:
+\\\centerline{\includegraphics[width=0.9\textwidth]{img/model2}}
 
-\well{@Thalita : do you like the notations .. or prefer another choice ?}
 
 \subsection*{Proposed criterion}
 
@@ -96,17 +95,15 @@ We then can explore values of $\mu \in [0, 1]$ and choose the best meta-learning
 
 The manifold is locally parameterized by:
 \eqline{\psi: {\bf q} \in U \subset {\cal R}^d \rightarrow {\bf p} \in {\cal M} \subset {\cal R}^D}
-thus ${\bf p} = \psi({\bf q})$, i.e., in coordinates, $p^j = \psi^j((\cdots q^i \cdots)^T), i \in \{1, d\}, j \in \{1, D\}$, while $d = \left.dim({\cal M})\right|_{\bf p}$ at the point ${\bf p}$. The point ${\bf p}$ is represented by $D$ coordinates, subject to $D - d$ constraints. 
+thus ${\bf p} = \psi({\bf q})$, i.e., in coordinates, $p^j = \psi^j((\cdots q^i \cdots)^T), i \in \{1, d\}, j \in \{1, D\}$, while $d = \left.dim({\cal M})\right|_{\bf p}$ at the point ${\bf p}$. The point ${\bf p}$ is represented by $D$ coordinates, subject to $D - d$ constraints. We writes $\partial_i^j = \frac{\partial \psi^j({\bf q})}{\partial q^i}$.
 
 At each point the tangent space is a $d$-dimensional linear space $T_{\bf p}{\cal M}$, equipped with an inner product written $<\cdot, \cdot>$.
-+CONTRA COVAR
 
 Between two points ${\bf p}, {\bf p}' \in {\cal M}$ there is a notion of distance induced by a minimal length path, called geodesic. Locally, we can map a point ${\bf p}$ onto a point ${\bf p}'$ along a geodesic given an infinitesimal displacement along a vector ${\bf v}$ of the tangent space (notion of ``exponential'' map).
 
 In order to define the required quantities, let us use the implicit summation convention in conjunction with the Kronecker symbol:
 ~
-\\- We writes $\partial_i^j = \frac{\partial \psi^j({\bf q})}{\partial q^i}$.
-\\- The tangent vector along a direction $q^i$, writes $\partial_i = (\cdots \partial_i^j \cdots)^T$.
+\\- The covariant tangent vector along a direction $q^i$, writes $\partial_i = (\cdots \partial_i^j \cdots)^T$.
 \\- The metric tensor writes $g_{ii'} = <\partial_i, \partial_{i'}> = \delta_{jj'} \, \partial_i^j \, \partial_i^{j'}$.
 \\- Its inverse writes $g^{i'i''} = \partial^{i'} \partial^{i''}$, with $g_{ii'} \, g^{i'i''} = \delta_i^{i''}$.
 \\- The gradient of a function $f$ writes: $\nabla f = f^i \, \partial_i = g^{ii'} \, \partial_{i'} f \, \partial_i$.
@@ -148,6 +145,6 @@ while from the Stroke theorem:
 
 \well{@vthierry To be done, this seems to be no more than a variant of usual PIM}
 
-{\scriptsize \bibliographystyle{alpha}\bibliography{../etc/main.bib}}\end{document}
+{\scriptsize \bibliographystyle{alpha}\bibliography{../bib/vthierry}}\end{document}
 
 
