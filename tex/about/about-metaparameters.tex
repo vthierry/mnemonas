@@ -19,7 +19,7 @@ Beyond these vanilla methods, several non-trivial improvements have been propose
 
 In deep link with this issue, authors also consider adaptively learning the model architecture itself \cite{cortes2016adanet}. Automatic model design can be specified as searching for an optimal sub-graph within a large computational graph \cite{pham2018efficient}, these authors using parameter sharing between alternatives to improve the performances. More generally multi-model estimation methods (e.g., \cite{vieville:inria-00000172}) introduce qualitative hyperparameters to adjust.
 
-Finally, another track is to consider algorithms for which hyper-parameter tuning is requires little tuning (e.g., considering the ADAM approach of \cite{kingma2014adam}, where the first-order gradient-based optimization of stochastic objective functions is based on adaptive estimates of lower-order momenta, or improving vanilla or natural gradient methods by automatic adjustment of the local optimization \cite{marceau2016practical}). This includes changing the algorithm itself (e.g., replacing k-mean clustering algorithms, by hierarchical clustering methods).
+Finally, another track is to consider algorithms for which hyper-parameter tuning requires little tuning (e.g., considering the ADAM approach of \cite{kingma2014adam}, where the first-order gradient-based optimization of stochastic objective functions is based on adaptive estimates of lower-order momenta, or improving vanilla or natural gradient methods by automatic adjustment of the local optimization \cite{marceau2016practical}). This includes changing the algorithm itself (e.g., replacing k-mean clustering algorithms, by hierarchical clustering methods).
 
 \subsection*{Proposed contribution}
 
@@ -65,6 +65,10 @@ Our first design choice is to make a strong distinction between: \begin{itemize}
 
 \item {\em Structural parameters}: These are the hyper-parameters related to the model design choice, usually fixed before the learning starts. For a deep networks, the number of layers, and within a layer the number of units (hidden units and output units), the unit connection size (e.g. convolution layer filter size) and/or form, the choice of the non-linearity (i.e., of the activation function) are such parameters. For a reservoir computing network, the parameters used to draw the fixed recurrent random weights (i.e., the choice of the weight distribution and its standard-deviation, yielding the reccurent matrix weigt spectral radius) are typical structural parameters.  \begin{itemize}
 
- \item Our claim is that, as in multi-model estimation methods, such hyperparameters can be considered as model p[a
+ \item Our claim is that, as in multi-model estimation methods, such hyperparameters can be considered as model ..
+
+\end{itemize}
+
+\end{itemize}
 
 \bibliographystyle{alpha}\bibliography{../bib/vthierry} \end{document}
