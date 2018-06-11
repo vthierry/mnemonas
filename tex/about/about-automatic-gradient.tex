@@ -34,9 +34,11 @@ Another aspect concerns the data use choices: One minimization could be done by 
 
 To develop our idea we are going to consider a simple input-output transformation :
 \eqline{{\bf o} = {\bf f}_{\bf w}({\bf i}),}
-mapping an input ${\bf i} \in {\cal R}^I$ onto an output ${\bf o} \in {\cal R}^O$, as a function of parameters (e.g., network weights or architecture size) ${\bf w} \in {\cal M} \subset {\cal R}^W$, and a sequence of input ${\bf i}_n, t \in \{1, N\}$, coupled with a output loss function sequence $l_n(\cdot) > 0$ with the goal to minimize the loss expectation: 
+mapping an input ${\bf i} \in {\cal R}^I$ onto an output ${\bf o} \in {\cal R}^O$, as a function of parameters (e.g., network weights or architecture size) ${\bf w} \in {\cal M} \subset {\cal R}^W$, and a sequence of input ${\bf i}_n, t \in \{1, N\}$, coupled with a output loss function sequence $l_{n, {\bf w}}(\cdot) > 0$ with the goal to minimize the loss expectation: 
 \eqline{{\bf w}^\bullet = \mbox{arg max}_{\bf w} \mathbb{E}[l_{\bf w}({\bf f}_{\bf w}({\bf i}))]}
 and would like, given a data set, to minimize this expectation on subsequent input.
+
+%typos sur l_
 
 The function parameters ${\bf w}$ lives in a compact (thus bounded) subset ${\cal M} \subset {\cal R}^W$. This means concretely two things : We have an estimation of the weights minimal and maximal values, and not all the weights adjustment is significant as studied in \cite{li2018measuring}.
 
