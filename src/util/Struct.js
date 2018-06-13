@@ -28,8 +28,8 @@ var Struct = {
         }
       // Parses the label before '='
       for(index0 = index; index < value.length && value[index] != '=' && value[index] != '\n'; index++) ;
-      index1 = value[index] == '=' ? index-1 : index0;
-      // Parses the value 
+      index1 = value[index] == '=' ? index - 1 : index0;
+      // Parses the value
       for(; index < value.length && value[index] != '\n' && Struct.isspace(value[index]); index++) {}
       if(value[index] == '=') {
         for(index++; index < value.length && value[index] != '\n' && Struct.isspace(value[index]); index++) ;
@@ -39,7 +39,7 @@ var Struct = {
         for(index2 = index0; index < value.length && value[index] != '\n'; index++) ;
         // Manages multi-line strings
         if((ll > 0) && (input[ll - 1]["tab"] <= tab)) {
-	  var index3 = index0 - Math.max(0, tab - input[ll - 1]["tab"] - 1);
+          var index3 = index0 - Math.max(0, tab - input[ll - 1]["tab"] - 1);
           input[ll - 1]["string"] = input[ll - 1]["string"] + "\n" + value.substr(index3, index - index3);
           line = false;
         }
@@ -55,8 +55,8 @@ var Struct = {
         ll++;
       }
     }
-    //-for(var index = 0; index < input.length; index++) console.log(input[index]);
-    return Struct.parse_jvalue({input: input, index :0});
+    // -for(var index = 0; index < input.length; index++) console.log(input[index]);
+    return Struct.parse_jvalue({ input: input, index :0 });
   },
   // Syntax analysis : converts the input to a data-structure
   parse_jvalue : function(data) {
@@ -64,20 +64,20 @@ var Struct = {
     for(; data.index < data.input.length && data.input[data.index]["tab"] == tab; data.index++) {
       var index0 = data.index, item;
       if((data.index + 1 < data.input.length) && (tab < data.input[data.index + 1]["tab"])) {
-	data.index++;
+        data.index++;
         item = Struct.parse_jvalue(data);
       } else {
         item = data.input[data.index]["string"];
-	if (new RegExp("^(true|false)$").test(item))
-	  item = item == "true";
-	else if (new RegExp("^[-+]?[0-9]+$").test(item))
-	  item = parseInt(item);
-	else if (new RegExp("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$").test(item))
-	  item = parseFloat(item);
+        if(new RegExp("^(true|false)$").test(item))
+          item = item == "true";
+        else if(new RegExp("^[-+]?[0-9]+$").test(item))
+          item = parseInt(item);
+        else if(new RegExp("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$").test(item))
+          item = parseFloat(item);
       }
       if(data.input[index0]["label"] == "") {
         s_value["#" + (length++)] = item;
-	t_value[t_value.length] = item;
+        t_value[t_value.length] = item;
       } else
         s_value[data.input[index0]["label"]] = item;
       size++;
@@ -100,16 +100,16 @@ var Struct = {
   },
   write_value : function(value, tab, format) {
     var string = "";
-    if(!(value instanceof Object)) {
+    if(!(value instanceof Object))
       string += Struct.write_word(String(value), tab, "value", format);
-    } else if (value instanceof Array) {
-     for(var label = 0; label < value.length; label++) {
-       string += Struct.write_word(format == "html" ? "<div class='struct-block'>" : "\n", tab, "line", format);
-       string += Struct.write_word("= ", tab, "meta", format);
-       string += Struct.write_value(value[label], tab + 1, format);
-       string += format == "html" ? "</div>" : ""
+    else if(value instanceof Array)
+      for(var label = 0; label < value.length; label++) {
+        string += Struct.write_word(format == "html" ? "<div class='struct-block'>" : "\n", tab, "line", format);
+        string += Struct.write_word("= ", tab, "meta", format);
+        string += Struct.write_value(value[label], tab + 1, format);
+        string += format == "html" ? "</div>" : ""
       }
-    } else {
+    else {
       var root = tab == 0, notitle = value["title"] == "" || value["title"] == undefined || root;
       if(!notitle)
         string += Struct.write_word(value["title"], tab, "value", format);
@@ -174,12 +174,18 @@ var Struct = {
    */
   convert : function(what, value) {
     switch(what) {
-      case 'j2json' : return JSON.stringify(Struct.string2data(value), null, 2);
-      case 'json2j' : return Struct.data2string(JSON.parse(value));
-      case 'j2html' : return Struct.data2string(Struct.string2data(value), "html");
-      case 'j2j' : return Struct.data2string(Struct.string2data(value));
-      case 'json2json' : return JSON.stringify(JSON.parse(value), null, 2);
-      default : return value;
+    case 'j2json':
+      return JSON.stringify(Struct.string2data(value), null, 2);
+    case 'json2j':
+      return Struct.data2string(JSON.parse(value));
+    case 'j2html':
+      return Struct.data2string(Struct.string2data(value), "html");
+    case 'j2j':
+      return Struct.data2string(Struct.string2data(value));
+    case 'json2json':
+      return JSON.stringify(JSON.parse(value), null, 2);
+    default:
+      return value;
     }
   },
 };

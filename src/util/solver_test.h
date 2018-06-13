@@ -32,7 +32,7 @@ void solver_test()
       }
     }
   }
-  // solver::minimize
+  // solver::minimize 1D
   {
     class F {
 public:
@@ -44,6 +44,50 @@ public:
     f;
     double x0 = solver::minimize(f.f, 0, 4);
     assume(fabs(x0 - 3.1416) < 1e-13, "illegal-state", "solver_test/minimize failed 3.1416 != %g\n");
+  }
+  // solver::minimize nD
+  {
+    class C {
+public:
+      static double f(const double *x)
+      {
+        return 0.5 * (C::sqr(x[0] - 1) + C::sqr(x[1] - 2) + C::sqr(x[2] - 3));
+      }
+      static double d_f(const double *x, unsigned int n)
+      {
+        return n == 0 ? x[0] - 1 : n == 1 ? x[1] - 2 : n == 2 ? x[2] - 3 : NAN;
+      }
+      static double sqr(double x)
+      {
+        return x * x;
+      }
+    }
+    c;
+    double x[3];
+    double err = solver::minimize(3, c.f, c.d_f, x, NULL, 1e-16, 100);
+    assume(err < 1e-13, "illegal-state", "solver_test/minimize [1 2 3] != [%g %g %g] err = %g\n", x[0], x[1], x[2], err);
+  }
+  // solver::minimize nD
+  {
+    class C {
+public:
+      static double f(const double *x)
+      {
+        return 0.5 * (fabs(x[0] - 1) + fabs(x[1] - 2) + fabs(x[2] - 3));
+      }
+      static double d_f(const double *x, unsigned int n)
+      {
+        return (n == 0 ? C::sg(x[0] - 1) : n == 1 ? C::sg(x[1] - 2) : n == 2 ? C::sg(x[2] - 3) : NAN) * (1 + rand() * 0.01);
+      }
+      static double sg(double x)
+      {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+      }
+    }
+    c;
+    double x[3];
+    double err = solver::minimize(3, c.f, c.d_f, x, NULL, 1e-16, 100);
+    assume(err < 1e-6, "illegal-state", "solver_test/minimize [1 2 3] != [%g %g %g] err = %g\n", x[0], x[1], x[2], err);
   }
   // solver::project
   {

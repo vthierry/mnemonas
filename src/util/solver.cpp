@@ -213,6 +213,42 @@ double solver::minimize(double f(double x), double xmin, double xmax, double xep
   }
   return x0;
 }
+double solver::minimize(unsigned int N, double f(const double *x), double d_f(const double *x, unsigned int n), double *x, const double *x0, double epsilon, unsigned int maxIterations)
+{
+  // Initializes x[]
+  for(unsigned int n = 0; n < N; n++)
+    x[n] = x0 == NULL ? 0 : x0[n];
+  // Iteration loop
+  double lambda = 1, *g, g2, *x1, c = f(x), c1 = c;
+  g = new double[N], x1 = new double[N];
+  for(unsigned int k = 0; maxIterations == 0 || k < maxIterations; k++) {
+    // Reads new gradient if the previous step was succes
+    if(c1 == c) {
+      g2 = 0;
+      for(unsigned int n = 0; n < N; n++)
+        g[n] = d_f(x, n), g2 += g[n] * g[n];
+      c1 = c;
+    }
+    // Checks if we are done
+    if((lambda * c < sqrt(g2) * epsilon) || (c <= 0) || (g2 <= 0))
+      break;
+    // Updates the estimation
+    for(unsigned int n = 0; n < N; n++)
+      x1[n] = x[n], x[n] -= lambda * c1 / g2 * g[n];
+    c = f(x);
+    // - printf("#%3d c = %6.2e < %6.2e, %s dx = %6.2e = -(lambda = %6.2e) (c = %6.2e) / (|g| = %6.2e)\n", k, c, c1, c < c1 ? ":)" : ":(", lambda * c1 / sqrt(g2), lambda, c1, sqrt(g2));
+    // Manages succes of failure
+    if(c < c1)
+      c1 = c, lambda *= 1.5;
+    else {
+      for(unsigned int n = 0; n < N; n++)
+        x[n] = x1[n];
+      lambda *= 0.5;
+    }
+  }
+  delete[] g, delete[] x1;
+  return c;
+}
 double solver::projsolve(unsigned int N, unsigned int M, double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0_, double epsilon, unsigned int maxIterations)
 {
   double *x0 = new double[N], *x1 = new double[N], *lambda = new double[M], *b = new double[M], *A = new double[(M * (M + 1)) / 2];

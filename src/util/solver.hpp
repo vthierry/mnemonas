@@ -36,16 +36,17 @@ public:
    */
   static double minimize(double f(double x), double xmin, double xmax, double xeps = NAN, unsigned int imax = 0);
 
-
   /** Minimizes a multi-dimensinal function using a vanilla gradient method.
+   * @param N The number of unknows.
    * @param f The function to minimize.
    * @param d_f The $n$-th component of the function gradient to minimize.
-   * @param x0  Initial value.
-   * @param xeps  The required precision. Default is <tt>xeps = 1e-6 (xmax - xmin)</tt>.
-   * @param imax  Maximal number of iterations. Unbounded if 0.
-   * @return The best minimal solution.
+   * @param x A <tt>double[N]</tt> output buffer.
+   * @param x0 A <tt>double[N]</tt> input buffer. If NULL considers the zero vector. We may have x0 == x.
+   * @param epsilon The threshold under which two <tt>x[n]</tt> values are indistinguishable.
+   * @param maxIterations The maximal number of iteration. The 0 value corresponds to unbounded interation.
+   * @return The minimal function value
    */
-  static double minimize(double f(const double *x), double d_f(const double *x, unsigned int n), const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
+  static double minimize(unsigned int N, double f(const double *x), double d_f(const double *x, unsigned int n), double *x, const double *x0 = NULL, double epsilon = 1e-6, unsigned int maxIterations = 0);
 
   /** Projects a point onto a manifold defined by implicit equation.
    * @param N The number of unknows.

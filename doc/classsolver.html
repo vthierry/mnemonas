@@ -61,6 +61,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a16ce3bb11795bd3b61ed01197802415b"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#a16ce3bb11795bd3b61ed01197802415b">minimize</a> (double f(double x), double xmin, double xmax, double xeps=NAN, unsigned int imax=0)</td></tr>
 <tr class="memdesc:a16ce3bb11795bd3b61ed01197802415b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimizes a 1D function in a given interval.  <a href="#a16ce3bb11795bd3b61ed01197802415b">More...</a><br /></td></tr>
 <tr class="separator:a16ce3bb11795bd3b61ed01197802415b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989c3a4ced58d439e333b0357f374957"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#a989c3a4ced58d439e333b0357f374957">minimize</a> (unsigned int N, double f(const double *x), double d_f(const double *x, unsigned int n), double *x, const double *x0=NULL, double epsilon=1e-6, unsigned int maxIterations=0)</td></tr>
+<tr class="memdesc:a989c3a4ced58d439e333b0357f374957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimizes a multi-dimensinal function using a vanilla gradient method.  <a href="#a989c3a4ced58d439e333b0357f374957">More...</a><br /></td></tr>
+<tr class="separator:a989c3a4ced58d439e333b0357f374957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83d2982c6ac8b4d5906c8fc5c1fe92e3"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsolver.html#a83d2982c6ac8b4d5906c8fc5c1fe92e3">projsolve</a> (unsigned int N, unsigned int M, double c(const double *x, unsigned int m), double d_c(const double *x, unsigned int m, unsigned int n), double *x, const double *x0=NULL, double epsilon=1e-6, unsigned int maxIterations=0)</td></tr>
 <tr class="memdesc:a83d2982c6ac8b4d5906c8fc5c1fe92e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects a point onto a manifold defined by implicit equation.  <a href="#a83d2982c6ac8b4d5906c8fc5c1fe92e3">More...</a><br /></td></tr>
 <tr class="separator:a83d2982c6ac8b4d5906c8fc5c1fe92e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,12 +171,12 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00015">15</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="KernelExperimentalEstimator_8cpp_source.html#l00003">network::KernelExperimentalEstimator::KernelExperimentalEstimator()</a>, <a class="el" href="solver_8cpp_source.html#l00216">projsolve()</a>, <a class="el" href="KernelDistributedEstimator_8cpp_source.html#l00025">network::KernelDistributedEstimator::run()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00127">network::KernelEstimator::updateReadout()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="KernelExperimentalEstimator_8cpp_source.html#l00003">network::KernelExperimentalEstimator::KernelExperimentalEstimator()</a>, <a class="el" href="solver_8cpp_source.html#l00252">projsolve()</a>, <a class="el" href="KernelDistributedEstimator_8cpp_source.html#l00025">network::KernelDistributedEstimator::run()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00127">network::KernelEstimator::updateReadout()</a>.</p>
 
 </div>
 </div>
 <a id="a16ce3bb11795bd3b61ed01197802415b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16ce3bb11795bd3b61ed01197802415b">&#9670;&nbsp;</a></span>minimize()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16ce3bb11795bd3b61ed01197802415b">&#9670;&nbsp;</a></span>minimize() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -242,6 +245,89 @@ Static Public Member Functions</h2></td></tr>
 <p class="reference">References <a class="el" href="assume_8c_source.html#l00007">assume()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="CurveFit_8cpp_source.html#l00041">CurveFit::add()</a>, <a class="el" href="KernelExperimentalEstimator_8cpp_source.html#l00003">network::KernelExperimentalEstimator::KernelExperimentalEstimator()</a>, <a class="el" href="KernelDistributedEstimator_8cpp_source.html#l00025">network::KernelDistributedEstimator::run()</a>, and <a class="el" href="KernelEstimator_8cpp_source.html#l00127">network::KernelEstimator::updateReadout()</a>.</p>
+
+</div>
+</div>
+<a id="a989c3a4ced58d439e333b0357f374957"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a989c3a4ced58d439e333b0357f374957">&#9670;&nbsp;</a></span>minimize() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double solver::minimize </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &#160;</td>
+          <td class="paramname"><em>f</em>const double *x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &#160;</td>
+          <td class="paramname"><em>d_f</em>const double *x, unsigned int n, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>x0</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>epsilon</em> = <code>1e-6</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>maxIterations</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Minimizes a multi-dimensinal function using a vanilla gradient method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">N</td><td>The number of unknows. </td></tr>
+    <tr><td class="paramname">f</td><td>The function to minimize. </td></tr>
+    <tr><td class="paramname">d_f</td><td>The $n$-th component of the function gradient to minimize. </td></tr>
+    <tr><td class="paramname">x</td><td>A <code>double[N]</code> output buffer. </td></tr>
+    <tr><td class="paramname">x0</td><td>A <code>double[N]</code> input buffer. If NULL considers the zero vector. We may have x0 == x. </td></tr>
+    <tr><td class="paramname">epsilon</td><td>The threshold under which two <code>x[n]</code> values are indistinguishable. </td></tr>
+    <tr><td class="paramname">maxIterations</td><td>The maximal number of iteration. The 0 value corresponds to unbounded interation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The minimal function value </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00216">216</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
 
 </div>
 </div>
@@ -331,7 +417,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The estimation error <code>| c(x) |<sup>2</sup></code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00216">216</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00252">252</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="solver_8cpp_source.html#l00015">linsolve()</a>.</p>
 
@@ -413,7 +499,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The highest eigen-value of the matrix applying the power-method. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00280">280</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00316">316</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="Density_8cpp_source.html#l00034">Density::gaussian()</a>.</p>
 
@@ -485,7 +571,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00315">315</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="solver_8cpp_source.html#l00351">351</a> of file <a class="el" href="solver_8cpp_source.html">solver.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="s__printf_8c_source.html#l00008">s_printf()</a>.</p>
 
@@ -496,4 +582,4 @@ Static Public Member Functions</h2></td></tr>
 <li>src/util/<a class="el" href="solver_8cpp_source.html">solver.cpp</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-05-16 at 10:41:05) </tt> </div><hr/>
+<hr/><div align='right'><tt>mnemosyne brainybot (version of 2018-06-13 at 12:02:34) </tt> </div><hr/>
