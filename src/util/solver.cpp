@@ -236,7 +236,7 @@ double solver::minimize(unsigned int N, double f(const double *x), double d_f(co
     for(unsigned int n = 0; n < N; n++)
       x1[n] = x[n], x[n] -= lambda * c1 / g2 * g[n];
     c = f(x);
-    // - printf("#%3d c = %6.2e < %6.2e, %s dx = %6.2e = -(lambda = %6.2e) (c = %6.2e) / (|g| = %6.2e)\n", k, c, c1, c < c1 ? ":)" : ":(", lambda * c1 / sqrt(g2), lambda, c1, sqrt(g2));
+    //-printf("#%3d c = %6.2e < %6.2e, %s dx = %6.2e = -(lambda = %6.2e) (c = %6.2e) / (|g| = %6.2e)\n", k, c, c1, c < c1 ? ":)" : ":(", lambda * c1 / sqrt(g2), lambda, c1, sqrt(g2));
     // Manages succes of failure
     if(c < c1)
       c1 = c, lambda *= 1.5;

@@ -77,7 +77,7 @@ public:
       }
       static double d_f(const double *x, unsigned int n)
       {
-        return (n == 0 ? C::sg(x[0] - 1) : n == 1 ? C::sg(x[1] - 2) : n == 2 ? C::sg(x[2] - 3) : NAN) * (1 + rand() * 0.01);
+        return (n == 0 ? C::sg(x[0] - 1) : n == 1 ? C::sg(x[1] - 2) : n == 2 ? C::sg(x[2] - 3) : NAN) * (1 + rand() * 0.1);
       }
       static double sg(double x)
       {
