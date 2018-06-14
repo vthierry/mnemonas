@@ -51,11 +51,11 @@ public:
 public:
       static double f(const double *x)
       {
-        return 0.5 * (C::sqr(x[0] - 1) + C::sqr(x[1] - 2) + C::sqr(x[2] - 3));
+        return 0.5 * (C::sqr(x[0] - 1) / 1 + C::sqr(x[1] - 2) / 2 + C::sqr(x[2] - 3) / 3);
       }
       static double d_f(const double *x, unsigned int n)
       {
-        return n == 0 ? x[0] - 1 : n == 1 ? x[1] - 2 : n == 2 ? x[2] - 3 : NAN;
+        return n == 0 ? (x[0] - 1) / 2 : n == 1 ? (x[1] - 2) / 2 : n == 2 ? (x[2] - 3) / 3 : NAN;
       }
       static double sqr(double x)
       {
