@@ -1,7 +1,6 @@
-// "Usage : node .../Struct_main.js [j2json|json2j|j2html|j2j|json2json] input-file output-file"
+require("./Struct.js");
 
 const fs = require("fs");
-require("./Struct.js");
 if((process.argv.length == 5) &&
    process.argv[2] in { 'json2j' : '', 'j2json' : '', 'j2html' : '', 'j2j' : '', 'wjson2json' : '' , 'json2json' : '' }
    &&

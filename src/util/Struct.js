@@ -197,7 +197,7 @@ var Struct = {
         var value = this.read_value();
         this.next_space();
         if(this.index < this.string.length)
-          return { value : value, trailer : this.string.substr(index) };
+          return { value : value, trailer : this.string.substr(this.index) };
 	return value;
       },
       read_value : function() {
@@ -208,13 +208,13 @@ var Struct = {
         case '[':
           return this.read_list_value();
         default:
-          return this.string2value(this.read_word());
+          return this.string2value(this.read_word(true));
         }
       },
       read_tuple_value : function() {
         var value = {};
         this.index++;
-        while(true) {
+        for(var index0 = -1; index0 != this.index;) { index0 = this.index
           this.next_space();
           if(this.index >= this.string.length)
             return value;
@@ -223,6 +223,8 @@ var Struct = {
             return value;
           }
           var name = this.read_word();
+	  if (name == '')
+	    return value;
           this.next_space();
           var item = true;
           if((this.index < this.string.length) && ((this.string[this.index] == ':') || (this.string[this.index] == '='))) {
@@ -234,12 +236,12 @@ var Struct = {
           if((this.index < this.string.length) && ((this.string[this.index] == ',') || (this.string[this.index] == ';')))
             this.index++;
         }
-	return value;
+	console.log({ bug : "read_tuple_value", value : value, string : "«"+this.string.substr(this.index - 100, 100)+"»|«"+this.string.substr(this.index, 10)+"»" });
       },
       read_list_value : function() {
         var value = [];
         this.index++;
-        while(true) {
+        for(var index0 = -1; index0 != this.index;) { index0 = this.index
           this.next_space();
           if(this.index >= this.string.length)
             return value;
@@ -252,10 +254,10 @@ var Struct = {
           if((this.index < this.string.length) && ((this.string[this.index] == ',') || (this.string[this.index] == ';')))
             this.index++;
         }
-	return value;
+	console.log({ bug : "read_list_value", value : value, string : "«"+this.string.substr(this.index - 100, 100)+"»|«"+this.string.substr(this.index, 10)+"»" });
       },
-      read_word : function() {
-        return this.string[this.index] == '"' || this.string[this.index] == '\'' ? this.read_quoted_word(this.string[this.index]) : this.read_nospace_word();
+      read_word : function(line = false) {
+        return this.string[this.index] == '"' || this.string[this.index] == '\'' ? this.read_quoted_word(this.string[this.index]) : this.read_nospace_word(line);
       },
       read_quoted_word : function(quote) {
         var word = "";
@@ -294,9 +296,9 @@ var Struct = {
           this.index++;
         return word;
       },
-      read_nospace_word : function() {
+      read_nospace_word : function(line = false) {
         var i0;
-        for(i0 = this.index; this.index < this.string.length && this.no_space(this.string[this.index]); this.index++) {}
+        for(i0 = this.index; this.index < this.string.length && (line ? this.no_endofline(this.string[this.index]) : this.no_space(this.string[this.index])); this.index++) {}
         return this.string.substr(i0, this.index - i0);
       },
       next_space : function() {
@@ -314,6 +316,9 @@ var Struct = {
       },
       no_space : function(c) {
         return new RegExp("[^\\s,;:=}\\]]").test(c);
+      },
+      no_endofline : function(c) {
+        return new RegExp("[^\\n,;:=}\\]]").test(c);
       },
       isspace : function(c) {
         return new RegExp("\\s").test(c);
@@ -349,7 +354,7 @@ var Struct = {
     default:
       return value;
     }
-  },
+  }
 };
 
 global.Struct = Struct;
