@@ -1,3 +1,4 @@
 # mnemonas
 - This is one https://team.inria.fr/mnemosyne research code distribution
-- See https://vthierry.github.io/mnemonas
+- The project now moved on https://gitlab.inria.fr/mnemosyne/mnemonas
+- See https://mnemosyne.gitlabpages.inria.fr/mnemonas for the documentation
