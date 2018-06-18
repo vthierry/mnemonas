@@ -2,7 +2,7 @@ require("./Struct.js");
 
 const fs = require("fs");
 if((process.argv.length == 5) &&
-   process.argv[2] in { 'json2j' : '', 'j2json' : '', 'j2html' : '', 'j2j' : '', 'wjson2json' : '' , 'json2json' : '' }
+   process.argv[2] in { 'json2j' : '', 'j2json' : '', 'j2html' : '', 'j2j' : '', 'wjson2json' : '', 'json2json' : '' }
    &&
    fs.existsSync(process.argv[3]))
   fs.writeFileSync(process.argv[4], Struct.convert(process.argv[2], fs.readFileSync(process.argv[3]).toString()));

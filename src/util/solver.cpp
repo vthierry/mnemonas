@@ -221,88 +221,89 @@ double solver::minimize(unsigned int N, double f(const double *x), double d_f(co
     x[n] = x0 == NULL ? 0 : x0[n];
   {
     // Buffers initialization
-    double lambda = 1, t = 0, *g, g2  = 0, *g_m, *g_V, *h_m, *h_V, *d_w, *V_g, *V_h, *x1, c = f(x), c1 = c;
+    double lambda = 1, t = 0, *g, g2 = 0, *g_m, *g_V, *h_m, *h_V, *d_w, *V_g, *V_h, *x1, c = f(x), c1 = c;
     g = new double[N], g_m = new double[N], g_V = new double[N], h_m = new double[N], h_V = new double[N], d_w = new double[N], V_g = new double[N], V_h = new double[N], x1 = new double[N];
     for(unsigned int n = 0; n < N; n++)
-      g_m[n] =  g_V[n] =  h_m[n] =  h_V[n] = d_w[n] =  V_g[n] = V_h[n] = 0;
+      g_m[n] = g_V[n] = h_m[n] = h_V[n] = d_w[n] = V_g[n] = V_h[n] = 0;
     // Iteration loop
     for(unsigned int k = 0; maxIterations == 0 || k < maxIterations; k++) {
       // Reads new gradient if the previous step was succes
       if(c1 == c) {
-	// Loops on 2nd order gradient
-	do {
-	  // Computes new gradient and criterion value
-	  g2 = 0;
-	  for(unsigned int n = 0; n < N; n++)
-	    g[n] = d_f(x, n), g2 += g[n] * g[n];
-	  c1 = c;
-	  // Attemps to improve the criterion at the 2nd order
-	  {
-	    // Updates the 2nd order quantities
-	    t++;
-	    for(unsigned int n = 0; n < N; n++) {
-	      double A_gg, A_gh, A_hh, d, b_g, b_h, h1;
-	      // Prediction phase
-	      g_V[n] += d_w[n] * d_w[n] * h_V[n];
-	      h_V[n] += V_h[n];
-	      d = g[n] - g_m[n], V_g[n] += (d * d - V_g[n]) / t;
-	      g_m[n] += h_m[n] * d_w[n];
-	      // Estimation phase
-	      if (d_w[n] != 0) {
-		double V_g_n1 = V_g[n] > 0 ?  1 / V_g[n] : 1 / g2, g_V_n1 = g_V[n] > 0 ? 1 / g_V[n] :0, h_V_n1 = h_V[n] > 0 ? 1 / h_V[n] :0;
-		b_g = g[n] * V_g_n1 + g_m[n] * g_V_n1;
-		b_h = d_w[n] * g[n] * V_g_n1 + h_m[n] * h_V_n1;
-		g_V[n] = 1 / (A_gg = (V_g_n1 + g_V_n1));
-		h_V[n] = 1 / (A_hh = (d_w[n] * (A_gh = d_w[n]  * V_g_n1) + h_V_n1));
-		d = A_gg * A_hh - A_gh * A_gh;
-		if (d > 0) {
-		  // Solves the linear system
-		  g_m[n] = (b_g * A_hh - b_h * A_gh) / d;
-		  h1 = h_m[n], h_m[n] = (A_gg * b_h - A_gh * b_g) / d;
-		} else {
-		  // Solves the degenerated linear system
-		  g_m[n] = g[n];
-		  h1 = h_m[n] = 0;
-		}
-		d = h1 - h_m[n], V_h[n] += (d * d - V_h[n]) / t;
-		d_w[n] = h_m[n] != 0 ? - g_m[n] / h_m[n] : 0;
-	      }
-	    }
-	    // Checks if this improve the criterion
-	    for(unsigned int n = 0; n < N; n++)
-	      x1[n] = x[n], x[n] += d_w[n];
-	    c = f(x);
-	    {
-	      printf("#%3d 2nd-order c = %7.2e < %7.2e, %s\n", k, c, c1, c < c1 ? ":) !!!!!!!!!!!!!!!!!!!" : ":(");
-	      for(unsigned int n = 0; n < N; n++) 
-		printf("\tg = %7.2e ^g = %7.2e ^h = %7.2e SDg = %7.2e SDh = %7.2e SD^g = %7.2e SD^h = %7.2e\n", 
-		       g[n], g_m[n], h_m[n], sqrt(V_g[n]), sqrt(V_h[n]), sqrt(g_V[n]), sqrt(h_V[n]));
-	    }
-	    if(c < c1)
-	      c1 = c;
-	    else {
-	      for(unsigned int n = 0; n < N; n++)
-		x[n] = x1[n];
-	      break;
-	    }
-	  }
-	} while(true);
+        // Loops on 2nd order gradient
+        do {
+          // Computes new gradient and criterion value
+          g2 = 0;
+          for(unsigned int n = 0; n < N; n++)
+            g[n] = d_f(x, n), g2 += g[n] * g[n];
+          c1 = c;
+          break;
+          // Attemps to improve the criterion at the 2nd order
+          {
+            // Updates the 2nd order quantities
+            t++;
+            for(unsigned int n = 0; n < N; n++) {
+              double A_gg, A_gh, A_hh, d, b_g, b_h, h1;
+              // Prediction phase
+              g_V[n] += d_w[n] * d_w[n] * h_V[n];
+              h_V[n] += V_h[n];
+              d = g[n] - g_m[n], V_g[n] += (d * d - V_g[n]) / t;
+              g_m[n] += h_m[n] * d_w[n];
+              // Estimation phase
+              if(d_w[n] != 0) {
+                double V_g_n1 = V_g[n] > 0 ? 1 / V_g[n] : 1 / g2, g_V_n1 = g_V[n] > 0 ? 1 / g_V[n] : 0, h_V_n1 = h_V[n] > 0 ? 1 / h_V[n] : 0;
+                b_g = g[n] * V_g_n1 + g_m[n] * g_V_n1;
+                b_h = d_w[n] * g[n] * V_g_n1 + h_m[n] * h_V_n1;
+                g_V[n] = 1 / (A_gg = (V_g_n1 + g_V_n1));
+                h_V[n] = 1 / (A_hh = (d_w[n] * (A_gh = d_w[n] * V_g_n1) + h_V_n1));
+                d = A_gg * A_hh - A_gh * A_gh;
+                if(d > 0) {
+                  // Solves the linear system
+                  g_m[n] = (b_g * A_hh - b_h * A_gh) / d;
+                  h1 = h_m[n], h_m[n] = (A_gg * b_h - A_gh * b_g) / d;
+                } else {
+                  // Solves the degenerated linear system
+                  g_m[n] = g[n];
+                  h1 = h_m[n] = 0;
+                }
+                d = h1 - h_m[n], V_h[n] += (d * d - V_h[n]) / t;
+                d_w[n] = h_m[n] != 0 ? -g_m[n] / h_m[n] : 0;
+              }
+            }
+            // Checks if this improve the criterion
+            for(unsigned int n = 0; n < N; n++)
+              x1[n] = x[n], x[n] += d_w[n];
+            c = f(x);
+            {
+              printf("#%3d 2nd-order c = %7.2e < %7.2e, %s\n", k, c, c1, c < c1 ? ":) !!!!!!!!!!!!!!!!!!!" : ":(");
+              for(unsigned int n = 0; n < N; n++)
+                printf("\tg = %7.2e ^g = %7.2e ^h = %7.2e SDg = %7.2e SDh = %7.2e SD^g = %7.2e SD^h = %7.2e\n",
+                       g[n], g_m[n], h_m[n], sqrt(V_g[n]), sqrt(V_h[n]), sqrt(g_V[n]), sqrt(h_V[n]));
+            }
+            if(c < c1)
+              c1 = c;
+            else {
+              for(unsigned int n = 0; n < N; n++)
+                x[n] = x1[n];
+              break;
+            }
+          }
+        } while(true);
       }
       // Checks if we are done
       if((lambda * c < sqrt(g2) * epsilon) || (c <= 0) || (g2 <= 0))
-	break;
+        break;
       // Updates the estimation
       for(unsigned int n = 0; n < N; n++)
-	x1[n] = x[n], x[n] += (d_w[n] = -lambda * c1 / g2 * g[n]);
+        x1[n] = x[n], x[n] += (d_w[n] = -lambda * c1 / g2 * g[n]);
       c = f(x);
-      printf("#%3d 1st-order c = %7.2e < %7.2e, %s dx = %7.2e = -(lambda = %7.2e) (c = %7.2e) / (|g| = %7.2e)\n", k, c, c1, c < c1 ? ":)" : ":(", lambda * c1 / sqrt(g2), lambda, c1, sqrt(g2));
+      // printf("#%3d 1st-order c = %7.2e < %7.2e, %s dx = %7.2e = -(lambda = %7.2e) (c = %7.2e) / (|g| = %7.2e)\n", k, c, c1, c < c1 ? ":)" : ":(", lambda * c1 / sqrt(g2), lambda, c1, sqrt(g2));
       // Manages succes of failure
       if(c < c1)
-	c1 = c, lambda *= 1.5;
+        c1 = c, lambda *= 1.5;
       else {
-	for(unsigned int n = 0; n < N; n++)
-	  x[n] = x1[n];
-	lambda *= 0.5;
+        for(unsigned int n = 0; n < N; n++)
+          x[n] = x1[n];
+        lambda *= 0.5;
       }
     }
     delete[] g, delete[] g_m, delete[] g_V, delete[] h_m, delete[] h_V, delete[] d_w, delete[] V_g, delete[] V_h, delete[] x1;
@@ -330,7 +331,7 @@ double solver::minimize(unsigned int N, double f(const double *x), double d_f(co
     for(unsigned int n = 0; n < N; n++)
       x1[n] = x[n], x[n] -= lambda * c1 / g2 * g[n];
     c = f(x);
-    //-printf("#%3d c = %7.2e < %7.2e, %s dx = %7.2e = -(lambda = %7.2e) (c = %7.2e) / (|g| = %7.2e)\n", k, c, c1, c < c1 ? ":)" : ":(", lambda * c1 / sqrt(g2), lambda, c1, sqrt(g2));
+    // -printf("#%3d c = %7.2e < %7.2e, %s dx = %7.2e = -(lambda = %7.2e) (c = %7.2e) / (|g| = %7.2e)\n", k, c, c1, c < c1 ? ":)" : ":(", lambda * c1 / sqrt(g2), lambda, c1, sqrt(g2));
     // Manages succes of failure
     if(c < c1)
       c1 = c, lambda *= 1.5;

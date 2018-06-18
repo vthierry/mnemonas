@@ -16,78 +16,77 @@ var Struct = {
         // Lexical analysis : builds an input of the form
         // [ { tab : line-tabulation, label : label-before-equal, string : line-string } ]
         var input = [];
-	for(var index = 0, ll = 0; index < value.length; index++) {
-	  var index0, index1, index2, line = true;
-	  tab = 0;
-	  for(; index < value.length && value[index] != '\n' && this.isspace(value[index]); index++)
-	    switch(value[index]) {
-	    case '\t':
-	      tab += 6;
-	      break;
-	    case ' ':
-	      tab++;
-	      break;
-	    }
-	  // Parses the label before '='
-	  for(index0 = index; index < value.length && value[index] != '=' && value[index] != '\n'; index++) ;
-	  index1 = value[index] == '=' ? index - 1 : index0;
-	  // Parses the value
-	  for(; index < value.length && value[index] != '\n' && this.isspace(value[index]); index++) {}
-	  if(value[index] == '=') {
-	    for(index++; index < value.length && value[index] != '\n' && this.isspace(value[index]); index++) ;
-	    for(index2 = index; index < value.length && value[index] != '\n'; index++) ;
-	  } else {
-	    index1 = index0;
-	    for(index2 = index0; index < value.length && value[index] != '\n'; index++) ;
-	    // Manages multi-line strings
-	    if((ll > 0) && (input[ll - 1]["tab"] <= tab)) {
-	      var index3 = index0 - Math.max(0, tab - input[ll - 1]["tab"] - 1);
-	      input[ll - 1]["string"] = input[ll - 1]["string"] + "\n" + value.substr(index3, index - index3);
-	      line = false;
-	    }
-	  }
-	  // Manages nested data-structure with a string on the label line
-	  if(line && (ll > 0) && (input[ll - 1]["tab"] < tab) && (input[ll - 1]["string"] != "")) {
-	    input[ll] = { "tab" : tab, "label" : "title", "string" : input[ll - 1]["string"] };
-	    input[ll - 1]["string"] = undefined;
-	    ll++;
-	  }
-	  if(line) {
-	    input[ll] = { "tab" : tab, "label" : value.substr(index0, index1 - index0), "string" : value.substr(index2, index - index2) };
-	    ll++;
-	  }
-	}
-	// -for(var index = 0; index < input.length; index++) console.log(input[index]);
-	return this.parse({ input: input, index :0 });
+        for(var index = 0, ll = 0; index < value.length; index++) {
+          var index0, index1, index2, line = true;
+          tab = 0;
+          for(; index < value.length && value[index] != '\n' && this.isspace(value[index]); index++)
+            switch(value[index]) {
+            case '\t':
+              tab += 6;
+              break;
+            case ' ':
+              tab++;
+              break;
+            }
+          // Parses the label before '='
+          for(index0 = index; index < value.length && value[index] != '=' && value[index] != '\n'; index++) ;
+          index1 = value[index] == '=' ? index - 1 : index0;
+          // Parses the value
+          for(; index < value.length && value[index] != '\n' && this.isspace(value[index]); index++) {}
+          if(value[index] == '=') {
+            for(index++; index < value.length && value[index] != '\n' && this.isspace(value[index]); index++) ;
+            for(index2 = index; index < value.length && value[index] != '\n'; index++) ;
+          } else {
+            index1 = index0;
+            for(index2 = index0; index < value.length && value[index] != '\n'; index++) ;
+            // Manages multi-line strings
+            if((ll > 0) && (input[ll - 1]["tab"] <= tab)) {
+              var index3 = index0 - Math.max(0, tab - input[ll - 1]["tab"] - 1);
+              input[ll - 1]["string"] = input[ll - 1]["string"] + "\n" + value.substr(index3, index - index3);
+              line = false;
+            }
+          }
+          // Manages nested data-structure with a string on the label line
+          if(line && (ll > 0) && (input[ll - 1]["tab"] < tab) && (input[ll - 1]["string"] != "")) {
+            input[ll] = { "tab" : tab, "label" : "title", "string" : input[ll - 1]["string"] };
+            input[ll - 1]["string"] = undefined;
+            ll++;
+          }
+          if(line) {
+            input[ll] = { "tab" : tab, "label" : value.substr(index0, index1 - index0), "string" : value.substr(index2, index - index2) };
+            ll++;
+          }
+        }
+        // -for(var index = 0; index < input.length; index++) console.log(input[index]);
+        return this.parse({ input: input, index :0 });
       },
       // Syntax analysis : converts the input to a data-structure
       parse : function(data) {
         var s_value = {}, t_value = [], tab = data.input[data.index]["tab"], size = 0, length = 0;
-	for(; data.index < data.input.length && data.input[data.index]["tab"] == tab; data.index++) {
-	  var index0 = data.index, item;
-	  if((data.index + 1 < data.input.length) && (tab < data.input[data.index + 1]["tab"])) {
-	    data.index++;
-	    item = this.parse(data);
-	  } else {
-	    item = this.string2value(data.input[data.index]["string"]);
-	  }
-	  if(data.input[index0]["label"] == "") {
-	    s_value["#" + (length++)] = item;
-	    t_value[t_value.length] = item;
-	  } else
-	    s_value[data.input[index0]["label"]] = item;
-	  size++;
-	}
-	data.index--;
-	return size == length ? t_value : s_value;
+        for(; data.index < data.input.length && data.input[data.index]["tab"] == tab; data.index++) {
+          var index0 = data.index, item;
+          if((data.index + 1 < data.input.length) && (tab < data.input[data.index + 1]["tab"])) {
+            data.index++;
+            item = this.parse(data);
+          } else
+            item = this.string2value(data.input[data.index]["string"]);
+          if(data.input[index0]["label"] == "") {
+            s_value["#" + (length++)] = item;
+            t_value[t_value.length] = item;
+          } else
+            s_value[data.input[index0]["label"]] = item;
+          size++;
+        }
+        data.index--;
+        return size == length ? t_value : s_value;
       },
       string2value : function(string) {
         if(new RegExp("^(true|false)$").test(string))
-	  return string == "true";
-	else if(new RegExp("^[-+]?[0-9]+$").test(string))
-	  return parseInt(string);
-	else if(new RegExp("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$").test(string))
-	  return parseFloat(string);
+          return string == "true";
+        else if(new RegExp("^[-+]?[0-9]+$").test(string))
+          return parseInt(string);
+        else if(new RegExp("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$").test(string))
+          return parseFloat(string);
         else
           return string;
       },
@@ -97,6 +96,7 @@ var Struct = {
     };
     return Reader.read(value);
   },
+
   /** Converts a data structure to string in J syntax.
    * @param {object} data The data-structure to render.
    * @param {string} format The string format, either "plain" or "html".
@@ -106,74 +106,75 @@ var Struct = {
     var Writer = {
       write : function(data, format) {
         return (format == "html" ? "<style>body{background-color:lightgrey} .struct-block{margin-left:20px} .struct-meta-char{color:#330033;font-weight:bold} .struct-name{color:#000066} .struct-value{color:#006600} .struct-link{text-decoration: none} .struct-e{font-style: italic} .struct-q{font-family: monospace}</style>\n" : "") +
-        this.write_value(data, 0, format) + "\n";
+               this.write_value(data, 0, format) + "\n";
       },
       write_value : function(value, tab, format) {
         var string = "";
-	if(!(value instanceof Object))
-	  string += this.write_word(String(value), tab, "value", format);
-	else if(value instanceof Array)
-	  for(var label = 0; label < value.length; label++) {
-	    string += this.write_word(format == "html" ? "<div class='struct-block'>" : "\n", tab, "line", format);
-	    string += this.write_word("= ", tab, "meta", format);
-	    string += this.write_value(value[label], tab + 1, format);
-	    string += format == "html" ? "</div>" : ""
-	      }
-	else {
-	  var root = tab == 0, notitle = value["title"] == "" || value["title"] == undefined || root;
-	  if(!notitle)
-	    string += this.write_word(value["title"], tab, "value", format);
-	  for(var label in value)
-	    if(notitle || (label != "title")) {
-	      string += this.write_word(format == "html" ? "<div class='struct-block'>" : root ? "" : "\n", tab, "line", format);
-	      root = false;
-	      if(label[0] != '#') {
-		string += this.write_word(label, tab, "name", format);
-		string += this.write_word(" = ", tab, "meta", format);
-	      } else
-		string += this.write_word("= ", tab, "meta", format);
-	      string += this.write_value(value[label], tab + 1, format);
-	      string += format == "html" ? "</div>" : ""
-	  }
-	}
-	return string;
+        if(!(value instanceof Object))
+          string += this.write_word(String(value), tab, "value", format);
+        else if(value instanceof Array)
+          for(var label = 0; label < value.length; label++) {
+            string += this.write_word(format == "html" ? "<div class='struct-block'>" : "\n", tab, "line", format);
+            string += this.write_word("= ", tab, "meta", format);
+            string += this.write_value(value[label], tab + 1, format);
+            string += format == "html" ? "</div>" : ""
+          }
+        else {
+          var root = tab == 0, notitle = value["title"] == "" || value["title"] == undefined || root;
+          if(!notitle)
+            string += this.write_word(value["title"], tab, "value", format);
+          for(var label in value)
+            if(notitle || (label != "title")) {
+              string += this.write_word(format == "html" ? "<div class='struct-block'>" : root ? "" : "\n", tab, "line", format);
+              root = false;
+              if(label[0] != '#') {
+                string += this.write_word(label, tab, "name", format);
+                string += this.write_word(" = ", tab, "meta", format);
+              } else
+                string += this.write_word("= ", tab, "meta", format);
+              string += this.write_value(value[label], tab + 1, format);
+              string += format == "html" ? "</div>" : ""
+            }
+        }
+        return string;
       },
       write_word : function(value, tab, type, format) {
         var string = format != "html" ? "" : type == "meta" ? "<span class='struct-meta-char'>" : type == "name" ? "<span class='struct-name'>" : type == "value" ? "<span class='struct-value'>" : "";
         // Applies the [link] and _span_ transform
         if(format == "html") {
-	  var quoted = false;
-	  for(var i = 0; i < value.length; i++) {
-	    if(value[i] == '"')
-	      quoted = !quoted;
-	    if(!quoted) {
-	      if(value[i] == "[") {
-		value = value.substr(0, i) + value.substr(i).replace(new RegExp("\\[([^\\s\\]]+)\\s+([^\\]]*)\\]"), "<a class='struct-link' href='$1'>$2</a>");
-		value = value.substr(0, i) + value.substr(i).replace(new RegExp("\\[([^\\s\\]]+)\\]"), "<a class='struct-link' href='$1'>$1</a>");
-		i += value.substr(i).search(">");
-	      } else if(value[i] == "_") {
-		value = value.substr(0, i) + value.substr(i).replace(new RegExp("_([^_])_([^_]+)_"), "<span class='struct-$1'>$2</span>");
-		value = value.substr(0, i) + value.substr(i).replace(new RegExp("_([^_]+)_"), "<span class='struct-e'>$1</span>");
-		i += value.substr(i).search(">");
-	      }
-	    }
-	  }
-	}
-	// Applies the \n transform
-	for(var i = 0; i < value.length; i++) {
+          var quoted = false;
+          for(var i = 0; i < value.length; i++) {
+            if(value[i] == '"')
+              quoted = !quoted;
+            if(!quoted) {
+              if(value[i] == "[") {
+                value = value.substr(0, i) + value.substr(i).replace(new RegExp("\\[([^\\s\\]]+)\\s+([^\\]]*)\\]"), "<a class='struct-link' href='$1'>$2</a>");
+                value = value.substr(0, i) + value.substr(i).replace(new RegExp("\\[([^\\s\\]]+)\\]"), "<a class='struct-link' href='$1'>$1</a>");
+                i += value.substr(i).search(">");
+              } else if(value[i] == "_") {
+                value = value.substr(0, i) + value.substr(i).replace(new RegExp("_([^_])_([^_]+)_"), "<span class='struct-$1'>$2</span>");
+                value = value.substr(0, i) + value.substr(i).replace(new RegExp("_([^_]+)_"), "<span class='struct-e'>$1</span>");
+                i += value.substr(i).search(">");
+              }
+            }
+          }
+        }
+        // Applies the \n transform
+        for(var i = 0; i < value.length; i++) {
           if(value[i] == '\n') {
-	    string += format == "html" && type == "value" ? "</div>\n<div class='struct-block struct-value'>" : "\n";
-	    for(var j = 0; j < tab; j++)
-	      string += ' ';
-	  } else
-	    string += value[i];
-	}
-	string += format != "html" ? "" : type == "meta" || type == "name" || type == "value" ? "</span>" : "";
-	return string;
+            string += format == "html" && type == "value" ? "</div>\n<div class='struct-block struct-value'>" : "\n";
+            for(var j = 0; j < tab; j++)
+              string += ' ';
+          } else
+            string += value[i];
+        }
+        string += format != "html" ? "" : type == "meta" || type == "name" || type == "value" ? "</span>" : "";
+        return string;
       }
     };
-    return Writer.write(data, format);						  
+    return Writer.write(data, format);
   },
+
   /** Parses a data structure from a JSON weak-syntax string.
    * @param {string} value The value given as a string, using weak <a href="http://json.org/">JSON</a> syntax.
    * - The weak-syntax, with respect to the strict <a href="https://www.w3schools.com/js/js_json_intro.asp">JSON-syntax</a>allows to:
@@ -191,14 +192,14 @@ var Struct = {
    */
   json2data : function(value) {
     var Reader = {
-      string : value, 
-      index : 0,    
+      string : value,
+      index : 0,
       read : function() {
         var value = this.read_value();
         this.next_space();
         if(this.index < this.string.length)
           return { value : value, trailer : this.string.substr(this.index) };
-	return value;
+        return value;
       },
       read_value : function() {
         this.next_space();
@@ -214,8 +215,9 @@ var Struct = {
       read_tuple_value : function() {
         var value = {};
         this.index++;
-        for(var index0 = -1; index0 != this.index;) { index0 = this.index
-          this.next_space();
+        for(var index0 = -1; index0 != this.index;) {
+          index0 = this.index
+                   this.next_space();
           if(this.index >= this.string.length)
             return value;
           if(this.string[this.index] == '}') {
@@ -223,8 +225,8 @@ var Struct = {
             return value;
           }
           var name = this.read_word();
-	  if (name == '')
-	    return value;
+          if(name == '')
+            return value;
           this.next_space();
           var item = true;
           if((this.index < this.string.length) && ((this.string[this.index] == ':') || (this.string[this.index] == '='))) {
@@ -236,13 +238,14 @@ var Struct = {
           if((this.index < this.string.length) && ((this.string[this.index] == ',') || (this.string[this.index] == ';')))
             this.index++;
         }
-	console.log({ bug : "read_tuple_value", value : value, string : "«"+this.string.substr(this.index - 100, 100)+"»|«"+this.string.substr(this.index, 10)+"»" });
+        console.log({ bug : "read_tuple_value", value : value, string : "«" + this.string.substr(this.index - 100, 100) + "»|«" + this.string.substr(this.index, 10) + "»" });
       },
       read_list_value : function() {
         var value = [];
         this.index++;
-        for(var index0 = -1; index0 != this.index;) { index0 = this.index
-          this.next_space();
+        for(var index0 = -1; index0 != this.index;) {
+          index0 = this.index
+                   this.next_space();
           if(this.index >= this.string.length)
             return value;
           if(this.string[this.index] == ']') {
@@ -254,7 +257,7 @@ var Struct = {
           if((this.index < this.string.length) && ((this.string[this.index] == ',') || (this.string[this.index] == ';')))
             this.index++;
         }
-	console.log({ bug : "read_list_value", value : value, string : "«"+this.string.substr(this.index - 100, 100)+"»|«"+this.string.substr(this.index, 10)+"»" });
+        console.log({ bug : "read_list_value", value : value, string : "«" + this.string.substr(this.index - 100, 100) + "»|«" + this.string.substr(this.index, 10) + "»" });
       },
       read_word : function(line = false) {
         return this.string[this.index] == '"' || this.string[this.index] == '\'' ? this.read_quoted_word(this.string[this.index]) : this.read_nospace_word(line);
@@ -302,15 +305,15 @@ var Struct = {
         return this.string.substr(i0, this.index - i0);
       },
       next_space : function() {
-        for(; this.index < this.string.length && this.isspace(this.string[this.index]); this.index++);
+        for(; this.index < this.string.length && this.isspace(this.string[this.index]); this.index++) ;
       },
       string2value : function(string) {
         if(new RegExp("^(true|false)$").test(string))
-	  return string == "true";
-	else if(new RegExp("^[-+]?[0-9]+$").test(string))
-	  return parseInt(string);
-	else if(new RegExp("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$").test(string))
-	  return parseFloat(string);
+          return string == "true";
+        else if(new RegExp("^[-+]?[0-9]+$").test(string))
+          return parseInt(string);
+        else if(new RegExp("^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$").test(string))
+          return parseFloat(string);
         else
           return string;
       },
@@ -326,6 +329,7 @@ var Struct = {
     };
     return Reader.read();
   },
+
   /** Converts a string from a format to another format.
    * @param {string} what The conversion to perform:
    * - 'j2json' : Converts a string from J syntax to JSON syntax.
