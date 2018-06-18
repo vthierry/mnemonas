@@ -36,7 +36,7 @@ public:
    */
   static double minimize(double f(double x), double xmin, double xmax, double xeps = NAN, unsigned int imax = 0);
 
-  /** Minimizes a multi-dimensinal function using a vanilla gradient method.
+  /** Minimizes a multi-dimensinal function using a 2nd order diagonal and 1st gradient method.
    * @param N The number of unknows.
    * @param f The function to minimize.
    * @param d_f The $n$-th component of the function gradient to minimize.

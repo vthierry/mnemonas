@@ -66,6 +66,7 @@ public:
     double x[3];
     double err = solver::minimize(3, c.f, c.d_f, x, NULL, 1e-16, 100);
     assume(err < 1e-13, "illegal-state", "solver_test/minimize [1 2 3] != [%g %g %g] err = %g\n", x[0], x[1], x[2], err);
+    exit(0);
   }
   // solver::minimize nD
   {
